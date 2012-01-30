@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<project name="ENOM PRO!" default="default">
+	<property name="name" value="eNom PRO"/>
+	<property name="version" value="0.2"/>
+	<property name="build_dir" value="/tmp/build/enom_pro"/>
+	<property name="version_xml" value="enom_pro_version.xml"/>
+	<property name="deploy" value="/Users/robertgregor/Sites/whmcs" />
+	<!-- Location to save the encoded version -->
+	<property name="encoded" value="${build_dir}/encoded"/>
+	<property name="encoded_prep" value="${build_dir}/encoded_prep"/>
+	<property name="enc.secret" value="Hsyz2YQDuzVH7r6QQFjbcVE8RJ7ewk7F"/><!-- Secret -->
+    <!-- FILESETS -->
+    <fileset dir="${project.basedir}/src" id="open_files">
+        <include name="**/.php" />
+        <include name="**/.xml" />
+        <include name="README.txt" />
+        <include name="EULA.txt" />
+        <exclude name="*.svn" />
+        <exclude name="*.git" />
+        <exclude name=".project" />
+        <exclude name=".buildpath" />
+        <exclude name=".settings/*" />
+    </fileset>
+    <fileset dir="${encoded}" id="encoded">
+        <exclude name="${version_xml}"/>
+    	<include name="**/**" />
+    </fileset>
+    <target name="encode">
+    	<echo msg="Cleaning up any failed builds"/>
+    	<delete dir="${build_dir}" includeemptydirs="true" failonerror="true"/>
+   		<mkdir dir="${build_dir}" />
+   		<mkdir dir="${encoded}" />
+    	<echo msg="Copying files from src to encoded_prep &amp; replacing tokens"/>
+        <copy todir="${encoded_prep}">
+        	<filterchain>
+        		<replacetokens>
+        			<token key="SECRET" value="${enc.secret}"/>
+        			<token key="VERSION" value="${version}"/>
+	       			<token key="NAME" value="${name}"/>
+        		</replacetokens>
+        	</filterchain>
+        	<fileset refid="open_files"/>
+        </copy>
+        <ioncubeencoder obfuscate="linenos" optimize="max" ioncubepath="/Users/robertgregor/" targetoption="replace" fromdir="${encoded_prep}" todir="${encoded}">
+    			<comment>*************************************************************************</comment>
+				<comment>* enom PRO Addon for WHMCS                                              *</comment>
+				<comment>* Copyright (c) 2001-2011 Orion IP Ventures, LLC. All Rights Reserved   *</comment>
+				<comment>*************************************************************************</comment>
+				<comment>* Licenses Resold and Supported by Circle Tree, LLC                     *</comment>
+				<comment>* For More Information on Becoming an Orion IP Authorized Reseller      *</comment>
+				<comment>* Visit Our Website: http://www.OrionIPVentures.com/                    *</comment>
+				<comment>*************************************************************************</comment>
+				<comment>* The use of this software means that you accept the terms and          *</comment>
+				<comment>* conditions of the license, and agree to be bound by the terms set     *</comment>
+				<comment>* forth in the End User License Agreement (EULA). Each purchased        *</comment>
+				<comment>* license entitles you, the named account holder, to one installation.  *</comment>
+				<comment>* You may not use the license for anyone other than the named person    *</comment>
+				<comment>* on the account, you may transfer the license after it has been        *</comment>
+				<comment>* approved by Orion IP Ventures, LLC. We may at any time terminate      *</comment>
+				<comment>* your license to use our software if you do not abide by the terms     *</comment>
+				<comment>* set out in the EULA. In this event, licensee agrees to return         *</comment>
+				<comment>* licensor or destroy all copies of software upon termination of the    *</comment>
+				<comment>* license.                                                              *</comment>
+				<comment>*************************************************************************</comment>
+				<comment>*  You may not alter, merge, modify, adapt or translate the Software,   *</comment>
+				<comment>* or decompile, reverse engineer, disassemble, defeat licensing         *</comment>
+				<comment>* mechanisms, or otherwise reduce the Software to a human-perceivable   *</comment>
+				<comment>* form                                                                  *</comment>
+				<comment>*************************************************************************</comment>
+				<comment>* Please see included EULA.txt for the full End User License Agreement. *</comment>
+				<comment>*************************************************************************</comment>
+    	</ioncubeencoder>
+    	<echo msg="Copying encoded files to local WHMCS install" />
+        <copy todir="${deploy}">
+        	<fileset refid="encoded" />
+        </copy>
+    </target>
+	<target name="version">
+		    <echo msg="Deploying XML to myCircleTree.com"/>
+	    	<ftpdeploy 
+	  				host="mycircletree.com"
+	  				port="21"
+			  		username="mycircle"
+					password="vRki3ozG08Tt" 
+					dir="/public_html/versions/"
+					passive="false"
+					level="debug"
+					mode="ascii">				
+	  			<fileset dir="${encoded_prep}">
+	  				<include name="${version_xml}"/>
+	  			</fileset>
+	  		</ftpdeploy>
+	    </target>
+    <target name="default" depends="encode">
+    	<echo msg="Creating Zip files from encoded" />
+    	<zip destfile="enom_pro.zip" basedir="${encoded}"/>
+    	<echo msg="Cleaning up this build"/>
+    	<delete dir="${project.basedir}/build/" includeemptydirs="true" failonerror="true"/>
+    </target>
+</project>
