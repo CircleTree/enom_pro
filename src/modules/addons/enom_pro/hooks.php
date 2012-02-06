@@ -1,9 +1,14 @@
 <?php 
-
+/**
+* eNom Pro WHMCS Addon Hooks
+* @version @VERSION@
+* Copyright 2012 Orion IP Ventures, LLC.
+* Licenses Resold by Circle Tree, LLC. Under Reseller Licensing Agreement
+*/
 function enom_pro_admin_balance ($vars) {
 	if (!class_exists('enom_pro')) require_once 'enom_pro.php';
+	$enom = new enom_pro();
 	if ($_REQUEST['checkenombalance']) {
-		$enom = new enom_pro();
 		if (!$enom->error) {
 			$enom->runTransaction('getBalance');
 			$str .= '<div class="contentbox enombalance">';
@@ -23,6 +28,7 @@ function enom_pro_admin_balance ($vars) {
 				<input type="submit" value="Refresh"/>
 			</form>
 	';
+	if ($enom->updateAvailable()) $content .= $enom->updateAvailable();
 	
 	$jquerycode = '
 	jQuery("#refreshEnomBalance").live("submit", function  () {
