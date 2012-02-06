@@ -1,17 +1,49 @@
 <?php
-define('ENOM_PRO_DEBUG',true);
+if (!defined("WHMCS")) die("This file cannot be accessed directly");
 function enom_pro_config () {
+	$spinner_help = " <br/><span class=\"textred\" >Make sure your active cart & domain checker templates have {\$namespinner} in them.</span>";
 	$config = array(
 		'name'=>'@NAME@ Addon Module',
 		'version'=>'@VERSION@',
-		'author'=>'Orion IP Ventures, LLC.',
+		'author'=>'<a href="http://orionipventures.com/">Orion IP Ventures, LLC.</a>',
 		'description'=>'Shows eNom Balance and active Transfers on the admin homepage in widgets. Adds a clientarea page that displays active transfers to clients.',
 		'fields'=>array(
 			'license'=>array('FriendlyName'=>"License Key","Type"=>"text","Size"=>"30"),
+			'debug'=>array('FriendlyName'=>"Debug Mode","Type"=>"yesno","Description"=>"Enable debug messages on frontend. Used for troubleshooting the namespinner, for example."),
+			'spinner_results'=>array('FriendlyName'=>"Namespinner Results","Type"=>"text","Default"=>10,"Description"=>"Max Number of namspinner results to show".$spinner_help,'Size'=>10),
+			'spinner_sortby'=>array('FriendlyName'=>"Sort Results","Type"=>"dropdown","Options"=>"score,domain","Default"=>"score","Description"=>"Sort namspinner results by score or domain name"),
+			'spinner_sort_order'=>array('FriendlyName'=>"Sort Order","Type"=>"dropdown","Options"=>"Ascending,Descending","Default"=>"Descending","Description"=>"Sort order for results"),
+			'spinner_checkout'=>array('FriendlyName'=>"Show Add to Cart Button?","Type"=>"yesno","Description"=>"Tick to display checkout button at the bottom of namspinner results"),
+			'spinner_css'=>array('FriendlyName'=>"Style Spinner?","Type"=>"yesno","Description"=>"Tick to Include Namespinner CSS File"),
+			'spinner_animation'=>array('FriendlyName'=>"Namespinner Result Animation Speed","Type"=>"dropdown","Default"=>"Medium","Options"=>"Off,Slow,Medium,Fast","Description"=>"Number of namspinner results to show",'Size'=>10),
+			'spinner_com'=>array('FriendlyName'=>".com","Type"=>"yesno","Description"=>"Tick to Display .com namspinner results"),
+			'spinner_net'=>array('FriendlyName'=>".net","Type"=>"yesno","Description"=>"Tick to Display .net namspinner results"),
+			'spinner_tv'=>array('FriendlyName'=>".tv","Type"=>"yesno","Description"=>"Tick to Display .tv namspinner results"),
+			'spinner_cc'=>array('FriendlyName'=>".cc","Type"=>"yesno","Description"=>"Tick to Display .cc namspinner results"),
+			'spinner_hyphens'=>array('FriendlyName'=>"Hyphens","Type"=>"yesno","Description"=>"Tick to Use hyphens (-) in namspinner results"),
+			'spinner_numbers'=>array('FriendlyName'=>"Numbers","Type"=>"yesno","Description"=>"Tick to Use numbers in namspinner results"),
+			'spinner_sensitive'=>array('FriendlyName'=>"Block sensitive content","Type"=>"yesno","Description"=>"Tick to Block sensitive content"),
+			'spinner_basic'=>array('FriendlyName'=>"Basic Results","Type"=>"dropdown","Default"=>"Medium","Description"=>"Higher values return suggestions that are built by adding prefixes, suffixes, and words to the original input","Options"=>"Off,Low,Medium,High"),
+			'spinner_related'=>array('FriendlyName'=>"Related Results","Type"=>"dropdown","Default"=>"High","Description"=>"Higher values return domain names by interpreting the input semantically and construct suggestions with a similar meaning.<br/><b>Related=High will find terms that are synonyms of your input.</b>","Options"=>"Off,Low,Medium,High"),
+			'spinner_similiar'=>array('FriendlyName'=>"Similiar Results","Type"=>"dropdown","Default"=>"Medium","Description"=>"Higher values return suggestions that are similar to the customer's input, but not necessarily in meaning.<br/><b>Similar=High will generate more creative terms, with a slightly looser relationship to your input, than Related=High.</b>","Options"=>"Off,Low,Medium,High"),
+			'spinner_topical'=>array('FriendlyName'=>"Topical Results","Type"=>"dropdown","Default"=>"High","Description"=>"Higher values return suggestions that reflect current topics and popular words.","Options"=>"Off,Low,Medium,High"),
 		)
 	);
 	return $config;
 }
+/*
+ * valid values are 'score','domain'
+ * $params = array(
+			'SensitiveContent'=>'True',//string!
+			'UseHyphens'=>'True',//String!
+			'UseNumbers'=>'True',//another STRING!
+			//The following valid values are: Off, Low, Medium, High
+			'Basic'=>'Medium',//Higher values return suggestions that are built by adding prefixes, suffixes, and words to the original input.
+			'Related'=>'High',//Higher values return domain names by interpreting the input semantically and construct suggestions with a similar meaning. Related=High will find terms that are synonyms of your input.
+			'Similar'=>'Medium',//Higher values return suggestions that are similar to the customerÕs input, but not necessarily in meaning. Similar=High will generate more creative terms, with a slightly looser relationship to your input, than Related=High.
+			'Topical'=>'High' //Higher values return suggestions that reflect current topics and popular words
+		);
+ */
 function enom_pro_activate () {
 	mysql_query("BEGIN");
 	$query = "CREATE TABLE `mod_enom_pro` (
@@ -21,6 +53,17 @@ function enom_pro_activate () {
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	mysql_query($query);
 	$query = "INSERT INTO `mod_enom_pro` VALUES(0, '');";
+	mysql_query($query);
+	$query = "
+	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_sortby', 'score');
+	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_sort_order', 'Descending');
+	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_net', 'on');
+	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_com', 'on');
+	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_css', 'on');
+	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_checkout', 'on');
+	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_results', '10');
+	";
+	//Insert these defaults due to a bug in the WHMCS addon api with checkboxes
 	mysql_query($query);
 	mysql_query("COMMIT");
 }
@@ -36,6 +79,8 @@ class enom_pro {
 	private $xml;
 	private $response;
 	private $URL;
+	private $settings = array();
+	private static $debug;
 	public $error = TRUE;
 	public $errorMessage;
 	public $name;
@@ -51,22 +96,29 @@ class enom_pro {
 	 */
 	function __construct() {
 		$license = $this->get_addon_setting('license');
+		//Prep return string
+		$return = "";
 		if ($license == "") {
-			echo '<h1><span class="textred">No License entered:</span> <a href="configaddonmods.php">Enter a License on the addon page</a></h1>';
-			echo '<h2><a href="https://mycircletree.com/client-area/order/?gid=5" target="_blank">Visit myCircleTree.com to get a license &amp; support.</a></h2>';
-			return;
+			$return .= '<h1><span class="textred">No License entered:</span> <a href="configaddonmods.php">Enter a License on the addon page</a></h1>';
+			$return .= '<h2><a href="https://mycircletree.com/client-area/order/?gid=5" target="_blank">Visit myCircleTree.com to get a license &amp; support.</a></h2>';
+			$this->error = true;
 		} elseif (!$this->checkLicense()) {
-			echo '<h1>Uh, oh! There seems to be a problem with your license</h1>';
-			echo '<h2>Please <a href="https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7&subject=Product%20Support%20for:'.$enom->productname.'.%20License:%20'.$license.'">click here to open a support ticket from the Circle Tree client area</a></h2>';
-			echo '<h3>Enter a new License from the <a href="configaddonmods.php">addon page</a></h3>';
-			echo '<div class="errorbox"><b>Support Information</b><br/>';
-			echo 'License Number: '.$license.'<br/>';
-			if (isset($this->message)) echo 'License Error: '.$this->message.'<br/>';
-			echo 'License Status: '.$this->status.'<br/>';
-			echo '</div>';
-			return;
+			$return .='<h1>Uh, oh! There seems to be a problem with your license</h1>';
+			$return .='<h2>Please <a href="https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7&subject=Product%20Support%20for:'.$enom->productname.'.%20License:%20'.$license.'">click here to open a support ticket from the Circle Tree client area</a></h2>';
+			$return .='<h3>Enter a new License from the <a href="configaddonmods.php">addon page</a></h3>';
+			$return .='<div class="errorbox"><b>Support Information</b><br/>';
+			$return .='License Number: '.$license.'<br/>';
+			if (isset($this->message)) $return .='License Error: '.$this->message.'<br/>';
+			$return .='License Status: '.$this->status.'<br/>';
+			$return .='</div>';
+			$this->error = true;
+		} else {
+			//No license err
+			$this->error = FALSE;
 		}
-		
+		$this->errorMessage = $return;
+		if ( $this->error ) return; 
+		self::$debug = ($this->get_addon_setting("debug") == "on" ? true : false); 
 		//Make sure WHMCS only includes these files if the function we're calling is undefined
 		if (!function_exists('getRegistrarConfigOptions')) {
 			require_once(ROOTDIR."/includes/functions.php");
@@ -106,6 +158,13 @@ class enom_pro {
 		$error .= '</div>';
 		return $error;
 	}
+	/**
+	 * Public interface for checking if module is in debug mode
+	 * @return $debug (bool) true for yes, false for no
+	 */
+	public function debug () {
+		return self::$debug;
+	}
 	function getBalance () {
 		return $this->xml->Balance;
 	}
@@ -124,6 +183,7 @@ class enom_pro {
 	 * $this->errorMessage (string) parsed HTML error message returned from API
 	 */
 	public function runTransaction ($command) {
+		//Set the command
 		$this->parameters['command'] = $command;
 		$this->response = $this->curl_get($this->URL,$this->parameters);
 		$this->xml = simplexml_load_string($this->response,'SimpleXMLElement',LIBXML_NOCDATA);
@@ -136,19 +196,24 @@ class enom_pro {
 				} else {
 					$this->errorMessage = $this->handleError();
 					$this->error = true;
-					if (ENOM_PRO_DEBUG) echo $this->errorMessage;
+					if (self::$debug) echo $this->errorMessage;
 				}
+				return;
 			} else {
 				//The full XML response wasn't received
+				//Try the transaction again;
+				//if it doesn't receive the full XML response (noted by the Done XML node returned by enom's API);
 				$this->runTransaction($this->parameters['command']);
+				//We are sure XML was returned by the below check 
 			}
 		} else {
-			die('There was an error loading the XML response from the eNom API via cURL. Check your firewall settings.');
+			//Error out if the XML transaction wasn't receieved.
+			if (self::$debug) die('There was an error loading the XML response from the eNom API via cURL. Check your firewall settings.');
 		}
 	}
 	/**
 	 * 
-	 * Enter description here ...
+	 * Parses the domain name using the API into TLD/SLD
 	 * @param string $domainName
 	 * @return array('tld'=>'...','sld'=>'...');
 	 */
@@ -157,11 +222,11 @@ class enom_pro {
 		$this->runTransaction('ParseDomain');
 		$SLD = (string)$this->xml->ParseDomain->SLD;
 		$TLD = (string)$this->xml->ParseDomain->TLD;
-		return array('tld'=>$TLD,'sld'=>$SLD);
+		return array('TLD'=>$TLD,'SLD'=>$SLD);
 	}
 	public function setDomain($domain) {
 		$domain_parts = $this->parseDomain($domain);
-		$this->setParams(array('TLD'=>$domain_parts['tld'],'SLD'=>$domain_parts['sld']));
+		$this->setParams(array('TLD'=>$domain_parts['TLD'],'SLD'=>$domain_parts['SLD']));
 	}
 	public function getDomainParts($domain) {
 		$this->setDomain($domain);
@@ -174,11 +239,11 @@ class enom_pro {
 	/**
 	 * gets all pending transfers from the enom table
 	 * @param int userid to restrict results to
-	 * 
+	 * @return array transfer domains, and transfer orders per domain
 	 */
 	public function getTransfers ($userid=NULL) {
 		$query = "SELECT `id`,`userid`,`type`,`domain`,`status` FROM `tbldomains` WHERE `registrar`='enom' AND `status`='Pending Transfer'";
-		if (!is_null($userid)) $query .= " AND `userid`=".(int)$uid;
+		if (!is_null($userid)) $query .= " AND `userid`=".(int)$userid;
 		$result = mysql_query($query);
 		$transfers = array();
 		$i=0;
@@ -201,21 +266,22 @@ class enom_pro {
 	public function getSpinner ($domain) {
 		$this->setDomain($domain);
 		$params = array(
-			'SensitiveContent'=>'True',//string!
-			'MaxResults'=>10,
-			'UseHyphens'=>'True',//String!
-			'UseNumbers'=>'True',//another STRING!
-			//The following valid values are: Off, Low, Medium, High
-			'Basic'=>'Medium',//Higher values return suggestions that are built by adding prefixes, suffixes, and words to the original input.
-			'Related'=>'High',//Higher values return domain names by interpreting the input semantically and construct suggestions with a 
-								//similar meaning. Related=High will find terms that are synonyms of your input.
-			'Similar'=>'Medium',//Higher values return suggestions that are similar to the customerÕs input, but not necessarily in meaning. 
-								//Similar=High will generate more creative terms, with a slightly looser relationship to your input, than Related=High.
-			'Topical'=>'High' //Higher values return suggestions that reflect current topics and popular words
+			'SensitiveContent'=>($this->get_addon_setting('spinner_sensitive') == "on" ? 'True' : 'False'),//enom API requires a literal string!
+			'MaxResults'=>($this->get_addon_setting("spinner_results")),
+			'UseHyphens'=>($this->get_addon_setting('spinner_hyphens') == "on" ? 'True' : 'False'),//String!
+			'UseNumbers'=>($this->get_addon_setting('spinner_numbers') == "on" ? 'True' : 'False'),//another STRING!
+			'Basic'=>$this->get_addon_setting("spinner_basic"),
+			'Related'=>$this->get_addon_setting("spinner_related"), 
+			'Similar'=>$this->get_addon_setting("spinner_similiar"), 
+			'Topical'=>$this->get_addon_setting("spinner_topical")
 		);
 		$api_tlds = array('com','net','tv','cc');
 		//get from settings
-		$allowed_tlds = array('com','net','tv','cc');
+		$allowed_tlds = array();
+		if ( $this->get_addon_setting("spinner_com") == "on" ) $allowed_tlds[] = 'com';
+		if ( $this->get_addon_setting("spinner_net") == "on" ) $allowed_tlds[] = 'net';
+		if ( $this->get_addon_setting("spinner_tv") == "on" ) $allowed_tlds[] = 'tv';
+		if ( $this->get_addon_setting("spinner_cc") == "on" ) $allowed_tlds[] = 'cc';
 		$this->setParams($params);
 		$this->runTransaction("NameSpinner");
 		$domains = array();
@@ -231,15 +297,16 @@ class enom_pro {
 				}
 			}
 		}
-		//valid values are 'score','domain'
-		define('NS_SORT_BY','score');
-		$sort_order = SORT_DESC;
+		//valid values from API are 'score','domain'
+		define('NS_SORT_BY',$this->get_addon_setting("spinner_sortby"));
+		$sort_order = ($this->get_addon_setting("spinner_sort_order")  == "Ascending" ?  SORT_ASC : SORT_DESC );
 		$sort = array();
 		foreach ($domains as $k => $v) {
 			$sort[$k] = $v[NS_SORT_BY];
 		}
+		//Sort the results
 		array_multisort($sort,$sort_order,$domains);
-		//if (!function_exists('gettldpricelist'))
+		//Check for cart session currency
 		$currency = (isset($_SESSION['currency']) ? (int)$_SESSION['currency'] : 1);
 		foreach ($allowed_tlds as $tld) {
 			$query = "
@@ -280,11 +347,18 @@ class enom_pro {
 		$response = array('domains'=>$domains,'pricing'=>$pricing);
 		return $response;
 	}
+	/**
+	 * 
+	 * Resend the transfer activation email
+	 * @param string $domain domain name to re-send email for
+	 * @return mixed true on success, string error message on failure
+	 */
 	public function resend_activation ($domain) {
 		$this->setDomain($domain);
 		$this->runTransaction("TP_ResendEmail");
-		if ( $this->error ) return strip_tags($this->errorMessage);
-		else return true;
+		if ( $this->error ) {
+			return strip_tags($this->errorMessage);
+		} else return true;
 	}
 	private function get_remote_license($licensekey,$localkey="") {
 		$whmcsurl = "http://mycircletree.com/client-area/";
@@ -460,11 +534,21 @@ class enom_pro {
 		curl_close($ch);
 		return $result;
 	}
+	/**
+	 * Gets a setting for the addon
+	 * @param string $setting key for the setting to get
+	 * @return string $value
+	 */
 	function get_addon_setting ($setting) {
+		//Check to see if this value is already cached
+		if (in_array($setting, $this->settings)) return $this->settings[$setting];
+		$this->settings;
 		$query = "SELECT `value` FROM `tbladdonmodules` WHERE `module`='enom_pro' AND `setting`='".$setting."';";
-		$result = mysql_query($query);
-		$return = mysql_fetch_assoc($result);
-		return $return['value'];
+		$result = mysql_fetch_assoc(mysql_query($query));
+		$return = $result['value'];
+		//Set the value in the cache
+		$this->settings[$setting] = $return;
+		return $return;
 	}
 }//End eNom PRO Class 
 function enom_pro_sidebar () {
@@ -477,7 +561,37 @@ function enom_pro_sidebar () {
 
 function enom_pro_output ($vars) {
 	$enom = new enom_pro();
-	if ($enom->error) echo $enom->errorMessage;
+	if ($enom->error) echo $enom->errorMessage;?>
+	<style>
+	pre {
+	margin: 20px;
+	padding: 10px;
+	background-color: #DDDDDD;
+	}
+	</style>
+	<h3>Non-Ajax NameSpinner Template Setup</h3>
+	<p>Include the 
+	<pre>{$namespinner}</pre> 
+	template tag in your domain (domainchecker.tpl) and shopping cart template files to include the enom name spinner!. 
+	Make sure you put it inside of the 
+	<pre>
+	{if $availabilityresults} 
+		{$namespinner}
+	{/if}
+	</pre> section of the template. The place you put the code is where the domain spinner suggestions will appear.</p>
+	<h3>Ajax Cart Namespinner Setup</h3>
+	<p>On the cart templates that use AJAX to check domain names (modern, ajaxcart, etc.) add the following to the checkavailability() JS function:</p>
+	<pre>jQuery.post("cart.php", {action:"spinner", domain:jQuery("#sld").val() }, function  (data) {
+   			jQuery("#spinner_ajax_results").html(data).slideDown(); 
+   		});
+   	</pre>
+		
+	<p>Also, add the DOM element to append the ajax results to:</p>
+	<pre><?php echo htmlentities('<div id="spinner_ajax_results" style="display:none"></div>')?></pre>
+	<p>And add a link to the CSS file if desired.</p>
+	<pre><?php echo htmlentities('<link rel="stylesheet" href="modules/addons/enom_pro/spinner_style.css" />')?></pre>
+	
+	<?php 
 	if ($enom->status =="Active") {
 	echo '<h2>Addon Registered to:</h2>';
 	if (!empty($enom->name)) echo '<b>Name: '.$enom->name."</b><br/>";
