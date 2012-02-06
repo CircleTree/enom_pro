@@ -1,0 +1,78 @@
+/*+clearfix {*/
+#spinner_ajax_results:after
+{
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+	font-size: 0;
+}
+#spinner_ajax_results
+{
+	display: inline-block;
+}
+#spinner_ajax_results
+{
+/*\*/
+	display: block;
+/**/
+	-height: 1px;
+}
+/*+}*/
+/*[clearfix]*/#spinner_ajax_results
+{
+/*Clearfix the container*/
+}
+#spinner_ajax_results .spin_result
+{
+	width: 30%;
+	/*+placement:float-left 0px 0px;*/
+	float: left;
+	position: relative;
+	left: 0px;
+	top: 0px;
+	margin: 10px;
+	padding-left: 30px;
+}
+#spinner_ajax_results .spin_result.checked
+{
+	background: #C5E38C url(images/green-check.png) no-repeat 8px 50%;
+	padding-bottom: 5px;
+}
+#spinner_ajax_results .spinner_results_wrapper .spin_result LABEL
+{
+	display: block;
+	cursor: hand;
+	cursor: pointer;
+	padding: 5px;
+	margin: 5px;
+}
+#spinner_ajax_results .spinner_results_wrapper .spin_result.checked LABEL
+{
+	border-color: #7AB805;
+}
+#spinner_ajax_results .spin_result SELECT
+{
+	display: none;
+}
+#spinner_ajax_results .spin_result.checked SELECT
+{
+	display: block;
+	/*+placement:shift 5px 0px;*/
+	position: relative;
+	left: 5px;
+	top: 0px;
+}
+#spinner_ajax_results .spinner_results_wrapper .spin_result INPUT
+{
+	/*+placement:float-left -18px 16px;*/
+	float: left;
+	position: relative;
+	left: -18px;
+	top: 16px;
+}
+#spinner_ajax_results .spinner_results_wrapper .spin_result.checked INPUT
+{
+	display: none;
+}
