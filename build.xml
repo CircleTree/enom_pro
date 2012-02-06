@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <project name="ENOM PRO!" default="default">
 	<property name="name" value="eNom PRO"/>
-	<property name="version" value="0.2"/>
-	<property name="build_dir" value="/tmp/build/enom_pro"/>
+	<property name="version" value="0.5"/>
+	<property name="build_dir" value="/tmp/build/enom_pro/"/>
 	<property name="version_xml" value="enom_pro_version.xml"/>
 	<property name="deploy" value="/Users/robertgregor/Sites/whmcs" />
 	<!-- Location to save the encoded version -->
@@ -13,6 +13,9 @@
     <fileset dir="${project.basedir}/src" id="open_files">
         <include name="**/.php" />
         <include name="**/.xml" />
+        <include name="**/.css" />
+        <include name="**/.tpl" />
+        <include name="**/images/**" />
         <include name="README.txt" />
         <include name="EULA.txt" />
         <exclude name="*.svn" />
@@ -75,7 +78,19 @@
         	<fileset refid="encoded" />
         </copy>
     </target>
-	<target name="version">
+	<target name="version" depends="encode">
+        <copy todir="${encoded_prep}">
+        	<filterchain>
+        		<replacetokens>
+        			<token key="SECRET" value="${enc.secret}"/>
+        			<token key="VERSION" value="${version}"/>
+	       			<token key="NAME" value="${name}"/>
+        		</replacetokens>
+        	</filterchain>
+        	<fileset dir="${project.basedir}">
+				<include name="${version_xml}"/>
+        	</fileset>
+        </copy>
 		    <echo msg="Deploying XML to myCircleTree.com"/>
 	    	<ftpdeploy 
 	  				host="mycircletree.com"
@@ -91,10 +106,16 @@
 	  			</fileset>
 	  		</ftpdeploy>
 	    </target>
+	<target name="zip" depends="encode">
+		<zip destfile="enom_pro.zip" basedir="${encoded}"/>
+		<zip destfile="enom_pro_open.zip" basedir="${encoded_prep}"/>
+	</target>
     <target name="default" depends="encode">
     	<echo msg="Creating Zip files from encoded" />
-    	<zip destfile="enom_pro.zip" basedir="${encoded}"/>
-    	<echo msg="Cleaning up this build"/>
-    	<delete dir="${project.basedir}/build/" includeemptydirs="true" failonerror="true"/>
+    	<!--
+    	For some reason, eclipse refreshes & rebuilds the workspace when the zip is created.
+    	@TODO manual build that targets zip, auto build just encodes and deploys to dev
+    	
+    	-->
     </target>
 </project>

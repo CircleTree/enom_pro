@@ -1,5 +1,12 @@
 <?php
+/**
+ * eNom Pro WHMCS Addon
+ * @version @VERSION@ 
+ * Copyright 2012 Orion IP Ventures, LLC.
+ * Licenses Resold by Circle Tree, LLC. Under Reseller Licensing Agreement
+ */
 if (!defined("WHMCS")) die("This file cannot be accessed directly");
+define("ENOM_PRO_VERSION",'@VERSION@');
 function enom_pro_config () {
 	$spinner_help = " <br/><span class=\"textred\" >Make sure your active cart & domain checker templates have {\$namespinner} in them.</span>";
 	$config = array(
@@ -54,21 +61,29 @@ function enom_pro_activate () {
 	mysql_query($query);
 	$query = "INSERT INTO `mod_enom_pro` VALUES(0, '');";
 	mysql_query($query);
-	$query = "
-	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_sortby', 'score');
-	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_sort_order', 'Descending');
-	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_net', 'on');
-	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_com', 'on');
-	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_css', 'on');
-	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_checkout', 'on');
-	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_results', '10');
-	";
+	//Delete the defaults so MySQL doesn't error out on duplicate insert
+	$query = "	DELETE FROM `tbladdonmodules` WHERE `module` = 'enom_pro';";
+	mysql_query($query);
 	//Insert these defaults due to a bug in the WHMCS addon api with checkboxes
+	$query = "
+	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_net', 'on');";
+	mysql_query($query);
+	$query = "
+	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_com', 'on');";
+	mysql_query($query);
+	$query = "
+	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_css', 'on');";
+	mysql_query($query);
+	$query = "
+	INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_checkout', 'on');";
 	mysql_query($query);
 	mysql_query("COMMIT");
+	if (mysql_error()) die (mysql_error());
 }
 function enom_pro_deactivate () {
 	$query = "DROP TABLE `mod_enom_pro";
+	mysql_query($query);
+	$query = "DELETE FROM `tbladdonmodules` WHERE `module` = 'enom_pro'";
 	mysql_query($query);
 }
 
@@ -82,6 +97,7 @@ class enom_pro {
 	private $settings = array();
 	private static $debug;
 	public $error = TRUE;
+	public $latestvesion;
 	public $errorMessage;
 	public $name;
 	public $company;
@@ -117,6 +133,7 @@ class enom_pro {
 			$this->error = FALSE;
 		}
 		$this->errorMessage = $return;
+		//If there was a license error, return, no need to contact eNom API
 		if ( $this->error ) return; 
 		self::$debug = ($this->get_addon_setting("debug") == "on" ? true : false); 
 		//Make sure WHMCS only includes these files if the function we're calling is undefined
@@ -143,15 +160,16 @@ class enom_pro {
 	* @return string of li errors
 	*/
 	private function handleError() {
-		$error = '<div class="errorbox"><h3>Error returned from enom API:</h3>'.PHP_EOL;
+		$error = '<div class="errorbox"><h3>Error from eNom API:</h3>'.PHP_EOL;
 		$errs = $this->xml->ErrCount;
 		$i = 1;
 		while ($errs >= $i) {
 			$string = 'Err'.$i;
 			$error .= '<li>'.$this->xml->errors->$string.'</li>';
 			if(strstr($this->xml->errors->$string, "IP")) {
+				//The most common error message is for a non-whitelisted API IP
 				$error.= "<li>You need to whitelist your IP with enom, here's the link for the <a href\"http://www.enom.com/resellers/ResellerTestAccount.asp\">Test API.</a><br/>
-									For the Live API, you'll need to open a <a href=\"http://www.enom.com/help/default.aspx\">support ticket with enom.</a></li>";
+							For the Live API, you'll need to open a <a href=\"http://www.enom.com/help/default.aspx\">support ticket with enom.</a></li>";
 			}
 			$i++;
 		}
@@ -174,7 +192,17 @@ class enom_pro {
 	function setParams ($params) {
 		$this->parameters = array_merge($this->parameters, $params);
 	}
-
+	/**
+	 * Checks for the latest version of the addon
+	 * @return return false if no update, upgrade string if true
+	 */
+	public function updateAvailable() {
+		//Compare the response from the server to the locally defined version
+		if ($this->latestvesion > ENOM_PRO_VERSION)
+		//The remote is newer than local, return the string upgrade notice 
+			return ' <div class="infobox">eNom Pro Version '.$this->latestvesion.' available. <a target="_blank" href="https://mycircletree.com/client-area/clientarea.php?action=products">Download Now</a>!</div>';
+		else return false;
+	}
 	/**
 	 * Run the cURL call to the eNom API with the given API command
 	 * sets $this->xml to a simplexml object
@@ -487,16 +515,20 @@ class enom_pro {
 		unset($postfields,$data,$matches,$whmcsurl,$licensing_secret_key,$checkdate,$usersip,$localkeydays,$allowcheckfaildays,$md5hash);
 		return $results;
 	}
+	/**
+	 * utility to check local license, latest version, etc.
+	 * @return boolean true for license OK
+	 */
 	function checkLicense () {
 		$query = "SELECT `local` FROM `mod_enom_pro`";
 		$local = mysql_fetch_assoc(mysql_query($query));
 		$localKey = $local['local'];
 		$results = $this->get_remote_license($this->get_addon_setting('license'),$localKey);
+		$this->license = $results;
+		$this->latestvesion = $results['latestversion'];
 		$this->company = $results['companyname'];
 		$this->name = $results['registeredname'];
 		$this->productname = $results['productname'];
-		//TODO DEBUGGING;
-		return true;
 		if ($results["status"]=="Active") {
 			$this->status = "Active";
 		    # Allow Script to Run
@@ -554,13 +586,15 @@ class enom_pro {
 function enom_pro_sidebar () {
 	$sidebar = '<span class="header"><img src="images/icons/domainresolver.png" class="absmiddle" width=16 height=16 />@NAME@ Addon</span>
 	<ul class="menu">
+	<li>Version: '.ENOM_PRO_VERSION.'</li>
 		<li><a href="http://mycircletree.com/" target="_blank">Circle Tree</a></li>
 	</ul>';
 	return $sidebar;
 }
 
 function enom_pro_output ($vars) {
-	$enom = new enom_pro();
+	$enom = new enom_pro();	
+	if ($enom->updateAvailable()) echo $enom->updateAvailable();
 	if ($enom->error) echo $enom->errorMessage;?>
 	<style>
 	pre {
@@ -569,6 +603,13 @@ function enom_pro_output ($vars) {
 	background-color: #DDDDDD;
 	}
 	</style>
+	<h2>Admin Widgets</h2>
+	<p class="textred">
+		Make sure you add the admin roles you want to see the widgets under <a href="configadminroles.php">WHMCS Admin Roles</a>.
+	</p>
+	<h2>Client Area Transfers</h2>
+	<p>You need to install the sample code included inside of enom_pro/templates/default/clientareadomains.tpl in your active WHMCS template for the pending transfers to be displayed.</p>
+	<h2>NameSpinner</h2>
 	<h3>Non-Ajax NameSpinner Template Setup</h3>
 	<p>Include the 
 	<pre>{$namespinner}</pre> 
@@ -593,11 +634,13 @@ function enom_pro_output ($vars) {
 	
 	<?php 
 	if ($enom->status =="Active") {
-	echo '<h2>Addon Registered to:</h2>';
-	if (!empty($enom->name)) echo '<b>Name: '.$enom->name."</b><br/>";
-	if (!empty($enom->company)) echo 'Company: '.$enom->company;		
-	echo '<br/>Thank you for using <a href="http://mycircletree.com/" target="_blank">Circle Tree WHMCS Addons</a>, ';
-	echo '<br/><a href="https://mycircletree.com/client-area/clientarea.php" target="_blank">Click here to visit the Circle Tree Client Area</a>';
-	}	
+		echo '<h2>Addon Registered to:</h2>';
+		if (!empty($enom->name)) echo '<b>Name: '.$enom->name."</b><br/>";
+		if (!empty($enom->company)) echo 'Company: '.$enom->company;		
+		echo '<br/>Thank you for using <a href="http://mycircletree.com/" target="_blank">Circle Tree WHMCS Addons</a>, ';
+		echo '<br/><a href="https://mycircletree.com/client-area/clientarea.php" target="_blank">Click here to visit the Circle Tree Client Area</a>';
+	}
+	//Free up memory
+	unset ($enom);	
 }
 ?>
