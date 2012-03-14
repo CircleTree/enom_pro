@@ -55,8 +55,7 @@ function enom_pro_admin_transfers ($vars) {
 				<tr>
 					<th>Domain</th>
 					<th>WHMCS Domains</th>
-					<th>Resend</th>
-					<th>Statuses</th>
+					<th>Orders</th>
 				</tr>
 				';
 				foreach ($enom->getTransfers() as $domain) {
@@ -71,25 +70,44 @@ function enom_pro_admin_transfers ($vars) {
 						</form>
 					</td>
 					<td>
-						<form method="GET" class="resend_enom_activation" action="'.$_SERVER['PHP_SELF'].'">
-							<input type="hidden" name="action"  value="resend_enom_transfer_email"/>
-							<input type="hidden" name="domain"  value="'.$domain['domain'].'"/>
-							<input type="image" src="images/icons/resendemail.png "class="button" title="Re-Send Transfer Authorization E-Mail"/>
-						</form>
-					</td>
-					<td>
 						<table class="none" width="100%" border="0" cellspacing="0" cellpadding="0">
 						<tr>
 							<td><b>eNom Order ID</b></td>
+							<td><b>Actions</b></td>
 							<td><b>Description</b></td>
 						</tr>
 					';
 							//now we need to loop through the multiple statuses returned for each domain by the enom API
 							foreach ($domain['statuses'] as $status) {
 								$status = (array)$status;
+								//@TODO remove debug
+								echo '<pre>';
+								print_r($status);
+								echo '</pre>';
+								switch ($status['statusid']) {
+									case 22:
+										//Cancelled, domain is locked or not yet 60 days old
+										$action = ' <form method="GET" class="resubmit_enom_transfer ajax_submit" action="'.$_SERVER['PHP_SELF'].'">
+														<input type="hidden" name="action"  value="resubmit_enom_transfer_order"/>
+														<input type="hidden" name="orderid"  value="'.$status['orderid'].'"/>
+														<input type="image" src="images/icons/import.png "class="button" title="Re-Submit Transfer Order"/>
+													</form>';
+										break;
+									case 9:
+										//Awaiting auto-verification of transfer request
+										$action = ' <form method="GET" class="resend_enom_activation ajax_submit" action="'.$_SERVER['PHP_SELF'].'">
+														<input type="hidden" name="action"  value="resend_enom_transfer_email"/>
+														<input type="hidden" name="domain"  value="'.$domain['domain'].'"/>
+														<input type="image" src="images/icons/resendemail.png "class="button" title="Re-Send Transfer Authorization E-Mail"/>
+													</form>';
+									break;
+									default:
+										$action = false;	
+								}
 								$str .= "
 							<tr>
 								<td><a target=\"_blank\" title=\"Order Date: {$status['orderdate']}\" href=\"http://www.enom.com/domains/TransferStatus.asp?transferorderid={$status['orderid']}\">{$status['orderid']}</a></td>
+								<td style=\"text-align:center;\" >".($action ? $action : '<input type="image" src="images/icons/disabled.png "class="button" title="No actions for this order status"/>')."</td>
 								<td>{$status['statusdesc']}</td>
 							</tr>
 								";
@@ -116,6 +134,7 @@ function enom_pro_admin_transfers ($vars) {
 		';
 	
 		//Yes, $.ready is redundant, but since WHMCS doesnt alias $, we use it here for convenience;
+		//@TODO fix ajax callbacks
 		$jquerycode = '
 		jQuery(document).ready(function($){
 		$("#refreshEnomTransfers").live("submit", function  () {
@@ -127,15 +146,16 @@ function enom_pro_admin_transfers ($vars) {
 			    });
 			    return false;
 		}).trigger("submit");
-		$(".resend_enom_activation").live("submit", function  () {
-		var $submit = $(this).find("input[type=submit]");
-		$("#activation_loading").remove(); 
-		$submit.attr("disabled","disabled");
-		$(this).append("<div id=\"activation_loading\">'.addslashes($vars['loading']).'</div>");
+		
+		$(".ajax_submit").live("submit", function  () {
+			var $submit = $(this).find("input[type=submit]");
+			$(".activation_loading", $(this)).remove(); 
+			$submit.attr("disabled","disabled");
+			$(this).append("<div class=\"activation_loading\">'.addslashes($vars['loading']).'</div>");
 			$.ajax({
 				data: $(this).serialize(),
 				success: function  (response) {
-					$("#activation_loading").html(response);
+					$(".activation_loading", $(this)).html(response);
 					$submit.removeAttr("disabled"); 
 				}
 			});
@@ -146,17 +166,45 @@ function enom_pro_admin_transfers ($vars) {
 }
 add_hook("AdminHomeWidgets",1,"enom_pro_admin_transfers");
 /**
- * Admin Page for API Hooks
+ * Admin Page Action API Hooks
  */
 function enom_pro_admin_page () {
+	//TODO Only load this hook if an ajax request is being run
+// 	if (!isset($_REQUEST['action'])) return;
+	//Include our class if needed
 	if (!class_exists('enom_pro')) require_once 'enom_pro.php';
+	//Instantiate an object
 	$enom = new enom_pro();
-	if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'resend_enom_transfer_email') {
+	//TODO debugging;
+	echo '<pre>';
+	//Debugging harness for testing multiple transfer orders for one domain
+	print_r($enom->getTransfers());
+	$enom->setParams(array('TransferOrderID'=>175624106));
+	$enom->runTransaction('TP_GetOrder');
+	print_r($enom);
+	$enom->setParams(array('TransferOrderID'=>175624109));
+	$enom->runTransaction('TP_GetOrder');
+	print_r($enom);
+	echo '</pre>';
+	die();
+	if ($_REQUEST['action'] == 'resend_enom_transfer_email') {
 		$response = $enom->resend_activation((string)$_REQUEST['domain']);
 		if (is_bool($response)) {
 			echo "Sent!";
 		} else {
-			echo (strip_tags($response));
+			if (!$enom->debug())
+				echo (strip_tags($response));
+		}
+		die();
+	}
+	if ($_REQUEST['action'] == 'resubmit_enom_transfer_order') {
+		$response = $enom->resubmit_locked((int)$_REQUEST['orderid']);
+		if (is_bool($response)) {
+			echo "Submitted!";
+		} else {
+			if (!$enom->debug())
+				//Check if verbose debugging is enabled, if it is, the above method call will echo an error.
+				echo (strip_tags($response));
 		}
 		die();
 	}
