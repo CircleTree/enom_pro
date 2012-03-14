@@ -38,19 +38,7 @@ function enom_pro_config () {
 	);
 	return $config;
 }
-/*
- * valid values are 'score','domain'
- * $params = array(
-			'SensitiveContent'=>'True',//string!
-			'UseHyphens'=>'True',//String!
-			'UseNumbers'=>'True',//another STRING!
-			//The following valid values are: Off, Low, Medium, High
-			'Basic'=>'Medium',//Higher values return suggestions that are built by adding prefixes, suffixes, and words to the original input.
-			'Related'=>'High',//Higher values return domain names by interpreting the input semantically and construct suggestions with a similar meaning. Related=High will find terms that are synonyms of your input.
-			'Similar'=>'Medium',//Higher values return suggestions that are similar to the customerÕs input, but not necessarily in meaning. Similar=High will generate more creative terms, with a slightly looser relationship to your input, than Related=High.
-			'Topical'=>'High' //Higher values return suggestions that reflect current topics and popular words
-		);
- */
+
 function enom_pro_activate () {
 	mysql_query("BEGIN");
 	$query = "CREATE TABLE `mod_enom_pro` (
@@ -168,8 +156,8 @@ class enom_pro {
 			$error .= '<li>'.$this->xml->errors->$string.'</li>';
 			if(strstr($this->xml->errors->$string, "IP")) {
 				//The most common error message is for a non-whitelisted API IP
-				$error.= "<li>You need to whitelist your IP with enom, here's the link for the <a href\"http://www.enom.com/resellers/ResellerTestAccount.asp\">Test API.</a><br/>
-							For the Live API, you'll need to open a <a href=\"http://www.enom.com/help/default.aspx\">support ticket with enom.</a></li>";
+				$error.= "<li>You need to whitelist your IP with enom, here's the link for the <a target=\"_blank\" href=\"http://www.enom.com/resellers/ResellerTestAccount.asp\">Test API.</a><br/>
+							For the Live API, you'll need to open a <a target=\"_blank\" href=\"http://www.enom.com/help/default.aspx\">support ticket with enom.</a></li>";
 			}
 			$i++;
 		}
@@ -204,6 +192,22 @@ class enom_pro {
 		else return false;
 	}
 	/**
+	 * Resubmit a locked transfer order, or a domain that was less than 60 days old
+	 * @param int $orderid for the order. API used to get "TransferOrderDetailID"
+	 */
+	public function resubmit_locked ($orderid) {
+		$this->setParams(array('TransferOrderDetailID'=>$this->get_transfer_order_detail_id($orderid)));
+		$this->runTransaction('TP_ResubmitLocked');
+		if ( $this->error ) {
+			return strip_tags($this->errorMessage);
+		} else return true;
+	}
+	private function get_transfer_order_detail_id($orderid) {
+		$this->setParams(array('TransferOrderID'=>$orderid));
+		$this->runTransaction('TP_GetOrder');
+		return (int)$this->xml->transferorder->transferorderdetail->transferorderdetailid;
+	}
+	/**
 	 * Run the cURL call to the eNom API with the given API command
 	 * sets $this->xml to a simplexml object
 	 * @param string $command the API command to run
@@ -213,7 +217,9 @@ class enom_pro {
 	public function runTransaction ($command) {
 		//Set the command
 		$this->parameters['command'] = $command;
+		//Cache the cURL response
 		$this->response = $this->curl_get($this->URL,$this->parameters);
+		//Use simpleXML to parse the XML string
 		$this->xml = simplexml_load_string($this->response,'SimpleXMLElement',LIBXML_NOCDATA);
 		if ( $this->xml) {
 			if ($this->xml->Done) {
@@ -236,7 +242,10 @@ class enom_pro {
 			}
 		} else {
 			//Error out if the XML transaction wasn't receieved.
-			if (self::$debug) die('There was an error loading the XML response from the eNom API via cURL. Check your firewall settings.');
+			if (self::$debug) {
+				$this->error = true;
+				$this->errorMessage = '<div class="errorbox">There was an error loading the XML response from the eNom API via cURL. Check your firewall settings.</div>'; 
+			}
 		}
 	}
 	/**
@@ -552,6 +561,11 @@ class enom_pro {
 		}
 	}
 	public function curl_get($url, array $get = NULL, array $options = array()) {
+		if (!function_exists('curl_init')) {
+			$this->error = true;
+			$this->errorMessage = '<div class="errorbox">cURL is Required for the eNom PRO modules</div>';
+			return;
+		}
 		$defaults = array(
 		CURLOPT_URL => $url. (strpos($url, '?') === FALSE ? '?' : ''). http_build_query($get),
 		CURLOPT_HEADER => 0,
@@ -574,10 +588,11 @@ class enom_pro {
 	function get_addon_setting ($setting) {
 		//Check to see if this value is already cached
 		if (in_array($setting, $this->settings)) return $this->settings[$setting];
-		$this->settings;
+
 		$query = "SELECT `value` FROM `tbladdonmodules` WHERE `module`='enom_pro' AND `setting`='".$setting."';";
 		$result = mysql_fetch_assoc(mysql_query($query));
 		$return = $result['value'];
+		
 		//Set the value in the cache
 		$this->settings[$setting] = $return;
 		return $return;
