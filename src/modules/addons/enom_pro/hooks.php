@@ -62,7 +62,7 @@ function enom_pro_admin_transfers ($vars) {
 					//Loop through the actual domains returned from WHMCS
 					$str .= '<tr>
 					<td> <a target="_blank" title="View WHOIS" href="http://www.whois.net/whois/'.$domain['domain'].'">'.$domain['domain'].'</td>
-					<td>
+					<td style="text-align:center;">
 						<form method="GET" action="clientsdomains.php">
 							<input type="hidden" name="userid"  value="'.$domain['userid'].'"/>
 							<input type="hidden" name="id"  value="'.$domain['id'].'"/>
@@ -74,16 +74,13 @@ function enom_pro_admin_transfers ($vars) {
 						<tr>
 							<td><b>eNom Order ID</b></td>
 							<td><b>Actions</b></td>
-							<td><b>Description</b></td>
+							<td style="text-align:center;"><b>Description</b></td>
 						</tr>
 					';
 							//now we need to loop through the multiple statuses returned for each domain by the enom API
 							foreach ($domain['statuses'] as $status) {
 								$status = (array)$status;
-								//@TODO remove debug
-								echo '<pre>';
-								print_r($status);
-								echo '</pre>';
+								echo $status['statusid'];
 								switch ($status['statusid']) {
 									case 22:
 										//Cancelled, domain is locked or not yet 60 days old
@@ -94,6 +91,7 @@ function enom_pro_admin_transfers ($vars) {
 													</form>';
 										break;
 									case 9:
+									case 11:
 										//Awaiting auto-verification of transfer request
 										$action = ' <form method="GET" class="resend_enom_activation ajax_submit" action="'.$_SERVER['PHP_SELF'].'">
 														<input type="hidden" name="action"  value="resend_enom_transfer_email"/>
@@ -134,7 +132,6 @@ function enom_pro_admin_transfers ($vars) {
 		';
 	
 		//Yes, $.ready is redundant, but since WHMCS doesnt alias $, we use it here for convenience;
-		//@TODO fix ajax callbacks
 		$jquerycode = '
 		jQuery(document).ready(function($){
 		$("#refreshEnomTransfers").live("submit", function  () {
@@ -148,14 +145,15 @@ function enom_pro_admin_transfers ($vars) {
 		}).trigger("submit");
 		
 		$(".ajax_submit").live("submit", function  () {
-			var $submit = $(this).find("input[type=submit]");
-			$(".activation_loading", $(this)).remove(); 
+			var $this = $(this),
+				$submit = $this.find("input[type=submit]");
+			$(".activation_loading", $this).remove(); 
 			$submit.attr("disabled","disabled");
-			$(this).append("<div class=\"activation_loading\">'.addslashes($vars['loading']).'</div>");
+			$this.append("<div class=\"activation_loading\">'.addslashes($vars['loading']).'</div>");
 			$.ajax({
-				data: $(this).serialize(),
+				data: $this.serialize(),
 				success: function  (response) {
-					$(".activation_loading", $(this)).html(response);
+					$(".activation_loading", $this).html(response);
 					$submit.removeAttr("disabled"); 
 				}
 			});
@@ -169,30 +167,19 @@ add_hook("AdminHomeWidgets",1,"enom_pro_admin_transfers");
  * Admin Page Action API Hooks
  */
 function enom_pro_admin_page () {
-	//TODO Only load this hook if an ajax request is being run
-// 	if (!isset($_REQUEST['action'])) return;
+	//Only load this hook if an ajax request is being run
+	if (!isset($_REQUEST['action'])) return;
 	//Include our class if needed
 	if (!class_exists('enom_pro')) require_once 'enom_pro.php';
 	//Instantiate an object
 	$enom = new enom_pro();
-	//TODO debugging;
-	echo '<pre>';
-	//Debugging harness for testing multiple transfer orders for one domain
-	print_r($enom->getTransfers());
-	$enom->setParams(array('TransferOrderID'=>175624106));
-	$enom->runTransaction('TP_GetOrder');
-	print_r($enom);
-	$enom->setParams(array('TransferOrderID'=>175624109));
-	$enom->runTransaction('TP_GetOrder');
-	print_r($enom);
-	echo '</pre>';
-	die();
 	if ($_REQUEST['action'] == 'resend_enom_transfer_email') {
 		$response = $enom->resend_activation((string)$_REQUEST['domain']);
 		if (is_bool($response)) {
 			echo "Sent!";
 		} else {
 			if (!$enom->debug())
+				//Check if verbose debugging is enabled, if it is, the above method call will echo an error.
 				echo (strip_tags($response));
 		}
 		die();

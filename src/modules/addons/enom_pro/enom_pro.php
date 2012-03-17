@@ -10,7 +10,7 @@ define("ENOM_PRO_VERSION",'@VERSION@');
 function enom_pro_config () {
 	$spinner_help = " <br/><span class=\"textred\" >Make sure your active cart & domain checker templates have {\$namespinner} in them.</span>";
 	$config = array(
-		'name'=>'@NAME@ Addon Module',
+		'name'=>'@NAME@',
 		'version'=>'@VERSION@',
 		'author'=>'<a href="http://orionipventures.com/">Orion IP Ventures, LLC.</a>',
 		'description'=>'Shows eNom Balance and active Transfers on the admin homepage in widgets. Adds a clientarea page that displays active transfers to clients.',
@@ -636,15 +636,28 @@ function enom_pro_output ($vars) {
 	{/if}
 	</pre> section of the template. The place you put the code is where the domain spinner suggestions will appear.</p>
 	<h3>Ajax Cart Namespinner Setup</h3>
-	<p>On the cart templates that use AJAX to check domain names (modern, ajaxcart, etc.) add the following to the checkavailability() JS function:</p>
-	<pre>jQuery.post("cart.php", {action:"spinner", domain:jQuery("#sld").val() }, function  (data) {
-   			jQuery("#spinner_ajax_results").html(data).slideDown(); 
+	<p>Find out which order form template you're using by going to WHMCS -> general options -> Ordering. <br/>
+	Now, edit the whmcs/templates/orderforms/{your order form}/adddomain.tpl. Look for the checkavailability() JS function.<br/>
+	Add the below code inside of the <?php echo htmlentities('<script>jQuery...</script>')?> tag.
+	</p>
+	<pre>
+	jQuery(function($) {
+	$.post("cart.php", {action:"spinner", domain:jQuery("#sld").val() }, function  (data) {
+   			$("#spinner_ajax_results").html(data).slideDown(); 
    		});
+	$("#spinner_ajax_results INPUT").live("click", function  () {
+		var $elem = $(this);
+		if ($elem.is(":checked")) {
+			$elem.parent("div").addClass("checked")
+		} else {
+			$elem.parent("div").removeClass("checked")
+		}
+	})
+	})	
    	</pre>
-		
-	<p>Also, add the DOM element to append the ajax results to:</p>
+	<p>Next, add the results div in the template at the place where you want the results to appear:</p>
 	<pre><?php echo htmlentities('<div id="spinner_ajax_results" style="display:none"></div>')?></pre>
-	<p>And add a link to the CSS file if desired.</p>
+	<p>Finally, add a link to the CSS file if desired.</p>
 	<pre><?php echo htmlentities('<link rel="stylesheet" href="modules/addons/enom_pro/spinner_style.css" />')?></pre>
 	
 	<?php 
