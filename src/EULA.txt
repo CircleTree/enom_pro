@@ -18,7 +18,7 @@ THE SOFTWARE.
 
 (a) 'ORION IP VENTURES, LLC' means ORION IP VENTURES, LLC and its licensors, if any. 
 
-(b) 'Software' means the PROJECT HUB software program and any
+(b) 'Software' means this software program and any
 third party software programs contained therein, in each case supplied by
 ORION IP VENTURES, LLC herewith, and corresponding documentation, associated
 media, printed materials, and online or electronic documentation, and all updates
