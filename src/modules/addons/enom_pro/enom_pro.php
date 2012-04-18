@@ -293,6 +293,7 @@ class enom_pro {
 			//Reset transferorder index
 			$to=0;
 			foreach ($this->xml->TransferOrder as $order) {
+				if ($order->statusid == 14) $order->statusdesc = 'Transfer Pending - Awaiting Release by Current Registrar';
 				$transfers[$i]['statuses'][$to] = $order;
 				$to++;
 			}

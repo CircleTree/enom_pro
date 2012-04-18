@@ -80,7 +80,6 @@ function enom_pro_admin_transfers ($vars) {
 							//now we need to loop through the multiple statuses returned for each domain by the enom API
 							foreach ($domain['statuses'] as $status) {
 								$status = (array)$status;
-								echo $status['statusid'];
 								switch ($status['statusid']) {
 									case 22:
 										//Cancelled, domain is locked or not yet 60 days old
