@@ -1,13 +1,14 @@
 <?xml version="1.0"?>
-<project name="ENOM PRO!" default="default">
+<project name="ENOM PRO!" default="deploy">
 	<property name="name" value="eNom PRO"/>
-	<property name="version" value="0.5"/>
+	<property name="version" value="1.0"/>
 	<property name="build_dir" value="/tmp/build/enom_pro/"/>
 	<property name="version_xml" value="enom_pro_version.xml"/>
 	<property name="deploy" value="/Users/robertgregor/Sites/whmcs" />
 	<!-- Location to save the encoded version -->
 	<property name="encoded" value="${build_dir}/encoded"/>
 	<property name="encoded_prep" value="${build_dir}/encoded_prep"/>
+	<property name="ftp.password" value="vRki3ozG08Tt"/>
 	<property name="enc.secret" value="***REMOVED***"/><!-- Secret -->
     <!-- FILESETS -->
     <fileset dir="${project.basedir}/src" id="open_files">
@@ -28,9 +29,9 @@
         <exclude name="${version_xml}"/>
     	<include name="**/**" />
     </fileset>
-    <target name="encode">
+    <target name="deploy">
     	<echo msg="Cleaning up any failed builds"/>
-    	<delete dir="${build_dir}" includeemptydirs="true" failonerror="true"/>
+    	<delete dir="${build_dir}" includeemptydirs="true" failonerror="false"/>
    		<mkdir dir="${build_dir}" />
    		<mkdir dir="${encoded}" />
     	<echo msg="Copying files from src to encoded_prep &amp; replacing tokens"/>
@@ -47,7 +48,7 @@
         <ioncubeencoder obfuscate="linenos" optimize="max" ioncubepath="/Users/robertgregor/" targetoption="replace" fromdir="${encoded_prep}" todir="${encoded}">
     			<comment>*************************************************************************</comment>
 				<comment>* enom PRO Addon for WHMCS                                              *</comment>
-				<comment>* Copyright (c) 2001-2011 Orion IP Ventures, LLC. All Rights Reserved   *</comment>
+				<comment>* Copyright (c) 2001-2012 Orion IP Ventures, LLC. All Rights Reserved   *</comment>
 				<comment>*************************************************************************</comment>
 				<comment>* Licenses Resold and Supported by Circle Tree, LLC                     *</comment>
 				<comment>* For More Information on Becoming an Orion IP Authorized Reseller      *</comment>
@@ -78,7 +79,7 @@
         	<fileset refid="encoded" />
         </copy>
     </target>
-	<target name="version" depends="encode">
+	<target name="release" depends="zip">
         <copy todir="${encoded_prep}">
         	<filterchain>
         		<replacetokens>
@@ -96,7 +97,7 @@
 	  				host="mycircletree.com"
 	  				port="21"
 			  		username="mycircle"
-					password="vRki3ozG08Tt" 
+					password="${ftp.password}" 
 					dir="/public_html/versions/"
 					passive="false"
 					level="debug"
@@ -105,17 +106,25 @@
 	  				<include name="${version_xml}"/>
 	  			</fileset>
 	  		</ftpdeploy>
-	    </target>
-	<target name="zip" depends="encode">
+			<echo msg="Deploying zipfiles to myCircleTree.com"/>
+		    	<ftpdeploy 
+		  				host="mycircletree.com"
+		  				port="21"
+				  		username="mycircle"
+						password="${ftp.password}" 
+						dir="/downloads/"
+						passive="false"
+						level="debug"
+						mode="binary">				
+		  			<fileset dir=".">
+						<include name="enom_pro.zip"/>
+						<include name="enom_pro_open.zip"/>
+		  			</fileset>
+		  		</ftpdeploy>
+    </target>
+	<target name="zip" depends="deploy">
+    	<echo msg="Creating Zip files from encoded &amp; encoded_prep" />
 		<zip destfile="enom_pro.zip" basedir="${encoded}"/>
 		<zip destfile="enom_pro_open.zip" basedir="${encoded_prep}"/>
 	</target>
-    <target name="default" depends="encode">
-    	<echo msg="Creating Zip files from encoded" />
-    	<!--
-    	For some reason, eclipse refreshes & rebuilds the workspace when the zip is created.
-    	@TODO manual build that targets zip, auto build just encodes and deploys to dev
-    	
-    	-->
-    </target>
 </project>
