@@ -45,6 +45,127 @@ function enom_pro_admin_balance ($vars) {
 }
 add_hook("AdminHomeWidgets",1,"enom_pro_admin_balance");
 
+function enom_pro_admin_ssl_certs ($vars) {
+	if (!class_exists('enom_pro')) require_once 'enom_pro.php';
+	$enom = new enom_pro();
+	if ($_REQUEST['checkenomssl']) {
+		if (!$enom->error) {
+			$str .= '<div class="contentbox">';
+			$expiring_certs = $enom->getExpiringCerts();
+			if (count($expiring_certs) > 0 ) {
+				$str .= ' <table class="datatable" width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+				<th>Domain</th>
+				<th>Status</th>
+				<th>Product</th>
+				<th>Expiration Date</th>
+				</tr>
+				';
+				foreach ($expiring_certs as $cert) {
+					$str .= '<tr>
+					<td> ';
+					if (count($cert['domain']) > 0) 
+						$str .= rtrim(implode(', ', array_values($cert['domain'])), ', ');
+					else 
+						$str .= 'Not Issued';
+					$str .='</td>
+					<td style="text-align:center;"><a href="http://www.enom.com/secure/configure-ssl-certificate.aspx?certid='.$cert['OrderID'].'" target="_blank" >'.$cert['status'].'</a></td>
+					<td style="text-align:center;">'.$cert['desc'].'</td>
+					<td style="text-align:center;">'.$cert['expiration_date'].'</td>
+					';
+				}
+			} else {
+				//No expiring certs
+				$str .= '<div class="contentbox green">Phew! No Certificates Expiring in the next '.$enom->get_addon_setting('ssl_days').' days.</div>';
+			}
+			$str .= "</div>";
+			$content = $str;
+		} else {
+			$content = $enom->errorMessage;
+		}
+		echo $content;
+		exit;
+	}
+	$content = '<div id="enomSSL">'.$vars['loading'].'</div>
+	<form id="refreshEnomSSL" action="'.$_SERVER['PHP_SELF'].'">
+		<input type="hidden" name="checkenomssl" value="1" />
+		<input type="submit" value="Refresh"/>
+	</form>
+	';
+	$jquerycode = '
+	jQuery("#refreshEnomSSL").live("submit", function  () {
+	var $elem = jQuery("#enomSSL");
+	$elem.html("'.addslashes($vars['loading']).'");
+	jQuery.post("index.php", $(this).serialize(),
+	function(data){
+	$elem.html(data);
+});
+return false;
+}).trigger("submit");
+';
+	return array(
+			'title'=>'eNom PRO - SSL Certificates <img src="images/icons/securityquestions.png" align="absmiddle" height="16px" width="16px" border="0">','content'=>$content,'jquerycode'=>$jquerycode);
+}
+add_hook("AdminHomeWidgets",1,"enom_pro_admin_ssl_certs");
+
+function enom_pro_admin_expiring_domains ($vars) {
+	if (!class_exists('enom_pro')) require_once 'enom_pro.php';
+	$enom = new enom_pro();
+	if ($_REQUEST['checkexpiring']) {
+		if (!$enom->error) {
+			$stats = $enom->getAccountStats();
+			$str .= '<div class="contentbox">';
+			$str .= '<table width="100%"><tbody>
+					<tr>
+						<td class="sysoverviewstat"><div class="sysoverviewbox green"><a href="http://www.enom.com/domains/Domain-Manager.aspx" target="_blank">'.$stats['registered'].'</a></div></td>
+						<td class="sysoverviewlabel">Registered Domains</td>
+					</tr>
+					<tr>
+					<td class="sysoverviewstat"><div class="sysoverviewbox gold"><a href="http://www.enom.com/domains/Domain-Manager.aspx?tab=expiring" target="_blank" >'.$stats['expiring'].'</a></div></td>
+					<td class="sysoverviewlabel">Expiring Domains</td>
+					</tr>
+					<tr>
+					<td class="sysoverviewstat"><div class="sysoverviewbox red"><a href="http://www.enom.com/domains/Domain-Manager.aspx?tab=expired" target="_blank" >'.$stats['expired'].'</a></div></td>
+					<td class="sysoverviewlabel">Expired Domains</td>
+					</tr>
+					<tr>
+					<td class="sysoverviewstat"><div class="sysoverviewbox"><a href="http://www.enom.com/domains/Domain-Manager.aspx?tab=redemption" target="_blank" >'.$stats['redemption'].'</a></div></td>
+					<td class="sysoverviewlabel">Redemption Period</td>
+					</tr>
+					<tr>
+					<td class="sysoverviewstat"><div class="sysoverviewbox"><a href="http://www.enom.com/domains/Domain-Manager.aspx?tab=redemption" target="_blank" >'.$stats['ext_redemption'].'</a></div></td>
+					<td class="sysoverviewlabel">Extended Redemption Period</td>
+					</tr>
+			</tbody></table>';
+			$content = $str;
+		} else {
+			$content = $enom->errorMessage;
+		}
+		echo $content;
+		exit;
+	}
+	$content = '<div id="enomExpiring">'.$vars['loading'].'</div>
+	<form id="refreshExpiring" action="'.$_SERVER['PHP_SELF'].'">
+		<input type="hidden" name="checkexpiring" value="1" />
+		<input type="submit" class="btn" value="Refresh"/>
+	</form>
+	';
+	$jquerycode = '
+	jQuery("#refreshExpiring").live("submit", function  () {
+	var $elem = jQuery("#enomExpiring");
+	$elem.html("'.addslashes($vars['loading']).'");
+	jQuery.post("index.php", $(this).serialize(),
+	function(data){
+	$elem.html(data);
+});
+return false;
+}).trigger("submit");
+';
+	return array(
+			'title'=>'eNom PRO - Domain Stats <img src="images/icons/domains.png" align="absmiddle" height="16px" width="16px" border="0">','content'=>$content,'jquerycode'=>$jquerycode);
+}
+add_hook("AdminHomeWidgets",1,"enom_pro_admin_expiring_domains");
+
 function enom_pro_admin_transfers ($vars) {
 	if (!class_exists('enom_pro')) require_once 'enom_pro.php';
 		if ($_REQUEST['checkenomtransfers']) {
@@ -61,7 +182,9 @@ function enom_pro_admin_transfers ($vars) {
 				foreach ($enom->getTransfers() as $domain) {
 					//Loop through the actual domains returned from WHMCS
 					$str .= '<tr>
-					<td> <a target="_blank" title="View WHOIS" href="http://www.whois.net/whois/'.$domain['domain'].'">'.$domain['domain'].'</td>
+					<td>
+						<a style="display:inline-block;width:150px;overflow:scroll;padding:0 5px 0;" target="_blank" title="View WHOIS" href="http://www.whois.net/whois/'.$domain['domain'].'">'.$domain['domain'].'
+					</td>
 					<td style="text-align:center;">
 						<form method="GET" action="clientsdomains.php">
 							<input type="hidden" name="userid"  value="'.$domain['userid'].'"/>
@@ -124,7 +247,7 @@ function enom_pro_admin_transfers ($vars) {
 			exit;
 		}
 		$content = '<div id="enomtransfers">'.$vars['loading'].'</div>
-			<form id="refreshEnomTransfers"action="'.$_SERVER['PHP_SELF'].'">
+			<form id="refreshEnomTransfers" action="'.$_SERVER['PHP_SELF'].'">
 				<input type="hidden" name="checkenomtransfers" value="1" />
 				<input type="submit" value="Refresh"/>
 			</form>
@@ -311,11 +434,11 @@ function enom_pro_namespinner () {
 add_hook("ClientAreaPage",1,"enom_pro_namespinner");
 function enom_pro_clientarea_transfers () {
 	global $smarty;
-	if (!class_exists('enom_pro')) require_once 'enom_pro.php';
+	if (! class_exists('enom_pro') ) require_once 'enom_pro.php';
 	$enom = new enom_pro();
 	if ($enom->checkLicense()) {
 		//Prep the userid of currently logged in account
-		$uid = isset($_SESSION['uid']) ? $_SESSION['uid'] : 0; //Set this to 0 for security to return no results if the WHMCS uid is not set in the session
+		$uid = isset($_SESSION['uid']) ? (int)$_SESSION['uid'] : 0; //Set this to 0 for security to return no results if the WHMCS uid is not set in the session
 		//Prepare the query to check if the current user has any pending enom transfers
 		$query = "SELECT `userid`,`type`,`domain`,`status` FROM `tbldomains` WHERE `registrar`='enom' AND `status`='Pending Transfer' AND `userid`=".$uid;
 		$result = mysql_query($query);

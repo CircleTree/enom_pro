@@ -16,6 +16,7 @@ function enom_pro_config () {
 		'description'=>'Shows eNom Balance and active Transfers on the admin homepage in widgets. Adds a clientarea page that displays active transfers to clients.',
 		'fields'=>array(
 			'license'=>array('FriendlyName'=>"License Key","Type"=>"text","Size"=>"30"),
+			'ssl_days'=>array('FriendlyName'=>"Expiring SSL Days","Type"=>"dropdown","Options"=>"7,15,30,60,90,180,365,730","Default"=>"30","Description"=>"Number of days until SSL Certificate Expiration to show in Widget"),
 			'debug'=>array('FriendlyName'=>"Debug Mode","Type"=>"yesno","Description"=>"Enable debug messages on frontend. Used for troubleshooting the namespinner, for example."),
 			'spinner_results'=>array('FriendlyName'=>"Namespinner Results","Type"=>"text","Default"=>10,"Description"=>"Max Number of namspinner results to show".$spinner_help,'Size'=>10),
 			'spinner_sortby'=>array('FriendlyName'=>"Sort Results","Type"=>"dropdown","Options"=>"score,domain","Default"=>"score","Description"=>"Sort namspinner results by score or domain name"),
@@ -301,6 +302,40 @@ class enom_pro {
 		}
 		return $transfers;
 	}
+	/**
+	 * returns array with # domains: registered,expiring,expired,redemption, ext redemptioon
+	 */
+	public function getAccountStats () {
+		$this->runTransaction('GetDomainCount');
+		$response = array(
+				'registered' => (int) $this->xml->RegisteredCount,
+				'expiring' => (int) $this->xml->ExpiringCount,
+				'expired' => (int) $this->xml->ExpiredDomainsCount,
+				'redemption' => (int) $this->xml->RGP,
+				'ext_redemption' => (int) $this->xml->ExtendedRGP,
+				);
+		return $response;
+	}
+	public function getExpiringCerts () {
+		$this->runTransaction('CertGetCerts');
+		$return = array();
+		$days = $this->get_addon_setting('ssl_days');
+		foreach ($this->xml->CertGetCerts->Certs->Cert as $cert) {
+			$expiring_timestamp = strtotime($cert->ExpirationDate);
+			$expiry_filter = (time() + ($days * 60 * 60 * 24));
+			if ($expiring_timestamp < $expiry_filter) {
+				$formatted_result = array(
+						'domain'=> (array) $cert->DomainName,
+						'status'=> (string) $cert->CertStatus,
+						'expiration_date' => (string) $cert->ExpirationDate,
+						'OrderID' => (int) $cert->OrderID,
+						'desc' => (string) $cert->ProdDesc,
+						);
+				$return[] = $formatted_result; 
+			}
+		}
+		return $return;
+	}
 	public function getSpinner ($domain) {
 		$this->setDomain($domain);
 		$params = array(
@@ -400,12 +435,12 @@ class enom_pro {
 	}
 	private function get_remote_license($licensekey,$localkey="") {
 		$whmcsurl = "http://mycircletree.com/client-area/";
-		$licensing_secret_key = "@SECRET@"; # Unique value, should match what is set in the product configuration for MD5 Hash Verification
+		$licensing_secret_key = "@SECRET@"; 
 		$check_token = time().md5(mt_rand(1000000000,9999999999).$licensekey);
 		$checkdate = date("Ymd"); # Current date
 		$usersip = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : $_SERVER['LOCAL_ADDR'];
-		$localkeydays = 14; # How long the local key is valid for in between remote checks
-		$allowcheckfaildays = 3; # How many days to allow after local key expiry before blocking access if connection cannot be made
+		$localkeydays = 28; # How long the local key is valid for in between remote checks
+		$allowcheckfaildays = 7; # How many days to allow after local key expiry before blocking access if connection cannot be made
 		$localkeyvalid = false;
 		if ($localkey) {
 			$localkey = str_replace("\n",'',$localkey); # Remove the line breaks
@@ -593,7 +628,7 @@ class enom_pro {
 		$query = "SELECT `value` FROM `tbladdonmodules` WHERE `module`='enom_pro' AND `setting`='".$setting."';";
 		$result = mysql_fetch_assoc(mysql_query($query));
 		$return = $result['value'];
-		
+		if ($setting == 'ssl_days' && empty($return)) $return = 30;
 		//Set the value in the cache
 		$this->settings[$setting] = $return;
 		return $return;
