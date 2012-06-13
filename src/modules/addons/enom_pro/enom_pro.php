@@ -634,10 +634,15 @@ class enom_pro {
 		return $return;
 	}
 }//End eNom PRO Class 
-function enom_pro_sidebar () {
+function enom_pro_sidebar ($vars) {
 	$sidebar = '<span class="header"><img src="images/icons/domainresolver.png" class="absmiddle" width=16 height=16 />@NAME@ Addon</span>
 	<ul class="menu">
-	<li>Version: '.ENOM_PRO_VERSION.'</li>
+		<li>
+			<a href="'.$vars['modulelink'].'">Version: '.ENOM_PRO_VERSION.'</a>
+		</li>
+		<li>
+			<a href="http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43" target="_blank" >View Changelog</a></li>
+		</li>
 		<li><a href="http://mycircletree.com/" target="_blank">Circle Tree</a></li>
 	</ul>';
 	return $sidebar;
@@ -654,23 +659,28 @@ function enom_pro_output ($vars) {
 	background-color: #DDDDDD;
 	}
 	</style>
-	<h2>Admin Widgets</h2>
+	<h2>Where do I enter my eNom API info?</h2>
+	<p>eNom PRO gets the registrar info directly from whmcs. To change your registrar info, <a href="configregistrars.php">click here.</a></p>
+	<h2>No Admin Widgets?</h2>
 	<p class="textred">
 		Make sure you add the admin roles you want to see the widgets under <a href="configadminroles.php">WHMCS Admin Roles</a>.
 	</p>
 	<h2>Client Area Transfers</h2>
 	<p>You need to install the sample code included inside of enom_pro/templates/default/clientareadomains.tpl in your active WHMCS template for the pending transfers to be displayed.</p>
 	<h2>NameSpinner</h2>
+	<p>See the included domainchecker.tpl template for a working example.</p>
 	<h3>Non-Ajax NameSpinner Template Setup</h3>
 	<p>Include the 
 	<pre>{$namespinner}</pre> 
 	template tag in your domain (domainchecker.tpl) and shopping cart template files to include the enom name spinner!. 
-	Make sure you put it inside of the 
+	<b>Make sure you put it in the template as follows:</b> 
 	<pre>
 	{if $availabilityresults} 
-		{$namespinner}
+		<?php echo htmlentities('<form>').PHP_EOL;?>
+			{$namespinner}
+		<?php echo htmlentities('</form>').PHP_EOL;?>
 	{/if}
-	</pre> section of the template. The place you put the code is where the domain spinner suggestions will appear.</p>
+	</pre> The place you put the code is where the domain spinner suggestions will appear. See the included domainchecker.tpl for an example</p>
 	<h3>Ajax Cart Namespinner Setup</h3>
 	<p>Find out which order form template you're using by going to WHMCS -> general options -> Ordering. <br/>
 	Now, edit the whmcs/templates/orderforms/{your order form}/adddomain.tpl. Look for the checkavailability() JS function.<br/>
