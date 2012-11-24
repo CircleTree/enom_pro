@@ -413,6 +413,7 @@ function enom_pro_namespinner () {
 	} else {
 		$domain = $_REQUEST['domain'];
 	}
+	$domain = addslashes($domain);
 	$spinnercode .= '
 	jQuery(function($) {
 		$.post("'.$_SERVER['PHP_SELF'].'", {action:"spinner", domain:"'.$domain.'" }, function  (data) {
@@ -420,6 +421,7 @@ function enom_pro_namespinner () {
 		});
 		$("#spinner_ajax_results INPUT").live("click", function  () {
 			var $elem = $(this);
+			console.log($elem);
 			if ($elem.is(":checked")) {
 				$elem.parent("div").addClass("checked")
 			} else {
@@ -436,36 +438,34 @@ function enom_pro_clientarea_transfers () {
 	global $smarty;
 	if (! class_exists('enom_pro') ) require_once 'enom_pro.php';
 	$enom = new enom_pro();
-	if ($enom->checkLicense()) {
-		//Prep the userid of currently logged in account
-		$uid = isset($_SESSION['uid']) ? (int)$_SESSION['uid'] : 0; //Set this to 0 for security to return no results if the WHMCS uid is not set in the session
-		//Prepare the query to check if the current user has any pending enom transfers
-		$query = "SELECT `userid`,`type`,`domain`,`status` FROM `tbldomains` WHERE `registrar`='enom' AND `status`='Pending Transfer' AND `userid`=".$uid;
-		$result = mysql_query($query);
-		//Check if there are any results
-		if (mysql_num_rows($result) > 0) {
-			//Yes, set the Smarty tag to do the AJAX call
-			$smarty->assign('enom_transfers',true);
-		} else {
-			//No results, ignore the enom_transfers smarty tag in the template
-			$smarty->assign('enom_transfers',false);
-		}
-		//This is where the magic happens
-		//Only do the API request asynchronously if there are transfers
-		if ($_REQUEST['action'] == 'domains' && $_REQUEST['refresh'] == 'true') {
-			//Set cache control headers so IE doesn't cache the response (causing support tickets when a transfer has been approved, for instance)
-			header("Cache-Control: no-cache, must-revalidate");
-			header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
-			//Set the headers so jQuery parses the response as well formed JSON
-			header("Content-type: application/json");
-			//send a JSON response to the client
-			echo json_encode($enom->getTransfers($uid));
-			//Exit, we don't need to send WHMCS ;-)
-			die();
-			//The purpose of this method reduces lag by eliminating the expensive remote API calls that must be made to enom and deferring them until after the page has loaded
-			//This ensures that your webserver is not waiting for the API response to send your WHMCS clientarea
-		}//End AJAX
-	}//End License Check
+	//Prep the userid of currently logged in account
+	$uid = isset($_SESSION['uid']) ? (int)$_SESSION['uid'] : 0; //Set this to 0 for security to return no results if the WHMCS uid is not set in the session
+	//Prepare the query to check if the current user has any pending enom transfers
+	$query = "SELECT `userid`,`type`,`domain`,`status` FROM `tbldomains` WHERE `registrar`='enom' AND `status`='Pending Transfer' AND `userid`=".$uid;
+	$result = mysql_query($query);
+	//Check if there are any results
+	if (mysql_num_rows($result) > 0) {
+		//Yes, set the Smarty tag to do the AJAX call
+		$smarty->assign('enom_transfers',true);
+	} else {
+		//No results, ignore the enom_transfers smarty tag in the template
+		$smarty->assign('enom_transfers',false);
+	}
+	//This is where the magic happens
+	//Only do the API request asynchronously if there are transfers
+	if ($_REQUEST['action'] == 'domains' && $_REQUEST['refresh'] == 'true') {
+		//Set cache control headers so IE doesn't cache the response (causing support tickets when a transfer has been approved, for instance)
+		header("Cache-Control: no-cache, must-revalidate");
+		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+		//Set the headers so jQuery parses the response as well formed JSON
+		header("Content-type: application/json");
+		//send a JSON response to the client
+		echo json_encode($enom->getTransfers($uid));
+		//Exit, we don't need to send WHMCS ;-)
+		die();
+		//The purpose of this method reduces lag by eliminating the expensive remote API calls that must be made to enom and deferring them until after the page has loaded
+		//This ensures that your webserver is not waiting for the API response to send your WHMCS clientarea
+	}//End AJAX
 }
 add_hook("ClientAreaPage",2,"enom_pro_clientarea_transfers");
 ?>
