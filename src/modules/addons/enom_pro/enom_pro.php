@@ -5,6 +5,9 @@
  * Copyright 2012 Orion IP Ventures, LLC.
  * Licenses Resold by Circle Tree, LLC. Under Reseller Licensing Agreement
  */
+//*********************************************************************
+//*********************************************************************
+//*********************************************************************
 if (!defined("WHMCS")) die("This file cannot be accessed directly");
 define("ENOM_PRO_VERSION",'@VERSION@');
 function enom_pro_config () {
@@ -656,7 +659,7 @@ function enom_pro_output ($vars) {
 	pre {
 	margin: 20px;
 	padding: 10px;
-	background-color: #DDDDDD;
+	background-color: #EFEFEF;
 	}
 	</style>
 	<h2>Where do I enter my eNom API info?</h2>

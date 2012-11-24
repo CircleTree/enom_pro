@@ -4,7 +4,7 @@ INSTALL INSTRUCTIONS
 *}
 {if $enom_transfers}
 	<h3>Pending Domain Transfers</h3>
-		<table width="100%" border="0" align="center" cellpadding="10" cellspacing="0" class="zebra-striped">
+		<table width="100%" border="0" align="center" cellpadding="10" cellspacing="0" class="table-striped">
 		<thead>
 			<tr><th>Domain Name</th><th>Domain Orders</th><th>Manage</th></tr>
 		</thead>
