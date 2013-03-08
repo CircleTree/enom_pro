@@ -1,0 +1,338 @@
+/*[fmt]1A90-1A0B-4*/
+.alert {
+	padding: 8px 35px 8px 14px;
+	margin-bottom: 20px;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+	background-color: #FCF8E3;
+	border: 1px solid #FBEED5;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.pager {
+	margin: 20px 0;
+	list-style: none;
+	text-align: center;
+	=zoom: 1;
+}
+
+.pager:before,
+.pager:after {
+	display: table;
+	content: "";
+	line-height: 0;
+}
+
+.pager:after {
+	clear: both;
+}
+
+.pager LI {
+	display: inline;
+}
+
+.pager LI > A,
+.pager LI > SPAN {
+	display: inline-block;
+	padding: 5px 14px;
+	background-color: #FFF;
+	border: 1px solid #DDD;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+}
+
+.pager LI > A:hover,
+.pager LI > A:focus {
+	text-decoration: none;
+	background-color: #F5F5F5;
+}
+
+.pager .next > A,
+.pager .next > SPAN {
+	float: right;
+}
+
+.pager .previous > A,
+.pager .previous > SPAN {
+	float: left;
+}
+
+.pager .disabled > A,
+.pager .disabled > A:hover,
+.pager .disabled > A:focus,
+.pager .disabled > SPAN {
+	color: #999999;
+	background-color: #FFF;
+	cursor: default;
+}
+
+TABLE.datatable {
+	width: 100%;
+}
+
+LABEL {
+	cursor: pointer;
+}
+
+LABEL:hover {
+	text-decoration: underline;
+}
+
+.enom_pro_widget {
+	margin-bottom: 0;
+	border: 1px solid #EBEBEB;
+	/*+border-radius:5px;*/
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px;
+	background-color: #F5F5F5;
+}
+
+.alert,
+.alert H4 {
+	color: #C09853;
+}
+
+.alert H4 {
+	margin: 0;
+}
+
+.alert .close {
+	position: relative;
+	top: -2px;
+	right: -21px;
+	line-height: 20px;
+}
+
+.alert-success {
+	background-color: #DFF0D8;
+	border-color: #D6E9C6;
+	color: #468847;
+}
+
+.alert-success H4 {
+	color: #468847;
+}
+
+.alert-danger,
+.alert-error {
+	background-color: #F2DEDE;
+	border-color: #EED3D7;
+	color: #B94A48;
+}
+
+.alert-danger H4,
+.alert-error H4 {
+	color: #B94A48;
+}
+
+.alert-info {
+	background-color: #D9EDF7;
+	border-color: #BCE8F1;
+	color: #3A87AD;
+}
+
+.alert-info H4 {
+	color: #3A87AD;
+}
+
+.alert-block {
+	padding-top: 14px;
+	padding-bottom: 14px;
+}
+
+.alert-block > P,
+.alert-block > UL {
+	margin-bottom: 0;
+}
+
+.alert-block P + P {
+	margin-top: 5px;
+}
+
+PRE.api_error {
+	background-color: #FFFFFF;
+	overflow: scroll;
+	height: 200px;
+	padding: 10px;
+}
+
+PRE.code {
+	margin: 20px;
+	padding: 10px;
+	background-color: #EFEFEF;
+	font-family: Verdana;
+	border: 1px solid #3A87AD;
+}
+
+PRE.code.inline {
+	display: inline-block;
+	margin: 0;
+	padding: 5px;
+}
+
+.inline-wrap {
+	padding: 10px 0;
+}
+
+#enom_faq H1,
+#enom_faq H2,
+#enom_faq H3,
+#enom_faq H4 {
+	color: #000000;
+	font-weight: normal;
+	padding: 0;
+	margin: 0;
+}
+
+#enom_faq H1 {
+	margin-top: 20px;
+	margin-bottom: 15px;
+	border-bottom: 1px solid #DDDDDD;
+	font-size: 16pt;
+	font-weight: bold;
+}
+
+#enom_faq H2 {
+	font-size: 15pt;
+	border-bottom: 1px solid #DDDDDD;
+	margin-bottom: 20px;
+	margin-top: 10px;
+}
+
+#enom_faq H3 {
+	font-size: 12pt;
+}
+
+#enom_faq H4 {
+	font-size: 11pt;
+	border-bottom: 1px solid #3A87AD;
+	margin-top: 20px;
+}
+
+FORM.refreshbutton {
+	display: inline-block;
+}
+
+.refreshbutton INPUT[type="submit"] {
+	padding: 2px 5px;
+}
+
+.enom_pro_loader {
+	width: 160px;
+	height: 20px;
+	background-image: url(images/loading.gif);
+	background-repeat: no-repeat;
+	background-position: center;
+	display: block;
+	text-align: center;
+	margin: 5px auto;
+}
+
+.btn.btn-success,
+.btn.btn-success:visited,
+.btn-primary,
+.btn-primary:visited {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+.btn.large {
+	padding: 10px 20px;
+	display: block;
+	margin-top: 10px;
+}
+
+.enom_stat_button {
+	text-align: center;
+}
+
+#enom_pro_transfers_table {
+}
+
+#enom_pro_transfers_table TH {
+	background-color: #D9EDF7;
+	border-bottom: 1px solid #3A87AD;
+}
+
+#enom_pro_transfers_table .none TH {
+	font-weight: normal;
+	padding-bottom: 0;
+	word-wrap: normal;
+	white-space: nowrap;
+	width: 70px;
+	padding-left: 5px;
+	padding-right: 5px;
+	text-align: center;
+	background-color: #EBEBEB;
+}
+
+#enom_pro_transfers_table .domain_name {
+	display: inline-block;
+	width: 150px;
+	text-align: center;
+	overflow: auto;
+}
+
+.enom_pro_widget TABLE {
+	width: 100%;
+}
+
+.enom_pro_widget.alert {
+	text-align: center;
+}
+
+#enombalance .alert-error {
+	border: 3px outset #B94A48;
+	/*+border-radius:8px;*/
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	-khtml-border-radius: 8px;
+	border-radius: 8px;
+}
+
+#enombalance .alert-error.inset {
+	border-style: inset;
+	background-color: #EED4D8;
+}
+
+#import_table {
+	width: 100%;
+}
+
+.table-hover TD {
+	background-color: #F5F5F5;
+	border-bottom: 1px solid #D9EDF7;
+}
+
+#import_table TD {
+	text-align: right;
+	padding: 5px;
+}
+
+#import_table TD .alert P {
+	margin: 0;
+}
+
+#import_table TH {
+	border-bottom: 1px solid #EBEBEB;
+	font-size: 12pt;
+	font-weight: normal;
+}
+
+#import_table TD .alert {
+	text-align: left;
+}
+
+#import_table .alert {
+	margin-bottom: 0;
+}
+
+.table-hover TR:hover TD {
+	background-color: #FFFFFF;
+	border-bottom: 1px solid #BCE8F1;
+}
+

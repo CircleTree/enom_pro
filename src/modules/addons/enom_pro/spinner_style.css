@@ -24,9 +24,7 @@
 {
 /*Clearfix the container*/
 }
-#spinner_ajax_results .spin_result
-{
-	width: 30%;
+#spinner_ajax_results .spin_result {
 	/*+placement:float-left 0px 0px;*/
 	float: left;
 	position: relative;
@@ -34,6 +32,19 @@
 	top: 0px;
 	margin: 10px;
 	padding-left: 30px;
+}
+#spinner_ajax_results .spinner_results_wrapper.col_1 .spin_result {
+	width: 98%;
+}
+#spinner_ajax_results .spinner_results_wrapper.col_2 .spin_result {
+	width: 44%;
+}
+#spinner_ajax_results .spinner_results_wrapper.col_3 .spin_result {
+	width: 28%;
+}
+#spinner_ajax_results .spinner_results_wrapper.col_4 .spin_result {
+	width: 20%;
+	margin: 10px 5px;
 }
 #spinner_ajax_results .spin_result.checked
 {
