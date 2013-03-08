@@ -3,7 +3,7 @@
 *  Compatible with WHMCS 5.0+                            *
 *                                                        *
 *  README                                                *
-*  ©2012 Orion IP Ventures, LLC - ALL RIGHTS RESERVED    *
+*  ©2013 Orion IP Ventures, LLC - ALL RIGHTS RESERVED    *
 *  If you like this addon, please support us!            *
 *  This software must be licensed, please only use       *
 *  it if you pay for it. There is an open source version *
