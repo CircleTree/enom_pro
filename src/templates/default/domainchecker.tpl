@@ -84,7 +84,6 @@
 </table>
 
 <p align="center"><input type="submit" value="{$LANG.ordernowbutton} &raquo;" class="btn error" /></p>
-
 {$namespinner}
 
 </form>

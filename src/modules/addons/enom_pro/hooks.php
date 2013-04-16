@@ -144,7 +144,7 @@ function enom_pro_admin_expiring_domains ($vars) {
 			$str .= '<div class="enom_pro_widget">';
 			$str .= '<table class="table-hover" ><tbody>
 					<tr>
-						<td class="enom_stat_button"><a class="btn btn-success '.($stats['registered'] > 0  ? '' : 'disabled' ).'" href="http://www.enom.com/domains/Domain-Manager.aspx" target="_blank">'.$stats['registered'].'</a></td>
+						<td class="enom_stat_button"><a class="btn btn-success '.($stats['registered'] > 0  ? '' : 'disabled' ).'" href="'.enom_pro::MODULE_LINK.'&view=import" title="Import Domains">'.$stats['registered'].'</a></td>
 						<td class="enom_stat_label">Registered Domains</td>
 					</tr>
 					<tr>
@@ -198,31 +198,38 @@ function enom_pro_admin_transfers ($vars) {
 	if (!class_exists('enom_pro')) 
 		require_once 'enom_pro.php';
 		if ($_REQUEST['checkenomtransfers']) {
-			sleep(3);
 			$enom = new enom_pro();
 			if (!$enom->error) {
+				$transfers = $enom->getTransfers();
+				if (empty($transfers)) {
+					$str .= '<div class="alert alert-success enom_pro_widget">No pending transfers found in WHMCS</div>';
+					$str .= '</div>';
+					echo $str;
+					die;
+				}
 				$str .= '<div class="enomtransfers enom_pro_widget">';
-				$str .= ' <table id="enom_pro_transfers_table">
+				$str .= ' <table id="enom_pro_transfers_table">';
+				$str .= '
 				<tr>
 					<th>Domain</th>
 					<th>WHMCS Domains</th>
 					<th>Orders</th>
 				</tr>
 				';
-				foreach ($enom->getTransfers() as $domain) {
+				foreach ($transfers as $domain) {
 					//Loop through the actual domains returned from WHMCS
+					$edit_domain_button = '<a href="clientsdomains.php?userid='.$domain['userid'].'&id='.$domain['id'].'" class="btn" >Edit</a>';
 					$str .= '<tr>
 					<td>
 						<a class="domain_name" target="_blank" title="View WHOIS" href="http://www.whois.net/whois/'.$domain['domain'].'">'.$domain['domain'].'
 					</td>
 					<td style="text-align:center;">
-						<form method="GET" action="clientsdomains.php">
-							<input type="hidden" name="userid"  value="'.$domain['userid'].'"/>
-							<input type="hidden" name="id"  value="'.$domain['id'].'"/>
-							<input type="submit" class="button" value="Edit"/>
-						</form>
+							'.$edit_domain_button.'
 					</td>
 					<td>
+						';
+					if (count($domain['statuses']) > 0):
+					$str .= '
 						<table class="none">
 						<tr>
 							<th>eNom Order ID</td>
@@ -264,7 +271,11 @@ function enom_pro_admin_transfers ($vars) {
 							}
 							
 					$str.="
-						</table>
+						</table>";
+					else:
+						$str .=	'<div class="alert alert-info">No Orders Found '.$edit_domain_button.'</div>';
+					endif;
+					$str .= "
 					</td>
 				</tr>";
 				}	
@@ -321,7 +332,7 @@ add_hook("AdminHomeWidgets",1,"enom_pro_admin_transfers");
 function get_enom_pro_widget_form ($action, $id) { ob_start();?>
 	<form id="<?php echo $id; ?>" class="refreshbutton" action="<?php echo $_SERVER['PHP_SELF'];?>">
 		<input type="hidden" name="<?php echo $action; ?>" value="1" />
-		<input type="submit" value="Refresh"/>
+		<input type="submit" value="Refresh" class="btn" />
 	</form>
 	<?php 
 	$return = ob_get_contents();
@@ -334,6 +345,9 @@ function get_enom_pro_widget_form ($action, $id) { ob_start();?>
  */
 add_hook("AdminAreaHeadOutput", 1, "enom_pro_admin_css");
 function enom_pro_admin_css () {
+//Only load on applicable pages
+$pages = array('index.php', 'addonmodules.php');
+if (in_array(basename($_SERVER['SCRIPT_NAME']), $pages) || ( isset($_GET['module']) && 'enom_pro' == $_GET['module']) )
 	echo '<link rel="stylesheet" href="../modules/addons/enom_pro/admin.css" />';
 }
 function enom_pro_admin_page () {
@@ -460,7 +474,13 @@ function enom_pro_namespinner () {
 			
 			if ($enom->get_addon_setting('spinner_checkout') == "on") {
 				//Only show the add to cart button if enabled
-				echo '<input class="btn primary large" type="submit" value="'.$_LANG['addtocart'].'" />';
+
+				$css_class = enom_pro::get_addon_setting('cart_css_class');
+				if (enom_pro::get_addon_setting('custom_cart_css_class') !== "")
+					$css_class = enom_pro::get_addon_setting('custom_cart_css_class');
+				if (is_null($css_class))
+					$css_class = 'btn btn-primary';
+				echo '<input class="'.$css_class.'" type="submit" value="'.$_LANG['addtocart'].'" />';
 			}
 			echo '</div>';
 		} else {
@@ -468,9 +488,6 @@ function enom_pro_namespinner () {
 		}
 		die();
 	}
-	
-	
-	global $smarty;
 	$spinnercode = '';
 	if (enom_pro::get_addon_setting("spinner_css") == "on") {
 		//Only include the css if enabled
@@ -526,11 +543,11 @@ function enom_pro_namespinner () {
 	});
 	';
 	$spinnercode .= '</script>';
-	$smarty->assign('namespinner',$spinnercode);
+	return array('namespinner' => $spinnercode);
 }
 add_hook("ClientAreaPage",1,"enom_pro_namespinner");
 function enom_pro_clientarea_transfers () {
-	global $smarty;
+	global $enom_pro_transfers;
 	if (! class_exists('enom_pro') ) 
 		require_once 'enom_pro.php';
 	
@@ -540,12 +557,11 @@ function enom_pro_clientarea_transfers () {
 	$query = "SELECT `userid`,`type`,`domain`,`status` FROM `tbldomains` WHERE `registrar`='enom' AND `status`='Pending Transfer' AND `userid`=".$uid;
 	$result = mysql_query($query);
 	//Check if there are any results
-	if (mysql_num_rows($result) > 0) {
-		//Yes, set the Smarty tag to do the AJAX call
-		$smarty->assign('enom_transfers',true);
+	$there_are_results = (mysql_num_rows($result) > 0) ? true : false;
+	if ($there_are_results) {
+		$enom_pro_transfers = true;
 	} else {
-		//No results, ignore the enom_transfers smarty tag in the template
-		$smarty->assign('enom_transfers',false);
+		$enom_pro_transfers = false;
 	}
 	//This is where the magic happens
 	//Only do the API request asynchronously if there are transfers
@@ -563,5 +579,6 @@ function enom_pro_clientarea_transfers () {
 		//The purpose of this method reduces lag by eliminating the expensive remote API calls that must be made to enom and deferring them until after the page has loaded
 		//This ensures that your webserver is not waiting for the API response to send your WHMCS clientarea
 	}//End AJAX
+	return array('enom_transfers' => $there_are_results);
 }
 add_hook("ClientAreaPage",2,"enom_pro_clientarea_transfers");

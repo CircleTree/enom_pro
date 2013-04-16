@@ -26,7 +26,7 @@ INSTALL INSTRUCTIONS
 		<script type="text/javascript">
 		{literal}
 			jQuery(document).ready(function($){
-				$("#enom_refresh").live('submit', function  () {
+				$("#enom_refresh").on('submit', function  () {
 					var $target = $("#enom_target");
 					var data = $(this).serialize();
 					$target.html('{/literal}<tr><td colspan="4" align="center" >{$LANG.loading}</td></tr>{literal}');
