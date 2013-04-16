@@ -18,31 +18,33 @@ function enom_pro_config () {
 		'author'=>'<a href="http://orionipventures.com/">Orion IP Ventures, LLC.</a>',
 		'description'=>'Shows eNom Balance and active Transfers on the admin homepage in widgets. Adds a clientarea page that displays active transfers to clients.',
 		'fields'=>array(
-			'quicklink'=>array('FriendlyName'=>"","Type"=>"null","Description"=>'<span style="font-size:16pt;padding:0 10px; 0;" >@NAME@ Settings</span><a href="addonmodules.php?module=enom_pro">Go to @NAME@ &rarr;</a>'),
+			'quicklink'=>array('FriendlyName'=>"","Type"=>"null","Description"=>'<span style="font-size:16pt;padding:0 10px; 0;" >@NAME@ Settings</span><a href="'.enom_pro::MODULE_LINK.'">Go to @NAME@ &rarr;</a>'),
 			'license'=>array('FriendlyName'=>"License Key","Type"=>"text","Size"=>"30"),
 			'debug'=>array('FriendlyName'=>"Debug Mode","Type"=>"yesno","Description"=>"Enable debug messages on frontend. Used for troubleshooting the namespinner, for example."),
 			'ssl_days'=>array('FriendlyName'=>"Expiring SSL Days","Type"=>"dropdown","Options"=>"7,15,30,60,90,180,365,730","Default"=>"30","Description"=>"Number of days until SSL Certificate Expiration to show in Widget"),
 			'balance_warning'=>array('FriendlyName'=>"Credit Balance Warning Threshold","Type"=>"dropdown","Options"=>"Off,10,25,50,100,150,200,500,1000,5000","Default"=>"50","Description"=>"Turns the Credit Balance Widget into a RED flashing warning indicator"),
 			'import_per_page'=>array('FriendlyName'=>"Import Results","Type"=>"dropdown","Options"=>"10,25,50,100,150,200","Default"=>"25","Description"=>"Results Per Page on the Domain Import Page"),
-			'spinner_results'=>array('FriendlyName'=>"Namespinner Results","Type"=>"text","Default"=>10,"Description"=>"Max Number of namspinner results to show".$spinner_help,'Size'=>10),
+			'spinner_results'=>array('FriendlyName'=>"Namespinner Results","Type"=>"text","Default"=>10,"Description"=>"Max Number of namespinner results to show".$spinner_help,'Size'=>10),
 			'spinner_columns'=>array('FriendlyName'=>"Namespinner Columns","Type"=>"dropdown","Options"=>"1,2,3,4","Default"=>"3","Description"=>"Number of columns to display results in. Make sure it is divisible by the # of results above to make nice columns.",'Size'=>10),
-			'spinner_sortby'=>array('FriendlyName'=>"Sort Results","Type"=>"dropdown","Options"=>"score,domain","Default"=>"score","Description"=>"Sort namspinner results by score or domain name"),
+			'spinner_sortby'=>array('FriendlyName'=>"Sort Results","Type"=>"dropdown","Options"=>"score,domain","Default"=>"score","Description"=>"Sort namespinner results by score or domain name"),
 			'spinner_sort_order'=>array('FriendlyName'=>"Sort Order","Type"=>"dropdown","Options"=>"Ascending,Descending","Default"=>"Descending","Description"=>"Sort order for results"),
-			'spinner_checkout'=>array('FriendlyName'=>"Show Add to Cart Button?","Type"=>"yesno","Description"=>"Display checkout button at the bottom of namspinner results"),
+			'spinner_checkout'=>array('FriendlyName'=>"Show Add to Cart Button?","Type"=>"yesno","Description"=>"Display checkout button at the bottom of namespinner results"),
+			'cart_css_class'=>array('FriendlyName'=>"Cart CSS Class","Type"=>"dropdown","Options"=>"btn,btn-primary,button,custom","Default"=>"btn-primary","Description"=>"Customize the Add to Cart button by CSS class"),
+			'custom_cart_css_class'=>array('FriendlyName'=>"Cart CSS Class","Type"=>"text","Description"=>"Add a custom cart CSS class"),
 			'spinner_css'=>array('FriendlyName'=>"Style Spinner?","Type"=>"yesno","Description"=>"Include Namespinner CSS File"),
-			'spinner_animation'=>array('FriendlyName'=>"Namespinner Result Animation Speed","Type"=>"dropdown","Default"=>"Medium","Options"=>"Off,Slow,Medium,Fast","Description"=>"Number of namspinner results to show",'Size'=>10),
-			'spinner_com'=>array('FriendlyName'=>".com","Type"=>"yesno","Description"=>"Display .com namspinner results"),
-			'spinner_net'=>array('FriendlyName'=>".net","Type"=>"yesno","Description"=>"Display .net namspinner results"),
-			'spinner_tv'=>array('FriendlyName'=>".tv","Type"=>"yesno","Description"=>"Display .tv namspinner results"),
-			'spinner_cc'=>array('FriendlyName'=>".cc","Type"=>"yesno","Description"=>"Display .cc namspinner results"),
-			'spinner_hyphens'=>array('FriendlyName'=>"Hyphens","Type"=>"yesno","Description"=>"Use hyphens (-) in namspinner results"),
-			'spinner_numbers'=>array('FriendlyName'=>"Numbers","Type"=>"yesno","Description"=>"Use numbers in namspinner results"),
+			'spinner_animation'=>array('FriendlyName'=>"Namespinner Result Animation Speed","Type"=>"dropdown","Default"=>"Medium","Options"=>"Off,Slow,Medium,Fast","Description"=>"Number of namespinner results to show",'Size'=>10),
+			'spinner_com'=>array('FriendlyName'=>".com","Type"=>"yesno","Description"=>"Display .com namespinner results"),
+			'spinner_net'=>array('FriendlyName'=>".net","Type"=>"yesno","Description"=>"Display .net namespinner results"),
+			'spinner_tv'=>array('FriendlyName'=>".tv","Type"=>"yesno","Description"=>"Display .tv namespinner results"),
+			'spinner_cc'=>array('FriendlyName'=>".cc","Type"=>"yesno","Description"=>"Display .cc namespinner results"),
+			'spinner_hyphens'=>array('FriendlyName'=>"Hyphens","Type"=>"yesno","Description"=>"Use hyphens (-) in namespinner results"),
+			'spinner_numbers'=>array('FriendlyName'=>"Numbers","Type"=>"yesno","Description"=>"Use numbers in namespinner results"),
 			'spinner_sensitive'=>array('FriendlyName'=>"Block sensitive content","Type"=>"yesno","Description"=>"Block sensitive content"),
 			'spinner_basic'=>array('FriendlyName'=>"Basic Results","Type"=>"dropdown","Default"=>"Medium","Description"=>"Higher values return suggestions that are built by adding prefixes, suffixes, and words to the original input","Options"=>"Off,Low,Medium,High"),
 			'spinner_related'=>array('FriendlyName'=>"Related Results","Type"=>"dropdown","Default"=>"High","Description"=>"Higher values return domain names by interpreting the input semantically and construct suggestions with a similar meaning.<br/><b>Related=High will find terms that are synonyms of your input.</b>","Options"=>"Off,Low,Medium,High"),
 			'spinner_similiar'=>array('FriendlyName'=>"Similiar Results","Type"=>"dropdown","Default"=>"Medium","Description"=>"Higher values return suggestions that are similar to the customer's input, but not necessarily in meaning.<br/><b>Similar=High will generate more creative terms, with a slightly looser relationship to your input, than Related=High.</b>","Options"=>"Off,Low,Medium,High"),
 			'spinner_topical'=>array('FriendlyName'=>"Topical Results","Type"=>"dropdown","Default"=>"High","Description"=>"Higher values return suggestions that reflect current topics and popular words.","Options"=>"Off,Low,Medium,High"),
-			'quicklink2'=>array('FriendlyName'=>"","Type"=>"null","Description"=>'<b><a href="addonmodules.php?module=enom_pro">Go to @NAME@ &rarr;</a></b>'),
+			'quicklink2'=>array('FriendlyName'=>"","Type"=>"null","Description"=>'<b><a href="'.enom_pro::MODULE_LINK.'">Go to @NAME@ &rarr;</a></b>'),
 		)
 	);
 	return $config;
@@ -106,6 +108,7 @@ class enom_pro {
 	public $message;
 	public $productname;
 	const INSTALL_URL = 'https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7&subject=enom%20Install%20Service';
+	const MODULE_LINK = 'addonmodules.php?module=enom_pro';
 	private $parameters = array();
 	/**
 	 * eNom API Class
@@ -324,6 +327,9 @@ class enom_pro {
 		if (isset($_GET['start']))
 			$this->setParams( array('Start' => (int) $_GET['start']) );
 		$this->runTransaction('GetDomains');
+		if ( $this->error && ! $this->debug()) {
+			echo $this->errorMessage;
+		}
 		$xml = $this->getXML();
 		$list_meta = array(
 				'total_domains' => (int) $xml->GetDomains->TotalDomainCount,
@@ -334,6 +340,10 @@ class enom_pro {
 		$domains_array = array();
 		foreach ($domains_list->domain as $domain) {
 			$domains_array[] = (array) $domain;
+		}
+		if ( empty($domains_array) ) {
+			echo '<div class="alert alert-error"><p>No domains returned from eNom.</p></div>';
+			return;
 		}
 		?>
 				<script src="../modules/addons/enom_pro/jquery.admin.js"></script>
@@ -376,10 +386,10 @@ class enom_pro {
 		</table>
 			<ul class="pager">
 				<?php if ($list_meta['prev_start'] !== 0) :?>
-					<li class="previous"><a href="addonmodules.php?module=enom_pro&view=import&start=<?php echo $list_meta['prev_start'];?>#import_table">&larr; Previous</a></li>
+					<li class="previous"><a href="<?php echo self::MODULE_LINK; ?>&view=import&start=<?php echo $list_meta['prev_start'];?>#import_table">&larr; Previous</a></li>
 				<?php endif;?>
 				<?php if ($list_meta['next_start'] !== 0) :?>
-					<li class="next" ><a href="addonmodules.php?module=enom_pro&view=import&start=<?php echo $list_meta['next_start'];?>#import_table">Next &rarr;</a></li>
+					<li class="next" ><a href="<?php echo self::MODULE_LINK; ?>&view=import&start=<?php echo $list_meta['next_start'];?>#import_table">Next &rarr;</a></li>
 				<?php endif;?>
 			</ul>
 				<li style="text-align: right"><p><?php echo $list_meta['total_domains']?> Total domains</p></li>
@@ -524,9 +534,10 @@ class enom_pro {
 	}
 	public function getSpinner ($domain) {
 		$this->setDomain($domain);
+		$max_results = $this->get_addon_setting("spinner_results");
 		$params = array(
 			'SensitiveContent'=>($this->get_addon_setting('spinner_sensitive') == "on" ? 'True' : 'False'),//enom API requires a literal string!
-			'MaxResults'=>($this->get_addon_setting("spinner_results")),
+			'MaxResults'=>$max_results,
 			'UseHyphens'=>($this->get_addon_setting('spinner_hyphens') == "on" ? 'True' : 'False'),//String!
 			'UseNumbers'=>($this->get_addon_setting('spinner_numbers') == "on" ? 'True' : 'False'),//another STRING!
 			'Basic'=>$this->get_addon_setting("spinner_basic"),
@@ -556,6 +567,7 @@ class enom_pro {
 				}
 			}
 		}
+		$domains = array_slice($domains, ($max_results - 1));
 		//valid values from API are 'score','domain'
 		define('NS_SORT_BY',$this->get_addon_setting("spinner_sortby"));
 		$sort_order = ($this->get_addon_setting("spinner_sort_order")  == "Ascending" ?  SORT_ASC : SORT_DESC );
@@ -804,14 +816,14 @@ class enom_pro {
 function enom_pro_sidebar ($vars) {
 	$sidebar = '<span class="header"><img src="images/icons/domainresolver.png" class="absmiddle" width=16 height=16 />@NAME@</span>
 	<ul class="menu">
-		<li><a class="btn" href="addonmodules.php?module=enom_pro">Home</a></li>
-		<li><a class="btn" href="addonmodules.php?module=enom_pro&view=import">Domain Importer</a></li>
+		<li><a class="btn" href="'.enom_pro::MODULE_LINK.'">Home</a></li>
+		<li><a class="btn" href="'.enom_pro::MODULE_LINK.'&view=import">Domain Importer</a></li>
 		<li><a class="btn" href="configaddonmods.php#enom_pro">Settings</a></li>
 	</ul>
  	<span class="header">@NAME@ Meta</span>
 	<ul class="menu">
 		<li>
-			<a href="'.$vars['modulelink'].'">Version: '.ENOM_PRO_VERSION.'</a>
+			<a href="#">Version: '.ENOM_PRO_VERSION.'</a>
 		</li>
 		<li>
 			<a href="http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43" target="_blank" >View Changelog</a></li>
@@ -828,8 +840,10 @@ function enom_pro_output ($vars) {
 	if (isset($_GET['view']) && 'import' == $_GET['view']) {
 		$enom->render_domain_import_page();
 		return;
-	}		
-	if ($enom->updateAvailable()) echo $enom->updateAvailable();
+	}
+			
+	if ($enom->updateAvailable()) 
+		echo $enom->updateAvailable();
 	if ($enom->error):
 		echo $enom->errorMessage;
 	else:?>
@@ -837,7 +851,7 @@ function enom_pro_output ($vars) {
 		<p>Looks like you're connected to enom! Want to import some domains to WHMCS?
 			<a class="btn btn-success large" href="<?php echo $_SERVER['PHP_SELF'] . '?module=enom_pro&view=import'?>">Import Domains!</a>
 		</p>
-		<?php endif;?>
+	<?php endif;?>
 		<h1>FAQ</h1>
 		<h2>Where do I enter my eNom API info?</h2>
 		<p>eNom PRO gets the registrar info directly from whmcs. To change your registrar info, <a class="btn" href="configregistrars.php#enom">click here.</a></p>
@@ -852,8 +866,6 @@ function enom_pro_output ($vars) {
 		<h3>Domain Checker</h3>
 		<p>See the included domainchecker.tpl template for a working example.</p>
 		<h3>Order Form Setup</h3>
-		<p>Depending on the type orderform you have WHMCS set to use you will need to choose the following types.</p>
-		<h4>Non-Ajax NameSpinner Template Setup</h4>
 		<div class="inline-wrap"><span>Include the </span><pre class="code inline">{$namespinner}</pre><span> template tag in your domain (domainchecker.tpl) and shopping cart template files to include the enom name spinner!</span></div> 
 		<b>Make sure you put it in the template as follows:</b> 
 <pre class="code">
@@ -866,30 +878,7 @@ function enom_pro_output ($vars) {
 	<?php echo htmlentities('</form>').PHP_EOL;?>
 {/if}</pre> 
 		<p>The place you put the code is where the domain spinner suggestions will appear. See the included domainchecker.tpl for an example</p>
-		<h4>Ajax Cart Namespinner Setup</h4>
-		<p>Find out which order form template you're using by going to WHMCS &rarr; general options &rarr; Ordering. <br/>
-		Now, edit the whmcs/templates/orderforms/{your order form}/adddomain.tpl. Look for the checkavailability() JS function.<br/>
-		Add the below code inside of the <?php echo htmlentities('<script>jQuery...</script>')?> tag.
-		</p>
-<pre class="code">
-jQuery(function($) {
-	$.post("cart.php", {action:"spinner", domain:jQuery("#sld").val() }, function  (data) {
-   			$("#spinner_ajax_results").html(data).slideDown(); 
-   		});
-	$("#spinner_ajax_results INPUT").live("click", function  () {
-		var $elem = $(this);
-		if ($elem.is(":checked")) {
-			$elem.parent("div").addClass("checked")
-		} else {
-			$elem.parent("div").removeClass("checked")
-		}
-	});
-});</pre>
-	<p>Next, add the results div in the template at the place where you want the results to appear:</p>
-		<pre class="code"><?php echo htmlentities('<div id="spinner_ajax_results" style="display:none"></div>')?></pre>
-		<p>Finally, add a link to the CSS file if desired.</p>
-		<pre class="code"><?php echo htmlentities('<link rel="stylesheet" href="modules/addons/enom_pro/spinner_style.css" />')?></pre>
-		<h3>Lost? Order our professional installation service here: <a href="<?php echo enom_pro::INSTALL_URL;?>" target="_blank" >Install Service</a></h3>
+		<h3>Lost? Order our professional installation service here: <a href="<?php echo enom_pro::INSTALL_URL;?>" target="_blank" class="btn" >Install Service</a></h3>
 	</div>
 	<?php
 }
