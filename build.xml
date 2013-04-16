@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="ENOM PRO!" default="deploy">
 	<property name="name" value="eNom PRO"/>
-	<property name="version" value="2.0"/>
+	<property name="version" value="2.0.1"/>
 	<property name="build_dir" value="/Volumes/Build/enom_pro"/>
 	<property name="version_xml" value="enom_pro_version.xml"/>
 	<property name="deploy" value="/Users/robertgregor/Sites/whmcs" />
