@@ -2,18 +2,15 @@
 /**
  * eNom Pro WHMCS Addon
  * @version @VERSION@ 
- * Copyright 2012 Orion IP Ventures, LLC.
+ * Copyright 2013 Orion IP Ventures, LLC. All Rights Reserved.
  * Licenses Resold by Circle Tree, LLC. Under Reseller Licensing Agreement
  */
-//*********************************************************************
-//*********************************************************************
-//*********************************************************************
-if (!defined("WHMCS")) die("This file cannot be accessed directly");
+defined("WHMCS") or die("This file cannot be accessed directly");
 define("ENOM_PRO_VERSION",'@VERSION@');
 function enom_pro_config () {
 	$spinner_help = " <br/><span class=\"textred\" >Make sure your active cart & domain checker templates have {\$namespinner} in them.</span>";
 	$config = array(
-		'name'=>'@NAME@' . (isset($_GET['view']) ? ' - Import' : ''),
+		'name'=>'@NAME@' . (!isset($_GET['view']) ? '' : ' - Import'),
 		'version'=>'@VERSION@',
 		'author'=>'<a href="http://orionipventures.com/">Orion IP Ventures, LLC.</a>',
 		'description'=>'Shows eNom Balance and active Transfers on the admin homepage in widgets. Adds a clientarea page that displays active transfers to clients.',
@@ -734,6 +731,9 @@ class enom_pro {
 		}
 		return $results;
 	}
+	function  clearLicense() {
+		mysql_query('UPDATE  `mod_enom_pro` SET  `local` =  \'\' WHERE  `mod_enom_pro`.`id` =0;');
+	}
 	/**
 	 * utility to check local license, latest version, etc.
 	 * @return boolean true for license OK
@@ -846,7 +846,8 @@ function enom_pro_output ($vars) {
 		echo $enom->updateAvailable();
 	if ($enom->error):
 		echo $enom->errorMessage;
-	else:?>
+	else:
+	?>
 	<div id="enom_faq">
 		<p>Looks like you're connected to enom! Want to import some domains to WHMCS?
 			<a class="btn btn-success large" href="<?php echo $_SERVER['PHP_SELF'] . '?module=enom_pro&view=import'?>">Import Domains!</a>
