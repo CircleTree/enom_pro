@@ -329,7 +329,10 @@ function enom_pro_admin_transfers ($vars) {
 }
 add_hook("AdminHomeWidgets",1,"enom_pro_admin_transfers");
 
-function get_enom_pro_widget_form ($action, $id) { ob_start();?>
+function get_enom_pro_widget_form ($action, $id) { 
+	if ('configadminroles.php' == basename($_SERVER['PHP_SELF']))
+		return '';
+	ob_start();?>
 	<form id="<?php echo $id; ?>" class="refreshbutton" action="<?php echo $_SERVER['PHP_SELF'];?>">
 		<input type="hidden" name="<?php echo $action; ?>" value="1" />
 		<input type="submit" value="Refresh" class="btn" />
@@ -348,7 +351,7 @@ function enom_pro_admin_css () {
 //Only load on applicable pages
 $pages = array('index.php', 'addonmodules.php');
 if (in_array(basename($_SERVER['SCRIPT_NAME']), $pages) || ( isset($_GET['module']) && 'enom_pro' == $_GET['module']) )
-	echo '<link rel="stylesheet" href="../modules/addons/enom_pro/admin.css" />';
+	return '<link rel="stylesheet" href="../modules/addons/enom_pro/admin.css" />';
 }
 function enom_pro_admin_page () {
 	//Only load this hook if an ajax request is being run
