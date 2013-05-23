@@ -20,7 +20,7 @@ function enom_pro_config () {
 			'debug'=>array('FriendlyName'=>"Debug Mode","Type"=>"yesno","Description"=>"Enable debug messages on frontend. Used for troubleshooting the namespinner, for example."),
 			'ssl_days'=>array('FriendlyName'=>"Expiring SSL Days","Type"=>"dropdown","Options"=>"7,15,30,60,90,180,365,730","Default"=>"30","Description"=>"Number of days until SSL Certificate Expiration to show in Widget"),
 			'balance_warning'=>array('FriendlyName'=>"Credit Balance Warning Threshold","Type"=>"dropdown","Options"=>"Off,10,25,50,100,150,200,500,1000,5000","Default"=>"50","Description"=>"Turns the Credit Balance Widget into a RED flashing warning indicator"),
-			'import_per_page'=>array('FriendlyName'=>"Import Results","Type"=>"dropdown","Options"=>"10,25,50,100,150,200","Default"=>"25","Description"=>"Results Per Page on the Domain Import Page"),
+			'import_per_page'=>array('FriendlyName'=>"Import Results","Type"=>"dropdown","Options"=>"10,25,50,100","Default"=>"25","Description"=>"Results Per Page on the Domain Import Page"),
 			'spinner_results'=>array('FriendlyName'=>"Namespinner Results","Type"=>"text","Default"=>10,"Description"=>"Max Number of namespinner results to show".$spinner_help,'Size'=>10),
 			'spinner_columns'=>array('FriendlyName'=>"Namespinner Columns","Type"=>"dropdown","Options"=>"1,2,3,4","Default"=>"3","Description"=>"Number of columns to display results in. Make sure it is divisible by the # of results above to make nice columns.",'Size'=>10),
 			'spinner_sortby'=>array('FriendlyName'=>"Sort Results","Type"=>"dropdown","Options"=>"score,domain","Default"=>"score","Description"=>"Sort namespinner results by score or domain name"),
@@ -213,6 +213,13 @@ class enom_pro {
 		$this->parameters = array_merge($this->parameters, $params);
 	}
 	/**
+	 * Gets the API command parameters
+	 * @param array $params
+	 */
+	function getParams () {
+		return $this->parameters;
+	}
+	/**
 	 * Checks for the latest version of the addon
 	 * @return return false if no update, upgrade string if true
 	 */
@@ -316,13 +323,22 @@ class enom_pro {
 		return $return;
 	}
 	public function  render_domain_import_page () {
-		$this->setParams(
-				array(
-						'Display'=>$this->get_addon_setting('import_per_page'),
-				)
-		);
-		if (isset($_GET['start']))
+		if ($this->get_addon_setting('import_per_page')){
+			//api is limited to 0 -> 100 domains
+			//@props www.EXTREMESHOK.com for the bugfix
+			if($this->get_addon_setting('import_per_page') < 100){
+				$this->setParams( array('Display'=>$this->get_addon_setting('import_per_page') ) );
+			}else{
+				$this->setParams( array('Display'=> '25' ) );
+			}
+		}else{
+			$this->setParams( array('Display'=> '25' ) );
+		}
+		if (isset($_GET['start'])){
 			$this->setParams( array('Start' => (int) $_GET['start']) );
+		}else{
+			$this->setParams( array('Start' => '1' ) );
+		}
 		$this->runTransaction('GetDomains');
 		if ( $this->error && ! $this->debug()) {
 			echo $this->errorMessage;
