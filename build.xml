@@ -73,7 +73,7 @@
 	    
 	    <target name="phpunit" description="Run unit tests using PHPUnit and generates junit.xml and clover.xml">
 	            <echo msg="Running unit tests"/>
-	            <exec logoutput="true" command="phpunit --stop-on-failure --configuration=${phpunitxml} --coverage-html ${build_temp_dir}/coverage --coverage-clover build/logs/clover.xml --log-junit build/logs/junit.xml" />
+	            <exec logoutput="true" command="phpunit --stop-on-failure --configuration=phpunit.xml --coverage-html ${build_temp_dir}/coverage --coverage-clover build/logs/clover.xml --log-junit build/logs/junit.xml" />
 	    </target>
 	    
 	    <target name="pdepend" description="Generate jdepend.xml and software metrics charts using PHP_Depend">
