@@ -3,7 +3,7 @@
 	<property name="name" value="eNom PRO"/>
 	<property name="version" value="2.1.0"/>
 	<property name="build_dir" value="/Volumes/Build/enom_pro"/>
-	<property name="build_temp_dir" value="/Volumes/Build/enom_pro/build"/>
+	<property name="build_temp_dir" value="./build"/>
 	<property name="src_dir" value="./src"/>
 	<property name="version_xml" value="enom_pro_version.xml"/>
 	<property name="deploy" value="/Users/robertgregor/Sites/whmcs" />
