@@ -93,7 +93,7 @@
 	    </target>
 
 	    <target name="phpcs" description="Generate checkstyle.xml using PHP_CodeSniffer">
-	        <exec logoutput="true" command="phpcs --report=checkstyle --report-file=${build_temp_dir}/logs/checkstyle.xml --standard=PEAR ${src_dir}" />
+	        <exec logoutput="true" command="phpcs --report=checkstyle --report-file=${build_temp_dir}/logs/checkstyle.xml --standard=PSR2 ${src_dir}" />
 	    </target>
 
 	    <target name="phpdoc" description="Generate API documentation using PHPDocumentor">
