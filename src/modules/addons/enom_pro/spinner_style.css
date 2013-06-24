@@ -58,6 +58,7 @@
 	cursor: pointer;
 	padding: 5px;
 	margin: 5px;
+	overflow: auto;
 }
 #spinner_ajax_results .spinner_results_wrapper .spin_result.checked LABEL
 {

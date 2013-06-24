@@ -1,3 +1,8 @@
+Add SRV Records
+--http://cl.circletr.ee/image/2U1B2N0i1b0k
+fix 1st record delete
+add breadcrumbs
+
 ==2.2==
 Add bulk domain import
 	"I'd like to be able to filter the list based on any of the available whois fields, 
@@ -5,5 +10,19 @@ Add bulk domain import
 	Once I have a filtered list, I'd like to be able to check off the domains to import,
 	 or do a Select All and then import the selected domains."
 ---https://mycircletree.com/client-area/ct-admin/supporttickets.php?action=viewticket&id=2299
+
+
+---https://mycircletree.com/client-area/ct-admin/supporttickets.php?action=viewticket&id=2673
+A some items I think would help the importer:
+
+1) Have an option to create a customer and then order from the whois information retreived from enom. So that if a customer account isn't known, at least one can be created. 
+
+2) When selecting the customer for creating an order, have it auto select the best match by searching for the email address of the registrant on file.
+
+3) Ability to filter out domains that already exist in whmcs. 
+
+4) When creating order, have option to disable auto renewal . 
+
+5) Bulk import for item 1
 Add create account shortcut
 --Use WHOIS to create account data

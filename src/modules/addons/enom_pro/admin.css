@@ -548,6 +548,9 @@ LABEL:hover {
 	margin-top: 5px;
 }
 
+.aligncenter {
+	text-align: center;
+}
 PRE.api_error {
 	background-color: #FFFFFF;
 	overflow: scroll;

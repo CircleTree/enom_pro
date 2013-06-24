@@ -22,7 +22,7 @@ jQuery(function($) {
 			$invoice_email.slideDown();
 	});
 	$("#create_order_dialog").dialog({
-		width: 600,
+		width: 450,
 		autoOpen: false,
 	});
 	var $loader = $(".enom_pro_loader"); 
