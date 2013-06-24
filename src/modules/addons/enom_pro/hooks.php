@@ -11,7 +11,6 @@ function enom_pro_admin_balance ($vars) {
 	if ($_REQUEST['checkenombalance']) {
 		$enom = new enom_pro();
 		if (!$enom->error) {
-			$enom->runTransaction('getBalance');
 			$warning_level = $enom->get_addon_setting('balance_warning');
 			$available = (float)preg_replace("/([^0-9.])/i", "", $enom->getAvailableBalance());
 			$warning = $available <= $warning_level ? true : false;
@@ -348,12 +347,15 @@ function get_enom_pro_widget_form ($action, $id) {
  */
 add_hook("AdminAreaHeadOutput", 1, "enom_pro_admin_css");
 function enom_pro_admin_css () {
-//Only load on applicable pages
-$pages = array('index.php', 'addonmodules.php');
-if (in_array(basename($_SERVER['SCRIPT_NAME']), $pages) || ( isset($_GET['module']) && 'enom_pro' == $_GET['module']) )
-	return '<link rel="stylesheet" href="../modules/addons/enom_pro/admin.css" />';
+	//	Only load on applicable pages
+	$pages = array('index.php', 'addonmodules.php');
+	if (in_array(basename($_SERVER['SCRIPT_NAME']), $pages) || ( isset($_GET['module']) && 'enom_pro' == $_GET['module']) ) {
+		return '<link rel="stylesheet" href="../modules/addons/enom_pro/admin.css" />';
+	} else {
+		return '';
+	}
 }
-function enom_pro_admin_page () {
+function enom_pro_admin_actions () {
 	//Only load this hook if an ajax request is being run
 	if (!isset($_REQUEST['action'])) 
 		return;
@@ -421,15 +423,15 @@ function enom_pro_admin_page () {
 		//Here we replace the error header :-)
 		header("HTTP/1.0 200 Ok", true);
 		echo json_encode( array(
-		'success' => $success,
-		'message' => $message
-				)
-			);
+			'success' => $success,
+			'message' => $message
+			)
+		);
 				
 		die(); //@TODO refactor control structure. This is repeated b/c WHMCS uses the action global for areas like invoicing 
 	}
 }
-add_hook("AdminAreaPage",1,"enom_pro_admin_page");
+add_hook("AdminAreaPage",1,"enom_pro_admin_actions");
 /**
  * Makes the namespinner markup
  */
@@ -549,23 +551,12 @@ function enom_pro_namespinner () {
 	return array('namespinner' => $spinnercode);
 }
 add_hook("ClientAreaPage",1,"enom_pro_namespinner");
-function enom_pro_clientarea_transfers () {
+function enom_pro_clientarea_transfers ($vars) {
 	global $enom_pro_transfers;
 	if (! class_exists('enom_pro') ) 
 		require_once 'enom_pro.php';
-	
 	//Prep the userid of currently logged in account
 	$uid = isset($_SESSION['uid']) ? (int)$_SESSION['uid'] : 0; //Set this to 0 for security to return no results if the WHMCS uid is not set in the session
-	//Prepare the query to check if the current user has any pending enom transfers
-	$query = "SELECT `userid`,`type`,`domain`,`status` FROM `tbldomains` WHERE `registrar`='enom' AND `status`='Pending Transfer' AND `userid`=".$uid;
-	$result = mysql_query($query);
-	//Check if there are any results
-	$there_are_results = (mysql_num_rows($result) > 0) ? true : false;
-	if ($there_are_results) {
-		$enom_pro_transfers = true;
-	} else {
-		$enom_pro_transfers = false;
-	}
 	//This is where the magic happens
 	//Only do the API request asynchronously if there are transfers
 	if ($_REQUEST['action'] == 'domains' && $_REQUEST['refresh'] == 'true') {
@@ -581,7 +572,30 @@ function enom_pro_clientarea_transfers () {
 		die();
 		//The purpose of this method reduces lag by eliminating the expensive remote API calls that must be made to enom and deferring them until after the page has loaded
 		//This ensures that your webserver is not waiting for the API response to send your WHMCS clientarea
-	}//End AJAX
-	return array('enom_transfers' => $there_are_results);
+		//End AJAX
+	} else {
+		//Prepare the query to check if the current user has any pending enom transfers
+		$query = "SELECT `userid`,`type`,`domain`,`status` FROM `tbldomains` WHERE `registrar`='enom' AND `status`='Pending Transfer' AND `userid`=".$uid;
+		$result = mysql_query($query);
+		//Check if there are any results
+		$there_are_results = (mysql_num_rows($result) > 0) ? true : false;
+		if ($there_are_results) {
+			$enom_pro_transfers = true;
+		} else {
+			$enom_pro_transfers = false;
+		}
+		return array('enom_transfers' => $there_are_results);
+	}
 }
 add_hook("ClientAreaPage",2,"enom_pro_clientarea_transfers");
+function enom_pro_srv_page ($vars) {
+	if (! ('clientarea.php' == basename($_SERVER['SCRIPT_NAME']) && isset($_GET['action']) && 'domaindetails' == $_GET['action']))
+		return;
+	$domain_id = $vars['domainid'];
+	if (! (isset( $vars['registrar']) && 'enom' == $vars['registrar']) )
+		return;
+	//We only get here if there is an active enom domain on the domain details.tpl page
+	$vars['enom_srv'] = true; 
+	return $vars;
+}
+add_hook("ClientAreaPage",3,"enom_pro_srv_page");

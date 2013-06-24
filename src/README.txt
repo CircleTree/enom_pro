@@ -1,6 +1,6 @@
 **********************************************************
 *  eNom PRO WHMCS Addon Module                           *
-*  Compatible with WHMCS 5.0+                            *
+*  Compatible with WHMCS 5.2+                            *
 *                                                        *
 *  README                                                *
 *  ©2013 Orion IP Ventures, LLC - ALL RIGHTS RESERVED    *
@@ -20,11 +20,15 @@
 * Installation Instructions *
 						   **/
 
-0 - Backup your files & DB
-1 - Unzip this package to your local machine
-2 - Upload the addon to the /whmcs/modules/addons directory
-3 - Go to the admin -> addons panel & activate
-4 - Enter License key & Select the Admin Groups you want
-    to give access to the addon
-5 - For widgets to appear MAKE SURE YOU SET THE ADMIN ROLES!
-6 - See the admin page for namspinner install instructions!
+Backup your files & DB
+Unzip this package to your local machine
+Upload the addon to the /whmcs/modules/addons directory
+Upload enom_srv.php to the /whmcs/ directory 
+Copy the templates to your active WHMCS template.
+	If you have customized your templates, see the 
+	eNom PRO Admin page for instructions
+Go to the admin -> addons panel & activate
+Enter License key & Select the Admin Groups you want
+	to give access to the addon
+For widgets to appear MAKE SURE YOU SET THE ADMIN ROLES!
+See the admin page for additional install instructions!
