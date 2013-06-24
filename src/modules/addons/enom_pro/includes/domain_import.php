@@ -82,12 +82,12 @@ if ($this->get_addon_setting('import_per_page')){
 <ul class="pager">
 	<?php if ($list_meta['prev_start'] !== 0) :?>
 	<li class="previous"><a
-		href="<?php echo self::MODULE_LINK; ?>&view=import&start=<?php echo $list_meta['prev_start'];?>#import_table">&larr;
+		href="<?php echo enom_pro::MODULE_LINK; ?>&view=import&start=<?php echo $list_meta['prev_start'];?>#import_table">&larr;
 			Previous</a></li>
 	<?php endif;?>
 	<?php if ($list_meta['next_start'] !== 0) :?>
 	<li class="next"><a
-		href="<?php echo self::MODULE_LINK; ?>&view=import&start=<?php echo $list_meta['next_start'];?>#import_table">Next
+		href="<?php echo enom_pro::MODULE_LINK; ?>&view=import&start=<?php echo $list_meta['next_start'];?>#import_table">Next
 			&rarr;</a></li>
 	<?php endif;?>
 </ul>
