@@ -16,10 +16,106 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(is_bool($domains[0]['privacy']));
 		$this->assertTrue(is_bool($domains[0]['autorenew']));
 	}
+	function  test_set_SRV()
+	{
+	    $records = array();
+	    $records[] = array(
+	            'service'    => 'voice',
+	            'priority'    => 1,
+	            'weight'    => 1,
+	            'protocol' => 'TCP',
+	            'port'    => 8080,
+	            'target'    => 'google.com'
+	            );
+	    $domains = $this->e->getDomains(1);
+	    $this->assertNotEmpty($domains, 'no enom domains found in WHMCS');
+	    $domain = $domains[0];
+	    $domain_name = $domain['sld'] .'.' .$domain['tld'];
+	    $this->e->setDomain($domain_name);
+	    $this->e->set_SRV_Records($records);
+	}
 	function  test_get_SRV() {
 		$domains = $this->e->getDomains(1);
 		$domain = $domains[0];
 		$this->e->get_SRV_records($domain['sld'] .'.'. $domain['tld']);
+	}
+	function  test_get_multiple_SRV()
+	{
+	    $records = array();
+	    $records[] = array(
+	            'service'    => 'voice',
+	            'priority'    => 1,
+	            'weight'    => 1,
+	            'protocol' => 'TCP',
+	            'port'    => 8080,
+	            'target'    => 'google.com'
+	    );
+	    $records[] = array(
+	            'service'    => 'voice2',
+	            'priority'    => 2,
+	            'weight'    => 1,
+	            'protocol' => 'TCP',
+	            'port'    => 8081,
+	            'target'    => 'google2.com'
+	    );
+	    $domains = $this->e->getDomains(1);
+	    $this->assertNotEmpty($domains, 'no enom domains found in WHMCS');
+	    $domain = $domains[0];
+	    $domain_name = $domain['sld'] .'.' .$domain['tld'];
+	    $this->e->setDomain($domain_name);
+	    $this->e->set_SRV_Records($records);
+	    $returned = $this->e->get_SRV_records();
+	    $this->assertNotEmpty($returned);
+	}
+	function  test_get_empty_srv()
+	{
+	    $domains = $this->e->getDomains(1);
+	    $this->assertNotEmpty($domains, 'no enom domains found in WHMCS');
+	    $domain = $domains[0];
+	    $domain_name = $domain['sld'] .'.' .$domain['tld'];
+	    $this->e->setDomain($domain_name);
+	    $records = $this->e->get_SRV_records();
+        $saved_records = array();
+	    foreach ($records as $record) {
+	        $saved_records[] = array( 'hostid' => $record['hostid']);
+	    }
+        $this->e->set_SRV_Records($saved_records);
+        $records = $this->e->get_SRV_records();
+        $this->assertEmpty($records);
+	}
+	
+	function  test_get_transfers() {
+	    $t = $this->e->getTransfers();
+	    $this->assertTrue(is_array($t));
+	    $this->assertNotEmpty($t, 'No pending transfers found. Add a test mode one to WHMCS');
+	    $first_result = $t[0];
+	    $this->assertTrue(is_array($first_result));
+	    $this->assertArrayHasKey('domain', $first_result);
+	    $this->assertArrayHasKey('userid', $first_result);
+	    $this->assertArrayHasKey('id', $first_result);
+	    $this->assertNotEmpty($first_result['statuses'], 'No transfer orders found');
+	    $first_transfer_order = $first_result['statuses'][0];
+	    $this->assertArrayHasKey('orderid', $first_transfer_order);
+	    $this->assertArrayHasKey('orderdate', $first_transfer_order);
+	    $this->assertArrayHasKey('statusid', $first_transfer_order);
+	    $this->assertArrayHasKey('statusdesc', $first_transfer_order);
+	}
+	function  test_spinner()
+	{
+	    $spinner_array = $this->e->getSpinner('testdomain.com');
+	    $this->assertNotEmpty($spinner_array);
+	    $this->assertArrayHasKey('domains', $spinner_array);
+	    $this->assertArrayHasKey('pricing', $spinner_array);
+	}
+	/**
+	 * @expectedException EnomException
+	 */
+	function  test_resend_activation()
+	{
+	    $domains = $this->e->getTransfers();
+	    $first_result = $domains[0];
+	    $this->assertNotEmpty($first_result, 'No pending transfers in WHMCS. Add one');
+	    $this->e->resend_activation($first_result['domain']);
 	}
 	function  test_parse_domain() {
 		$parts = $this->e->getDomainParts('google.com');
@@ -93,10 +189,6 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$this->assertTrue( strlen($this->e->getAvailableBalance())  > 2);
 		$this->assertTrue( strlen( $this->e->getBalance())  > 2);
 	}
-	function  test_get_transfers() {
-		$t = $this->e->getTransfers();
-		$this->assertTrue(is_array($t));
-	}
 	function  test_get_acct_stats() {
 		$s = $this->e->getAccountStats();
 		$this->assertTrue(is_array( $s ));
@@ -119,11 +211,13 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	}
 	/**
 	 * @expectedException RemoteException
+	 * @expectedExceptionCode RemoteException::CURL_EXCEPTION
 	 */
 	function  test_remote_curl_fail() {
 		$this->e->curl_get('404.php', array());
 	}
 	function  test_setting_cache() {
+	    
 		$this->e->get_addon_setting('ssl_days');
 		$this->e->get_addon_setting('ssl_days');
 	}
