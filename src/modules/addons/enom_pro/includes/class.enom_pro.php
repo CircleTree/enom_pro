@@ -366,10 +366,12 @@ class enom_pro
             //Reset transferorder index
             $transfer_order = 0;
             foreach ($this->xml->TransferOrder as $order) {
+                // @codeCoverageIgnoreBegin
                 if ($order->statusid == 14) {
                     //Enom returns a cryptic description that doesn't even match their public website
                     $order->statusdesc = 'Transfer Pending - Awaiting Release by Current Registrar';
                 }
+                // @codeCoverageIgnoreEnd
                 //Prepare the order array for readability
                 $order_array = array(
                         'orderid'      => (string) $order->orderid,
