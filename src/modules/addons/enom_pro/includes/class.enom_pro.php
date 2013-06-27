@@ -423,16 +423,17 @@ class enom_pro
 
         $this->runTransaction('GetDomainSRVHosts');
         $record_count = count($this->xml->{'srv-records'}->srv);
-        
+
         if (0 == $record_count) {
             return array();
         }
 
         if (1 == $record_count) {
             $record = (array) $this->xml->{'srv-records'}->srv;
+
             return array($this->parse_xml_to_srv($record));
         }
-        
+
         $response = array();
         foreach ((array) $this->xml->{'srv-records'} as $record) {
             $records_array = (array) $record;
@@ -444,6 +445,7 @@ class enom_pro
                 }
             }
         }
+
         return array_reverse($response, true);
     }
     private function  parse_xml_to_srv( array $record )
@@ -459,7 +461,7 @@ class enom_pro
                     );
     }
     /**
-     * 
+     *
      * @param array $records indexed array of records with form
      *     array(
      *     'service' => string name,
@@ -494,7 +496,8 @@ class enom_pro
      * Parses a field and returns an empty string if it's not set
      * @param unknown $field
      */
-    private function parse_field ($field) {
+    private function parse_field ($field)
+    {
         return isset($field) ? $field : '';
     }
     /**

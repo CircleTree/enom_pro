@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * @author robertgregor
  * @codeCoverageIgnore
  */
