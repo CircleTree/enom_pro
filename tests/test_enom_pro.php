@@ -59,6 +59,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	            'target'    => 'google2.com'
 	    );
 	    $domains = $this->e->getDomains(1);
+	    
 	    $this->assertNotEmpty($domains, 'no enom domains found in WHMCS');
 	    $domain = $domains[0];
 	    $domain_name = $domain['sld'] .'.' .$domain['tld'];
