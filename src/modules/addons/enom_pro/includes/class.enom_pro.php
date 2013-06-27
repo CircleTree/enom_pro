@@ -356,21 +356,31 @@ class enom_pro
         if (!is_null($userid)) $query .= " AND `userid`=".(int) $userid;
         $result = mysql_query($query);
         $transfers = array();
-        $i=0;
+        $transfer_index=0;
         while ($row = mysql_fetch_assoc($result)) {
             $this->setDomain($row['domain']);
             //And run the transaction
             $this->runTransaction('TP_GetDetailsByDomain');
             //prepare the response array
-            $transfers[$i] = array('domain'=>$row['domain'],'userid'=>$row['userid'],'id'=>$row['id'],'statuses'=>array());
+            $transfers[$transfer_index] = array('domain'=>$row['domain'],'userid'=>$row['userid'],'id'=>$row['id'],'statuses'=>array());
             //Reset transferorder index
-            $to=0;
+            $transfer_order = 0;
             foreach ($this->xml->TransferOrder as $order) {
-                if ($order->statusid == 14) $order->statusdesc = 'Transfer Pending - Awaiting Release by Current Registrar';
-                $transfers[$i]['statuses'][$to] = $order;
-                $to++;
+                if ($order->statusid == 14) {
+                    //Enom returns a cryptic description that doesn't even match their public website
+                    $order->statusdesc = 'Transfer Pending - Awaiting Release by Current Registrar';
+                }
+                //Prepare the order array for readability
+                $order_array = array(
+                        'orderid'      => (string) $order->orderid,
+                        'orderdate'    => (string) $order->orderdate,
+                        'statusid'     => (string) $order->statusid,
+                        'statusdesc'   => (string) $order->statusdesc,
+                        );
+                $transfers[$transfer_index]['statuses'][$transfer_order] = $order_array;
+                $transfer_order++;
             }
-            $i++;
+            $transfer_index++;
         }
 
         return $transfers;
@@ -395,16 +405,14 @@ class enom_pro
      * Gets SRV Records
      * @param  string $domain optional, only needed if setDomain isn't called first
      * @return array  (
-     [HostID] => 18744888
-     [HostName] => _test2
-     [Protocol] => _TCP
-     [Address] => test2.mycircletree.com
-     [RecordType] => SRV
-     [mxPref] => 0
-     [Weight] => 20
-     [priority] => 2
-     [Port] => 82
-     )
+            [service] => _voice
+            [protocol] => _TCP
+            [priority] => 1
+            [weight] => 1
+            [port] => 8080
+            [target] => google.com
+            [hostid] => 18749788
+        )
      */
     public function  get_SRV_records($domain = null)
     {
@@ -412,32 +420,29 @@ class enom_pro
             $this->setDomain($domain);
 
         $this->runTransaction('GetDomainSRVHosts');
-
-        if (empty($this->xml->{'srv-records'}->srv))
-
+        $record_count = count($this->xml->{'srv-records'}->srv);
+        
+        if (0 == $record_count) {
             return array();
+        }
 
-        /* @TODO is this necessary now that the foreach uses the -> srv end element?
-        if (count($this->xml->{'srv-records'}->srv) == 1) {
+        if (1 == $record_count) {
             $record = (array) $this->xml->{'srv-records'}->srv;
-
             return array($this->parse_xml_to_srv($record));
         }
-        */
-
+        
         $response = array();
-        foreach ((array) $this->xml->{'srv-records'}->srv as $records) {
-// 			foreach ($records as $record) {
+        foreach ((array) $this->xml->{'srv-records'} as $record) {
+            $records_array = (array) $record;
+            foreach ($records_array as $record) {
                 $record_array = (array) $record;
                 if ($record_array['RecordType'] == 'SRV') {
                     $parsed_record = $this->parse_xml_to_srv($record_array);
                     $response[] = $parsed_record;
                 }
-// 			}
+            }
         }
-
         return array_reverse($response, true);
-        return $response;
     }
     private function  parse_xml_to_srv( array $record )
     {
@@ -451,14 +456,24 @@ class enom_pro
                         'hostid' 	=> 	$record['HostID'],
                     );
     }
+    /**
+     * 
+     * @param array $records indexed array of records with form
+     *     array(
+     *     'service' => string name,
+     *     'protocol' => string UDP/TCP
+     *     'priority' => int
+     *     'weight'   => int
+     *     'port'     => int (1-65536)
+     *     'target'   => string hostname
+     */
     public function  set_SRV_Records($records)
     {
-        $i = 1;
+        $srv_index = 1;
         foreach ($records as $record) {
-            $this->parse_srv_params($record, $i);
-            $i++;
+            $this->parse_srv_params($record, $srv_index);
+            $srv_index++;
         }
-        $this->suppress_errors();
         $this->runTransaction('SetDomainSRVHosts');
     }
     private function parse_srv_params ($record, $index)
@@ -466,12 +481,19 @@ class enom_pro
         if (isset($record['hostid']) && trim($record['hostid']) != "") {
             $this->parameters['HostID'.$index] = $record['hostid'];
         }
-        $this->parameters['Service'.$index] = $record['service'];
-        $this->parameters['Protocol'.$index] = $record['protocol'];
-        $this->parameters['Priority'.$index] = $record['priority'];
-        $this->parameters['Weight'.$index] = $record['weight'];
-        $this->parameters['Port'.$index] = $record['port'];
-        $this->parameters['Target'.$index] = $record['target'];
+        $this->parameters['Service'.$index]      =     @ $this->parse_field($record['service']);
+        $this->parameters['Protocol'.$index]     =     @ $this->parse_field($record['protocol']);
+        $this->parameters['Priority'.$index]     =     @ $this->parse_field($record['priority']);
+        $this->parameters['Weight'.$index]       =     @ $this->parse_field($record['weight']);
+        $this->parameters['Port'.$index]         =     @ $this->parse_field($record['port']);
+        $this->parameters['Target'.$index]       =     @ $this->parse_field($record['target']);
+    }
+    /**
+     * Parses a field and returns an empty string if it's not set
+     * @param unknown $field
+     */
+    private function parse_field ($field) {
+        return isset($field) ? $field : '';
     }
     /**
      * @todo add expiring / redemption domains o
@@ -606,9 +628,6 @@ class enom_pro
     {
         $this->setDomain($domain);
         $this->runTransaction("TP_ResendEmail");
-        if ($this->error) {
-            return strip_tags($this->errorMessage);
-        } else return true;
     }
     public function  getDomains ($limit = 25, $start = 1)
     {
