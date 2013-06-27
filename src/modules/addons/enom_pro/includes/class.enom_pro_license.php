@@ -1,4 +1,9 @@
 <?php
+/**
+ * 
+ * @author robertgregor
+ * @codeCoverageIgnore
+ */
 class enom_pro_license
 {
     private $license;
