@@ -4,6 +4,7 @@
  * @version @VERSION@
  * Copyright 2013 Orion IP Ventures, LLC. All Rights Reserved.
  * Licenses Resold by Circle Tree, LLC. Under Reseller Licensing Agreement
+ * @codeCoverageIgnore
  */
 defined("WHMCS") or die("This file cannot be accessed directly");
 define("ENOM_PRO_VERSION",'@VERSION@');
