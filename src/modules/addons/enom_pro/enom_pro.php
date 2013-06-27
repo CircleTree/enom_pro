@@ -12,6 +12,10 @@ define('ENOM_PRO_INCLUDES', ROOTDIR . '/modules/addons/enom_pro/includes/');
 require_once ENOM_PRO_INCLUDES . 'class.enom_pro.php';
 require_once ENOM_PRO_INCLUDES . 'class.enom_pro_license.php';
 
+/**
+ * @return multitype:string multitype:multitype:string  multitype:string number
+ * @codeCoverageIgnore
+ */
 function enom_pro_config ()
 {
     $spinner_help = " <br/><span class=\"textred\" >Make sure your active cart & domain checker templates have {\$namespinner} in them.</span>";
@@ -65,6 +69,9 @@ function enom_pro_config ()
     return $config;
 }
 
+/**
+ * @codeCoverageIgnore
+ */
 function enom_pro_activate ()
 {
     mysql_query("BEGIN");
@@ -110,6 +117,11 @@ class RemoteException extends Exception
     const CURL_EXCEPTION = 3;
 }
 
+/**
+ * @param unknown $vars
+ * @return string
+ * @codeCoverageIgnore
+ */
 function enom_pro_sidebar ($vars)
 {
     $sidebar = '<span class="header"><img src="images/icons/domainresolver.png" class="absmiddle" width=16 height=16 />@NAME@</span>
@@ -133,7 +145,10 @@ function enom_pro_sidebar ($vars)
 
     return $sidebar;
 }
-
+/**
+ * @param unknown $vars
+ * @codeCoverageIgnore
+ */
 function enom_pro_output ($vars)
 {
     $enom = new enom_pro();
