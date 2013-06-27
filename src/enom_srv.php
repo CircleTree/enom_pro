@@ -5,7 +5,7 @@ $ca->setPageTitle('SRV Records');
 $ca->initPage();
 $ca->requireLogin();
 require_once ROOTDIR . '/modules/addons/enom_pro/enom_pro.php';
-if ( isset($_REQUEST['action']) ) {
+if (isset($_REQUEST['action'])) {
     switch ($_REQUEST['action']) {
         case 'save_srv':
             $domain = mysql_fetch_assoc(mysql_query('SELECT * from `tbldomains` WHERE `id`= '.(int) $_REQUEST['id'].' AND `userid` = '.$_SESSION['uid']));
