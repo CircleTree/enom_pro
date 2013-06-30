@@ -656,6 +656,11 @@ class enom_pro
 
         return $return;
     }
+    public function getDomainsTab ($tab)
+    {
+        $this->setParams(array('Tab' => $tab));
+        return $this->getDomains();
+    }
     /**
      *
      * @param  string          $url
