@@ -49,7 +49,6 @@ if (isset($_REQUEST['action'])) {
     }
     die;
 }
-
 if (! isset($_GET['id'])) {
     $query = 'SELECT * from `tbldomains` WHERE `registrar` = \'enom\'  AND `userid` = ' . $_SESSION['uid'];
     $mysql_result = mysql_query($query);

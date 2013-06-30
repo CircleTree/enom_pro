@@ -6,6 +6,11 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$this->e = new enom_pro();
 		parent::setUp();
 	}
+	function  test_get_domain_tab()
+	{
+	    $response = $this->e->getDomainsTab('expiring');
+	    $this->assertTrue(is_array($response));
+	}
 	function  test_get_domains() {
 		$domains = $this->e->getDomains(1);
 		$this->assertTrue(is_array($domains));
@@ -218,7 +223,6 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$this->e->curl_get('404.php', array());
 	}
 	function  test_setting_cache() {
-	    
 		$this->e->get_addon_setting('ssl_days');
 		$this->e->get_addon_setting('ssl_days');
 	}
