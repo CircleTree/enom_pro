@@ -42,7 +42,7 @@ class enom_pro_license
         $query = "SELECT `local` FROM `mod_enom_pro`";
         $local = mysql_fetch_assoc(mysql_query($query));
         $localKey = $local['local'];
-        $results = $this->get_remote_license($this->get_addon_setting('license'),$localKey);
+        $results = $this->get_remote_license(enom_pro::get_addon_setting('license'),$localKey);
         $this->license = $results;
         $this->latestvesion = @$results['latestversion'];
         $this->company = @$results['companyname'];
@@ -187,7 +187,7 @@ class enom_pro_license
             }
             if ($results["status"]=="Active") {
                 $results["checkdate"] = $checkdate;
-                $latest_version_xml = $this->curl_get('http://mycircletree.com/versions/enom_pro_version.xml');
+                $latest_version_xml = enom_pro::curl_get('http://mycircletree.com/versions/enom_pro_version.xml');
                 $latest_version = simplexml_load_string($latest_version_xml);
                 $rc_version = $latest_version->version;
                 $results["latestversion"] = (string) $rc_version;

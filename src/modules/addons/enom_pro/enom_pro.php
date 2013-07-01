@@ -151,7 +151,9 @@ function enom_pro_sidebar ($vars)
  */
 function enom_pro_output ($vars)
 {
+    try {
     $enom = new enom_pro();
+    $enom->getAvailableBalance();
     if (isset($_GET['view']) && 'import' == $_GET['view']) {
         $enom->render_domain_import_page();
 
@@ -160,9 +162,6 @@ function enom_pro_output ($vars)
     $license = new enom_pro_license();
     if ($license->updateAvailable())
         echo $license->updateAvailable();
-    if ($enom->is_error()):
-    echo $enom->errorMessage;
-    else:
     ?>
 <div id="enom_faq">
     <p>
@@ -171,7 +170,6 @@ function enom_pro_output ($vars)
             href="<?php echo $_SERVER['PHP_SELF'] . '?module=enom_pro&view=import'?>">Import
             Domains!</a>
     </p>
-    <?php endif;?>
     <h1>FAQ</h1>
     <h2>Where do I enter my eNom API info?</h2>
     <p>
@@ -233,5 +231,16 @@ function enom_pro_output ($vars)
             class="btn">Install Service</a>
     </h3>
 </div>
-<?php
+<?php } catch (EnomException $e) { ?>
+        <div class="alert alert-error">
+            <h2>There was a problem communicating with the eNom API:</h2>
+            <?php echo $e->getMessage(); ?>
+        </div>
+<?php } catch (Exception $e) { ?>
+        <div class="alert alert-error">
+            <h2>Error</h2>
+            <?php echo $e->getMessage(); ?>
+        </div>
+        <?php 
+    }
 }

@@ -3,8 +3,8 @@
 	<property name="name" value="eNom PRO"/>
 	<property name="version" value="2.1.0"/>
 	<property name="build_dir" value="/Volumes/Build/enom_pro"/>
-	<property name="build_temp_dir" value="./build"/>
-	<property name="src_dir" value="./src"/>
+	<property name="build_temp_dir" value="/build"/>
+	<property name="src_dir" value="src/"/>
 	<property name="version_xml" value="enom_pro_version.xml"/>
 	<property name="deploy" value="/Users/robertgregor/Sites/whmcs" />
 	<!-- Location to save the encoded version -->
@@ -13,7 +13,7 @@
 	<property name="ftp.password" value="vRki3ozG08Tt"/>
 	<property name="enc.secret" value="***REMOVED***"/><!-- Secret -->
     <!-- FILESETS -->
-    <fileset dir="${src_dir} " id="open_files">
+    <fileset dir="${project.basedir}/${src_dir}" id="open_files">
         <include name="**/.php" />
         <include name="**/.xml" />
         <include name="**/.css" />
@@ -106,17 +106,9 @@
 	    <target name="ci" depends="clean,phpunit,try_ParallelTasks,phpcb" />
     <target name="deploy">
     	<echo msg="Cleaning up any failed builds"/>
-    	
-    	<echo msg="Running Unit Tests"/>
-    	<phpunit configuration="phpunit.xml" printsummary="true">
-    		<batchtest>
-    			<fileset dir="tests">
-    				<include name="*.php"/>
-    			</fileset>
-    		</batchtest>
-    	</phpunit>
     	<delete dir="${build_dir}" includeemptydirs="true" failonerror="false"/>
    		<mkdir dir="${build_dir}" />
+    	<delete dir="${deploy}/modules/enom_pro/"/>
    		<mkdir dir="${encoded}" />
     	<echo msg="Copying files from src to encoded_prep &amp; replacing tokens"/>
         <copy todir="${encoded_prep}">
@@ -129,7 +121,7 @@
         	</filterchain>
         	<fileset refid="open_files"/>
         </copy>
-        <ioncubeencoder obfuscate="linenos" optimize="max" ioncubepath="/Users/robertgregor/" targetoption="replace" fromdir="${encoded_prep}" todir="${encoded}">
+        <ioncubeencoder phpversion="53" obfuscate="linenos" optimize="max" ioncubepath="/Users/robertgregor/ioncube" targetoption="replace" fromdir="${encoded_prep}" todir="${encoded}">
     			<comment>*************************************************************************</comment>
 				<comment>* enom PRO Addon for WHMCS                                              *</comment>
 				<comment>* Copyright (c) 2001-2013 Orion IP Ventures, LLC. All Rights Reserved   *</comment>

@@ -631,7 +631,9 @@ FORM.refreshbutton {
 	text-align: center;
 	margin: 5px auto;
 }
-
+.hidden {
+    display: none;
+}
 .btn.btn-success,
 .btn.btn-success:visited,
 .btn-primary,

@@ -6,6 +6,12 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$this->e = new enom_pro();
 		parent::setUp();
 	}
+	function  test_setting_settter()
+	{
+	    $val = 1234;
+	    enom_pro::set_addon_setting('test1', $val);
+	    $this->assertEquals($val, enom_pro::get_addon_setting('test1'));
+	}
 	function  test_get_domain_tab()
 	{
 	    $response = $this->e->getDomainsTab('expiring');

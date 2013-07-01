@@ -1,4 +1,6 @@
 <?php
+use Behat\Behat\Exception\Exception;
+
 /**
 * eNom Pro WHMCS Addon Hooks
 * @version @VERSION@
@@ -10,8 +12,8 @@ function enom_pro_admin_balance ($vars)
     if (!class_exists('enom_pro'))
         require_once 'enom_pro.php';
     if ($_REQUEST['checkenombalance']) {
+        try {
         $enom = new enom_pro();
-        if (!$enom->error) {
             $warning_level = $enom->get_addon_setting('balance_warning');
             $available = (float) preg_replace("/([^0-9.])/i", "", $enom->getAvailableBalance());
             $warning = $available <= $warning_level ? true : false;
@@ -23,9 +25,10 @@ function enom_pro_admin_balance ($vars)
             <a href="https://www.enom.com/myaccount/RefillAccount.asp" target="_blank">Refill Account</a>';
             $str .= "</div>";
             if ($warning) {
-                $str .= '<script>
-                        jQuery(function($) {
-                        var $message = $("#enom_balance_message");
+                $str .= '
+<script>
+jQuery(function($) {
+    var $message = $("#enom_balance_message");
     setInterval(function  () {
         if ($message.hasClass("inset")) {
               $message.removeClass("inset");
@@ -34,21 +37,22 @@ function enom_pro_admin_balance ($vars)
         }
     },500)
 });
-                        </script>
-                        ';
+</script>
+';
             }
             $content = $str;
-        } else {
-            $content = $enom->errorMessage;
+            if ($enom->license->updateAvailable()) {
+                $content .= $enom->license->updateAvailable();
+            }
+        } catch (Exception $e) {
+            $content = $e->getMessage();
         }
-        if ($enom->updateAvailable())
-            $content .= $enom->updateAvailable();
-        echo $content;
+        echo enom_pro::minify($content);
         exit;
     }
     $content = '<div id="enombalance"><span class="enom_pro_loader"></span></div>';
     $jquerycode = '
-            var $refresh_form = jQuery("#refreshEnomBalance");
+    var $refresh_form = jQuery("#refreshEnomBalance");
     $refresh_form.live("submit", function  () {
         var $elem = jQuery("#enombalance");
         $elem.html(\'<span class="enom_pro_loader"></span>\');
@@ -58,10 +62,10 @@ function enom_pro_admin_balance ($vars)
             });
 
             return false;
-        })
-        if ($refresh_form.is(":visible"))
+        });
+        if ($refresh_form.is(":visible")) {
             $refresh_form.trigger("submit");
-    ';
+        }';
 
     return array(
             'title'=>'eNom PRO - Reseller Balance <img src="images/icons/transactions.png" align="absmiddle" height="16px" width="16px" border="0">'.get_enom_pro_widget_form('checkenombalance', 'refreshEnomBalance'),
@@ -76,8 +80,8 @@ function enom_pro_admin_ssl_certs ($vars)
     if (!class_exists('enom_pro'))
         require_once 'enom_pro.php';
     if ($_REQUEST['checkenomssl']) {
+        try {
         $enom = new enom_pro();
-        if (!$enom->error) {
             $str .= '<div class="enom_pro_widget alert '.(count($expiring_certs) > 0 ? 'alert-danger' : 'alert-success').'">';
             $expiring_certs = $enom->getExpiringCerts();
             if (count($expiring_certs) > 0 ) {
@@ -108,27 +112,27 @@ function enom_pro_admin_ssl_certs ($vars)
             }
             $str .= "</div>";
             $content = $str;
-        } else {
-            $content = $enom->errorMessage;
+        } catch (Exception $e) {
+            $content = $e->getMessage();
         }
-        echo $content;
+        echo enom_pro::minify($content);
         exit;
     }
     $content = '<div id="enomSSL"><span class="enom_pro_loader"></span></div>';
     $jquerycode = '
-            var $refresh_ssl = jQuery("#refreshEnomSSL");
+    var $refresh_ssl = jQuery("#refreshEnomSSL");
     $refresh_ssl.live("submit", function  () {
-    public $elem = jQuery("#enomSSL");
+    var $elem = jQuery("#enomSSL");
     $elem.html(\'<span class="enom_pro_loader"></span>\');
         jQuery.post("index.php", $(this).serialize(),
             function(data){
                 $elem.html(data);
         });
-
         return false;
     });
-        if($refresh_ssl.is(":visible"))
+        if($refresh_ssl.is(":visible")) {
             $refresh_ssl.trigger("submit");
+        }
 ';
 
     return array(
@@ -145,7 +149,7 @@ function enom_pro_admin_expiring_domains ($vars)
         require_once 'enom_pro.php';
     if ($_REQUEST['checkexpiring']) {
         $enom = new enom_pro();
-        if (!$enom->error) {
+        try {
             $stats = $enom->getAccountStats();
             $str .= '<div class="enom_pro_widget">';
             $str .= '<table class="table-hover" ><tbody>
@@ -171,10 +175,10 @@ function enom_pro_admin_expiring_domains ($vars)
                     </tr>
             </tbody></table>';
             $content = $str;
-        } else {
-            $content = $enom->errorMessage;
+        } catch (Exception $e) {
+            $content = $e->getMessage();
         }
-        echo $content;
+        echo enom_pro::minify($content);
         exit;
     }
     $content = '<div id="enomExpiring"><span class="enom_pro_loader"></span></div>';
@@ -187,12 +191,11 @@ function enom_pro_admin_expiring_domains ($vars)
             function(data){
             $elem.html(data);
         });
-
         return false;
-    })
-    if($refresh_expiring.is(":visible"))
+    });
+    if($refresh_expiring.is(":visible")) {
         $refresh_expiring.trigger("submit");
-';
+    }';
 
     return array(
             'title'	=>	'eNom PRO - Domain Stats <img src="images/icons/domains.png" align="absmiddle" height="16px" width="16px" border="0">'.get_enom_pro_widget_form('checkexpiring', 'refreshExpiring'),
@@ -208,7 +211,7 @@ function enom_pro_admin_transfers ($vars)
         require_once 'enom_pro.php';
         if ($_REQUEST['checkenomtransfers']) {
             $enom = new enom_pro();
-            if (!$enom->error) {
+            try {
                 $transfers = $enom->getTransfers();
                 if (empty($transfers)) {
                     $str .= '<div class="alert alert-success enom_pro_widget">No pending transfers found in WHMCS</div>';
@@ -290,10 +293,10 @@ function enom_pro_admin_transfers ($vars)
                 }
                 $str .= "</table></div>";
                 $content = $str;
-            } else {
-                $content = $enom->errorMessage;
+            } catch (Exception $e) {
+                $content = $e->getMessage();
             }
-            echo $content;
+            echo enom_pro::minify($content);
             exit;
         }
         $content = '<div id="enomtransfers"><span class="enom_pro_loader"></span></div>';
@@ -331,7 +334,7 @@ function enom_pro_admin_transfers ($vars)
 
         return false;
         });
-    })';
+    });';
 
         return array(
                 'title'	=>	'eNom PRO - Pending Transfers <img src="images/icons/clientlogin.png" align="absmiddle" height="16px" width="16px" border="0">'.get_enom_pro_widget_form('checkenomtransfers', 'refreshEnomTransfers'),
@@ -373,80 +376,93 @@ function enom_pro_admin_css ()
 }
 function enom_pro_admin_actions ()
 {
+    $enom_actions = array(
+        'resend_enom_transfer_email',
+        'resubmit_enom_transfer_order',
+        'add_enom_pro_domain_order',
+        'set_results_per_page',      
+    );
     //Only load this hook if an ajax request is being run
-    if (!isset($_REQUEST['action']))
+    if (!isset($_REQUEST['action']) && ! in_array($_REQUEST['action'], $enom_actions))
         return;
     //Include our class if needed
     if (!class_exists('enom_pro'))
         require_once 'enom_pro.php';
-    if ($_REQUEST['action'] == 'resend_enom_transfer_email') {
-        //Instantiate an object
-        $enom = new enom_pro(); //@TODO make this code more DRY
-        $response = $enom->resend_activation((string) $_REQUEST['domain']);
-        if (is_bool($response)) {
-            echo "Sent!";
-        } else {
-            if (!$enom->debug())
-                //Check if verbose debugging is enabled, if it is, the above method call will echo an error.
-                echo (strip_tags($response));
+    try {
+        $enom = new enom_pro();
+        switch ($_REQUEST['action']) {
+            case 'resend_enom_transfer_email':
+                $response = $enom->resend_activation((string) $_REQUEST['domain']);
+                if (is_bool($response)) {
+                    echo "Sent!";
+                }
+            break;
+            case 'resubmit_enom_transfer_order':
+                $response = $enom->resubmit_locked((int) $_REQUEST['orderid']);
+                if (is_bool($response)) {
+                    echo "Submitted!";
+                }
+            break;
+            case 'set_results_per_page':
+                $per_page = (int) $_REQUEST['per_page'];
+                if ($per_page > 100 || $per_page < 0) {
+                    $per_page = 25;
+                }
+                enom_pro::set_addon_setting('import_per_page', $per_page);
+                echo 'set';
+            break;
+            case 'add_enom_pro_domain_order':
+                $data = array(
+                        'clientid' => $_REQUEST['clientid'],
+                        'domaintype' => array('register'),
+                        'domain'	=> array( $_REQUEST['domain'] ),
+                        'paymentmethod' => $_REQUEST['paymentmethod']
+                );
+                if (isset($_REQUEST['regperiod'])) {
+                    $data['regperiod'] = array( $_REQUEST['regperiod'] );
+                }
+                if (isset($_REQUEST['dnsmanagement'])) {
+                    $data['dnsmanagement'] = array('on');
+                }
+                if (isset($_REQUEST['idprotection'])) {
+                    $data['idprotection'] = array('on');
+                }
+                if (!isset($_REQUEST['noemail'])) {
+                    $data['noemail'] = true;
+                }
+                if (!isset($_REQUEST['noinvoice'])) {
+                    $data['noinvoice'] = true;
+                }
+                if (!isset($_REQUEST['noinvoiceemail'])) {
+                    $data['noinvoiceemail'] = true;
+                }
+                //We have to set this by default because WHMCS stops execution if there is a domain configuration issue
+                header("HTTP/1.0 404 Not Found");
+                $response = localapi('addorder', $data);
+                header('Content-Type: text/html');
+                $success = 'success' == $response['result'] ? true : false;
+                if ($success) {
+                    //Here we replace the error header :-)
+                    header("HTTP/1.0 200 Ok", true);
+                    $message = 'Created new order #'.$response['orderid'];
+                    if (! empty($response['invoiceid']))
+                        $message .= PHP_EOL . 'Created new invoice #'.$response['invoiceid'];
+                } else {
+                    $message = 'Error: '. $response['message'];
+                }
+                header('Content-Type: application/json', true);
+                echo json_encode( array(
+                        'success' => $success,
+                        'message' => $message
+                    )
+                );
+            break;
         }
-        die();
+    } catch (Exception $e) {
+        header("HTTP/1.0 400 Bad Request", true);
+        echo $e->getMessage();
     }
-    if ($_REQUEST['action'] == 'resubmit_enom_transfer_order') {
-        //Instantiate an object
-        $enom = new enom_pro(); //@TODO DRY
-        $response = $enom->resubmit_locked((int) $_REQUEST['orderid']);
-        if (is_bool($response)) {
-            echo "Submitted!";
-        } else {
-            if (!$enom->debug())
-                //Check if verbose debugging is enabled, if it is, the above method call will echo an error.
-                echo (strip_tags($response));
-        }
-        die();
-    }
-    if ($_REQUEST['action'] == 'add_enom_pro_domain_order') {
-        $data = array(
-                'clientid' => $_REQUEST['clientid'],
-                'domaintype' => array('register'),
-                'domain'	=> array( $_REQUEST['domain'] ),
-                'paymentmethod' => $_REQUEST['paymentmethod']
-            );
-        if (isset($_REQUEST['regperiod']))
-            $data['regperiod'] = array( $_REQUEST['regperiod'] );
-        if (isset($_REQUEST['dnsmanagement']))
-            $data['dnsmanagement'] = array('on');
-        if (isset($_REQUEST['idprotection']))
-            $data['idprotection'] = array('on');
-        if (!isset($_REQUEST['noemail']))
-            $data['noemail'] = true;
-        if (!isset($_REQUEST['noinvoice']))
-            $data['noinvoice'] = true;
-        if (!isset($_REQUEST['noinvoiceemail']))
-            $data['noinvoiceemail'] = true;
-        //We have to set this by default because WHMCS is retarded and stops execution if there is a domain configuration issue
-        header("HTTP/1.0 404 Not Found");
-        $response = localapi('addorder', $data);
-        header('Content-Type: text/html');
-        $success = 'success' == $response['result'] ? true : false;
-        if ($success) {
-            $message = 'Created new order #'.$response['orderid'];
-            if (! empty($response['invoiceid']))
-                $message .= PHP_EOL . 'Created new invoice #'.$response['invoiceid'];
-        } else {
-            $message = 'Error: '. $response['message'];
-        }
-        header('Content-Type: application/json', true);
-        //Here we replace the error header :-)
-        header("HTTP/1.0 200 Ok", true);
-        echo json_encode( array(
-            'success' => $success,
-            'message' => $message
-            )
-        );
-
-        die(); //@TODO refactor control structure. This is repeated b/c WHMCS uses the action global for areas like invoicing
-    }
+    die(); 
 }
 add_hook("AdminAreaPage",1,"enom_pro_admin_actions");
 /**
@@ -563,8 +579,7 @@ function enom_pro_namespinner ()
                 $elem.parent("div").removeClass("checked")
             }
         })
-    });
-    ';
+    });';
     $spinnercode .= '</script>';
 
     return array('namespinner' => $spinnercode);
