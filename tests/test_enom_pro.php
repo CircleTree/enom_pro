@@ -12,6 +12,12 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	    enom_pro::set_addon_setting('test1', $val);
 	    $this->assertEquals($val, enom_pro::get_addon_setting('test1'));
 	}
+	function  test_getDomains_withClients()
+	{
+	    $total = $this->e->getDomainsWithClients(10, 1);
+	    $hidden = $this->e->getDomainsWithClients(10, 1, true);
+	    $this->assertNotEquals($total, $hidden);
+	}
 	function  test_get_domain_tab()
 	{
 	    $response = $this->e->getDomainsTab('expiring');

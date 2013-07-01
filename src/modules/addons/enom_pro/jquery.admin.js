@@ -84,17 +84,8 @@ jQuery(function($) {
 		});
 		return false;		
 	});
-	if ($("#domains_target").length == 1) {
-		$.ajax({
-			data: {action: 'render_import_table'},
-			success: function  (data) 
-			{
-				$(".enom_pro_loader").addClass('hidden'); 
-				$("#domains_target").html(data); 
-			}
-		});
-	} 
-	$("#domains_target").on('submit', 'form', function  () {
+	
+	$("#import_table_form").on('submit', function  () {
 		$(".enom_pro_loader").removeClass('hidden'); 
 		$.ajax({
 			url:'addonmodules.php?module=enom_pro', 
@@ -107,6 +98,7 @@ jQuery(function($) {
 		});
 		return false;
 	});
+	$("#import_table_form").submit(); 
 	$("#domains_target").on("click", ".pager A", function  () {
 		$("input[name=start]").val($(this).data('start'));
 		$("#import_table_form").trigger('submit');

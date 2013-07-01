@@ -9,6 +9,7 @@
 defined("WHMCS") or die("This file cannot be accessed directly");
 define("ENOM_PRO_VERSION",'@VERSION@');
 define('ENOM_PRO_INCLUDES', ROOTDIR . '/modules/addons/enom_pro/includes/');
+require_once ENOM_PRO_INCLUDES . 'exceptions.php';
 require_once ENOM_PRO_INCLUDES . 'class.enom_pro.php';
 require_once ENOM_PRO_INCLUDES . 'class.enom_pro_license.php';
 
@@ -18,12 +19,14 @@ require_once ENOM_PRO_INCLUDES . 'class.enom_pro_license.php';
  */
 function enom_pro_config ()
 {
-    $spinner_help = " <br/><span class=\"textred\" >Make sure your active cart & domain checker templates have {\$namespinner} in them.</span>";
+    $spinner_help = " <br/><span class=\"textred\" >
+            Make sure your active cart & domain checker templates have {\$namespinner} in them.</span>";
     $config = array(
             'name'=>'@NAME@' . (!isset($_GET['view']) ? '' : ' - Import'),
             'version'=>'@VERSION@',
             'author'=>'<a href="http://orionipventures.com/">Orion IP Ventures, LLC.</a>',
-            'description'=>'Shows eNom Balance and active Transfers on the admin homepage in widgets. Adds a clientarea page that displays active transfers to clients.',
+            'description'=>'Shows eNom Balance and active Transfers on the admin homepage in widgets. 
+            Adds a clientarea page that displays active transfers to clients.',
             'fields'=>array(
                     'quicklink'=>array('FriendlyName'=>"","Type"=>"null","Description"=>
                             '<span style="font-size:16pt;padding:0 10px; 0;" >@NAME@ Settings</span>
@@ -137,19 +140,6 @@ function enom_pro_activate ()
     if (mysql_error()) die (mysql_error());
 }
 
-/**
- * License Errors
- */
-class LicenseExeption extends Exception {}
-/**
- * cURL / XML Parsing errors
- */
-class RemoteException extends Exception
-{
-    const RETRY_LIMIT = 1;
-    const XML_PARSING_EXCEPTION = 2;
-    const CURL_EXCEPTION = 3;
-}
 
 /**
  * @param unknown $vars
@@ -182,13 +172,17 @@ function enom_pro_sidebar ($vars)
     return $sidebar;
 }
 /**
- * @param unknown $vars
+ * @param array $vars
  * @codeCoverageIgnore
  */
 function enom_pro_output ($vars)
 {
     try {
         $enom = new enom_pro();
+        $domains_with = $enom->getDomainsWithClients(2, 1);
+        echo '<pre>';
+        print_r($domains_with);
+        echo '</pre>';
         $enom->getAvailableBalance();
         if (isset($_GET['view']) && 'import' == $_GET['view']) {
             $enom->render_domain_import_page();

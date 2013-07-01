@@ -54,6 +54,11 @@ class enom_pro
     public $message;
     public $productname;
     private $retry_count = 0;
+    /**
+     * Is the current request executing via PHP CLI?
+     * @var bool
+     */
+    public static $cli = false;
     const RETRY_LIMIT = 2;
     const INSTALL_URL = 'https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7&subject=enom%20Install%20Service';
     const MODULE_LINK = 'addonmodules.php?module=enom_pro';
@@ -86,7 +91,9 @@ class enom_pro
         self::$debug = ($this->get_addon_setting("debug") == "on" ? true : false);
         $this->setParams(array("ResponseType"=>"XML"));
         $this->get_login_credientials();
-        if (! php_sapi_name() === 'cli') {
+        if (php_sapi_name() == 'cli') {
+            self::$cli = true;
+        } else {
             $this->license = new enom_pro_license();
         }
     }
@@ -632,6 +639,12 @@ class enom_pro
         $this->setDomain($domain);
         $this->runTransaction("TP_ResendEmail");
     }
+    /**
+     * Get domains
+     * @param number $limit
+     * @param number $start
+     * @return multitype:multitype:number string boolean
+     */
     public function  getDomains ($limit = 25, $start = 1)
     {
         $this->setParams(array(
@@ -653,6 +666,77 @@ class enom_pro
         }
 
         return $return;
+    }
+    /**
+     * Gets domains with assocaited whmcs clients
+     * @param number $limit
+     * @param number $start
+     * @param bool $hide_existing hide domains already in WHMCS
+     */
+    public function getDomainsWithClients($limit, $start, $hide_existing = false)
+    {
+        $domains = $this->getDomains($limit, $start);
+        foreach ($domains as $key => $domain) {
+            $domain_name = $domain['sld'] . '.' . $domain['tld'];
+            $domain_search = self::whmcs_api('getclientsdomains', array('domain' => $domain_name ));
+            if ($domain_search['totalresults'] == 1 && $hide_existing) {
+                unset($domains[$key]);
+                break;
+            } 
+            if ($domain_search['totalresults'] == 1) {
+                $whmcs_domain = $domain_search['domains']['domain'][0];
+                $domain[$key]['client'] = self::whmcs_api('getclientsdetails', array('clientid'=> $whmcs_domain['userid']));
+            }
+        }
+        if (count($domains) < self::get_addon_setting('import_per_page')) {
+            $new_limit = self::get_addon_setting('import_per_page') - count($domains); 
+            $more_domains = $this->getDomainsWithClients($new_limit, $start + $limit);
+            $domains = array_merge($more_domains, $domains);
+        }
+        return $domains;
+    }
+    /**
+     * @throws WHMCSException
+     */
+    public static function whmcs_api ($command, $data)
+    {
+        $response =  self::$cli ? self::whmcs_curl($command, $data) : localAPI($command, $data);
+        if ($response['result'] != 'success') {
+            throw new WHMCSException($response['result']);
+        }
+        return $response;   
+    }
+    /**
+     * Test interface for unit testing in WHMCS
+     * @param string $command
+     * @param array $data additonal fields to pass to API
+     * @return mixed
+     */
+    private static function whmcs_curl($command, $data) {
+        $postfields = array();
+        $postfields["username"] = WHMCS_API_UN;
+        $postfields["password"] = md5(WHMCS_API_PW);
+        $postfields["action"] = $command;
+        $postfields["responsetype"] = "json";
+        $postfields = array_merge($postfields, $data);
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, WHMCS_API_URL);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        $jsondata = curl_exec($ch);
+        if (curl_error($ch)) {
+            throw new RemoteException(
+                    "cURL Error: ".curl_errno($ch).' - '.curl_error($ch),
+                    RemoteException::CURL_EXCEPTION);
+        }
+        curl_close($ch);
+        
+        return json_decode($jsondata, true); # Decode JSON String
     }
     /**
      * Gets list meta information

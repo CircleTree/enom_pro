@@ -7,7 +7,7 @@ if ( empty($domains_array) ) {
     return;
 }
         ?>
-<form method="POST" id="import_table_form">
+
 <table class="table-hover" id="import_table">
     <tr>
         <th>Domain</th>
@@ -47,9 +47,6 @@ if ( empty($domains_array) ) {
     </tr>
     <?php endforeach; ?>
 </table>
-<input type="hidden" name="action" value="render_import_table" />
-<input type="hidden" name="start" value="<?php echo $list_meta['next_start'];?>" />
-</form>
 <ul class="pager">
     <?php if ($list_meta['prev_start'] !== 0) :?>
     <li class="previous"><a
