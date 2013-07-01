@@ -4,6 +4,7 @@
  */
 ?>
 <script src="../modules/addons/enom_pro/jquery.admin.js"></script>
+<div class="enom_pro_loader"></div>
 <div id="domains_target">
 
 </div>
