@@ -32,5 +32,9 @@
 		<const name="UNIT_TESTS" value="TRUE" />
 		<const name="ENOM_USERNAME" value="circletree" />
 		<const name="ENOM_PASSWORD" value="nUc7OYeY" />
+		<const name="WHMCS_API_UN" value="api" />
+		<const name="WHMCS_API_PW" value="1234" />
+		<const name="WHMCS_API_URL" value="http://localhost/whmcs/includes/api.php" />
+		
 	</php>
 </phpunit>

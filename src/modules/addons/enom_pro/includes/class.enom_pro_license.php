@@ -7,23 +7,31 @@
 class enom_pro_license
 {
     private $license;
+    private $latest_version;
     public function  __construct()
     {
         $license = enom_pro::get_addon_setting('license');
         //Prep return string
         $return = "";
         if ($license == "") {
-            $return .= '<h1><span class="textred">No License entered:</span> <a href="configaddonmods.php">Enter a License on the addon page</a></h1>';
-            $return .= '<h2><a href="https://mycircletree.com/client-area/order/?gid=5" target="_blank">Visit myCircleTree.com to get a license &amp; support.</a></h2>';
+            $return .= '<h1><span class="textred">No License entered:</span>
+                    <a href="configaddonmods.php">Enter a License on the addon page</a></h1>';
+            $return .= '<h2><a href="https://mycircletree.com/client-area/order/?gid=5" target="_blank">
+                    Visit myCircleTree.com to get a license &amp; support.</a></h2>';
             throw new LicenseExeption($return);
         } elseif (!$this->checkLicense()) {
             $return .='<h1>Uh, oh! There seems to be a problem with your license</h1>';
-            $return .='<h2>Please <a href="https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7&subject=Product%20Support%20for:'.$this->productname.'.%20License:%20'.$license.'">
+            $support_link = "
+                https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7&
+            subject=Product%20Support%20for:'.$this->productname.'.%20License:%20'.$license.'";
+            $return .='<h2>Please <a class="btn" href="'.enom_pro::minify($support_link).'">
                     click here to open a support ticket from the Circle Tree client area</a></h2>';
             $return .='<h3>Enter a new License from the <a href="configaddonmods.php">addon page</a></h3>';
             $return .='<div class="errorbox"><b>Support Information</b><br/>';
             $return .='License Number: '.$license.'<br/>';
-            if (isset($this->message)) $return .='License Error: '.$this->message.'<br/>';
+            if (isset($this->message)) {
+                $return .='License Error: '.$this->message.'<br/>';
+            }
             $return .='License Status: '.$this->status.'<br/>';
             $return .='</div>';
             throw new LicenseExeption($return);
@@ -44,7 +52,7 @@ class enom_pro_license
         $localKey = $local['local'];
         $results = $this->get_remote_license(enom_pro::get_addon_setting('license'),$localKey);
         $this->license = $results;
-        $this->latestvesion = @$results['latestversion'];
+        $this->latest_vesion = @$results['latestversion'];
         $this->company = @$results['companyname'];
         $this->name = @$results['registeredname'];
         $this->productname = @$results['productname'];
@@ -85,10 +93,14 @@ class enom_pro_license
     public function updateAvailable()
     {
         //Compare the response from the server to the locally defined version
-        if ($this->latestvesion > ENOM_PRO_VERSION)
+        if ($this->latestvesion > ENOM_PRO_VERSION) {
             //The remote is newer than local, return the string upgrade notice
-            return ' <div class="infobox">eNom Pro Version '.$this->latestvesion.' available. <a target="_blank" href="https://mycircletree.com/client-area/clientarea.php?action=products">Download Now</a>!</div>';
-        else return false;
+            return '<div class="infobox alert alert-info">eNom Pro Version '.$this->latestvesion.' available.
+                    <a target="_blank" href="https://mycircletree.com/client-area/clientarea.php?action=products">
+                    Download Now</a>!</div>';
+        } else {
+            return false;
+        }
     }
     private function get_remote_license($licensekey,$localkey="")
     {
@@ -104,7 +116,7 @@ class enom_pro_license
         if (! $server_name )
             $server_name = 'localhost';
         $localkeydays = 28; # How long the local key is valid for in between remote checks
-        $allowcheckfaildays = 7; # How many days to allow after local key expiry before blocking access if connection cannot be made
+        $allowcheckfaildays = 7; 
         $localkeyvalid = false;
         if ($localkey) {
             $localkey = str_replace("\n",'',$localkey); # Remove the line breaks
@@ -157,12 +169,13 @@ class enom_pro_license
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
                 curl_setopt($ch, CURLOPT_TIMEOUT, 30);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 $data = curl_exec($ch);
                 curl_close($ch);
             }
             if (!$data) {
                 $localexpiry = date("Ymd",mktime(0,0,0,date("m"),date("d")-($localkeydays+$allowcheckfaildays),date("Y")));
-                if ($originalcheckdate>$localexpiry) {
+                if ($originalcheckdate > $localexpiry) {
                     $results = $localkeyresults;
                 } else {
                     $results["status"] = "Invalid";
@@ -189,8 +202,8 @@ class enom_pro_license
                 $results["checkdate"] = $checkdate;
                 $latest_version_xml = enom_pro::curl_get('http://mycircletree.com/versions/enom_pro_version.xml');
                 $latest_version = simplexml_load_string($latest_version_xml);
-                $rc_version = $latest_version->version;
-                $results["latestversion"] = (string) $rc_version;
+                $this->latest_version = (string) $latest_version->version;
+                $results["latestversion"] = $this->latest_version;
                 $data_encoded = serialize($results);
                 $data_encoded = base64_encode($data_encoded);
                 $data_encoded = md5($checkdate.$licensing_secret_key).$data_encoded;

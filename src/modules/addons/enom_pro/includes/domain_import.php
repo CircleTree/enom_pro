@@ -5,9 +5,12 @@
 ?>
 <script src="../modules/addons/enom_pro/jquery.admin.js"></script>
 <div class="enom_pro_loader"></div>
-<div id="domains_target">
-
-</div>
+    <form method="POST" id="import_table_form">
+        <input type="hidden" name="action" value="render_import_table" />
+        <input type="hidden" name="start" value="1" />
+        <div id="domains_target">
+        </div>
+    </form>
 <div id="create_order_dialog" title="Create Order">
     <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>"
         id="create_order_form">

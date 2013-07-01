@@ -383,7 +383,7 @@ function enom_pro_admin_actions ()
         'render_import_table',
     );
     //Only load this hook if an ajax request is being run
-    if (!isset($_REQUEST['action']) && ! in_array($_REQUEST['action'], $enom_actions))
+    if (! (isset($_REQUEST['action']) && in_array($_REQUEST['action'], $enom_actions)))
         return;
     //Include our class if needed
     if (!class_exists('enom_pro'))
