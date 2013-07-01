@@ -2,100 +2,11 @@
 /**
  * @var $this enom_pro
  */
-if ($this->get_addon_setting('import_per_page')) {
-            //api is limited to 0 -> 100 domains
-            //@props www.EXTREMESHOK.com for the bugfix
-            if ($this->get_addon_setting('import_per_page') < 100) {
-                $this->setParams( array('Display'=>$this->get_addon_setting('import_per_page') ) );
-            } else {
-                $this->setParams( array('Display'=> '25' ) );
-            }
-        } else {
-            $this->setParams( array('Display'=> '25' ) );
-        }
-        if (isset($_GET['start'])) {
-            $this->setParams( array('Start' => (int) $_GET['start']) );
-        } else {
-            $this->setParams( array('Start' => '1' ) );
-        }
-        $this->runTransaction('GetDomains');
-        if ( $this->error && ! $this->debug()) {
-            echo $this->errorMessage;
-        }
-        $xml = $this->xml;
-        $list_meta = array(
-                'total_domains' => (int) $xml->GetDomains->TotalDomainCount,
-                'next_start' => (int) $xml->GetDomains->NextRecords,
-                'prev_start' => (int) $xml->GetDomains->PreviousRecords,
-        );
-        $domains_list = $xml->GetDomains->{"domain-list"};
-        $domains_array = array();
-        foreach ($domains_list->domain as $domain) {
-            $domains_array[] = (array) $domain;
-        }
-        if ( empty($domains_array) ) {
-            echo '<div class="alert alert-error"><p>No domains returned from eNom.</p></div>';
+?>
+<script src="../modules/addons/enom_pro/jquery.admin.js"></script>
+<div id="domains_target">
 
-            return;
-        }
-        ?>
-<script
-    src="../modules/addons/enom_pro/jquery.admin.js"></script>
-<table class="table-hover" id="import_table">
-    <tr>
-        <th>Domain</th>
-        <th>Status</th>
-    </tr>
-    <?php foreach ($domains_array as $domain ):
-    $domain_name = $domain['sld'] . '.' .  $domain ['tld'];
-    ?>
-    <tr>
-        <td><?php echo $domain_name;?></td>
-        <td><?php
-        $whmcs_response = localapi('getclientsdomains', array('domain' => $domain_name ));
-                    if ($whmcs_response['totalresults'] == 0) : ?>
-            <div class="alert alert-error">
-                <p>
-                    Not Found <a class="btn btn-primary create_order"
-                        data-domain="<?php echo $domain_name;?>" href="#">Create Order</a>
-                </p>
-            </div> <?php elseif ($whmcs_response['totalresults'] == 1):
-            $domain = $whmcs_response['domains']['domain'][0];
-            $client = localapi('getclientsdetails', array('clientid'=> $domain['userid']));
-            ?>
-            <div class="alert alert-success">
-                <p>
-                    Associated with client: <a class="btn"
-                        data-domain="<?php echo $domain_name;?>"
-                        href="clientsdomains.php?userid=<?php echo $domain['userid'];?>&domainid=<?php echo $domain['id'];?>"><?php echo $client['firstname'] . ' ' . $client['lastname'];?>
-                    </a>
-                </p>
-            </div> <?php else: ?>
-            <div class="alert alert-error">Uh oh. This domain is appears to be
-                associated with more than 1 account in WHMCS. Here is the raw
-                response data from whmcs:</div> <pre class="code">
-                            <?php print_r($whmcs_response['domains']['domain'])?>
-                        </pre> <?php endif; ?>
-        </td>
-    </tr>
-    <?php endforeach; ?>
-</table>
-<ul class="pager">
-    <?php if ($list_meta['prev_start'] !== 0) :?>
-    <li class="previous"><a
-        href="<?php echo enom_pro::MODULE_LINK; ?>&view=import&start=<?php echo $list_meta['prev_start'];?>#import_table">&larr;
-            Previous</a></li>
-    <?php endif;?>
-    <?php if ($list_meta['next_start'] !== 0) :?>
-    <li class="next"><a
-        href="<?php echo enom_pro::MODULE_LINK; ?>&view=import&start=<?php echo $list_meta['next_start'];?>#import_table">Next
-            &rarr;</a></li>
-    <?php endif;?>
-</ul>
-<li style="text-align: right"><p>
-        <?php echo $list_meta['total_domains']?>
-        Total domains
-    </p></li>
+</div>
 <div id="create_order_dialog" title="Create Order">
     <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>"
         id="create_order_form">
@@ -179,3 +90,22 @@ if ($this->get_addon_setting('import_per_page')) {
         </div>
     </form>
 </div>
+<form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>" id="per_page_form">
+    <?php 
+    $config = enom_pro_config();
+    $options = $config['fields'];
+    $per_page = explode(',', $options['import_per_page']['Options']);
+    ?>
+    <select name="per_page" id="per_page">
+        <?php foreach ($per_page as $num) :?>
+            <option value="<?php echo $num?>"
+                <?php if (enom_pro::get_addon_setting('import_per_page') == $num):?> selected<?php endif?>>
+                <?php echo $num?>
+            </option>
+        <?php endforeach;?>
+    </select>
+    <input type="hidden" name="action" value="set_results_per_page" />
+    <label for="per_page">Results Per Page</label>
+    <input type="submit" value="Go" />
+    <div class="enom_pro_loader hidden"></div>
+</form>

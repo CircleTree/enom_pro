@@ -68,4 +68,20 @@ jQuery(function($) {
 		});
 		return false;
 	});
+	$("#per_page_form").submit(function  () {
+		var $loader = $("#per_page_form").find('.enom_pro_loader');
+		$.ajax({
+			url: 'addonmodules.php?module=enom_pro',
+			data: $(this).serialize(),
+			beforeSend: function  () 
+			{
+				$loader.removeClass('hidden');
+			},
+			success: function  () 
+			{
+				window.location.reload();
+			}
+		});
+		return false;		
+	});
 });

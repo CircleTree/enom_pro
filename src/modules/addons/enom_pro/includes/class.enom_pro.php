@@ -23,6 +23,11 @@ class EnomException extends Exception
         return $this->errors;
     }
 }
+/**
+ * Base class for interacting with the enom API
+ * @author robertgregor
+ *
+ */
 class enom_pro
 {
     private $responseType = "xml";
@@ -45,6 +50,7 @@ class enom_pro
     public $company;
     public $status;
     public $domain;
+    public $license;
     public $message;
     public $productname;
     private $retry_count = 0;
@@ -80,6 +86,9 @@ class enom_pro
         self::$debug = ($this->get_addon_setting("debug") == "on" ? true : false);
         $this->setParams(array("ResponseType"=>"XML"));
         $this->get_login_credientials();
+        if (! php_sapi_name() === 'cli') {
+            $this->license = new enom_pro_license();
+        }
     }
     /**
      * Checks login credentials
@@ -500,17 +509,6 @@ class enom_pro
     {
         return isset($field) ? $field : '';
     }
-    /**
-     * @todo add expiring / redemption domains o
-     */
-    public function  getExpiringDomains ()
-    {
-        $this->setParams(array(
-                'OrderBy' => 'ExpirationDate',
-                'Tab' => 'ExpiringNames'
-                ));
-        $this->runTransaction('GetDomains');
-    }
     public function getExpiringCerts ()
     {
         $this->runTransaction('CertGetCerts');
@@ -656,6 +654,18 @@ class enom_pro
 
         return $return;
     }
+    /**
+     * Gets list meta information
+     * @return array total_domains, next_start, prev_start
+     */
+    public function getListMeta ()
+    {
+        return array(
+                'total_domains' => (int) $this->xml->GetDomains->TotalDomainCount,
+                'next_start' => (int) $this->xml->GetDomains->NextRecords,
+                'prev_start' => (int) $this->xml->GetDomains->PreviousRecords,
+        );
+    }
     public function getDomainsTab ($tab)
     {
         $this->setParams(array('Tab' => $tab));
@@ -669,7 +679,7 @@ class enom_pro
      * @return mixed           $data
      * @throws RemoteException On Failure
      */
-    public function curl_get($url, array $get = NULL, array $options = array())
+    public static function curl_get($url, array $get = NULL, array $options = array())
     {
         if (! function_exists('curl_init') ) {
             throw new RemoteException('cURL is Required for the eNom PRO modules', RemoteException::CURL_EXCEPTION);
@@ -712,4 +722,52 @@ class enom_pro
 
         return self::$settings[ $key ];
     }
+    public static function  set_addon_setting ($key, $value)
+    {
+        //Flush cache
+        self::$settings = array();
+        //Check for results
+        $result = self::query("SELECT * from tbladdonmodules WHERE `setting` = '".self::escape($key)."'");
+        if (mysql_num_rows($result) == 1) {
+            //Update
+            self::query("UPDATE  `tbladdonmodules` SET  `value` =  '".self::escape($value)."' 
+                    WHERE  `module` =  'enom_pro' 
+                    AND  `setting` =  '".self::escape($key)."' 
+                    LIMIT 1 ;");   
+        } else {
+            //Insert
+            self::query("INSERT INTO  `tbladdonmodules` (
+                    `module` ,
+                    `setting` ,
+                    `value`
+                ) VALUES (
+                    'enom_pro',
+                    '".self::escape($key)."',
+                    '".self::escape($value)."'
+                );");
+        }
+    }
+    /**
+     * Escape string to make safe for SQL. Shortcut for mysql_real_escape_string
+     * @param string $string
+     * @return string
+     * @uses mysql_real_escape_string
+     */
+    public static function escape ($string)
+    {
+        return mysql_real_escape_string($string);
+    }
+    /**
+	 * Query wrapper for handling errors
+	 * @param string $query SQL ESCAPED query to execute. Do not pass untrusted data.
+	 * @throws Exception on mysql db error  
+	 * @return resource mysql_result
+	 */
+	private static function  query ($query) {
+		$result = mysql_query($query);
+		if (mysql_error()) {
+		    throw new Exception(mysql_error() . '. Query : ' . $query);
+		}
+		return $result;
+	}
 }
