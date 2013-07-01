@@ -4,10 +4,10 @@ $domains_array = $enom->getDomains($enom->get_addon_setting('import_per_page'), 
 $list_meta = $enom->getListMeta();
 if ( empty($domains_array) ) {
     echo '<div class="alert alert-error"><p>No domains returned from eNom.</p></div>';
-
     return;
 }
         ?>
+<form method="POST" id="import_table_form">
 <table class="table-hover" id="import_table">
     <tr>
         <th>Domain</th>
@@ -47,18 +47,24 @@ if ( empty($domains_array) ) {
     </tr>
     <?php endforeach; ?>
 </table>
+<input type="hidden" name="action" value="render_import_table" />
+<input type="hidden" name="start" value="<?php echo $list_meta['next_start'];?>" />
+</form>
 <ul class="pager">
     <?php if ($list_meta['prev_start'] !== 0) :?>
     <li class="previous"><a
+    data-start="<?php echo $list_meta['prev_start'];?>"
         href="<?php echo enom_pro::MODULE_LINK; ?>&view=import&start=<?php echo $list_meta['prev_start'];?>#import_table">&larr;
             Previous</a></li>
     <?php endif;?>
     <?php if ($list_meta['next_start'] !== 0) :?>
     <li class="next"><a
+    data-start="<?php echo $list_meta['next_start'];?>"
         href="<?php echo enom_pro::MODULE_LINK; ?>&view=import&start=<?php echo $list_meta['next_start'];?>#import_table">Next
             &rarr;</a></li>
     <?php endif;?>
 </ul>
+<p>Page <?php echo $_GET['start'] / $enom->get_addon_setting('import_per_page')?></p>
 <li style="text-align: right"><p>
         <?php echo $list_meta['total_domains']?>
         Total domains

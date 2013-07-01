@@ -1,5 +1,4 @@
 <?php
-use Behat\Behat\Exception\Exception;
 
 /**
 * eNom Pro WHMCS Addon Hooks
@@ -381,6 +380,7 @@ function enom_pro_admin_actions ()
         'resubmit_enom_transfer_order',
         'add_enom_pro_domain_order',
         'set_results_per_page',      
+        'render_import_table',
     );
     //Only load this hook if an ajax request is being run
     if (!isset($_REQUEST['action']) && ! in_array($_REQUEST['action'], $enom_actions))
@@ -397,12 +397,14 @@ function enom_pro_admin_actions ()
                     echo "Sent!";
                 }
             break;
+            
             case 'resubmit_enom_transfer_order':
                 $response = $enom->resubmit_locked((int) $_REQUEST['orderid']);
                 if (is_bool($response)) {
                     echo "Submitted!";
                 }
             break;
+            
             case 'set_results_per_page':
                 $per_page = (int) $_REQUEST['per_page'];
                 if ($per_page > 100 || $per_page < 0) {
@@ -411,6 +413,11 @@ function enom_pro_admin_actions ()
                 enom_pro::set_addon_setting('import_per_page', $per_page);
                 echo 'set';
             break;
+            
+            case 'render_import_table':
+                require_once ENOM_PRO_INCLUDES . 'domain_import_table.php';
+            break;
+            
             case 'add_enom_pro_domain_order':
                 $data = array(
                         'clientid' => $_REQUEST['clientid'],

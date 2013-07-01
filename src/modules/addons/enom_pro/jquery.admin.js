@@ -79,9 +79,37 @@ jQuery(function($) {
 			},
 			success: function  () 
 			{
-				window.location.reload();
+				$("#import_table_form").trigger('submit');
 			}
 		});
 		return false;		
+	});
+	if ($("#domains_target").length == 1) {
+		$.ajax({
+			data: {action: 'render_import_table'},
+			success: function  (data) 
+			{
+				$(".enom_pro_loader").addClass('hidden'); 
+				$("#domains_target").html(data); 
+			}
+		});
+	} 
+	$("#domains_target").on('submit', 'form', function  () {
+		$(".enom_pro_loader").removeClass('hidden'); 
+		$.ajax({
+			url:'addonmodules.php?module=enom_pro', 
+			data: $(this).serialize(),
+			success: function  (data) 
+			{
+				$(".enom_pro_loader").addClass('hidden'); 
+				$("#domains_target").html(data); 	
+			}
+		});
+		return false;
+	});
+	$("#domains_target").on("click", ".pager A", function  () {
+		$("input[name=start]").val($(this).data('start'));
+		$("#import_table_form").trigger('submit');
+		return false;
 	});
 });
