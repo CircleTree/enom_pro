@@ -8,6 +8,10 @@
     <form method="POST" id="import_table_form">
         <input type="hidden" name="action" value="render_import_table" />
         <input type="hidden" name="start" value="1" />
+        <input type="hidden" name="per_page" value="<?php echo enom_pro::get_addon_setting('import_per_page')?>" />
+        <?php if (isset($_GET['show_only'])) :?>
+            <input type="hidden" name="show_only" value="<?php if (in_array($_GET['show_only'], array('imported', 'unimported'))): echo $_GET['show_only']; endif;?>" />
+        <?php endif;?>
         <div id="domains_target">
         </div>
     </form>
@@ -112,4 +116,19 @@
     <label for="per_page">Results Per Page</label>
     <input type="submit" value="Go" />
     <div class="enom_pro_loader hidden"></div>
+</form>
+<form method="GET" action="<?php echo $_SERVER['PHP_SELF'];?>" id="filter_form">
+<?php $options = array('All', 'Imported', 'Unimported'); ?>
+    <label for="filter">Show Only</label>
+    <select name="show_only" id="filter">
+        <?php foreach ($options as $option) :?>
+            <option value="<?php echo strtolower($option);?>"
+                <?php if (isset($_GET['show_only']) && $_GET['show_only'] == strtolower($option)):?> selected<?php endif?>>
+                <?php echo $option; ?>
+            </option>
+        <?php endforeach;?>
+    </select>
+    <input type="hidden" name="module" value="enom_pro" />
+    <input type="hidden" name="view" value="import" />
+    <input type="submit" value="Go" />
 </form>

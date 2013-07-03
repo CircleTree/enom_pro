@@ -79,7 +79,8 @@ class enom_pro
             'GetDomainSRVHosts',
             'SetDomainSRVHosts',
             'CertGetCerts',
-            'GetBalance'
+            'GetBalance',
+            'GetWhoisContact'
     );
     private $parameters = array();
     /**
@@ -210,6 +211,15 @@ class enom_pro
         $this->parameters = array_merge($this->parameters, $params);
     }
     /**
+     * Get a parameter
+     * @param string $name parameter name
+     * @return mixed string on success, false on failure
+     */
+    public function getParam ($name)
+    {
+        return isset($this->parameters[$name]) ? $this->parameters[$name] : false;
+    }
+    /**
      * Resubmit a locked transfer order, or a domain that was less than 60 days old
      * @param int $orderid for the order. API used to get "TransferOrderDetailID"
      */
@@ -253,8 +263,10 @@ class enom_pro
             // @codeCoverageIgnoreStart
             if (strstr($this->xml->errors->$string, "IP")) {
                 //The most common error message is for a non-whitelisted API IP
-                $error.= ". You need to whitelist your IP with enom, here's the link for the <a target=\"_blank\" href=\"http://www.enom.com/resellers/reseller-testaccount.aspx\">Test API.</a><br/>
-                        For the Live API, you'll need to open a <a target=\"_blank\" href=\"http://www.enom.com/help/default.aspx\">support ticket with enom.</a>";
+                $error.= ". You need to whitelist your IP with enom, here's the link for the 
+                    <a target=\"_blank\" href=\"http://www.enom.com/resellers/reseller-testaccount.aspx\">Test API.</a><br/>
+                    For the Live API, you'll need to open a 
+                    <a target=\"_blank\" href=\"http://www.enom.com/help/default.aspx\">support ticket with enom.</a>";
             }
             // @codeCoverageIgnoreEnd
             $exception->set_error($error);
@@ -282,10 +294,26 @@ class enom_pro
 
         //Save the cURL response
         $this->response = $this->curl_get($this->URL,$this->parameters);
-
         //Use simpleXML to parse the XML string
         libxml_use_internal_errors(true);
         $this->xml = simplexml_load_string($this->response, 'SimpleXMLElement', LIBXML_NOCDATA);
+        // @codeCoverageIgnoreStart
+        //Log calls to WHMCS module log: systemmodulelog.php
+        if (function_exists('logModuleCall')) {
+//             $this->setParams(array('$_REQUEST'=> $_REQUEST));
+            logModuleCall(
+                'enom_pro',
+                $this->getParam('command'),
+                $this->parameters,
+                $this->response,
+                (array) $this->xml,
+                array(
+                    $this->getParam('uid'),
+                    $this->getParam('pw')
+                )
+            );
+        }
+        // @codeCoverageIgnoreEnd
         if ( is_object($this->xml) ) {
             if ($this->xml->Done) {
                 //The last XML node that verifies that the entire response was sent returned true
@@ -359,7 +387,7 @@ class enom_pro
     }
     public function  render_domain_import_page ()
     {
-        require_once ROOTDIR . '/modules/addons/enom_pro/includes/domain_import.php';
+        require_once ENOM_PRO_INCLUDES . 'domain_import.php';
     }
     /**
      * gets all pending transfers from the enom table
@@ -632,12 +660,24 @@ class enom_pro
      *
      * Resend the transfer activation email
      * @param  string $domain domain name to re-send email for
-     * @return mixed  true on success, string error message on failure
+     * @return true on success
+     * @throws EnomException
      */
-    public function resend_activation ($domain)
+    public function resendActivation ($domain)
     {
         $this->setDomain($domain);
         $this->runTransaction("TP_ResendEmail");
+        return true;
+    }
+    /**
+     * @param string $domain
+     * @deprecated 2.1 use resendActivation() instead
+     * @see enom_pro::resendActivation();
+     */
+    public function resend_activation ($domain)
+    {
+        self::deprecated('resend is deprecated', 2.1, 'enom_pro::resendActivation()');
+        $this->resendActivation($domain);
     }
     /**
      * Get domains
@@ -668,32 +708,90 @@ class enom_pro
         return $return;
     }
     /**
+     * Gets WHOIS data for domain
+     * @param string $domain domain name
+     * @return 
+     *     array ('registrant', 'administrative', 'technical' =>
+     *         array ('organization' => '..', 
+     *             fname, lname, address1, address2, city, stateprovince,
+     *             postalcode, country, phone, phoneext, fax, emailaddress )
+     *     )
+     */
+    public function getWHOIS ($domain)
+    {
+        $this->setDomain($domain);
+        $this->runTransaction('GetWhoisContact');
+        $return = array();
+        /**
+         * @var SimpleXMLElement $contact
+         */
+        foreach ($this->xml->GetWhoisContacts->contacts->contact as $contact) {
+            $type = strtolower( (string)$contact->attributes() );
+            $return[$type] = array();
+            foreach ($contact as $key => $field) {
+                $return[$type][strtolower($key)] = (string) $field;
+            }
+        }
+        return $return;
+    }
+    /**
      * Gets domains with assocaited whmcs clients
      * @param number $limit
      * @param number $start
-     * @param bool $hide_existing hide domains already in WHMCS
+     * @param mixed $show_only imported, unimported, defaults to false to not filter results 
+     * @return array $domains with client key with client details
+     *  array( domain...details, 'client' => array());
      */
-    public function getDomainsWithClients($limit, $start, $hide_existing = false)
+    public function getDomainsWithClients($limit, $start, $show_only = false)
     {
         $domains = $this->getDomains($limit, $start);
+        $show_only_unimported = $show_only == 'unimported' ? true : false;
+        $show_only_imported = $show_only == 'imported' ? true : false;
+        $return = array();
         foreach ($domains as $key => $domain) {
+            $return[$key] = $domain;
             $domain_name = $domain['sld'] . '.' . $domain['tld'];
             $domain_search = self::whmcs_api('getclientsdomains', array('domain' => $domain_name ));
-            if ($domain_search['totalresults'] == 1 && $hide_existing) {
-                unset($domains[$key]);
-                break;
-            } 
-            if ($domain_search['totalresults'] == 1) {
+            //Domain isn't in WHMCS, and we want to only show imported, unset this result
+            if ($domain_search['totalresults'] == 0 && $show_only_imported) {
+                unset($return[$key]);
+            }
+            
+            //Domain is in WHMCS, we want to show only non-imported, do not include in return  
+            if ($domain_search['totalresults'] == 1 && $show_only_unimported) {
+                unset($return[$key]);
+            }
+            //Domain is in whmcs, and not filtered, add client meta
+            if ($domain_search['totalresults'] == 1 && isset($return[$key])) {
+                //If we get here, we can add the client details
                 $whmcs_domain = $domain_search['domains']['domain'][0];
-                $domain[$key]['client'] = self::whmcs_api('getclientsdetails', array('clientid'=> $whmcs_domain['userid']));
+                
+                $return[$key]['client'] = self::whmcs_api(
+                        'getclientsdetails',
+                        array('clientid'=> $whmcs_domain['userid'])
+                );
+            }
+            //No search results & result hasn't been filtered
+            if ($domain_search['totalresults'] == 0 && isset($return[$key])) {
+                //we need to remove this result, because of the filter
+                if ($show_only_imported) {
+                    unset($return[$key]);
+                }
             }
         }
-        if (count($domains) < self::get_addon_setting('import_per_page')) {
-            $new_limit = self::get_addon_setting('import_per_page') - count($domains); 
-            $more_domains = $this->getDomainsWithClients($new_limit, $start + $limit);
-            $domains = array_merge($more_domains, $domains);
+        $meta = $this->getListMeta();
+        if (count($return) < $limit && $limit < $meta['total_domains']) {
+            $new_limit = $limit - count($return);
+            //Automatically set this to 100 in recursive setting for performance
+            //IE - getting item 79 from remote list when the $limit is 5
+            if ($new_limit < 100 || 0 < $new_limit ) {
+                $new_limit = 100;
+            } 
+            $new_start = $start + $limit;
+            $more_domains = $this->getDomainsWithClients($new_limit, $new_start, $show_only);
+            $return = array_merge($more_domains, $return);
         }
-        return $domains;
+        return $return;
     }
     /**
      * @throws WHMCSException
@@ -729,14 +827,16 @@ class enom_pro
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         $jsondata = curl_exec($ch);
+        //@codeCoverageIgnoreStart
         if (curl_error($ch)) {
             throw new RemoteException(
                     "cURL Error: ".curl_errno($ch).' - '.curl_error($ch),
                     RemoteException::CURL_EXCEPTION);
         }
+        //@codeCoverageIgnoreEnd
         curl_close($ch);
         
-        return json_decode($jsondata, true); # Decode JSON String
+        return json_decode($jsondata, true);
     }
     /**
      * Gets list meta information
@@ -853,5 +953,22 @@ class enom_pro
 		    throw new Exception(mysql_error() . '. Query : ' . $query);
 		}
 		return $result;
+	}
+	/**
+	 * 
+	 * @param string $msg deprecated message
+	 * @param int $since
+	 * @param string $use_instead function or method to use instead, optional
+	 */
+	public static function  deprecated ($msg, $since, $use_instead = null)
+	{
+	    if (! self::debug()) {
+	        return;
+	    }
+	    if ( ! is_null($replacement) ) {
+	        trigger_error( sprintf( __('%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.'), $msg, $version, $use_instead ) );
+	    } else {
+	        trigger_error( sprintf( __('%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.'), $msg, $since ) );
+	    }
 	}
 }

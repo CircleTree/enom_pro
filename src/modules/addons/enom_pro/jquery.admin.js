@@ -3,7 +3,7 @@ jQuery(function($) {
 	$process = $("#order_process");
 	$process.hide(),
 	last_domain = '';
-	$("#import_table").on('click', 'a.create_order', function  () {
+	$("#import_table_form").on('click', 'a.create_order', function  () {
 		var domain_name = $(this).data('domain');
 		last_domain = domain_name;
 		$("#domain_field").add('#domain_field2').val(domain_name); 
@@ -104,4 +104,9 @@ jQuery(function($) {
 		$("#import_table_form").trigger('submit');
 		return false;
 	});
+	$("#filter_form").on('submit', function  () {
+		$("input[name=show_only]").val($(this).find('select').val()); 
+		$("#import_table_form").trigger('submit');
+		return false;
+	}); 
 });
