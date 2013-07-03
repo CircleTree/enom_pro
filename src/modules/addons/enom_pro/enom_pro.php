@@ -177,17 +177,18 @@ function enom_pro_sidebar ($vars)
  */
 function enom_pro_output ($vars)
 {
+    //No need to output anything on the admin actions
+    if (isset($_REQUEST['action'])) {
+        return;
+    }
     try {
         $enom = new enom_pro();
-        $domains_with = $enom->getDomainsWithClients(2, 1);
-        echo '<pre>';
-        print_r($domains_with);
-        echo '</pre>';
-        $enom->getAvailableBalance();
         if (isset($_GET['view']) && 'import' == $_GET['view']) {
             $enom->render_domain_import_page();
-    
             return;
+        } else {
+            //Run this to check login credentials and IP
+            $enom->getAvailableBalance();
         }
         $license = new enom_pro_license();
         if ($license->updateAvailable())

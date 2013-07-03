@@ -6,17 +6,90 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$this->e = new enom_pro();
 		parent::setUp();
 	}
+	function  test_get_imported_pagination()
+	{
+	    $count = $this->e->getDomainsWithClients(5, 0, 'imported');
+	    if (count($count) < 2) {
+	        $this->markTestSkipped('Need more imported domains to test pagination');
+	    }
+	    $page1 = $this->e->getDomainsWithClients(1, 0, 'imported');
+	    $page2 = $this->e->getDomainsWithClients(1, 1, 'imported');
+	    $this->assertNotEquals($page1, $page2);
+	}
+	function  testGetWhois()
+	{
+	    $domains = $this->e->getDomains(2,0);
+	    $name = $domains[0]['sld'] .'.'.$domains[0]['tld'];
+	    $return = $this->e->getWHOIS($name);
+	    $this->assertTrue(is_array($return));
+	    $this->assertArrayHasKey('technical', $return);
+	    $this->assertArrayHasKey('administrative', $return);
+	    $this->assertArrayHasKey('technical', $return);
+	    $this->assertArrayHasKey('fname', $return['technical']);
+	    $this->assertArrayHasKey('lname', $return['technical']);
+	    $this->assertArrayHasKey('emailaddress', $return['technical']);
+	}
+	function  test_getDomains_withClients_show_only_imported()
+	{
+	    $imported = $this->e->getDomainsWithClients(1, 1, 'imported');
+	    $this->assertCount(1, $imported);
+	    $this->assertArrayHasKey('client', $imported[0]);
+	}
+	/**
+	 * @expectedException EnomException
+	 */
+	function  test_resend_activation()
+	{
+	    $domains = $this->e->getTransfers();
+	    $first_result = @$domains[0];
+	    $this->assertNotEmpty($first_result, 'No pending transfers in WHMCS. Add one');
+	    $response = $this->e->resendActivation($first_result['domain']);
+	}
+	function  test_getAllImportedDomains()
+	{
+	    $imported = $this->e->getDomainsWithClients(100, 0, 'imported');
+	    $meta = $this->e->getListMeta();
+	    $domains = enom_pro::whmcs_api('getclientsdomains', array());
+	    $total = 0;
+	    foreach ($domains['domains']['domain'] as $domain) {
+	        if ($domain['registrar'] == 'enom' && $domain['status'] == 'Active') {
+                $total++;
+	        }
+	    }
+	    
+	    $this->assertEquals($total, count($imported));
+	}
+
 	function  test_setting_settter()
 	{
 	    $val = 1234;
 	    enom_pro::set_addon_setting('test1', $val);
 	    $this->assertEquals($val, enom_pro::get_addon_setting('test1'));
 	}
+	function  test_getDomains_show_unimported()
+	{
+	    $hidden = $this->e->getDomainsWithClients(10, 1, $show_only = 'unimported');
+	    $this->e->getDomainsWithClients(3, 1, true);
+	    $this->assertArrayNotHasKey('client', $hidden[0]);
+	}
+	function  test_getAllDomains()
+	{
+	    $domains = $this->e->getDomains(100, 1);
+	    $meta = $this->e->getListMeta();
+	    $this->assertEquals(count($domains), $meta['total_domains']);
+	}
+	/**
+	 * @expectedException WHMCSException
+	 */
+	function  test_whmcs_api_exception()
+	{
+	    enom_pro::whmcs_api('foobar', array());
+	}
 	function  test_getDomains_withClients()
 	{
-	    $total = $this->e->getDomainsWithClients(10, 1);
-	    $hidden = $this->e->getDomainsWithClients(10, 1, true);
-	    $this->assertNotEquals($total, $hidden);
+	    $limit = 3;
+	    $total = $this->e->getDomainsWithClients($limit, 1);
+	    $this->assertCount($limit, $total);
 	}
 	function  test_get_domain_tab()
 	{
@@ -29,6 +102,10 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$this->assertNotEmpty($domains, 'No domains returned. Add some to the test enom API');
 		$this->assertArrayHasKey('sld', $domains[0]);
 		$this->assertArrayHasKey('tld', $domains[0]);
+		$this->assertTrue(is_array($this->e->getListMeta()));
+		$this->assertArrayHasKey('total_domains', $this->e->getListMeta());
+		$this->assertArrayHasKey('next_start', $this->e->getListMeta());
+		$this->assertArrayHasKey('prev_start', $this->e->getListMeta());
 		$this->assertTrue(is_bool($domains[0]['enom_dns']));
 		$this->assertTrue(is_bool($domains[0]['privacy']));
 		$this->assertTrue(is_bool($domains[0]['autorenew']));
@@ -125,16 +202,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	    $this->assertArrayHasKey('domains', $spinner_array);
 	    $this->assertArrayHasKey('pricing', $spinner_array);
 	}
-	/**
-	 * @expectedException EnomException
-	 */
-	function  test_resend_activation()
-	{
-	    $domains = $this->e->getTransfers();
-	    $first_result = $domains[0];
-	    $this->assertNotEmpty($first_result, 'No pending transfers in WHMCS. Add one');
-	    $this->e->resend_activation($first_result['domain']);
-	}
+
 	function  test_parse_domain() {
 		$parts = $this->e->getDomainParts('google.com');
 		$this->assertArrayHasKey('SLD', $parts);
