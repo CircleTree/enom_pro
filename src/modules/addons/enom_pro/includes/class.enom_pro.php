@@ -780,13 +780,17 @@ class enom_pro
             }
         }
         $meta = $this->getListMeta();
-        if (count($return) < $limit && $limit < $meta['total_domains']) {
+        if (
+                count($return) < $limit 
+                && $limit < $meta['total_domains']
+                && $meta['next_start'] != 0 //TODO figure out limiting
+        ) {
             $new_limit = $limit - count($return);
             //Automatically set this to 100 in recursive setting for performance
             //IE - getting item 79 from remote list when the $limit is 5
-            if ($new_limit < 100 || 0 < $new_limit ) {
-                $new_limit = 100;
-            } 
+//             if ($new_limit < 100 || 0 < $new_limit ) {
+//                 $new_limit = 100;
+//             } 
             $new_start = $start + $limit;
             $more_domains = $this->getDomainsWithClients($new_limit, $new_start, $show_only);
             $return = array_merge($more_domains, $return);
