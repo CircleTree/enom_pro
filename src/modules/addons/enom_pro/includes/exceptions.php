@@ -15,6 +15,9 @@ class RemoteException extends Exception
     const XML_PARSING_EXCEPTION = 2;
     const CURL_EXCEPTION = 3;
 }
+/**
+ * WHMCS API Exceptions
+ */
 class WHMCSException extends Exception
 {
 }
