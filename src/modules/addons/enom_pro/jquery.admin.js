@@ -29,7 +29,6 @@ jQuery(function($) {
 	$("#create_order_form").bind('submit', function  () {
 		$message.removeClass('alert-error alert-success').hide();
 		$process.hide();
-		$loader.show();
 		$.ajax({
 			url: 'addonmodules.php?module=enom_pro',
 			data: $(this).serialize(),
@@ -37,9 +36,7 @@ jQuery(function($) {
 					if (data.success) {
 						$process.hide();
 						$message.addClass('alert-success');
-						$loader.show();
-						$("#import_table").load(window.location.href + ' #import_table', function  () {
-							$loader.hide();
+						$("#import_table_form").trigger('submit').on('ajaxComplete', function  () {
 							$("#create_order_dialog").dialog('close');
 							var $new_elem = $("[data-domain='"+last_domain+"']").closest('.alert');
 							$new_elem.removeClass('alert-success');

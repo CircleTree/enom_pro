@@ -32,6 +32,9 @@ function enom_pro_config ()
                             '<span style="font-size:16pt;padding:0 10px; 0;" >@NAME@ Settings</span>
                             <a href="'.enom_pro::MODULE_LINK.'">Go to @NAME@ &rarr;</a>'),
                     'license'=>array('FriendlyName'=>"License Key","Type"=>"text","Size"=>"30"),
+                    'api_request_limit'=> array('FriendlyName'=>"API Limit","Type"=>"dropdown",
+                            "Options"=>"5,10,25,50,75,100,200,500,1000","Default"=>"5",
+                            "Description"=>"Number of remote API requests. IE - 5 * 100 = 500 domains"),
                     'debug'=>array('FriendlyName'=>"Debug Mode","Type"=>"yesno",
                             "Description"=>"Enable debug messages on frontend. Used for troubleshooting the namespinner,
                              for example."),

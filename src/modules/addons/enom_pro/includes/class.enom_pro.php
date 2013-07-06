@@ -82,6 +82,11 @@ class enom_pro
             'GetBalance',
             'GetWhoisContact'
     );
+    /**
+     * All domains cache file path
+     * @var string
+     */
+    private $cache_file_all_domains;
     private $parameters = array();
     /**
      * eNom API Class
@@ -92,6 +97,8 @@ class enom_pro
         self::$debug = ($this->get_addon_setting("debug") == "on" ? true : false);
         $this->setParams(array("ResponseType"=>"XML"));
         $this->get_login_credientials();
+        $this->cache_file_all_domains = ENOM_PRO_INCLUDES . 'all_domains.cache';
+        $this->remote_request_limit = $this->get_addon_setting('api_request_limit');
         if (php_sapi_name() == 'cli') {
             self::$cli = true;
         } else {
@@ -220,6 +227,14 @@ class enom_pro
         return isset($this->parameters[$name]) ? $this->parameters[$name] : false;
     }
     /**
+     * Gets all params
+     * @return array $parameters
+     */
+    public function getParams ()
+    {
+        return $this->parameters;
+    }
+    /**
      * Resubmit a locked transfer order, or a domain that was less than 60 days old
      * @param int $orderid for the order. API used to get "TransferOrderDetailID"
      */
@@ -290,10 +305,17 @@ class enom_pro
         if (! in_array(strtoupper(trim($command)), self::array_to_upper($this->implemented_commands))) {
             throw new InvalidArgumentException('API Method '. $command . ' not implemented', 400);
         }
+        if ( $this->remote_run_number >= $this->get_addon_setting('api_request_limit') ) {
+            throw new EnomException(
+                'Too many remote API requests. Limit: '. $this->get_addon_setting('api_request_limit')
+            );
+        }
         $this->setParams(array('command' => $command));
 
         //Save the cURL response
         $this->response = $this->curl_get($this->URL,$this->parameters);
+        //Increment the remote API counter
+        $this->remote_run_number++;
         //Use simpleXML to parse the XML string
         libxml_use_internal_errors(true);
         $this->xml = simplexml_load_string($this->response, 'SimpleXMLElement', LIBXML_NOCDATA);
@@ -680,17 +702,81 @@ class enom_pro
         $this->resendActivation($domain);
     }
     /**
+     * Request number limit for remote API transactions
+     * @var int 
+     */
+    private $remote_request_limit;
+    /**
+     * Current remote API transaction number 
+     * @var number $remote_run_number 
+     */
+    private $remote_run_number = 0;
+    /**
+     * Current remote limit being requested
+     * @var int $remote_limit
+     */
+    private $remote_limit = 0;
+    /**
+     * Remote offset / start
+     * @var int
+     */
+    private $remote_start = 0;
+    /**
+     * Last domains result
+     * @var array
+     */
+    private $last_result = null;
+    /**
+     * Number of results
+     * @var number 
+     */  
+    private $last_result_count = 0;
+    /**
+     * Number of results
+     * @var number 
+     */
+    private $limit = true;
+    /**
+     * Has the remote record limit # been reached
+     * @var bool
+     */
+    private $remote_limit_reached = true;
+    /**
+     * Is the current getDomains request for all domains
+     * @var bool
+     */
+    private $is_get_all_domains = false;
+    /**
      * Get domains
-     * @param number $limit
-     * @param number $start
+     * @param number||true $limit number of results to get, true to get all 
+     * @param number $start offset of returned record. default 1
      * @return multitype:multitype:number string boolean
      */
-    public function  getDomains ($limit = 25, $start = 1)
+    public function getDomains ($limit = 25, $start = 1)
     {
+        $this->limit = $limit;
+        if (is_bool($this->limit) && true == $this->limit && $this->get_domains_cache()) {
+            return $this->get_domains_cache();
+        }
+        if (true === $this->limit || $this->limit >= 100) {
+            //No limit or gte 100 records 
+            $this->remote_limit = 100;
+            if ( $this->remote_run_number == 0) {
+                $this->remote_start = $start;
+            } else {
+                $this->remote_start = (100 * $this->remote_run_number ) + 1;
+            }
+        } else {
+            //Limit is less than 100
+            $this->remote_limit = $this->limit;
+            //No need to paginate 1 page of results
+            $this->remote_start = $start;
+        }
         $this->setParams(array(
-                'Display'	=> $limit,
-                'Start'		=> $start,
+                'Display'	=> $this->remote_limit,
+                'Start'		=> $this->remote_start,
                 ));
+        
         $this->runTransaction('GetDomains');
         $return = array();
         foreach ($this->xml->GetDomains->{'domain-list'}->domain as $domain) {
@@ -704,8 +790,70 @@ class enom_pro
                     'autorenew'		=>		(strtolower($domain->{'auto-renew'}) == "yes" ? true : false),
                 );
         }
+        if (true == $this->last_result) {
+            $this->last_result = array_merge($this->last_result, $return);
+        } else {
+            $this->last_result = $return;
+        }
+        
+        $meta = $this->getListMeta();
 
-        return $return;
+        $this->last_result_count = count($this->last_result);
+        $this->remote_limit_reached = ! ($this->last_result_count <= $this->limit);
+
+        if ($this->last_result_count >= $meta['total_domains']) {
+            $this->remote_limit_reached = true;
+        }
+        if ($this->last_result_count >= $this->limit && ! is_bool($this->limit)) {
+            $this->remote_limit_reached = true;
+        }
+        if (is_bool($this->limit) && true === $this->limit) {
+            $this->limit = $meta['total_domains'];
+            $this->remote_limit_reached = false;
+            $this->is_get_all_domains = true;
+        }
+        
+        while (! $this->remote_limit_reached) {
+            $this->getDomains($this->limit, $this->remote_start);
+        }
+        if ( $this->is_get_all_domains ) {
+            $this->write_domains_cache($this->last_result);
+        }
+        return $this->last_result;
+    }
+    private function write_domains_cache (array $domains) {
+        $handle = fopen($this->cache_file_all_domains, 'w');
+        $serialized_domains = serialize($domains);
+        $md5 = md5($serialized_domains);
+        fwrite($handle, $md5 . $serialized_domains);
+        fclose($handle);
+    }
+    private function get_domains_cache () {
+        if (! file_exists($this->cache_file_all_domains) ) {
+            return false;
+        } else {
+            //@TODO set cache lifetime 
+            $cache_life = 60 * 60 * 24; //24 hours
+            $filemtime = @filemtime($this->cache_file_all_domains);
+            if (! $filemtime || (time() - $filemtime >= $cache_life)){
+                return false;
+            }
+            $handle = fopen($this->cache_file_all_domains, 'r');
+            $data = fread($handle, filesize($this->cache_file_all_domains));
+            fclose($handle);
+            $md5 = substr($data, 0, 32);
+            $serialized_data = substr($data, 32);
+            if ($md5 == md5($serialized_data)) {
+                return unserialize($serialized_data);
+            } else {
+                return false;
+            }
+        }
+    }
+    public function clear_domains_cache ()
+    {
+        $handle = fopen($this->cache_file_all_domains, 'w');
+        fclose($handle);
     }
     /**
      * Gets WHOIS data for domain
@@ -736,15 +884,16 @@ class enom_pro
     }
     /**
      * Gets domains with assocaited whmcs clients
-     * @param number $limit
-     * @param number $start
+     * @param number|true $limit number or true to return all 
+     * @param number $start default 1
      * @param mixed $show_only imported, unimported, defaults to false to not filter results 
      * @return array $domains with client key with client details
      *  array( domain...details, 'client' => array());
      */
-    public function getDomainsWithClients($limit, $start, $show_only = false)
+    public function getDomainsWithClients($limit = true, $start = 1, $show_only = false)
     {
-        $domains = $this->getDomains($limit, $start);
+        //TODO determine sub call limit & starts
+        $domains = $this->getDomains(true, 1);
         $show_only_unimported = $show_only == 'unimported' ? true : false;
         $show_only_imported = $show_only == 'imported' ? true : false;
         $return = array();
@@ -779,23 +928,7 @@ class enom_pro
                 }
             }
         }
-        $meta = $this->getListMeta();
-        if (
-                count($return) < $limit 
-                && $limit < $meta['total_domains']
-                && $meta['next_start'] != 0 //TODO figure out limiting
-        ) {
-            $new_limit = $limit - count($return);
-            //Automatically set this to 100 in recursive setting for performance
-            //IE - getting item 79 from remote list when the $limit is 5
-//             if ($new_limit < 100 || 0 < $new_limit ) {
-//                 $new_limit = 100;
-//             } 
-            $new_start = $start + $limit;
-            $more_domains = $this->getDomainsWithClients($new_limit, $new_start, $show_only);
-            $return = array_merge($more_domains, $return);
-        }
-        return $return;
+        return array_splice($return, ($start - 1), $limit);
     }
     /**
      * @throws WHMCSException
@@ -848,14 +981,23 @@ class enom_pro
      */
     public function getListMeta ()
     {
-        return array(
+        if (! isset($this->xml)) {
+            return array(
+                'total_domains'  => count($this->get_domains_cache()),
+                'next_start'     => -1,
+                'prev_start'     => -1,
+            );
+        } else {
+            return array(
                 'total_domains' => (int) $this->xml->GetDomains->TotalDomainCount,
                 'next_start' => (int) $this->xml->GetDomains->NextRecords,
                 'prev_start' => (int) $this->xml->GetDomains->PreviousRecords,
-        );
+            );
+        }
     }
     public function getDomainsTab ($tab)
     {
+        
         $this->setParams(array('Tab' => $tab));
         return $this->getDomains();
     }
