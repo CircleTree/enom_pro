@@ -1,20 +1,60 @@
 <?php
 
+
 class test_enom_pro extends PHPUnit_Framework_TestCase {
 	private $e;
 	function  setUp() {
 		$this->e = new enom_pro();
 		parent::setUp();
 	}
+	function  test_getDomains_withClients_show_only_imported()
+	{
+	    $imported = $this->e->getDomainsWithClients(1, 1, 'imported');
+	    $this->assertCount(1, $imported);
+	    $this->assertArrayHasKey('client', $imported[0]);
+	}
+	function  test_get_10_domains_5per_page()
+	{
+	    $page_1 = $this->e->getDomains(5);
+	    $page_2 = $this->e->getDomains(5,6);
+	    $this->assertNotEquals($page_1, $page_2);
+	}
+	function  test_get_10_domains()
+	{
+	    $domains = $this->e->getDomains(10);
+	    $this->assertCount(10, $domains);
+	}
+	function  test_getAllDomains()
+	{
+	    $domains = $this->e->getDomains(true);
+	    $ids = array();
+	    foreach ($domains as $key => $domain) {
+	        if (! isset( $ids[$domain['id']]) )
+	            $ids[$domain['id']] = 1;
+	        else
+	            $ids[$domain['id']] = $ids[$domain['id']] + 1;
+	    }
+	    $dups = array();
+	    foreach ($ids as $id => $count) {
+	        if ($count > 1) {
+	            $dups[$id] = $count;
+	        }
+	    }
+	    if ( count($dups) > 0) {
+	        $this->fail('duplicated domain order ids:' . print_r($dups, true));
+	    }
+	    $meta = $this->e->getListMeta();
+	    $this->assertEquals($meta['total_domains'], count($domains));
+	    
+	}
 	function  test_get_imported_pagination()
 	{
-	    $this->markTestIncomplete('todo fix loop when $limit exceeds filter below...');
 	    $count = $this->e->getDomainsWithClients(5, 0, 'imported');
 	    if (count($count) < 2) {
 	        $this->markTestSkipped('Need more imported domains to test pagination');
 	    }
-	    $page1 = $this->e->getDomainsWithClients(1, 0, 'imported');
-	    $page2 = $this->e->getDomainsWithClients(1, 1, 'imported');
+	    $page1 = $this->e->getDomainsWithClients(1, 1, 'imported');
+	    $page2 = $this->e->getDomainsWithClients(1, 2, 'imported');
 	    $this->assertNotEquals($page1, $page2);
 	}
 	function  testGetWhois()
@@ -29,13 +69,6 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	    $this->assertArrayHasKey('fname', $return['technical']);
 	    $this->assertArrayHasKey('lname', $return['technical']);
 	    $this->assertArrayHasKey('emailaddress', $return['technical']);
-	}
-	function  test_getDomains_withClients_show_only_imported()
-	{
-	    $this->markTestIncomplete('@todo recursion debug');
-	    $imported = $this->e->getDomainsWithClients(1, 0, 'imported');
-	    $this->assertCount(1, $imported);
-	    $this->assertArrayHasKey('client', $imported[0]);
 	}
 	/**
 	 * @expectedException EnomException
@@ -70,15 +103,10 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	}
 	function  test_getDomains_show_unimported()
 	{
+	    $this->markTestIncomplete('@TODO');
 	    $hidden = $this->e->getDomainsWithClients(10, 1, $show_only = 'unimported');
 	    $this->e->getDomainsWithClients(3, 1, true);
 	    $this->assertArrayNotHasKey('client', $hidden[0]);
-	}
-	function  test_getAllDomains()
-	{
-	    $domains = $this->e->getDomains(100, 1);
-	    $meta = $this->e->getListMeta();
-	    $this->assertEquals(count($domains), $meta['total_domains']);
 	}
 	/**
 	 * @expectedException WHMCSException

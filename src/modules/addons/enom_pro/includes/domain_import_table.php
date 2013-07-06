@@ -1,7 +1,12 @@
 <?php 
 $enom = new enom_pro();
-$domains_array = $enom->getDomains($enom->get_addon_setting('import_per_page'), (int) $_GET['start']);
+$show_only = isset($_GET['show_only']) ? $_GET['show_only'] : false;
+$domains_array = $enom->getDomainsWithClients($enom->get_addon_setting('import_per_page'), (int) $_GET['start'], $show_only);
 $list_meta = $enom->getListMeta();
+echo 'Meta:<pre>';
+print_r($list_meta);
+echo '</pre>Total:';
+echo count($domains_array);
 if ( empty($domains_array) ) {
     echo '<div class="alert alert-error"><p>No domains returned from eNom.</p></div>';
     return;
@@ -18,31 +23,25 @@ if ( empty($domains_array) ) {
     ?>
     <tr>
         <td><?php echo $domain_name;?></td>
-        <td><?php
-        $whmcs_response = localapi('getclientsdomains', array('domain' => $domain_name ));
-                    if ($whmcs_response['totalresults'] == 0) : ?>
-            <div class="alert alert-error">
-                <p>
-                    Not Found <a class="btn btn-primary create_order"
-                        data-domain="<?php echo $domain_name;?>" href="#">Create Order</a>
-                </p>
-            </div> <?php elseif ($whmcs_response['totalresults'] == 1):
-            $domain = $whmcs_response['domains']['domain'][0];
-            $client = localapi('getclientsdetails', array('clientid'=> $domain['userid']));
-            ?>
-            <div class="alert alert-success">
-                <p>
-                    Associated with client: <a class="btn"
+        <td>
+            <?php if (! isset($domain['client'])) : ?>
+                <div class="alert alert-error">
+                    <p>
+                        Not Found <a class="btn btn-primary create_order"
+                            data-domain="<?php echo $domain_name;?>" href="#">Create Order</a>
+                    </p>
+                </div>
+            <?php else: ?>
+                <div class="alert alert-success">
+                    <p>Associated with client:
+                    <a class="btn"
                         data-domain="<?php echo $domain_name;?>"
-                        href="clientsdomains.php?userid=<?php echo $domain['userid'];?>&domainid=<?php echo $domain['id'];?>"><?php echo $client['firstname'] . ' ' . $client['lastname'];?>
-                    </a>
-                </p>
-            </div> <?php else: ?>
-            <div class="alert alert-error">Uh oh. This domain is appears to be
-                associated with more than 1 account in WHMCS. Here is the raw
-                response data from whmcs:</div> <pre class="code">
-                            <?php print_r($whmcs_response['domains']['domain'])?>
-                        </pre> <?php endif; ?>
+                        href="clientsdomains.php?userid=<?php echo $domain['client']['userid'];?>&domainid=<?php echo $domain['id'];?>">
+                        <?php echo $domain['client']['firstname'] . ' ' . $domain['client']['lastname'];?>
+                        </a>
+                    </p>
+                </div> 
+            <?php endif; ?>
         </td>
     </tr>
     <?php endforeach; ?>
@@ -61,7 +60,7 @@ if ( empty($domains_array) ) {
             &rarr;</a></li>
     <?php endif;?>
 </ul>
-<p>Page <?php echo $_GET['start'] / $enom->get_addon_setting('import_per_page')?></p>
+<p>Page <?php echo ceil( $_GET['start'] / $enom->get_addon_setting('import_per_page'));?></p>
 <li style="text-align: right"><p>
         <?php echo $list_meta['total_domains']?>
         Total domains
