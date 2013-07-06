@@ -738,3 +738,11 @@ FORM.refreshbutton {
 	border-bottom: 1px solid #BCE8F1;
 }
 
+#enom_pro_import_page {
+    position: relative;
+}
+
+#enom_pro_import_page .enom_pro_loader {
+    position: absolute;
+}
+
