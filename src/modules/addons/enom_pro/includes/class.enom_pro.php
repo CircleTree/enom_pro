@@ -30,9 +30,6 @@ class EnomException extends Exception
  */
 class enom_pro
 {
-    private $responseType = "xml";
-    private $uid;
-    private $pw;
     private $xml;
     private $response;
     private $URL;
@@ -42,8 +39,7 @@ class enom_pro
      */
     private static $settings = array();
     private static $debug;
-    private $suppress_errors = false;
-    public $error = TRUE;
+    public $error = true;
     public $latestvesion;
     public $errorMessage;
     public $name;
@@ -60,7 +56,8 @@ class enom_pro
      */
     public static $cli = false;
     const RETRY_LIMIT = 2;
-    const INSTALL_URL = 'https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7&subject=enom%20Install%20Service';
+    const INSTALL_URL = 
+    'https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7&subject=enom%20Install%20Service';
     const MODULE_LINK = 'addonmodules.php?module=enom_pro';
     /**
      * implemented API commands
@@ -108,11 +105,11 @@ class enom_pro
     /**
      * Checks login credentials
      */
-    public function  check_login()
+    public function check_login()
     {
         $this->runTransaction("CheckLogin");
     }
-    private function  get_login_credientials()
+    private function get_login_credientials()
     {
         if (defined('UNIT_TESTS')) {
             $params = array(
@@ -123,7 +120,7 @@ class enom_pro
         } else {
             //@codeCoverageIgnoreStart
             //Make sure WHMCS only includes these files if the function we're calling is undefined
-            if (! function_exists('getRegistrarConfigOptions') ) {
+            if (! function_exists('getRegistrarConfigOptions')) {
                 require_once(ROOTDIR."/includes/functions.php");
                 require(ROOTDIR."/includes/registrarfunctions.php");
             }
@@ -136,10 +133,12 @@ class enom_pro
         //Set the API url
         $this->URL = ( $live ? 'http://reseller.enom.com/interface.asp' : 'http://resellertest.enom.com/interface.asp');
         //Build the initial connection test
-        $this->setParams(array(
+        $this->setParams(
+            array(
                 'uid'=>$params['Username'],
-                'pw'=>$params['Password'],
-        ));
+                'pw'=>$params['Password']
+            )
+        );
     }
     /**
      * Override service URL
@@ -150,7 +149,7 @@ class enom_pro
     {
         $this->URL = $url;
     }
-    public static function  minify ($string)
+    public static function minify ($string)
     {
         return str_replace(array("\t","\r\n", "\n", "\r","\t"), '', $string);
     }
@@ -174,8 +173,12 @@ class enom_pro
             $string .= '<li>'.$error_msg.'</li>';
             if (strstr($error_msg, "IP")) {
                 //The most common error message is for a non-whitelisted API IP
-                $string.= "<li>You need to whitelist your IP with enom, here's the link for the <a target=\"_blank\" href=\"http://www.enom.com/resellers/reseller-testaccount.aspx\">Test API.</a><br/>
-                        For the Live API, you'll need to open a <a target=\"_blank\" href=\"http://www.enom.com/help/default.aspx\">support ticket with enom.</a></li>";
+                $string.= "<li>You need to whitelist your IP with enom, here's the link for the 
+                    <a target=\"_blank\" href=\"http://www.enom.com/resellers/reseller-testaccount.aspx\">Test API.
+                    </a><br/>
+                    For the Live API, you'll need to open a 
+                    <a target=\"_blank\" href=\"http://www.enom.com/help/default.aspx\">support ticket with enom.
+                    </a></li>";
             }
 
         }
@@ -193,8 +196,9 @@ class enom_pro
     }
     public function getBalance ()
     {
-        if (! isset($this->xml->Balance))
+        if (! isset($this->xml->Balance)) {
             $this->runTransaction('getBalance');
+        }
 
         return (string) $this->xml->Balance;
     }
@@ -204,8 +208,9 @@ class enom_pro
      */
     public function getAvailableBalance ()
     {
-        if (! isset($this->xml->AvailableBalance))
+        if (! isset($this->xml->AvailableBalance)) {
             $this->runTransaction('getBalance');
+        }
 
         return (string) $this->xml->AvailableBalance;
     }
@@ -279,7 +284,8 @@ class enom_pro
             if (strstr($this->xml->errors->$string, "IP")) {
                 //The most common error message is for a non-whitelisted API IP
                 $error.= ". You need to whitelist your IP with enom, here's the link for the 
-                    <a target=\"_blank\" href=\"http://www.enom.com/resellers/reseller-testaccount.aspx\">Test API.</a><br/>
+                    <a target=\"_blank\" href=\"http://www.enom.com/resellers/reseller-testaccount.aspx\">
+                        Test API.</a><br/>
                     For the Live API, you'll need to open a 
                     <a target=\"_blank\" href=\"http://www.enom.com/help/default.aspx\">support ticket with enom.</a>";
             }
@@ -305,7 +311,7 @@ class enom_pro
         if (! in_array(strtoupper(trim($command)), self::array_to_upper($this->implemented_commands))) {
             throw new InvalidArgumentException('API Method '. $command . ' not implemented', 400);
         }
-        if ( $this->remote_run_number >= $this->remote_request_limit ) {
+        if ($this->remote_run_number >= $this->remote_request_limit) {
             throw new EnomException(
                 'Too many remote API requests. Limit: '. $this->remote_request_limit
             );
@@ -313,7 +319,7 @@ class enom_pro
         $this->setParams(array('command' => $command));
 
         //Save the cURL response
-        $this->response = $this->curl_get($this->URL,$this->parameters);
+        $this->response = $this->curl_get($this->URL, $this->parameters);
         //Increment the remote API counter
         $this->remote_run_number++;
         //Use simpleXML to parse the XML string
@@ -322,7 +328,6 @@ class enom_pro
         // @codeCoverageIgnoreStart
         //Log calls to WHMCS module log: systemmodulelog.php
         if (function_exists('logModuleCall')) {
-//             $this->setParams(array('$_REQUEST'=> $_REQUEST));
             logModuleCall(
                 'enom_pro',
                 $this->getParam('command'),
@@ -336,7 +341,7 @@ class enom_pro
             );
         }
         // @codeCoverageIgnoreEnd
-        if ( is_object($this->xml) ) {
+        if (is_object($this->xml)) {
             if ($this->xml->Done) {
                 //The last XML node that verifies that the entire response was sent returned true
                 $errs = (int) $this->xml->ErrCount;
@@ -416,10 +421,13 @@ class enom_pro
      * @param int userid to restrict results to
      * @return array transfer domains, and transfer orders per domain
      */
-    public function getTransfers ($userid=NULL)
+    public function getTransfers ($userid = NULL)
     {
-        $query = "SELECT `id`,`userid`,`type`,`domain`,`status` FROM `tbldomains` WHERE `registrar`='enom' AND `status`='Pending Transfer'";
-        if (!is_null($userid)) $query .= " AND `userid`=".(int) $userid;
+        $query = "SELECT `id`,`userid`,`type`,`domain`,`status` FROM `tbldomains` 
+                WHERE `registrar`='enom' AND `status`='Pending Transfer'";
+        if (!is_null($userid)) {
+            $query .= " AND `userid`=".(int) $userid;
+        }
         $result = mysql_query($query);
         $transfers = array();
         $transfer_index=0;
@@ -428,7 +436,12 @@ class enom_pro
             //And run the transaction
             $this->runTransaction('TP_GetDetailsByDomain');
             //prepare the response array
-            $transfers[$transfer_index] = array('domain'=>$row['domain'],'userid'=>$row['userid'],'id'=>$row['id'],'statuses'=>array());
+            $transfers[$transfer_index] = array(
+                    'domain'=>$row['domain'],
+                    'userid'=>$row['userid'],
+                    'id'=>$row['id'],
+                    'statuses'=>array()
+            );
             //Reset transferorder index
             $transfer_order = 0;
             foreach ($this->xml->TransferOrder as $order) {
@@ -484,8 +497,9 @@ class enom_pro
      */
     public function  get_SRV_records($domain = null)
     {
-        if (! is_null($domain))
+        if (! is_null($domain)) {
             $this->setDomain($domain);
+        }
 
         $this->runTransaction('GetDomainSRVHosts');
         $record_count = count($this->xml->{'srv-records'}->srv);
@@ -517,13 +531,13 @@ class enom_pro
     private function  parse_xml_to_srv( array $record )
     {
         return array(
-                        'service'	=> 	$record['HostName'],
-                        'protocol'	=>	$record['Protocol'],
-                        'priority'	=> 	$record['priority'],
-                        'weight'	=>	$record['Weight'],
-                        'port'		=> 	$record['Port'],
-                        'target'	=> 	$record['Address'],
-                        'hostid' 	=> 	$record['HostID'],
+                        'service'   =>  $record['HostName'],
+                        'protocol'  =>  $record['Protocol'],
+                        'priority'  =>  $record['priority'],
+                        'weight'    =>  $record['Weight'],
+                        'port'      =>  $record['Port'],
+                        'target'    => 	$record['Address'],
+                        'hostid'    => 	$record['HostID'],
                     );
     }
     /**
