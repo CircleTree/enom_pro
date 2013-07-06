@@ -832,12 +832,6 @@ class enom_pro
         if (! file_exists($this->cache_file_all_domains) ) {
             return false;
         } else {
-            //@TODO set cache lifetime 
-            $cache_life = 60 * 60 * 24; //24 hours
-            $filemtime = @filemtime($this->cache_file_all_domains);
-            if (! $filemtime || (time() - $filemtime >= $cache_life)){
-                return false;
-            }
             $handle = fopen($this->cache_file_all_domains, 'r');
             $data = fread($handle, filesize($this->cache_file_all_domains));
             fclose($handle);

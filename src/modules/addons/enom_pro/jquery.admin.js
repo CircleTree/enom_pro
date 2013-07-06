@@ -8,6 +8,11 @@ jQuery(function($) {
 		last_domain = domain_name;
 		$("#domain_field").add('#domain_field2').val(domain_name); 
 		$("#create_order_dialog").dialog('open');
+		var $button = $(this),
+		email = $button.data('email');
+		if (email != "") {
+			$("option[data-email='"+email+"']").attr('selected', true);
+		}
 		$message.add($process).hide();
 		$process.slideDown(200);
 		return false;
@@ -25,6 +30,62 @@ jQuery(function($) {
 		width: 450,
 		autoOpen: false,
 	});
+	$("#import_table_form").on('ajaxComplete', function  (e, xhr, settings) {
+		$(".domain_whois").trigger('getwhois'); 
+	});
+	var whois_cache = Array;
+	if (typeof(window.localStorage) == 'object') {
+		var localStorage = window.localStorage;
+	} else {
+		var localStorage = false;
+	}
+	$("#import_table_form").on('getwhois', ".domain_whois", function  (e) {
+		var $target = $(this);
+		var domain_name = $(this).data('domain');
+		if (localStorage && localStorage.getItem(domain_name)){
+			var string = localStorage.getItem(domain_name);
+			var data = JSON.parse(string); 
+		} else if (whois_cache[domain_name]) {
+			var data = whois_cache[domain_name];
+		}
+		if (data) {
+			do_whois_results($target, data);
+			return data;
+		}
+		$.ajax({
+			url: 'addonmodules.php?module=enom_pro',
+			global: false,
+			data: {action: 'get_domain_whois', domain: domain_name },
+			success: function  (data) {
+				do_whois_results($target, data);
+				if (localStorage) {
+					var string = JSON.stringify(data);
+					localStorage.setItem(domain_name, string);
+				} else {
+					whois_cache[domain_name] = data;
+				}
+			}
+		});
+		return false;
+	});
+	if (localStorage) {
+		function  getLabel() 
+		{
+			return 'Clear LocalStorage (' + localStorage.length + ')';
+		}
+		$("#local_storage").append('<a class="btn btn-info btn-mini" href="#">'+getLabel()+'</a>').on('click', function  () {
+					localStorage.clear();
+					$(this).find('a').html(getLabel());
+					$("#import_table_form").trigger('submit');
+					return false;
+				});		 
+	}
+	function  do_whois_results ($target, data) 
+	{
+		$target.closest('.alert').find('.create_order').data('email', data.email);
+		$target.find('.enom_pro_loader').addClass('hidden');
+		$target.find('.response').html(data.email);
+	}
 	var $loader = $(".enom_pro_loader"); 
 	$("#create_order_form").bind('submit', function  () {
 		$message.removeClass('alert-error alert-success').hide();
@@ -37,7 +98,6 @@ jQuery(function($) {
 						$process.hide();
 						$message.addClass('alert-success');
 						$("#import_table_form").trigger('submit').on('ajaxComplete', function  () {
-							$("#create_order_dialog").dialog('close');
 							var $new_elem = $("[data-domain='"+last_domain+"']").closest('.alert');
 							$new_elem.removeClass('alert-success');
 							setTimeout(function  () {
@@ -65,24 +125,6 @@ jQuery(function($) {
 		});
 		return false;
 	});
-	$("#per_page_form").submit(function  () {
-		var $loader = $("#per_page_form").find('.enom_pro_loader');
-		$.ajax({
-			url: 'addonmodules.php?module=enom_pro',
-			data: $(this).serialize(),
-			beforeSend: function  () 
-			{
-				$loader.removeClass('hidden');
-			},
-			success: function  () 
-			{
-				$("input[name=start]").val(1);
-				$("#import_table_form").trigger('submit');
-			}
-		});
-		return false;		
-	});
-	
 	$("#import_table_form").on('submit', function  () {
 		$(".enom_pro_loader").removeClass('hidden'); 
 		$.ajax({
@@ -102,10 +144,30 @@ jQuery(function($) {
 		$("#import_table_form").trigger('submit');
 		return false;
 	});
-	$("#filter_form").on('submit', function  () {
+	$("#filter_form").on('submit change', function  () {
 		$("input[name=start]").val(1);
 		$("input[name=show_only]").val($(this).find('select').val()); 
 		$("#import_table_form").trigger('submit');
 		return false;
-	}); 
+	});
+	setTimeout(function  () {
+		$(".slideup").slideUp(1000) 
+	}, 2000);
+	$("#per_page_form").on('submit change', function  () {
+		var $loader = $('.enom_pro_loader');
+		$.ajax({
+			url: 'addonmodules.php?module=enom_pro',
+			data: $(this).serialize(),
+			beforeSend: function  () 
+			{
+				$loader.removeClass('hidden');
+			},
+			success: function  () 
+			{
+				$("input[name=start]").val(1);
+				$("#import_table_form").trigger('submit');
+			}
+		});
+		return false;		
+	});
 });

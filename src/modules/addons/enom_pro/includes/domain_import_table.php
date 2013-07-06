@@ -4,10 +4,6 @@ $show_only = isset($_GET['show_only']) ? $_GET['show_only'] : false;
 $per_page = $enom->get_addon_setting('import_per_page');
 $domains_array = $enom->getDomainsWithClients($enom->get_addon_setting('import_per_page'), (int) $_GET['start'], $show_only);
 $list_meta = $enom->getListMeta();
-echo 'Meta:<pre>';
-print_r($list_meta);
-echo '</pre>Total:';
-echo count($domains_array);
 if ( empty($domains_array) ) {
     echo '<div class="alert alert-error"><p>No domains returned from eNom.</p></div>';
     return;
@@ -29,7 +25,14 @@ if ( empty($domains_array) ) {
                 <div class="alert alert-error">
                     <p>
                         Not Found <a class="btn btn-primary create_order"
-                            data-domain="<?php echo $domain_name;?>" href="#">Create Order</a>
+                            data-domain="<?php echo $domain_name;?>"
+                            href="#">Create Order</a>
+                    </p>
+                    <p>
+                        <div class="domain_whois" data-action="get_domain_whois" data-domain="<?php echo $domain_name; ?>">
+                            <div class="response"></div>
+                            <div class="enom_pro_loader"></div>
+                        </div>
                     </p>
                 </div>
             <?php else: ?>
@@ -66,9 +69,11 @@ if ( empty($domains_array) ) {
        </li>
     <?php endif; ?>
 </ul>
-<p>Page <?php echo ceil( $_GET['start'] / $enom->get_addon_setting('import_per_page'));?></p>
-<p>Cached domains from <?php echo $enom->get_domain_cache_date(); ?></p>
-<li style="text-align: right"><p>
-        <?php echo $list_meta['total_domains']?>
-        Total domains
-    </p></li>
+<div class="clearfix">
+    <span class="floatleft">
+        Page <?php echo ceil( $_GET['start'] / $enom->get_addon_setting('import_per_page'));?>
+    </span>
+    <span class="floatright">
+        <?php echo $list_meta['total_domains']?> Total domains
+    </span>
+</div>

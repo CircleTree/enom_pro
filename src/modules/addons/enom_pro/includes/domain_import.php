@@ -4,6 +4,11 @@
  */
 ?>
 <div id="enom_pro_import_page">
+<?php if (isset($_GET['cleared'])) : ?>
+    <div class="alert alert-info slideup">
+        <h3>Cache Cleared</h3>
+    </div>
+<?php endif; ?>
     <script src="../modules/addons/enom_pro/jquery.admin.js"></script>
     <div class="enom_pro_loader"></div>
     <form method="POST" id="import_table_form">
@@ -22,8 +27,8 @@
             <div id="order_process">
                 <input type="hidden" name="action" value="add_enom_pro_domain_order" />
                 <input type="hidden" name="domaintype" value="register" /> <input
-                    type="hidden" name="domain" value="" id="domain_field2" /><br /> <input
-                    type="text" name="domain_display" value="" id="domain_field"
+                    type="hidden" name="domain" value="" id="domain_field2" /><br />
+                <input type="text" name="domain_display" value="" id="domain_field"
                     disabled="disabled" readonly="readonly" size="60" /> <br />
                 <?php $clients = enom_pro::whmcs_api('getclients', array());
                 if ('success' == $clients['result']):
@@ -32,7 +37,7 @@
                     id="client_select">
                     <?php
                     foreach ($clients_array as $client) {
-                                echo '<option value="'.$client['id'].'">'.$client['firstname'] . ' ' . $client['lastname'] . (! empty($client['companyname']) ? ' ('.$client['companyname'].')' : '') . '</option>';
+                                echo '<option data-email="'.$client['email'].'" value="'.$client['id'].'">'.$client['firstname'] . ' ' . $client['lastname'] . (! empty($client['companyname']) ? ' ('.$client['companyname'].')' : '') . '</option>';
                             }
                             ?>
                 </select>
@@ -97,38 +102,51 @@
             </div>
         </form>
     </div>
-    <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>" id="per_page_form">
-        <?php 
-        $config = enom_pro_config();
-        $options = $config['fields'];
-        $per_page = explode(',', $options['import_per_page']['Options']);
-        ?>
-        <select name="per_page" id="per_page">
-            <?php foreach ($per_page as $num) :?>
-                <option value="<?php echo $num?>"
-                    <?php if (enom_pro::get_addon_setting('import_per_page') == $num):?> selected<?php endif?>>
-                    <?php echo $num?>
-                </option>
-            <?php endforeach;?>
-        </select>
-        <input type="hidden" name="action" value="set_results_per_page" />
-        <label for="per_page">Results Per Page</label>
-        <input type="submit" value="Go" />
-    </form>
-    <form method="GET" action="<?php echo $_SERVER['PHP_SELF'];?>" id="filter_form">
-    <?php $options = array('All', 'Imported', 'Unimported'); ?>
-        <label for="filter">Show Only</label>
-        <select name="show_only" id="filter">
-            <?php foreach ($options as $option) :?>
-                <option value="<?php echo strtolower($option);?>"
-                    <?php if (isset($_GET['show_only']) && $_GET['show_only'] == strtolower($option)):?> selected<?php endif?>>
-                    <?php echo $option; ?>
-                </option>
-            <?php endforeach;?>
-        </select>
-        <input type="hidden" name="module" value="enom_pro" />
-        <input type="hidden" name="view" value="import" />
-        <input type="submit" value="Go" />
-    </form>
+    <table id="meta">
+        <tr>
+            <td>
+                <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>" id="per_page_form">
+                    <?php 
+                    $config = enom_pro_config();
+                    $options = $config['fields'];
+                    $per_page = explode(',', $options['import_per_page']['Options']);
+                    ?>
+                    <select name="per_page" id="per_page">
+                        <?php foreach ($per_page as $num) :?>
+                            <option value="<?php echo $num?>"
+                                <?php if (enom_pro::get_addon_setting('import_per_page') == $num):?> selected<?php endif?>>
+                                <?php echo $num?>
+                            </option>
+                        <?php endforeach;?>
+                    </select>
+                    <input type="hidden" name="action" value="set_results_per_page" />
+                    <label for="per_page">Results Per Page</label>
+                    <input type="submit" value="Go" />
+                </form>
+                <form method="GET" action="<?php echo $_SERVER['PHP_SELF'];?>" id="filter_form">
+                <?php $options = array('All', 'Imported', 'Unimported'); ?>
+                    <label for="filter">Show Only</label>
+                    <select name="show_only" id="filter">
+                        <?php foreach ($options as $option) :?>
+                            <option value="<?php echo strtolower($option);?>"
+                                <?php if (isset($_GET['show_only']) && $_GET['show_only'] == strtolower($option)):?> selected<?php endif?>>
+                                <?php echo $option; ?>
+                            </option>
+                        <?php endforeach;?>
+                    </select>
+                    <input type="hidden" name="module" value="enom_pro" />
+                    <input type="hidden" name="view" value="import" />
+                    <input type="submit" value="Go" />
+                </form>
+            </td>
+            <td>
+                <a class="btn btn-inverse btn-mini btn-block" href="addonmodules.php?module=enom_pro&action=clear_cache">Clear Cache</a><br/>
+                Domains Cached from <?php $enom = new enom_pro(); echo $enom->get_domain_cache_date(); ?>
+            </td>
+            <td id="local_storage">
+                
+            </td>
+        </tr>
+    </table>
     <div class="enom_pro_loader hidden"></div>
 </div>

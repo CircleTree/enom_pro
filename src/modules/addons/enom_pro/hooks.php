@@ -381,6 +381,8 @@ function enom_pro_admin_actions ()
         'add_enom_pro_domain_order',
         'set_results_per_page',      
         'render_import_table',
+        'get_domain_whois',
+        'clear_cache',
     );
     //Only load this hook if an ajax request is being run
     if (! (isset($_REQUEST['action']) && in_array($_REQUEST['action'], $enom_actions)))
@@ -418,6 +420,19 @@ function enom_pro_admin_actions ()
                 require_once ENOM_PRO_INCLUDES . 'domain_import_table.php';
             break;
             
+            case 'get_domain_whois':
+                $whois = $enom->getWHOIS($_REQUEST['domain']);
+                $response = array(
+                    'email' => $whois['registrant']['emailaddress'],
+                );
+                header('Content-Type: application/json');
+                echo json_encode($response);
+            break;
+            
+            case 'clear_cache':
+                $enom->clear_domains_cache();
+                header('Location: addonmodules.php?module=enom_pro&view=import&cleared');
+            break;
             case 'add_enom_pro_domain_order':
                 $data = array(
                         'clientid' => $_REQUEST['clientid'],

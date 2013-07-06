@@ -154,9 +154,9 @@ function enom_pro_sidebar ($vars)
     $sidebar = '<span class="header">
             <img src="images/icons/domainresolver.png" class="absmiddle" width=16 height=16 />@NAME@</span>
                 <ul class="menu">
-                <li><a class="btn" href="'.enom_pro::MODULE_LINK.'">Home</a></li>
-                    <li><a class="btn" href="'.enom_pro::MODULE_LINK.'&view=import">Domain Importer</a></li>
-                    <li><a class="btn" href="configaddonmods.php#enom_pro">Settings</a></li>
+                <li><a class="btn btn-block" href="'.enom_pro::MODULE_LINK.'">Home</a></li>
+                    <li><a class="btn btn-block" href="'.enom_pro::MODULE_LINK.'&view=import">Domain Importer</a></li>
+                    <li><a class="btn btn-block" href="configaddonmods.php#enom_pro">Settings</a></li>
                     </ul>
                     <span class="header">@NAME@ Meta</span>
                     <ul class="menu">
