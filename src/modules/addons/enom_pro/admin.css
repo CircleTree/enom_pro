@@ -463,6 +463,8 @@ input[type="submit"].btn.btn-mini {
 	cursor: default;
 }
 
+
+
 TABLE.datatable {
 	width: 100%;
 }
@@ -550,6 +552,32 @@ LABEL:hover {
 
 .aligncenter {
 	text-align: center;
+}
+.floatright {
+    float: right;
+}
+.floatleft {
+    float: left;
+}
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+ 
+.clearfix {
+    display: inline-block;
+}
+ 
+html[xmlns] .clearfix {
+    display: block;
+}
+ 
+* html .clearfix {
+    height: 1%;
 }
 PRE.api_error {
 	background-color: #FFFFFF;
@@ -745,4 +773,15 @@ FORM.refreshbutton {
 #enom_pro_import_page .enom_pro_loader {
     position: absolute;
 }
-
+a.btn-primary,
+a.btn-danger,
+a.btn-info,
+a.btn-inverse,
+a.btn-warning
+{
+   color: #FFFFFF;
+   text-decoration: none;
+}
+#meta td {
+    vertical-align: top;
+}
