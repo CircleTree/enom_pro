@@ -3,132 +3,132 @@
  * @var $this enom_pro
  */
 ?>
-<script src="../modules/addons/enom_pro/jquery.admin.js"></script>
-<div class="enom_pro_loader"></div>
+<div id="enom_pro_import_page">
+    <script src="../modules/addons/enom_pro/jquery.admin.js"></script>
+    <div class="enom_pro_loader"></div>
     <form method="POST" id="import_table_form">
         <input type="hidden" name="action" value="render_import_table" />
         <input type="hidden" name="start" value="1" />
         <input type="hidden" name="per_page" value="<?php echo enom_pro::get_addon_setting('import_per_page')?>" />
-        <?php if (isset($_GET['show_only'])) :?>
-            <input type="hidden" name="show_only" value="<?php if (in_array($_GET['show_only'], array('imported', 'unimported'))): echo $_GET['show_only']; endif;?>" />
-        <?php endif;?>
+        <input type="hidden" name="show_only" value="<?php if (in_array($_GET['show_only'], array('imported', 'unimported'))): echo $_GET['show_only']; endif;?>" />
         <div id="domains_target">
         </div>
     </form>
-<div id="create_order_dialog" title="Create Order">
-    <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>"
-        id="create_order_form">
-        <div id="ajax_messages" class="alert" style="display: none;"></div>
-        <div class="enom_pro_loader" style="display: none;"></div>
-        <div id="order_process">
-            <input type="hidden" name="action" value="add_enom_pro_domain_order" />
-            <input type="hidden" name="domaintype" value="register" /> <input
-                type="hidden" name="domain" value="" id="domain_field2" /><br /> <input
-                type="text" name="domain_display" value="" id="domain_field"
-                disabled="disabled" readonly="readonly" size="60" /> <br />
-            <?php $clients = localapi('getclients', array('limitnum' => 9000000 ));
-            if ('success' == $clients['result']):
-                $clients_array = $clients['clients']['client']; ?>
-            <label for="client_select">Client</label> <select name="clientid"
-                id="client_select">
-                <?php
-                foreach ($clients_array as $client) {
-                            echo '<option value="'.$client['id'].'">'.$client['firstname'] . ' ' . $client['lastname'] . (! empty($client['companyname']) ? ' ('.$client['companyname'].')' : '') . '</option>';
-                        }
-                        ?>
-            </select>
-            <?php else :?>
-            <div class="alert alert-error">
-                WHMCS API Error:
-                <?php echo '<pre>';
-                print_r($clients);
-                            echo '</pre>';?>
-            </div>
-            <?php endif;?>
-            <label for="register_years">Years</label> <select name="regperiod"
-                id="register_years">
-                <?php for ($i = 1; $i <= 10; $i++) {
-                    echo '<option value="'.$i.'">'.$i.'</option>';
-                  }?>
-            </select>
-            <table style="width: 100%">
-                <tr>
-                    <td><label for="dnsmanagement" class="btn btn-mini">DNS Management</label>
-                        <input type="checkbox" name="dnsmanagement" id="dnsmanagement" />
-                    </td>
-                    <td style="width: 50%"><label for="idprotection"
-                        class="btn btn-mini">ID Protect</label> <input type="checkbox"
-                        name="idprotection" id="idprotection" />
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="orderemail" class="btn btn-mini">Send order
-                            confirmation email</label> <input type="checkbox" name="noemail"
-                        id="orderemail" />
-                    </td>
-                    <td><label for="generateinvoice" class="btn btn-mini">Generate
-                            Invoice</label> <input type="checkbox" name="noinvoice"
-                        id="generateinvoice" />
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="payment_gateway">Payment gateway</label> <select
-                        name="paymentmethod" id="payment_gateway">
-                            <?php $methods = localapi('getpaymentmethods');
-                            foreach ($methods['paymentmethods']['paymentmethod'] as $gateway) {
-                                echo '<option value="'.$gateway['module'].'">'.$gateway['displayname'].'</option>';
+    <div id="create_order_dialog" title="Create Order">
+        <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>"
+            id="create_order_form">
+            <div id="ajax_messages" class="alert" style="display: none;"></div>
+            <div class="enom_pro_loader" style="display: none;"></div>
+            <div id="order_process">
+                <input type="hidden" name="action" value="add_enom_pro_domain_order" />
+                <input type="hidden" name="domaintype" value="register" /> <input
+                    type="hidden" name="domain" value="" id="domain_field2" /><br /> <input
+                    type="text" name="domain_display" value="" id="domain_field"
+                    disabled="disabled" readonly="readonly" size="60" /> <br />
+                <?php $clients = enom_pro::whmcs_api('getclients', array());
+                if ('success' == $clients['result']):
+                    $clients_array = $clients['clients']['client']; ?>
+                <label for="client_select">Client</label> <select name="clientid"
+                    id="client_select">
+                    <?php
+                    foreach ($clients_array as $client) {
+                                echo '<option value="'.$client['id'].'">'.$client['firstname'] . ' ' . $client['lastname'] . (! empty($client['companyname']) ? ' ('.$client['companyname'].')' : '') . '</option>';
                             }
                             ?>
-                    </select>
-                    </td>
-                    <td>
-                        <div id="invoice_email" style="display: none;">
-                            <label for="noinvoiceemail" class="btn btn-mini">Send Invoice
-                                Notification Email</label> <input type="checkbox"
-                                name="noinvoiceemail" id="noinvoiceemail" /><br />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2"><input type="submit" value="Create Order"
-                        class="btn btn-success btn-block aligncenter" />
-                    </td>
-                </tr>
-            </table>
-        </div>
+                </select>
+                <?php else :?>
+                <div class="alert alert-error">
+                    WHMCS API Error:
+                    <?php echo '<pre>';
+                    print_r($clients);
+                                echo '</pre>';?>
+                </div>
+                <?php endif;?>
+                <label for="register_years">Years</label> <select name="regperiod"
+                    id="register_years">
+                    <?php for ($i = 1; $i <= 10; $i++) {
+                        echo '<option value="'.$i.'">'.$i.'</option>';
+                      }?>
+                </select>
+                <table style="width: 100%">
+                    <tr>
+                        <td><label for="dnsmanagement" class="btn btn-mini">DNS Management</label>
+                            <input type="checkbox" name="dnsmanagement" id="dnsmanagement" />
+                        </td>
+                        <td style="width: 50%"><label for="idprotection"
+                            class="btn btn-mini">ID Protect</label> <input type="checkbox"
+                            name="idprotection" id="idprotection" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="orderemail" class="btn btn-mini">Send order
+                                confirmation email</label> <input type="checkbox" name="noemail"
+                            id="orderemail" />
+                        </td>
+                        <td><label for="generateinvoice" class="btn btn-mini">Generate
+                                Invoice</label> <input type="checkbox" name="noinvoice"
+                            id="generateinvoice" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="payment_gateway">Payment gateway</label> <select
+                            name="paymentmethod" id="payment_gateway">
+                                <?php $methods = localapi('getpaymentmethods');
+                                foreach ($methods['paymentmethods']['paymentmethod'] as $gateway) {
+                                    echo '<option value="'.$gateway['module'].'">'.$gateway['displayname'].'</option>';
+                                }
+                                ?>
+                        </select>
+                        </td>
+                        <td>
+                            <div id="invoice_email" style="display: none;">
+                                <label for="noinvoiceemail" class="btn btn-mini">Send Invoice
+                                    Notification Email</label> <input type="checkbox"
+                                    name="noinvoiceemail" id="noinvoiceemail" /><br />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" value="Create Order"
+                            class="btn btn-success btn-block aligncenter" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+    <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>" id="per_page_form">
+        <?php 
+        $config = enom_pro_config();
+        $options = $config['fields'];
+        $per_page = explode(',', $options['import_per_page']['Options']);
+        ?>
+        <select name="per_page" id="per_page">
+            <?php foreach ($per_page as $num) :?>
+                <option value="<?php echo $num?>"
+                    <?php if (enom_pro::get_addon_setting('import_per_page') == $num):?> selected<?php endif?>>
+                    <?php echo $num?>
+                </option>
+            <?php endforeach;?>
+        </select>
+        <input type="hidden" name="action" value="set_results_per_page" />
+        <label for="per_page">Results Per Page</label>
+        <input type="submit" value="Go" />
     </form>
-</div>
-<form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>" id="per_page_form">
-    <?php 
-    $config = enom_pro_config();
-    $options = $config['fields'];
-    $per_page = explode(',', $options['import_per_page']['Options']);
-    ?>
-    <select name="per_page" id="per_page">
-        <?php foreach ($per_page as $num) :?>
-            <option value="<?php echo $num?>"
-                <?php if (enom_pro::get_addon_setting('import_per_page') == $num):?> selected<?php endif?>>
-                <?php echo $num?>
-            </option>
-        <?php endforeach;?>
-    </select>
-    <input type="hidden" name="action" value="set_results_per_page" />
-    <label for="per_page">Results Per Page</label>
-    <input type="submit" value="Go" />
+    <form method="GET" action="<?php echo $_SERVER['PHP_SELF'];?>" id="filter_form">
+    <?php $options = array('All', 'Imported', 'Unimported'); ?>
+        <label for="filter">Show Only</label>
+        <select name="show_only" id="filter">
+            <?php foreach ($options as $option) :?>
+                <option value="<?php echo strtolower($option);?>"
+                    <?php if (isset($_GET['show_only']) && $_GET['show_only'] == strtolower($option)):?> selected<?php endif?>>
+                    <?php echo $option; ?>
+                </option>
+            <?php endforeach;?>
+        </select>
+        <input type="hidden" name="module" value="enom_pro" />
+        <input type="hidden" name="view" value="import" />
+        <input type="submit" value="Go" />
+    </form>
     <div class="enom_pro_loader hidden"></div>
-</form>
-<form method="GET" action="<?php echo $_SERVER['PHP_SELF'];?>" id="filter_form">
-<?php $options = array('All', 'Imported', 'Unimported'); ?>
-    <label for="filter">Show Only</label>
-    <select name="show_only" id="filter">
-        <?php foreach ($options as $option) :?>
-            <option value="<?php echo strtolower($option);?>"
-                <?php if (isset($_GET['show_only']) && $_GET['show_only'] == strtolower($option)):?> selected<?php endif?>>
-                <?php echo $option; ?>
-            </option>
-        <?php endforeach;?>
-    </select>
-    <input type="hidden" name="module" value="enom_pro" />
-    <input type="hidden" name="view" value="import" />
-    <input type="submit" value="Go" />
-</form>
+</div>

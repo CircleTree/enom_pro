@@ -305,9 +305,9 @@ class enom_pro
         if (! in_array(strtoupper(trim($command)), self::array_to_upper($this->implemented_commands))) {
             throw new InvalidArgumentException('API Method '. $command . ' not implemented', 400);
         }
-        if ( $this->remote_run_number >= $this->get_addon_setting('api_request_limit') ) {
+        if ( $this->remote_run_number >= $this->remote_request_limit ) {
             throw new EnomException(
-                'Too many remote API requests. Limit: '. $this->get_addon_setting('api_request_limit')
+                'Too many remote API requests. Limit: '. $this->remote_request_limit
             );
         }
         $this->setParams(array('command' => $command));
@@ -856,6 +856,51 @@ class enom_pro
         fclose($handle);
     }
     /**
+     * Gets cache file relative time ago
+     * @return string
+     */
+    public function get_domain_cache_date ()
+    {
+        return $this->time_ago(filemtime($this->cache_file_all_domains), 2);   
+    }
+    /**
+     * 
+     * @param int $timestamp
+     * @param number $granularity
+     * @param string $format fallback
+     * @return string
+     */
+    function time_ago ($timestamp, $granularity=1, $format='Y-m-d H:i:s'){
+        $difference = time() - $timestamp;
+        if($difference < 5) return 'just now';
+        elseif($difference < (31556926 * 5 )) { //5 years
+            $periods = array(
+                    'year' => 31556926,
+                    'month' => 2629743,
+                    'week' => 604800,
+                    'day' => 86400,
+                    'hour' => 3600,
+                    'minute' => 60,
+                    'second' => 1
+            );
+            $output = '';
+            if ($difference > 31556926 )
+                $granularity++; //If longer than a year, increase granularity
+            foreach($periods as $label => $value){
+                if($difference >= $value){
+                    $time = round($difference / $value);
+                    $difference %= $value;
+                    $output .= ($output ? ' ' : '').$time.' ';
+                    $output .= (($time > 1 ) ? $label.'s' : $label);
+                    $granularity--;
+                }
+                if($granularity == 0) break;
+            }
+            return $output . ' ago';
+        }
+        else return date($format, $timestamp);
+    }
+    /**
      * Gets WHOIS data for domain
      * @param string $domain domain name
      * @return 
@@ -868,6 +913,7 @@ class enom_pro
     public function getWHOIS ($domain)
     {
         $this->setDomain($domain);
+        
         $this->runTransaction('GetWhoisContact');
         $return = array();
         /**
@@ -893,7 +939,7 @@ class enom_pro
     public function getDomainsWithClients($limit = true, $start = 1, $show_only = false)
     {
         //TODO determine sub call limit & starts
-        $domains = $this->getDomains(true, 1);
+        $domains = $this->getDomains(true, $start);
         $show_only_unimported = $show_only == 'unimported' ? true : false;
         $show_only_imported = $show_only == 'imported' ? true : false;
         $return = array();
@@ -984,8 +1030,8 @@ class enom_pro
         if (! isset($this->xml)) {
             return array(
                 'total_domains'  => count($this->get_domains_cache()),
-                'next_start'     => -1,
-                'prev_start'     => -1,
+                'next_start'     => 0,
+                'prev_start'     => 0,
             );
         } else {
             return array(

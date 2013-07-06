@@ -76,6 +76,7 @@ jQuery(function($) {
 			},
 			success: function  () 
 			{
+				$("input[name=start]").val(1);
 				$("#import_table_form").trigger('submit');
 			}
 		});
@@ -102,6 +103,7 @@ jQuery(function($) {
 		return false;
 	});
 	$("#filter_form").on('submit', function  () {
+		$("input[name=start]").val(1);
 		$("input[name=show_only]").val($(this).find('select').val()); 
 		$("#import_table_form").trigger('submit');
 		return false;
