@@ -103,7 +103,6 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	}
 	function  test_getDomains_show_unimported()
 	{
-	    $this->markTestIncomplete('@TODO');
 	    $hidden = $this->e->getDomainsWithClients(10, 1, $show_only = 'unimported');
 	    $this->e->getDomainsWithClients(3, 1, true);
 	    $this->assertArrayNotHasKey('client', $hidden[0]);
@@ -158,10 +157,14 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	    $this->e->setDomain($domain_name);
 	    $this->e->set_SRV_Records($records);
 	}
+	/**
+	 * @depends test_set_SRV()
+	 */
 	function  test_get_SRV() {
 		$domains = $this->e->getDomains(1);
 		$domain = $domains[0];
-		$this->e->get_SRV_records($domain['sld'] .'.'. $domain['tld']);
+		$records = $this->e->get_SRV_records($domain['sld'] .'.'. $domain['tld']);
+		$this->assertArrayHasKey('service', $records[0]);
 	}
 	function  test_get_multiple_SRV()
 	{

@@ -1,6 +1,7 @@
 <?php 
 $enom = new enom_pro();
 $show_only = isset($_GET['show_only']) ? $_GET['show_only'] : false;
+$per_page = $enom->get_addon_setting('import_per_page');
 $domains_array = $enom->getDomainsWithClients($enom->get_addon_setting('import_per_page'), (int) $_GET['start'], $show_only);
 $list_meta = $enom->getListMeta();
 echo 'Meta:<pre>';
@@ -47,20 +48,26 @@ if ( empty($domains_array) ) {
     <?php endforeach; ?>
 </table>
 <ul class="pager">
-    <?php if ($list_meta['prev_start'] !== 0) :?>
-    <li class="previous"><a
-    data-start="<?php echo $list_meta['prev_start'];?>"
-        href="<?php echo enom_pro::MODULE_LINK; ?>&view=import&start=<?php echo $list_meta['prev_start'];?>#import_table">&larr;
-            Previous</a></li>
+    <?php $prev_start = isset($_REQUEST['start']) ? ($_REQUEST['start'] - $per_page < 0 ? '0' : $_REQUEST['start'] - $per_page) : 0; ?>
+    <?php if ($prev_start >= 1) :?>
+        <li class="previous">
+            <a data-start="<?php echo $prev_start;?>"
+                href="<?php echo enom_pro::MODULE_LINK; ?>&view=import&start=<?php echo $prev_start;?>#import_table">&larr;
+                Previous
+            </a>
+        </li>
     <?php endif;?>
-    <?php if ($list_meta['next_start'] !== 0) :?>
-    <li class="next"><a
-    data-start="<?php echo $list_meta['next_start'];?>"
-        href="<?php echo enom_pro::MODULE_LINK; ?>&view=import&start=<?php echo $list_meta['next_start'];?>#import_table">Next
-            &rarr;</a></li>
-    <?php endif;?>
+    <?php $next_start = isset($_REQUEST['start']) ? ($_REQUEST['start'] + $per_page) : $per_page; ?>
+    <?php if ($next_start <= $list_meta['total_domains']) :?>
+        <li class="next">
+            <a data-start="<?php echo $next_start;?>"
+               href="<?php echo enom_pro::MODULE_LINK; ?>&view=import&start=<?php echo $next_start;?>#import_table">Next 
+               &rarr;</a>
+       </li>
+    <?php endif; ?>
 </ul>
 <p>Page <?php echo ceil( $_GET['start'] / $enom->get_addon_setting('import_per_page'));?></p>
+<p>Cached domains from <?php echo $enom->get_domain_cache_date(); ?></p>
 <li style="text-align: right"><p>
         <?php echo $list_meta['total_domains']?>
         Total domains
