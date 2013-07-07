@@ -2,7 +2,18 @@
 $enom = new enom_pro();
 $show_only = isset($_GET['show_only']) ? $_GET['show_only'] : false;
 $per_page = $enom->get_addon_setting('import_per_page');
-$domains_array = $enom->getDomainsWithClients($enom->get_addon_setting('import_per_page'), (int) $_GET['start'], $show_only);
+if ( isset($_GET['domain']) ) {
+    $domains_array = $enom->getDomainsWithClients(true, 1);
+    foreach ($domains_array as $key => $domain) {
+        $this_domain = $domain['sld'] . '.' . $domain['tld'];
+        if ($this_domain == $_GET['domain']) {
+            $domains_array = array($domain);
+            break;
+        }
+    }
+} else {
+    $domains_array = $enom->getDomainsWithClients($enom->get_addon_setting('import_per_page'), (int) $_GET['start'], $show_only);
+}
 $list_meta = $enom->getListMeta();
 if ( empty($domains_array) ) {
     echo '<div class="alert alert-error"><p>No domains returned from eNom.</p></div>';
@@ -29,9 +40,9 @@ if ( empty($domains_array) ) {
                             href="#">Create Order</a>
                     </p>
                     <p>
-                        <div class="domain_whois" data-action="get_domain_whois" data-domain="<?php echo $domain_name; ?>">
+                        <div class="domain_whois clearfix" data-action="get_domain_whois" data-domain="<?php echo $domain_name; ?>">
                             <div class="response"></div>
-                            <div class="enom_pro_loader"></div>
+                            <div class="enom_pro_loader small"></div>
                         </div>
                     </p>
                 </div>
@@ -50,6 +61,9 @@ if ( empty($domains_array) ) {
     </tr>
     <?php endforeach; ?>
 </table>
+<?php if ( isset($_GET['domain']) ) :?>
+    <a class="btn btn-block btn-inverse" href="addonmodules.php?module=enom_pro&view=import">Clear Search</a>
+<?php endif; ?>
 <ul class="pager">
     <?php $prev_start = isset($_REQUEST['start']) ? ($_REQUEST['start'] - $per_page < 0 ? '0' : $_REQUEST['start'] - $per_page) : 0; ?>
     <?php if ($prev_start >= 1) :?>
