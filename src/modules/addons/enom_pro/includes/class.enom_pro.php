@@ -878,7 +878,7 @@ class enom_pro
      * @param string $format fallback
      * @return string
      */
-    function time_ago ($timestamp, $granularity=1, $format='Y-m-d H:i:s'){
+    public static function time_ago ($timestamp, $granularity=1, $format='Y-m-d H:i:s'){
         $difference = time() - $timestamp;
         if($difference < 5) return 'just now';
         elseif($difference < (31556926 * 5 )) { //5 years
@@ -1049,11 +1049,30 @@ class enom_pro
             );
         }
     }
-    public function getDomainsTab ($tab)
+    /**
+     * 
+     * @param string $tab IOwn current names in this account
+     *      ExpiringNames names nearing expiration
+     *      ExpiredDomains expired but able to renew
+     *      RGP RGP and Extended RGP names
+     *      Promotion names on promotional basis
+     * @param number $limit
+     * @param number $start
+     * @return Ambigous <multitype:multitype:number, multitype:, boolean, mixed>
+     */
+    public function getDomainsTab ($tab, $limit = 25, $start)
     {
-        
         $this->setParams(array('Tab' => $tab));
-        return $this->getDomains();
+        $domains = $this->getDomains($limit, $start);
+        foreach ($domains as $key => $domain) {
+            $domain_name = $domain['sld'] . '.' . $domain['tld'];
+            $client = self::whmcs_api('getclientsdomains', array('domain' => $domain_name ));
+            if ($client['totalresults'] == 1) {
+                $domains[$key]['userid'] = $client['domains']['domain'][0]['userid'];
+                $domains[$key]['domainid']     = $client['domains']['domain'][0]['id'];
+            }
+        }
+        return $domains;
     }
     /**
      *

@@ -16,6 +16,9 @@
         <input type="hidden" name="start" value="1" />
         <input type="hidden" name="per_page" value="<?php echo enom_pro::get_addon_setting('import_per_page')?>" />
         <input type="hidden" name="show_only" value="<?php if (in_array($_GET['show_only'], array('imported', 'unimported'))): echo $_GET['show_only']; endif;?>" />
+        <?php if (isset($_GET['domain'])) :?>
+            <input type="hidden" name="domain" value="<?php echo htmlentities($_GET['domain']);?>" />
+        <?php endif;?>
         <div id="domains_target">
         </div>
     </form>

@@ -1,3 +1,4 @@
+var whois_xhrs = [];
 jQuery(function($) {
     var $message = $("#ajax_messages"), $process = $("#order_process");
     $process.hide(), last_domain = '';
@@ -36,6 +37,7 @@ jQuery(function($) {
     } else {
         var localStorage = false;
     }
+    
     $("#import_table_form").on('getwhois', ".domain_whois", function(e) {
         var $target = $(this);
         var domain_name = $(this).data('domain');
@@ -49,32 +51,42 @@ jQuery(function($) {
             do_whois_results($target, data);
             return data;
         }
-        $.ajax({
+        whois_xhrs.push($.ajax({
             url : 'addonmodules.php?module=enom_pro',
             global : false,
             data : {
                 action : 'get_domain_whois',
                 domain : domain_name
             },
-            success : function(data) {
-                do_whois_results($target, data);
+            success : function(data, xhr) {
                 if (localStorage) {
                     var string = JSON.stringify(data);
                     localStorage.setItem(domain_name, string);
                 } else {
                     whois_cache[domain_name] = data;
                 }
+                do_whois_results($target, data);
+                whois_xhrs.pop(xhr);
             }
-        });
+        })
+        );
         return false;
+    });
+    $(window).on('beforeunload', function  () {
+        if (whois_xhrs.length > 0) {
+            $.each(whois_xhrs, function  (k, v) {
+                v.abort();
+            });
+        }
     });
     if (localStorage) {
         function getLabel() {
             return 'Clear LocalStorage (' + localStorage.length + ')';
         }
-        $("#local_storage").append(
-                '<a class="btn btn-info btn-mini" href="#">' + getLabel()
-                        + '</a>').on('click', function() {
+        
+        $("#local_storage").on('refresh', function  () {
+            $(this).html('<a class="btn btn-info btn-mini" href="#">' + getLabel()+ '</a>')
+        }).on('click', '.btn', function  () {
             localStorage.clear();
             $(this).find('a').html(getLabel());
             $("#import_table_form").trigger('submit');
@@ -82,6 +94,7 @@ jQuery(function($) {
         });
     }
     function do_whois_results($target, data) {
+        $("#local_storage").trigger('refresh');
         $target.closest('.alert').find('.create_order').data('email',
                 data.email);
         $target.find('.enom_pro_loader').addClass('hidden');
