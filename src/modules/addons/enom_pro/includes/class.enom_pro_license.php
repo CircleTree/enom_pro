@@ -7,7 +7,7 @@
 class enom_pro_license
 {
     private $license;
-    private $latest_version;
+    private static $latest_version = false;
     public function  __construct()
     {
         $license = enom_pro::get_addon_setting('license');
@@ -88,19 +88,69 @@ class enom_pro_license
     }
     /**
      * Checks for the latest version of the addon
-     * @return return false if no update, upgrade string if true
+     * @return bool
      */
-    public function updateAvailable()
+    public static function is_update_available()
     {
         //Compare the response from the server to the locally defined version
-        if ($this->latestvesion > ENOM_PRO_VERSION) {
+        if (self::get_latest_version() > ENOM_PRO_VERSION) {
             //The remote is newer than local, return the string upgrade notice
-            return '<div class="infobox alert alert-info">eNom Pro Version '.$this->latestvesion.' available.
-                    <a target="_blank" href="https://mycircletree.com/client-area/clientarea.php?action=products">
-                    Download Now</a>!</div>';
+            return true;
         } else {
             return false;
         }
+    }
+    private static function _get_latest_version ()
+    {
+        if (true == self::$latest_version) {
+            return self::$latest_version;
+        }
+        $version_file = ENOM_PRO_INCLUDES . 'version';
+        if (file_exists($version_file)) {
+            self::$latest_version = file_get_contents($version_file);
+            return self::$latest_version;
+        }
+        $latest_version_xml = enom_pro::curl_get('http://mycircletree.com/versions/enom_pro_version.xml');
+        $latest_version = @simplexml_load_string($latest_version_xml);
+        if (is_object($latest_version)) {
+            $latest_version_string = (string) $latest_version->version;
+            $handle = fopen($version_file, 'w');
+            fwrite($handle, $latest_version_string);
+            fclose($handle);
+        }  else {
+            $latest_version_string = '1.0';
+        }
+        self::$latest_version = $latest_version_string;
+        return self::$latest_version;
+    }
+    /**
+     * Gets latest available release version number
+     * @return string latest version number
+     */
+    public static function get_latest_version ()
+    {
+        return self::_get_latest_version();
+    }
+    /**
+     * 
+     * @return string Time ago
+     */
+    public static function get_last_checked_time_ago ()
+    {
+        $version_file = ENOM_PRO_INCLUDES . 'version';
+        if (! file_exists($version_file)) {
+            self::get_latest_version();
+        }
+        return enom_pro::time_ago(filemtime($version_file));
+    }
+    /**
+     * Deletes cached version data;
+     */
+    public static function delete_latest_version ()
+    {
+        self::$latest_version = false;
+        $version_file = ENOM_PRO_INCLUDES . 'version';
+        unlink($version_file);
     }
     private function get_remote_license($licensekey,$localkey="")
     {
@@ -200,10 +250,7 @@ class enom_pro_license
             }
             if ($results["status"]=="Active") {
                 $results["checkdate"] = $checkdate;
-                $latest_version_xml = enom_pro::curl_get('http://mycircletree.com/versions/enom_pro_version.xml');
-                $latest_version = simplexml_load_string($latest_version_xml);
-                $this->latest_version = (string) $latest_version->version;
-                $results["latestversion"] = $this->latest_version;
+                $results["latestversion"] = $this->get_latest_version();
                 $data_encoded = serialize($results);
                 $data_encoded = base64_encode($data_encoded);
                 $data_encoded = md5($checkdate.$licensing_secret_key).$data_encoded;
