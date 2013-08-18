@@ -7,8 +7,28 @@
  * @codeCoverageIgnore
  */
 defined("WHMCS") or die("This file cannot be accessed directly");
+/**
+ * @var string version number
+ */
 define("ENOM_PRO_VERSION",'@VERSION@');
-define('ENOM_PRO_INCLUDES', ROOTDIR . '/modules/addons/enom_pro/includes/');
+
+/**
+ * @var string full path to enom pro addon dir
+ */
+define('ENOM_PRO_ROOT', ROOTDIR . '/modules/addons/enom_pro/');
+
+/**
+ * @var string path to includes directory
+ */
+define('ENOM_PRO_INCLUDES', ENOM_PRO_ROOT . 'includes/');
+
+/**
+ * @var string temp dir
+ */
+define('ENOM_PRO_TEMP', ENOM_PRO_ROOT . 'temp/');
+/**
+ * Load required core files
+ */
 require_once ENOM_PRO_INCLUDES . 'exceptions.php';
 require_once ENOM_PRO_INCLUDES . 'class.enom_pro.php';
 require_once ENOM_PRO_INCLUDES . 'class.enom_pro_license.php';
@@ -145,33 +165,58 @@ function enom_pro_activate ()
 
 
 /**
- * @param unknown $vars
+ * @param array $vars module vars
  * @return string
  * @codeCoverageIgnore
  */
 function enom_pro_sidebar ($vars)
 {
-    $sidebar = '<span class="header">
-            <img src="images/icons/domainresolver.png" class="absmiddle" width=16 height=16 />@NAME@</span>
-                <ul class="menu">
-                <li><a class="btn btn-block" href="'.enom_pro::MODULE_LINK.'">Home</a></li>
-                    <li><a class="btn btn-block" href="'.enom_pro::MODULE_LINK.'&view=import">Domain Importer</a></li>
-                    <li><a class="btn btn-block" href="configaddonmods.php#enom_pro">Settings</a></li>
-                    </ul>
-                    <span class="header">@NAME@ Meta</span>
-                    <ul class="menu">
-                    <li>
-                    <a href="#">Version: '.ENOM_PRO_VERSION.'</a>
-             </li>
-             <li>
-             <a href="http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43"
-                            target="_blank" >View Changelog</a></li>
-             </li>
-             <li>
-                <a href="'.enom_pro::INSTALL_URL.'" target="_blank" >Install Service</a></h3>
-                </li>
-                </ul>';
-
+    ob_start(); ?>
+<span class="header"> <img src="images/icons/domainresolver.png"
+    class="absmiddle" width=16 height=16 />@NAME@
+</span>
+<ul class="menu">
+    <li>
+        <a class="btn btn-block" href="<?php echo enom_pro::MODULE_LINK; ?>">Home</a>
+    </li>
+    <li>
+        <a class="btn btn-block"
+        href="<?php echo enom_pro::MODULE_LINK; ?>&view=domain_import">Import Domains</a>
+    </li>
+    <li>
+        <a class="btn btn-block"
+        href="<?php echo enom_pro::MODULE_LINK; ?>&view=pricing_import">Import Pricing <span class="badge">BETA</span></a>
+    </li>
+    <li>
+        <a class="btn btn-block" href="configaddonmods.php#enom_pro">Settings</a>
+    </li>
+</ul>
+<span class="header">@NAME@ Meta</span>
+<ul class="menu">
+    <li>
+        Version: <?php echo ENOM_PRO_VERSION; ?><br/>
+        Checked for updates:
+        <?php echo enom_pro_license::get_last_checked_time_ago();?>
+    </li>
+    <li>
+        <a class="btn btn-mini btn-block" href="<?php echo enom_pro::MODULE_LINK?>&action=do_upgrade_check">
+            Check for updates
+        </a>
+    </li>
+    <li><a
+        href="http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43"
+        target="_blank">View Changelog</a>
+    </li>
+    <li>
+        <a href="'.enom_pro::INSTALL_URL.'" target="_blank">Install Service</a>
+    </li>
+    <li>
+        <a target="_blank" href="systemmodulelog.php">Module Log</a>
+    </li>
+</ul>
+<?php 
+    $sidebar = ob_get_contents();
+    ob_end_clean();
     return $sidebar;
 }
 /**
@@ -184,24 +229,54 @@ function enom_pro_output ($vars)
     if (isset($_REQUEST['action'])) {
         return;
     }
+   
     try {
         $enom = new enom_pro();
-        if (isset($_GET['view']) && 'import' == $_GET['view']) {
-            $enom->render_domain_import_page();
+       
+        if (isset($_GET['view']) && method_exists($enom, render_.$_GET['view'])) {
+            $view = (string) $_GET['view'];
+            $method = "render_$view";
+            $enom->$method();
             return;
         } else {
-            //Run this to check login credentials and IP
+            //Run this to check login credentials and IP restrictions
             $enom->getAvailableBalance();
         }
-        $license = new enom_pro_license();
-        if ($license->updateAvailable())
-            echo $license->updateAvailable();
     ?>
+    <?php if (isset($_GET['upgraded'])) :?>
+        <div class="alert alert-success">
+            Upgrade Successful. Running version <?php echo ENOM_PRO_VERSION;?>.
+        </div>
+    <?php endif;?>
+    <?php if (isset($_GET['checked'])):?>
+        <div class="alert <?php echo enom_pro_license::is_update_available() ? 'alert-warning' : 'alert-success';?>">
+            <h4>Checked for updates.</h4>
+            <?php if (! enom_pro_license::is_update_available()):?>
+                You are running the latest release.
+            <?php endif;?>
+        </div>
+    <?php endif;?>
+    <?php if (enom_pro_license::is_update_available()) :?>
+    <script src="../modules/addons/enom_pro/jquery.admin.js"></script>
+        <div class="alert alert-success">
+            <h2>Upgrade available!</h2>
+            <span class="badge" >Update using our 1-click upgrade system.</span>
+                <a id="doUpgrade" class="btn btn-large btn-success" href="<?php echo enom_pro_license::DO_UPGRADE_URL;?>">
+                Upgrade to Version <?php echo enom_pro_license::get_latest_version();?> now!
+            </a> -or- <a href="<?php echo enom_pro::get_upgrade_zip_url()?>">Download Now</a>
+            <div id="enom_pro_changelog"></div>
+        </div>
+    <?php endif;?>
+    <div id="enom_pro_admin_widgets">
+        <?php enom_pro::render_admin_widget('enom_pro_admin_balance'); ?>
+        <?php enom_pro::render_admin_widget('enom_pro_admin_expiring_domains');?>
+        <?php enom_pro::render_admin_widget('enom_pro_admin_transfers'); ?>
+    </div>
         <div id="enom_faq">
             <p>
                 Looks like you're connected to enom! Want to import some domains to
                 WHMCS? <a class="btn btn-success large"
-                    href="<?php echo $_SERVER['PHP_SELF'] . '?module=enom_pro&view=import'?>">Import
+                    href="<?php echo $_SERVER['PHP_SELF'] . '?module=enom_pro&view=domain_import'?>">Import
                     Domains!</a>
             </p>
             <h1>FAQ</h1>
