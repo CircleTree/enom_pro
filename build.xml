@@ -116,6 +116,7 @@
     	<!-- delete files that need to be replaced -->
     	<delete file="${encoded_prep}/modules/addons/enom_pro/includes/class.enom_pro_license.php"/>
     	<delete file="${encoded_prep}/modules/addons/enom_pro/enom_pro.php"/>
+    	<delete file="${encoded_prep}/modules/addons/enom_pro/hooks.php"/>
         <copy todir="${encoded_prep}">
         	<filterchain>
         		<replacetokens>
