@@ -8,6 +8,7 @@ class enom_pro_license
 {
     private $license;
     private static $latest_version = false;
+    const DO_UPGRADE_URL = 'addonmodules.php?module=enom_pro&action=do_upgrade';
     public function  __construct()
     {
         $license = enom_pro::get_addon_setting('license');
@@ -92,13 +93,21 @@ class enom_pro_license
      */
     public static function is_update_available()
     {
+        return true;
         //Compare the response from the server to the locally defined version
-        if (self::get_latest_version() > ENOM_PRO_VERSION) {
+        if (version_compare(self::get_latest_version(), ENOM_PRO_VERSION, 'gt')) {
             //The remote is newer than local, return the string upgrade notice
             return true;
         } else {
             return false;
         }
+    }
+    /**
+     * @deprecated 2.1
+     */
+    public function updateAvailable ()
+    {
+        enom_pro::deprecated('updateAvailable', '2.1', 'enom_pro_license::is_update_available()');
     }
     private static function _get_latest_version ()
     {
