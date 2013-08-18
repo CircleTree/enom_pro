@@ -21,3 +21,9 @@ class RemoteException extends Exception
 class WHMCSException extends Exception
 {
 }
+/**
+ * Missing dependency exception 
+ */
+class MissingDependencyException extends Exception 
+{
+}
