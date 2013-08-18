@@ -329,14 +329,22 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	    $this->assertArrayHasKey('statusdesc', $first_transfer_order);
 	}
 	/**
-	 * @group spinner
+	 * @group namespinner
 	 */
 	function  test_spinner()
 	{
-	    $spinner_array = $this->e->getSpinner('testdomain.com');
-	    $this->assertNotEmpty($spinner_array);
-	    $this->assertArrayHasKey('domains', $spinner_array);
-	    $this->assertArrayHasKey('pricing', $spinner_array);
+	    try {
+    	    $spinner_array = $this->e->getSpinner('google.com');
+    	    $this->assertNotEmpty($spinner_array);
+    	    $this->assertArrayHasKey('domains', $spinner_array);
+    	    $this->assertArrayHasKey('pricing', $spinner_array);
+	    } catch (EnomException $e) {
+	        $msg = $e->getMessage() . '. API Error Code: ' . $e->getCode();
+	        $msg .= '. See: http://www.enom.com/resellers/ResponseCodes.pdf';
+	        $this->markTestSkipped('EnomException: ' . $msg);
+	    } catch (Exception $e) {
+	        $this->fail('Unhandled Exception: ' . $e->getMessage() . PHP_EOL .  $e->getTraceAsString());
+	    }
 	}
     /**
      * @group domains
@@ -437,13 +445,17 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group stats
 	 */
 	function  test_get_acct_stats() {
-		$s = $this->e->getAccountStats();
-		$this->assertTrue(is_array( $s ));
-		$this->assertArrayHasKey('registered', $s);
-		$this->assertArrayHasKey('expiring', $s);
-		$this->assertArrayHasKey('expired', $s);
-		$this->assertArrayHasKey('redemption', $s);
-		$this->assertArrayHasKey('ext_redemption', $s);
+	    try {
+    		$s = $this->e->getAccountStats();
+    		$this->assertTrue(is_array( $s ));
+    		$this->assertArrayHasKey('registered', $s);
+    		$this->assertArrayHasKey('expiring', $s);
+    		$this->assertArrayHasKey('expired', $s);
+    		$this->assertArrayHasKey('redemption', $s);
+    		$this->assertArrayHasKey('ext_redemption', $s);
+	    } catch (EnomException $e) {
+	        $this->markTestSkipped($e->getMessage() . ' : ' . $e->getCode());
+	    }
 	}
 	/**
 	 * @group remote
