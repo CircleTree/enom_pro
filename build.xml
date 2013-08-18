@@ -2,8 +2,8 @@
 <project name="ENOM PRO!" default="deploy">
 	<property name="name" value="eNom PRO"/>
 	<property name="version" value="2.1.0"/>
-	<property name="build_dir" value="/Volumes/Build/enom_pro"/>
 	<property name="build_temp_dir" value="build"/>
+	<property name="build_dir" value="${build_temp_dir}"/>
 	<property name="src_dir" value="src/"/>
 	<property name="version_xml" value="enom_pro_version.xml"/>
 	<property name="deploy" value="/Users/robertgregor/Sites/whmcs" />
@@ -12,6 +12,7 @@
 	<property name="encoded_prep" value="${build_dir}/encoded_prep"/>
 	<property name="ftp.password" value="vRki3ozG08Tt"/>
 	<property name="enc.secret" value="Hsyz2YQDuzVH7r6QQFjbcVE8RJ7ewk7F"/><!-- Secret -->
+	<taskdef name="sync" classname="phing.tasks.ext.FileSyncTask" />
     <!-- FILESETS -->
     <fileset dir="${project.basedir}/${src_dir}" id="open_files">
         <include name="**/.php" />
@@ -105,12 +106,16 @@
 	    </target>
 	    <target name="ci" depends="clean,phpunit,try_ParallelTasks,phpcb" />
     <target name="deploy">
-    	<echo msg="Cleaning up any failed builds"/>
-    	<delete dir="${build_dir}" includeemptydirs="true" failonerror="false"/>
-   		<mkdir dir="${build_dir}" />
-    	<delete dir="${deploy}/modules/enom_pro/"/>
-   		<mkdir dir="${encoded}" />
-    	<echo msg="Copying files from src to encoded_prep &amp; replacing tokens"/>
+    	<delete dir="${build_temp_dir}"/>
+    	<mkdir dir="build/encoded_prep/"/>
+    	<sync sourcedir="src/"
+    				destinationdir="build/encoded_prep/"
+    				itemizechanges="true"
+    				verbose="true"
+    				checksum="true" />
+    	<!-- delete files that need to be replaced -->
+    	<delete file="${encoded_prep}/modules/addons/enom_pro/includes/class.enom_pro_license.php"/>
+    	<delete file="${encoded_prep}/modules/addons/enom_pro/enom_pro.php"/>
         <copy todir="${encoded_prep}">
         	<filterchain>
         		<replacetokens>
@@ -121,7 +126,14 @@
         	</filterchain>
         	<fileset refid="open_files"/>
         </copy>
-        <ioncubeencoder phpversion="53" obfuscate="linenos" optimize="max" ioncubepath="/Users/robertgregor/ioncube" targetoption="replace" fromdir="${encoded_prep}" todir="${encoded}">
+        <ioncubeencoder
+        	phpversion="53"
+        	obfuscate="linenos"
+        	optimize="max"
+        	ioncubepath="/Users/robertgregor/ioncube"
+        	targetoption="replace"
+        	fromdir="${encoded_prep}"
+        	todir="${encoded}">
     			<comment>*************************************************************************</comment>
 				<comment>* enom PRO Addon for WHMCS                                              *</comment>
 				<comment>* Copyright (c) 2001-2013 Orion IP Ventures, LLC. All Rights Reserved   *</comment>
