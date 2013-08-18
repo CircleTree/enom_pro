@@ -2,13 +2,15 @@
 $enom = new enom_pro();
 $show_only = isset($_GET['show_only']) ? $_GET['show_only'] : false;
 $per_page = $enom->get_addon_setting('import_per_page');
-if ( isset($_GET['domain']) ) {
-    $domains_array = $enom->getDomainsWithClients(true, 1);
+if ( isset($_REQUEST['domain']) ) {
+    //@TODO fixme getDomainsWithClients() only returns 1???
+    $domains_array = $enom->getDomainsWithClients();
     foreach ($domains_array as $key => $domain) {
         $this_domain = $domain['sld'] . '.' . $domain['tld'];
+        $var = strstr($this_domain, $_GET['domain']);
         if ($this_domain == $_GET['domain']) {
+            unset($domains_array);
             $domains_array = array($domain);
-            break;
         }
     }
 } else {
@@ -39,12 +41,10 @@ if ( empty($domains_array) ) {
                             data-domain="<?php echo $domain_name;?>"
                             href="#">Create Order</a>
                     </p>
-                    <p>
-                        <div class="domain_whois clearfix" data-action="get_domain_whois" data-domain="<?php echo $domain_name; ?>">
-                            <div class="response"></div>
-                            <div class="enom_pro_loader small"></div>
-                        </div>
-                    </p>
+                    <div class="domain_whois clearfix" data-action="get_domain_whois" data-domain="<?php echo $domain_name; ?>">
+                        <div class="response"></div>
+                        <div class="enom_pro_loader small whois">Querying WHOIS</div>
+                    </div>
                 </div>
             <?php else: ?>
                 <div class="alert alert-success">
