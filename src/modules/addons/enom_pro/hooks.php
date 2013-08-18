@@ -73,7 +73,9 @@ jQuery(function($) {
         }';
 
     return array(
-            'title'=>'eNom PRO - Reseller Balance <img src="images/icons/transactions.png" align="absmiddle" height="16px" width="16px" border="0">'.get_enom_pro_widget_form('checkenombalance', 'refreshEnomBalance'),
+            'title'=>'<a href="'.enom_pro::MODULE_LINK.'">@NAME@</a>' . 
+                ' - Reseller Balance <img src="images/icons/transactions.png" align="absmiddle" height="16px" width="16px" border="0">' . 
+                get_enom_pro_widget_form('checkenombalance', 'refreshEnomBalance'),
             'content'=>$content,
             'jquerycode'=>enom_pro::minify($jquerycode),
         );
@@ -139,9 +141,10 @@ function enom_pro_admin_ssl_certs ($vars)
             $refresh_ssl.trigger("submit");
         }
 ';
-
     return array(
-            'title'=>'eNom PRO - SSL Certificates <img src="images/icons/securityquestions.png" align="absmiddle" height="16px" width="16px" border="0">'.get_enom_pro_widget_form('checkenomssl', 'refreshEnomSSL'),
+            'title'=>'<a href="'.enom_pro::MODULE_LINK.'">@NAME@</a> - SSL Certificates '.
+                    '<img src="images/icons/securityquestions.png" align="absmiddle" height="16px" width="16px" border="0">' . 
+                    get_enom_pro_widget_form('checkenomssl', 'refreshEnomSSL'),
             'content'=>$content,
             'jquerycode'=>enom_pro::minify($jquerycode),
         );
@@ -280,9 +283,10 @@ function enom_pro_admin_expiring_domains ($vars)
     }';
 
     return array(
-            'title'	=>	'eNom PRO - Domain Stats <img src="images/icons/domains.png" 
-            align="absmiddle" height="16px" width="16px" border="0">' . 
-            get_enom_pro_widget_form('checkexpiring', 'refreshExpiring'),
+            'title'	=>	'<a href="'.enom_pro::MODULE_LINK.'">@NAME@</a>' . 
+                ' - Domain Stats <img src="images/icons/domains.png"' . 
+                ' align="absmiddle" height="16px" width="16px" border="0">' . 
+                get_enom_pro_widget_form('checkexpiring', 'refreshExpiring'),
             'content'=>$content,
             'jquerycode'=>enom_pro::minify($jquerycode),
         );
@@ -421,7 +425,9 @@ function enom_pro_admin_transfers ($vars)
     });';
 
         return array(
-                'title'	=>	'eNom PRO - Pending Transfers <img src="images/icons/clientlogin.png" align="absmiddle" height="16px" width="16px" border="0">'.get_enom_pro_widget_form('checkenomtransfers', 'refreshEnomTransfers'),
+                'title'	=>	'<a href="'.enom_pro::MODULE_LINK.'">@NAME@</a> ' . 
+                    '- Pending Transfers <img src="images/icons/clientlogin.png" align="absmiddle" height="16px" width="16px" border="0">' . 
+                    get_enom_pro_widget_form('checkenomtransfers', 'refreshEnomTransfers'),
                 'content'=>$content,
                 'jquerycode'=>enom_pro::minify($jquerycode),
             );
