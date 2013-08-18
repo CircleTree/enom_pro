@@ -290,9 +290,11 @@ class enom_pro
     {
         $errs = $this->xml->ErrCount;
         $i = 1;
-        $exception = new EnomException();
+        $exception = new EnomException(
+                (string) $this->xml->responses->response->ResponseString,
+                (string) $this->xml->responses->response->ResponseNumber
+        );
         while ($i <= $errs) {
-            //@TODO errors are an array in an XML response. NOT an indexed string
             $string = 'Err'.$i;
             $error = (string) $this->xml->errors->$string;
             // @codeCoverageIgnoreStart
@@ -596,15 +598,16 @@ class enom_pro
     /**
      * Gets SRV Records
      * @param  string $domain optional, only needed if setDomain isn't called first
-     * @return array  (
-            [service] => _voice
-            [protocol] => _TCP
-            [priority] => 1
-            [weight] => 1
-            [port] => 8080
-            [target] => google.com
-            [hostid] => 18749788
-        )
+     * @return array <code>(
+     *      'service' => _voice,
+     *      'protocol' => _TCP,
+     *      'priority' => 1,
+     *      'weight' => 1, 
+     *      'port' => 8080, 
+     *      'target' => google.com, 
+     *      'hostid' => 18749788, 
+     * );
+     * </code>
      */
     public function  get_SRV_records($domain = null)
     {
@@ -784,6 +787,7 @@ class enom_pro
         $query = "
         SELECT
         tlds.`extension` AS 'tld',
+        tlds.`id` AS 'id',
         `msetupfee` AS '1',
         `qsetupfee` AS '2',
         `ssetupfee` AS '3',
@@ -802,6 +806,7 @@ class enom_pro
         $prices = mysql_fetch_assoc(mysql_query($query));
         if ($prices) {
             return array (
+                'id'=>  $prices['id'],
                 1   =>  $prices['1'],
                 2   =>  $prices['2'],
                 3   =>  $prices['3'],
@@ -1121,6 +1126,7 @@ class enom_pro
             if ($domain_search['totalresults'] == 1 && isset($return[$key])) {
                 //If we get here, we can add the client details
                 $whmcs_domain = $domain_search['domains']['domain'][0];
+                $return[$key]['whmcs_id'] = $whmcs_domain['id'];
                 
                 $return[$key]['client'] = self::whmcs_api(
                         'getclientsdetails',
@@ -1238,7 +1244,7 @@ class enom_pro
     public static function curl_get($url, array $get = NULL, array $options = array())
     {
         if (! function_exists('curl_init') ) {
-            throw new RemoteException('cURL is Required for the eNom PRO modules', RemoteException::CURL_EXCEPTION);
+            throw new MissingDependencyException('cURL is Required for the eNom PRO modules', RemoteException::CURL_EXCEPTION);
         }
         $defaults = array(
             CURLOPT_URL => $url. (strpos($url, '?') === FALSE ? '?' : ''). http_build_query($get),
