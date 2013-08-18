@@ -58,14 +58,35 @@ jQuery(function($) {
         showURL: false, 
         fade: 250 
     });
+    $(".ep_lightbox").on('click', function  () {
+    	$("#pricing_dialog").dialog('open').dialog('option', 'title', $(this).data('title'));
+    	$("#pricing_dialog_iframe").attr('src', $(this).data('target'));
+    	return false;
+    });
+    
+    $("#pricing_dialog").dialog({
+    	width: 640,
+    	height: 640,
+    	autoOpen:false,
+    	modal: true,
+    	close: function  () {
+    		$("body").addClass('loading').append('<div class="ui-widget-overlay body-loader"></div>');  
+    		$("#enom_pro_pricing_table input").attr('disabled', true);
+			window.location.reload();
+    	}
+    });
+    $('body').on("click", '.ui-widget-overlay', function() {
+        $("#pricing_dialog").dialog("close");
+    });   
     $("#import_table_form").on('getwhois', ".domain_whois", function(e) {
         var $target = $(this);
         var domain_name = $(this).data('domain');
+        var data = false;
         if (localStorage && localStorage.getItem(domain_name)) {
             var string = localStorage.getItem(domain_name);
-            var data = JSON.parse(string);
+            data = JSON.parse(string);
         } else if (whois_cache[domain_name]) {
-            var data = whois_cache[domain_name];
+            data = whois_cache[domain_name];
         }
         if (data) {
             do_whois_results($target, data);
@@ -80,8 +101,12 @@ jQuery(function($) {
             },
             success : function(data, xhr) {
                 if (localStorage) {
-                    var string = JSON.stringify(data);
-                    localStorage.setItem(domain_name, string);
+                	try {
+                		var string = JSON.stringify(data);
+                		localStorage.setItem(domain_name, string);
+                	} catch (e) {
+                		whois_cache[domain_name] = data;
+                	}
                 } else {
                     whois_cache[domain_name] = data;
                 }
@@ -90,7 +115,7 @@ jQuery(function($) {
             complete: function  (xhr)
             {
             	if (xhr.statusText == 'abort') {
-            		do_whois_results($target, {"email": "Cancelled"})
+            		do_whois_results($target, {"email": "Cancelled"});
             	}
             }
         })
@@ -99,14 +124,14 @@ jQuery(function($) {
     });
     window.onbeforeunload = function  () {
     	abort_whois_xhrs();
-    }
+    };
     if (localStorage) {
         function getLabel() {
             return 'Clear LocalStorage (' + localStorage.length + ')';
         }
         
         $("#local_storage").on('refresh', function  () {
-            $(this).html('<a class="btn btn-info btn-mini" href="#">' + getLabel()+ '</a>')
+            $(this).html('<a class="btn btn-info btn-mini" href="#">' + getLabel()+ '</a>');
         }).on('click', '.btn', function  () {
             localStorage.clear();
             $(this).find('a').html(getLabel());
@@ -153,17 +178,17 @@ jQuery(function($) {
                                                                 setTimeout(
                                                                         function() {
                                                                             $new_elem
-                                                                                    .addClass('alert-success')
+                                                                                    .addClass('alert-success');
                                                                         }, 250);
                                                                 setTimeout(
                                                                         function() {
                                                                             $new_elem
-                                                                                    .removeClass('alert-success')
+                                                                                    .removeClass('alert-success');
                                                                         }, 500);
                                                                 setTimeout(
                                                                         function() {
                                                                             $new_elem
-                                                                                    .addClass('alert-success')
+                                                                                    .addClass('alert-success');
                                                                         }, 750);
                                                             });
                                         } else {
@@ -188,18 +213,30 @@ jQuery(function($) {
     $("#import_table_form").on('submit', function() {
         $(".enom_pro_loader").not('.small').removeClass('hidden');
         abort_whois_xhrs();
+        $("#domain_caches").hide(); 
         $.ajax({
             url : 'addonmodules.php?module=enom_pro',
             data : $(this).serialize(),
             success : function(data) {
                 $(".enom_pro_loader").addClass('hidden');
                 $("#domains_target").html(data.html);
-                $(".domains_cache_time").html(data.cache_date); 
+                $(".domains_cache_time").html(data.cache_date);
+                $("#domain_caches").show();
             }
         });
         return false;
     }).trigger('submit');
-//    $("#import_table_form").submit();
+    $("#search_form").on('submit', function  (){
+    	var search = $(this).find('input[name=s][type=text]').val();
+    	$("input[name=s][type=hidden]").val(search); 
+    	$("#import_table_form").trigger('submit');
+    	return false;
+	});
+    $("#enom_pro_import_page").on('click',".clear_search", function  (){
+    	$('input[name=s][type=text]').val("");
+    	$("#search_form").trigger('submit');
+    	return false;
+    });
     $(".toggle_tld").on('click', function  (){
     	var $this = $(this),
     	tld = $this.data('tld');
@@ -271,9 +308,15 @@ jQuery(function($) {
         $("#import_table_form").trigger('submit');
         return false;
     });
+    var slide_time = $(".slideup").data('timeout');
+    if (! slide_time) {
+    	slide_time = 2000;
+    } else {
+    	slide_time = slide_time * 1000;
+    }
     setTimeout(function() {
-        $(".slideup").slideUp(1000)
-    }, 2000);
+        $(".slideup").slideUp(1000);
+    }, slide_time);
     $("#per_page_form").on('submit change', function() {
         var $loader = $('.enom_pro_loader');
         $.ajax({
@@ -290,26 +333,26 @@ jQuery(function($) {
         return false;
     });
     $("#enom_pro_pricing_table").tableHover({colClass: "hover", ignoreCols: [1,2,3,4]}); 
-    	var $news = $("#enom_pro_changelog"),
-    	loadingString = "<h3>Loading Changelog</h3><div class=\"enom_pro_loader\"></div>";
-     	if ($news.length > 0) {
-			$news.append(loadingString);
-			$.ajax({
-			    url: document.location.protocol + "//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=4&callback=?&q=" + encodeURIComponent("http://mycircletree.com/client-area/knowledgebaserss.php?id=43"),
-			    dataType: "json",
-			    success: function(data) {
-			      	$news.empty();
-			      	var str = "";
-					$.each(data.responseData.feed.entries, function (k,entry) {
-						console.log('entry', entry);
-						str += "<h4><a target=\"_blank\" href=\""+entry.link+"\" title=\"View "+entry.title+" on our Website\">"
-						  + entry.title+"</a></h4><p>" + 
-						  entry.content + "<a class=\"button button-mini\" style=\"float:right;\" target=\"_blank\" href=\""+entry.link+"\">Read more...</a></p>";
-					});
-					str +=	"<a class=\"alignright\" href=\"http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43\" target=\"_blank\">"
-						   + "View Changelog</a>";
-					$(str).appendTo($news); 
-			    }
-			});
-     	}
+	var $news = $("#enom_pro_changelog"),
+	loadingString = "<h3>Loading Changelog</h3><div class=\"enom_pro_loader\"></div>";
+ 	if ($news.length > 0) {
+		$news.append(loadingString);
+		$.ajax({
+		    url: document.location.protocol + "//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=4&callback=?&q=" + encodeURIComponent("http://mycircletree.com/client-area/knowledgebaserss.php?id=43"),
+		    dataType: "json",
+		    success: function(data) {
+		      	$news.empty();
+		      	var str = "";
+				$.each(data.responseData.feed.entries, function (k,entry) {
+					console.log('entry', entry);
+					str += "<h4><a target=\"_blank\" href=\""+entry.link+"\" title=\"View "+entry.title+" on our Website\">"
+					  + entry.title+"</a></h4><p>" + 
+					  entry.content + "<a class=\"button button-mini\" style=\"float:right;\" target=\"_blank\" href=\""+entry.link+"\">Read more...</a></p>";
+				});
+				str +=	"<a class=\"alignright\" href=\"http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43\" target=\"_blank\">"
+					   + "View Changelog</a>";
+				$(str).appendTo($news); 
+		    }
+		});
+ 	}
 });

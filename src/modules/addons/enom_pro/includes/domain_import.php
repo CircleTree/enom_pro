@@ -10,33 +10,13 @@
     </div>
 <?php endif; ?>
     <script src="../modules/addons/enom_pro/jquery.admin.js"></script>
-    <div class="enom_pro_loader"></div>
+    <div class="enom_pro_loader" id="top_loader"></div>
      <table id="meta">
         <tr>
             <td>
-                <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>" id="per_page_form">
-                    <?php 
-                    $config = enom_pro_config();
-                    $options = $config['fields'];
-                    $per_page = explode(',', $options['import_per_page']['Options']);
-                    ?>
-                    <select name="per_page" id="per_page">
-                        <?php foreach ($per_page as $num) :?>
-                            <option value="<?php echo $num?>"
-                                <?php if (enom_pro::get_addon_setting('import_per_page') == $num):?> selected<?php endif?>>
-                                <?php echo $num?>
-                            </option>
-                        <?php endforeach;?>
-                    </select>
-                    <input type="hidden" name="action" value="set_results_per_page" />
-                    <label for="per_page">Results Per Page</label>
-                    <input type="submit" value="Go" class="no-js" />
-                </form>
-            </td>
-            <td>
                 <form method="GET" action="<?php echo $_SERVER['PHP_SELF'];?>" id="filter_form">
                 <?php $options = array('All', 'Imported', 'Unimported'); ?>
-                    <label for="filter">Show Only</label>
+                    <label for="filter">Filter</label>
                     <select name="show_only" id="filter">
                         <?php foreach ($options as $option) :?>
                             <option value="<?php echo strtolower($option);?>"
@@ -50,11 +30,38 @@
                     <input type="submit" value="Go" class="no-js" />
                 </form>
             </td>
+            <td>
+                <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>" id="per_page_form">
+                    <?php 
+                    $config = enom_pro_config();
+                    $options = $config['fields'];
+                    $per_page = explode(',', $options['import_per_page']['Options']);
+                    ?>
+                    <label for="per_page">Per Page</label>
+                    <select name="per_page" id="per_page">
+                        <?php foreach ($per_page as $num) :?>
+                            <option value="<?php echo $num?>"
+                                <?php if (enom_pro::get_addon_setting('import_per_page') == $num):?> selected<?php endif?>>
+                                <?php echo $num?>
+                            </option>
+                        <?php endforeach;?>
+                    </select>
+                    <input type="hidden" name="action" value="set_results_per_page" />
+                    <input type="submit" value="Go" class="no-js" />
+                </form>
+            </td>
+            <td>
+                <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>" id="search_form">
+                    <input type="text" name="s" placeholder="Search"/>
+                    <input type="submit" value="Go" />
+                </form>
+            </td>
         </tr>
     </table>
     <form method="POST" id="import_table_form">
         <input type="hidden" name="action" value="render_import_table" />
         <input type="hidden" name="start" value="1" />
+        <input type="hidden" name="s" value="" />
         <input type="hidden" name="per_page" value="<?php echo enom_pro::get_addon_setting('import_per_page')?>" />
         <input type="hidden" name="show_only" value="<?php if (in_array($_GET['show_only'], array('imported', 'unimported'))): echo $_GET['show_only']; endif;?>" />
         <?php if (isset($_GET['domain'])) :?>
@@ -146,7 +153,7 @@
             </div>
         </form>
     </div>
-    <table>
+    <table id="domain_caches">
         <tr>
             <td>
                 <a class="btn btn-inverse btn-mini btn-block" href="addonmodules.php?module=enom_pro&action=clear_cache">Clear Cache</a><br/>
@@ -156,5 +163,5 @@
             </td>
         </tr>
     </table>
-    <div class="enom_pro_loader hidden"></div>
+    <div class="enom_pro_loader hidden" id="loader_bottom"></div>
 </div>
