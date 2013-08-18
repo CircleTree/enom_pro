@@ -57,8 +57,10 @@ class enom_pro
     public static $cli = false;
     const RETRY_LIMIT = 2;
     const INSTALL_URL = 
-    'https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7&subject=enom%20Install%20Service';
+        'https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7&subject=enom%20Install%20Service';
     const MODULE_LINK = 'addonmodules.php?module=enom_pro';
+    const CHANGELOG_URI = 
+        'http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43';
     /**
      * implemented API commands
      * @var array $commands
@@ -77,13 +79,17 @@ class enom_pro
             'SetDomainSRVHosts',
             'CertGetCerts',
             'GetBalance',
-            'GetWhoisContact'
+            'GetWhoisContact',
+            'GetTLDList',
+            'PE_GetProductPrice',
+            'PE_GetRetailPrice',
     );
     /**
      * All domains cache file path
      * @var string
      */
     private $cache_file_all_domains;
+    private $cache_file_all_prices;
     private $parameters = array();
     /**
      * eNom API Class
@@ -95,12 +101,21 @@ class enom_pro
         $this->setParams(array("ResponseType"=>"XML"));
         $this->get_login_credientials();
         $this->cache_file_all_domains = ENOM_PRO_INCLUDES . 'all_domains.cache';
+        $this->cache_file_all_prices = ENOM_PRO_INCLUDES . 'all_prices.cache';
         $this->remote_request_limit = $this->get_addon_setting('api_request_limit');
         if (php_sapi_name() == 'cli') {
             self::$cli = true;
         } else {
             $this->license = new enom_pro_license();
         }
+    }
+    /**
+     * Override api limit for specific request types
+     * @param int $number
+     */
+    public function override_request_limit ($number)
+    {
+        $this->remote_request_limit = $number;
     }
     /**
      * Checks login credentials
@@ -320,20 +335,18 @@ class enom_pro
 
         //Save the cURL response
         $this->response = $this->curl_get($this->URL, $this->parameters);
-        //Increment the remote API counter
-        $this->remote_run_number++;
-        //Use simpleXML to parse the XML string
-        libxml_use_internal_errors(true);
-        $this->xml = simplexml_load_string($this->response, 'SimpleXMLElement', LIBXML_NOCDATA);
+        //Parse the XML
+        $this->load_xml($this->response);
         // @codeCoverageIgnoreStart
         //Log calls to WHMCS module log: systemmodulelog.php
         if (function_exists('logModuleCall')) {
             logModuleCall(
-                'enom_pro',
-                $this->getParam('command'),
-                $this->parameters,
-                $this->response,
-                (array) $this->xml,
+                'enom_pro', //Module name
+                $this->getParam('command'), //Command
+                $this->parameters, //Parameters 
+                $this->response, //Response
+                (array) $this->xml, //API Response
+                //Masked Parameters
                 array(
                     $this->getParam('uid'),
                     $this->getParam('pw')
@@ -379,6 +392,18 @@ class enom_pro
     }
     // @codeCoverageIgnoreEnd
     /**
+     * Loads XML
+     * @param string $string well formed XML string
+     */
+    private function load_xml ($string)
+    {
+        //Increment the remote API counter
+        $this->remote_run_number++;
+        //Use simpleXML to parse the XML string
+        libxml_use_internal_errors(true);
+        $this->xml = simplexml_load_string($string, 'SimpleXMLElement', LIBXML_NOCDATA);
+    }
+    /**
      *
      * Parses the domain name using the API into TLD/SLD
      * @param  string                            $domainName
@@ -412,9 +437,95 @@ class enom_pro
 
         return $return;
     }
-    public function  render_domain_import_page ()
+    /**
+     * Gets all TLDs enabled for this account
+     * @return array $tlds
+     */
+    public function getTLDs ()
+    {
+        $this->runTransaction('GetTLDList');
+        $tlds = array();
+        foreach ($this->xml->tldlist->tld as $tld) {
+            if (! empty($tld->tld)) {
+                $tlds[] = (string) $tld->tld;
+            }
+        }
+        return $tlds;
+    }
+    /**
+     * Gets domain pricing from eNom
+     * @param string $tld com, co.uk, etc. Does NOT include leading . (optional) defaults to .com
+     * @param bool $retail true to get retail/subaccount pricing from eNom
+     * @return array enabled => true/false, price => double
+     */
+    public function getDomainPricing ($tld = 'com', $retail = false)
+    {
+        try {
+            $this->setParams(
+                    array(
+                            'TLD'=>$tld,
+                            'ProductType' => 10,
+                    )
+            );
+            if ($retail) {
+                $this->runTransaction('PE_GetRetailPrice');
+            } else {
+                $this->runTransaction('PE_GetProductPrice');
+            }
+            return array(
+                    'enabled' => ($this->xml->productprice->productenabled == 'True' ? true : false ),
+                    'price' => (string) $this->xml->productprice->price
+                );
+        } catch (Exception $e) {
+            return array('price' => 0.00);
+        }
+    }
+    /**
+     * Cached interface for all pricing data
+     * @param string $retail
+     * @return array tld => pricing
+     */
+    public function getAllDomainsPricing ($retail = false)
+    {
+        if ($this->get_cache_data($this->cache_file_all_prices)) {
+            return $this->get_cache_data($this->cache_file_all_prices);
+        }
+        $tlds = $this->getTLDs();
+        $this->override_request_limit(count($tlds));
+        $return = array();
+        foreach ($tlds as $tld) {
+            $data = $this->getDomainPricing($tld, $retail);
+            $return[$tld] = $data['price'];
+        }
+        if (count($return) > 0) {
+            $this->set_cached_data($this->cache_file_all_prices, $return);
+        }
+        return $return;
+    }
+    public function is_pricing_cached ()
+    {
+        return ! (FALSE === $this->get_cache_data($this->cache_file_all_prices));
+    }
+    public function  render_domain_import ()
     {
         require_once ENOM_PRO_INCLUDES . 'domain_import.php';
+    }
+    public function render_pricing_import ()
+    {
+        require_once ENOM_PRO_INCLUDES . 'pricing_import.php';
+    }
+    /**
+     * Load XML file for testing
+     * @param string $file path to valid XML file
+     * @access private unit testing mock interface
+     * @throws InvalidArgumentException on file not found
+     */
+    public function _load_xml ($file) {
+        if (! file_exists($file)) {
+            throw new InvalidArgumentException('XML File not found: '.$file);
+        }
+        $string = file_get_contents($file);
+        $this->load_xml($string);
     }
     /**
      * gets all pending transfers from the enom table
@@ -650,47 +761,61 @@ class enom_pro
         }
         //Sort the results
         array_multisort($sort,$sort_order,$domains);
-        //Check for cart session currency
-        $currency = (isset($_SESSION['currency']) ? (int) $_SESSION['currency'] : 1);
+        $pricing = array();
         foreach ($allowed_tlds as $tld) {
-            $query = "
-            SELECT
-            tlds.`extension` AS 'tld',
-            `msetupfee` AS '1',
-            `qsetupfee` AS '2',
-            `ssetupfee` AS '3',
-            `asetupfee` AS '4',
-            `bsetupfee` AS '5',
-            `monthly` AS '6',
-            `quarterly` AS '7',
-            `semiannually` AS '8',
-            `annually` AS '9',
-            `biennially` AS '10'
-            FROM `tblpricing` AS pricing
-            JOIN `tbldomainpricing` AS tlds ON pricing.`relid` = tlds.`id`
-            WHERE pricing.`type`='domainregister'
-            AND tlds.`extension` = '.{$tld}'
-            AND pricing.`currency` = $currency
-            ";
-            $prices = mysql_fetch_assoc(mysql_query($query));
-            if ($prices) {
-                $pricing[$tld] = array (
-                    1=>$prices['1'],
-                    2=>$prices['2'],
-                    3=>$prices['3'],
-                    4=>$prices['4'],
-                    5=>$prices['5'],
-                    6=>$prices['6'],
-                    7=>$prices['7'],
-                    8=>$prices['8'],
-                    9=>$prices['9'],
-                    10=>$prices['10']
-                );
-            }
+            $pricing[$tld] = $this->get_whmcs_domain_pricing($tld);
         }
-        $response = array('domains'=>$domains,'pricing'=>$pricing);
+        $response = array(
+                'domains'=>$domains,
+                'pricing'=>$pricing
+        );
 
         return $response;
+    }
+    /**
+     * 
+     * @param string $tld
+     * @return array year => price, ... , 10 => $ . price
+     */
+    public function get_whmcs_domain_pricing ($tld)
+    {
+        //Check for cart session currency
+        $currency = (isset($_SESSION['currency']) ? (int) $_SESSION['currency'] : 1);
+        $query = "
+        SELECT
+        tlds.`extension` AS 'tld',
+        `msetupfee` AS '1',
+        `qsetupfee` AS '2',
+        `ssetupfee` AS '3',
+        `asetupfee` AS '4',
+        `bsetupfee` AS '5',
+        `monthly` AS '6',
+        `quarterly` AS '7',
+        `semiannually` AS '8',
+        `annually` AS '9',
+        `biennially` AS '10'
+        FROM `tblpricing` AS pricing
+        JOIN `tbldomainpricing` AS tlds ON pricing.`relid` = tlds.`id`
+        WHERE pricing.`type`='domainregister'
+        AND tlds.`extension` = '.{$tld}'
+        AND pricing.`currency` = $currency";
+        $prices = mysql_fetch_assoc(mysql_query($query));
+        if ($prices) {
+            return array (
+                1   =>  $prices['1'],
+                2   =>  $prices['2'],
+                3   =>  $prices['3'],
+                4   =>  $prices['4'],
+                5   =>  $prices['5'],
+                6   =>  $prices['6'],
+                7   =>  $prices['7'],
+                8   =>  $prices['8'],
+                9   =>  $prices['9'],
+                10  =>  $prices['10']
+            );
+        } else {
+            return array();
+        }
     }
     /**
      *
@@ -835,19 +960,26 @@ class enom_pro
         }
         return $this->last_result;
     }
-    private function write_domains_cache (array $domains) {
-        $handle = fopen($this->cache_file_all_domains, 'w');
-        $serialized_domains = serialize($domains);
-        $md5 = md5($serialized_domains);
-        fwrite($handle, $md5 . $serialized_domains);
-        fclose($handle);
+    private function write_domains_cache (array $domains)
+    {
+        $this->set_cached_data($this->cache_file_all_domains, $domains);
     }
-    private function get_domains_cache () {
-        if (! file_exists($this->cache_file_all_domains) ) {
+    private function get_domains_cache ()
+    {
+        return $this->get_cache_data($this->cache_file_all_domains);
+    }
+    /**
+     * 
+     * @param unknown $file_path
+     * @return boolean|mixed false on no cache, mixed on success
+     */
+    private function get_cache_data ($file_path)
+    {
+        if (! file_exists($file_path) ) {
             return false;
         } else {
-            $handle = fopen($this->cache_file_all_domains, 'r');
-            $data = fread($handle, filesize($this->cache_file_all_domains));
+            $handle = fopen($file_path, 'r');
+            $data = fread($handle, filesize($file_path));
             fclose($handle);
             $md5 = substr($data, 0, 32);
             $serialized_data = substr($data, 32);
@@ -858,10 +990,23 @@ class enom_pro
             }
         }
     }
+    private function set_cached_data ($file_path, array $data)
+    {
+        $handle = fopen($file_path, 'w');
+        if (count($data) > 0) {
+            $serialized_data = serialize($data);
+            $md5 = md5($serialized_data);
+            fwrite($handle, $md5 . $serialized_data);
+        }
+        fclose($handle);
+    }
     public function clear_domains_cache ()
     {
-        $handle = fopen($this->cache_file_all_domains, 'w');
-        fclose($handle);
+        $this->set_cached_data($this->cache_file_all_domains, array());
+    }
+    public function clear_price_cache ()
+    {
+        $this->set_cached_data($this->cache_file_all_prices, array());
     }
     /**
      * Gets cache file relative time ago
@@ -869,7 +1014,15 @@ class enom_pro
      */
     public function get_domain_cache_date ()
     {
-        return $this->time_ago(filemtime($this->cache_file_all_domains), 2);   
+        return $this->get_cache_file_time($this->cache_file_all_domains);   
+    }
+    public function get_price_cache_date ()
+    {
+        return $this->get_cache_file_time($this->cache_file_all_prices);
+    }
+    private function get_cache_file_time($cache_file) 
+    {
+        return $this->time_ago(filemtime($cache_file), 2);
     }
     /**
      * 
@@ -991,7 +1144,7 @@ class enom_pro
     {
         $response =  self::$cli ? self::whmcs_curl($command, $data) : localAPI($command, $data);
         if ($response['result'] != 'success') {
-            throw new WHMCSException($response['result']);
+            throw new WHMCSException($response['message']);
         }
         return $response;   
     }
@@ -1060,7 +1213,7 @@ class enom_pro
      * @param number $start
      * @return Ambigous <multitype:multitype:number, multitype:, boolean, mixed>
      */
-    public function getDomainsTab ($tab, $limit = 25, $start)
+    public function getDomainsTab ($tab, $limit = 25, $start = 1)
     {
         $this->setParams(array('Tab' => $tab));
         $domains = $this->getDomains($limit, $start);
@@ -1189,5 +1342,103 @@ class enom_pro
 	    } else {
 	        trigger_error( sprintf( __('%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.'), $msg, $since ) );
 	    }
+	}
+	public static function get_upgrade_zip_url ()
+	{
+	    return 'http://mycircletree.com/client-area/get_enom_pro.php?key=' . self::get_addon_setting('license');
+	}
+	public function do_upgrade () {
+	    if (! class_exists('ZipArchive')) {
+	        throw new MissingDependencyException(
+	                'ZipArchive class is required for upgrade. See:
+	                 http://www.php.net/manual/en/class.ziparchive.php'
+            );
+	    }
+	    $zipfile = self::curl_get(self::get_upgrade_zip_url());
+	    $zip_dir = 'modules/addons/enom_pro/';
+	    $filename = ENOM_PRO_INCLUDES . 'upgrade.zip';
+	    $handle = fopen($filename, 'w');
+	    if (false === $handle) {
+	        throw new Exception('Unable to open temporary zip file for writing: '. $filename);
+	    }
+	    fwrite($handle, $zipfile);
+	    fclose($handle);
+	    $zip = new ZipArchive();
+	    $zip_response = $zip->open($filename);
+	    if (true === $zip_response) {
+	        $upgrade_dir = ENOM_PRO_INCLUDES . 'upgrade/';
+	        $zip->extractTo($upgrade_dir);
+	        $zip->close();
+	        unlink($filename);
+	        //Get the subfolder we want
+	        $upgrade_files_dir = $upgrade_dir . 'modules/addons/enom_pro/';
+	        $objects = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($upgrade_files_dir, FilesystemIterator::SKIP_DOTS)
+            );
+	        //Subfolders to extract into, used for security
+	        $core_dirs = array('images', 'includes');
+	        foreach($objects as $object){
+	            if (is_readable($object->getPathname())) {
+	                //Get current file directory
+	                $file_path = $object->getPathInfo();
+	                //Array it
+	                $dir_array = explode(DIRECTORY_SEPARATOR, $file_path);
+	                //Get the last directory;
+	                $last_dir = end($dir_array);
+	                //Check if it's a core dir
+	                if (in_array($last_dir, $core_dirs)) {
+	                    $dirname = $last_dir . DIRECTORY_SEPARATOR;
+	                } else {
+	                    $dirname = '';
+	                }
+	                //Build new file string
+	                $dest = ENOM_PRO_ROOT . $dirname . $object->getBasename();
+	                //Copy it
+	                copy($object->getPathname(), $dest);
+	                //delete old file
+	                unlink($object->getPathname()) ;           
+	            }
+	        }
+	        //Cleanup temp dir
+	        rmdir($upgrade_dir);
+	    } else {
+	        throw new RemoteException('Error extracting ZIP file.', $zip_response);
+	    }
+	}
+	public static function  send_SSL_reminder_email($client_id)
+	{
+	    $vars = array(
+	            'expiry_date' => '@TODO' //TODO mail merge fields
+	    );
+	    $data = array(
+	            'id' => 1,
+	            'customtype' => 'general',
+	            'messagename' => 'SSL Expiring Soon',
+	            'customvars' => base64_encode(serialize($vars)),
+	    );
+	    //@TODO fixme
+	    echo __FILE__ .':'. __LINE__ . ' @TODO';
+	    echo '<pre>';
+	    print_r($data);
+	    echo '</pre>';
+	    return self::whmcs_api('sendemail', $data);
+	}
+	public static function  render_admin_widget($function)
+	{
+	    if (! function_exists($function)) {
+	        throw new InvalidArgumentException('Invalid Admin Widget Function: '.$function);
+	    }
+	    $result = call_user_func($function);
+	    echo '<div class="homewidget">';
+    	    echo '<div class="widget-header">';
+    	        echo $result['title'];
+    	    echo '</div>';
+    	    echo '<div class="widget-content">';
+        	    echo $result['content'];
+    	    echo '</div>';
+	    echo '</div>';
+	    echo '<script>';
+	    echo $result['jquerycode'];
+	    echo '</script>';
 	}
 }
