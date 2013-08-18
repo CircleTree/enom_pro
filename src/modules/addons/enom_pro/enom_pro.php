@@ -41,16 +41,33 @@ function enom_pro_config ()
 {
     $spinner_help = " <br/><span class=\"textred\" >
             Make sure your active cart & domain checker templates have {\$namespinner} in them.</span>";
+    if (isset($_GET['view'])) {
+        switch ($_GET['view']) {
+        	case 'pricing_import':
+        	   $view = ' - Import Pricing from eNom';
+        	break;
+        	case 'domain_import':
+        	   $view = ' - Import Domains from eNom';
+            break;
+        }        
+    } else {
+        $view = '';
+    }
+    $button = '<b><a class="btn btn-large btn-success" '.
+                                ' style="display:block;width:90%;color:white;text-decoration:none;"'.
+                                ' href="'.enom_pro::MODULE_LINK.'">Go to @NAME@ &rarr;</a></b>';
     $config = array(
-            'name'=>'@NAME@' . (!isset($_GET['view']) ? '' : ' - Import'),
+            'name'=>'@NAME@' . $view,
             'version'=>'@VERSION@',
             'author'=>'<a href="http://orionipventures.com/">Orion IP Ventures, LLC.</a>',
             'description'=>'Shows eNom Balance and active Transfers on the admin homepage in widgets. 
             Adds a clientarea page that displays active transfers to clients.',
             'fields'=>array(
-                    'quicklink'=>array('FriendlyName'=>"","Type"=>"null","Description"=>
-                            '<span style="font-size:16pt;padding:0 10px; 0;" >@NAME@ Settings</span>
-                            <a href="'.enom_pro::MODULE_LINK.'">Go to @NAME@ &rarr;</a>'),
+                    'quicklink' =>  array(
+                            'FriendlyName'  =>  "",
+                            "Type"          =>  "null",
+                            "Description"   =>  '<h1 style="margin:0;line-height:1.3;" >@NAME@ Settings</h1>'.$button
+                    ),
                     'license'=>array('FriendlyName'=>"License Key","Type"=>"text","Size"=>"30"),
                     'api_request_limit'=> array('FriendlyName'=>"API Limit","Type"=>"dropdown",
                             "Options"=>"5,10,25,50,75,100,200,500,1000","Default"=>"5",
@@ -121,8 +138,10 @@ function enom_pro_config ()
                     'spinner_topical'=>array('FriendlyName'=>"Topical Results","Type"=>"dropdown","Default"=>"High",
                             "Description"=>"Higher values return suggestions that reflect current topics 
                             and popular words.","Options"=>"Off,Low,Medium,High"),
-                    'quicklink2'=>array('FriendlyName'=>"","Type"=>"null",
-                            "Description"=>'<b><a href="'.enom_pro::MODULE_LINK.'">Go to @NAME@ &rarr;</a></b>'),
+                    'quicklink2'=>array(
+                            'FriendlyName'=>"","Type"=>"null",
+                            "Description"=> $button
+                    ),
             )
     );
 
@@ -210,8 +229,17 @@ function enom_pro_sidebar ($vars)
     <li>
         <a href="'.enom_pro::INSTALL_URL.'" target="_blank">Install Service</a>
     </li>
+</ul>
+<span class="header">Helpful Links</span>
+<ul class="menu">
     <li>
         <a target="_blank" href="systemmodulelog.php">Module Log</a>
+    </li>
+    <li>
+        <a href="configregistrars.php#enom">eNom Registrar Settings</a>
+    </li>
+    <li>
+        <a href="configaddonmods.php#enom_pro">@NAME@ Settings</a>
     </li>
 </ul>
 <?php 
@@ -267,10 +295,15 @@ function enom_pro_output ($vars)
             <div id="enom_pro_changelog"></div>
         </div>
     <?php endif;?>
-    <div id="enom_pro_admin_widgets">
-        <?php enom_pro::render_admin_widget('enom_pro_admin_balance'); ?>
-        <?php enom_pro::render_admin_widget('enom_pro_admin_expiring_domains');?>
-        <?php enom_pro::render_admin_widget('enom_pro_admin_transfers'); ?>
+    <div id="enom_pro_admin_widgets" class="clearfix" >
+        <div class="floatleft" style="width:50%;">
+            <?php enom_pro::render_admin_widget('enom_pro_admin_balance'); ?>
+            <?php enom_pro::render_admin_widget('enom_pro_admin_expiring_domains');?>
+        </div>
+        <div class="floatleft" style="width:50%;">
+            <?php enom_pro::render_admin_widget('enom_pro_admin_transfers'); ?>
+            <?php enom_pro::render_admin_widget('enom_pro_admin_ssl_certs'); ?>
+        </div>
     </div>
         <div id="enom_faq">
             <p>
