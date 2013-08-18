@@ -2,26 +2,41 @@
 $enom = new enom_pro();
 $show_only = isset($_GET['show_only']) ? $_GET['show_only'] : false;
 $per_page = $enom->get_addon_setting('import_per_page');
-if ( isset($_REQUEST['domain']) ) {
-    //@TODO fixme getDomainsWithClients() only returns 1???
-    $domains_array = $enom->getDomainsWithClients();
-    foreach ($domains_array as $key => $domain) {
-        $this_domain = $domain['sld'] . '.' . $domain['tld'];
-        $var = strstr($this_domain, $_GET['domain']);
-        if ($this_domain == $_GET['domain']) {
-            unset($domains_array);
-            $domains_array = array($domain);
-        }
-    }
-} else {
-    $domains_array = $enom->getDomainsWithClients($enom->get_addon_setting('import_per_page'), (int) $_GET['start'], $show_only);
-}
+$domains_array = $enom->getDomainsWithClients($enom->get_addon_setting('import_per_page'), (int) $_GET['start'], $show_only);
 $list_meta = $enom->getListMeta();
-if ( empty($domains_array) ) {
-    echo '<div class="alert alert-error"><p>No domains returned from eNom.</p></div>';
+if ( empty($domains_array) ) { ?>
+    <div class="alert alert-error"><p>No domains returned from eNom.</p></div>
+<?php 
     return;
-}
-        ?>
+}?>
+<?php if (isset($_REQUEST['s']) && ! empty($_REQUEST['s'])):?>
+    <?php
+    $results = array();
+    $s = trim(strtolower($_REQUEST['s'])); 
+    foreach ($domains_array as $domain) {
+        if (strstr($domain['sld'], $s)) {
+            $results[] = $domain;
+        }
+        if (strstr($domain['tld'], $s)) {
+            $results[] = $domain;
+        }
+        //Try removing the . for tld
+        if (strstr($domain['tld'], ltrim($s, '.'))) {
+            $results[] = $domain;
+        }
+        //Get unique values / deduplicate
+        $results = array_map("unserialize", array_unique(array_map("serialize", $results)));
+    }
+    if (! empty($results)) {
+        $domains_array = $results; ?>
+        Search: <?php echo htmlentities($_REQUEST['s']);?>
+        <?php 
+    } else {
+        echo '<div class="alert alert-error">No Results</div>';
+    }
+    ?>
+    <a class="btn btn-block btn-inverse clear_search" href="#">Clear Search</a>
+<?php endif;?>
 
 <table class="table-hover" id="import_table">
     <tr>
@@ -51,7 +66,7 @@ if ( empty($domains_array) ) {
                     <p>Associated with client:
                     <a class="btn"
                         data-domain="<?php echo $domain_name;?>"
-                        href="clientsdomains.php?userid=<?php echo $domain['client']['userid'];?>&domainid=<?php echo $domain['id'];?>">
+                        href="clientsdomains.php?userid=<?php echo $domain['client']['userid'];?>&domainid=<?php echo $domain['whmcs_id'];?>">
                         <?php echo $domain['client']['firstname'] . ' ' . $domain['client']['lastname'];?>
                         </a>
                     </p>
@@ -61,9 +76,6 @@ if ( empty($domains_array) ) {
     </tr>
     <?php endforeach; ?>
 </table>
-<?php if ( isset($_GET['domain']) ) :?>
-    <a class="btn btn-block btn-inverse" href="addonmodules.php?module=enom_pro&view=import">Clear Search</a>
-<?php endif; ?>
 <ul class="pager">
     <?php $prev_start = isset($_REQUEST['start']) ? ($_REQUEST['start'] - $per_page < 0 ? '0' : $_REQUEST['start'] - $per_page) : 0; ?>
     <?php if ($prev_start >= 1) :?>
