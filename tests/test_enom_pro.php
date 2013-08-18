@@ -22,11 +22,12 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 */
 	function  test_get_domain_wholesale_pricing()
 	{
-	    $com = $this->e->getDomainPricing($tld = '.com');
+	    $com = $this->e->getDomainPricing($tld = 'com');
 	    $this->assertTrue(is_array($com));
 	    $this->assertContains('enabled', $com);
 	    $this->assertArrayHasKey('price', $com);
 	    $this->assertThat($com['price'], $this->stringContains('.'));
+	    
 	}
 	/**
 	 * @group pricing
