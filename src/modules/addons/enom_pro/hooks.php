@@ -12,7 +12,7 @@ function enom_pro_admin_balance ($vars)
         require_once 'enom_pro.php';
     if ($_REQUEST['checkenombalance']) {
         try {
-        $enom = new enom_pro();
+            $enom = new enom_pro();
             $warning_level = $enom->get_addon_setting('balance_warning');
             $available = (float) preg_replace("/([^0-9.])/i", "", $enom->getAvailableBalance());
             $warning = $available <= $warning_level ? true : false;
@@ -21,7 +21,7 @@ function enom_pro_admin_balance ($vars)
             $class = $warning ? 'alert-error' : 'alert-success';
             $str .= '<div id="enom_balance_message" class="alert enom_pro_widget '.$class.'">';
             $str .= '&nbsp;Enom Credit Balance: '.$enom->getBalance()." Available: <b>".$enom->getAvailableBalance().'</b>
-            <a href="https://www.enom.com/myaccount/RefillAccount.asp" target="_blank">Refill Account</a>';
+            <a class="btn btn-mini" href="https://www.enom.com/myaccount/RefillAccount.asp" target="_blank">Refill Account</a>';
             $str .= "</div>";
             if ($warning) {
                 $str .= '
@@ -40,8 +40,14 @@ jQuery(function($) {
 ';
             }
             $content = $str;
-            if ($enom->license->updateAvailable()) {
-                $content .= $enom->license->updateAvailable();
+            if (
+                $enom->license->is_update_available() && 
+                ! (basename($_SERVER['SCRIPT_NAME']) == 'addonmodules.php')
+            ) {
+                $content .= '<div class="alert alert-warning aligncenter">Update available: ';
+                $content .=     $enom->license->get_latest_version() . '<br/>';
+                $content .= '<a class="btn" href="'.enom_pro_license::DO_UPGRADE_URL.'">Upgrade automatically</a>';
+                $content .= '</div>';
             }
         } catch (Exception $e) {
             $content = $e->getMessage();
@@ -274,7 +280,9 @@ function enom_pro_admin_expiring_domains ($vars)
     }';
 
     return array(
-            'title'	=>	'eNom PRO - Domain Stats <img src="images/icons/domains.png" align="absmiddle" height="16px" width="16px" border="0">'.get_enom_pro_widget_form('checkexpiring', 'refreshExpiring'),
+            'title'	=>	'eNom PRO - Domain Stats <img src="images/icons/domains.png" 
+            align="absmiddle" height="16px" width="16px" border="0">' . 
+            get_enom_pro_widget_form('checkexpiring', 'refreshExpiring'),
             'content'=>$content,
             'jquerycode'=>enom_pro::minify($jquerycode),
         );
@@ -460,11 +468,17 @@ function enom_pro_admin_actions ()
         'render_import_table',
         'get_domain_whois',
         'clear_cache',
+        'clear_price_cache',
         'get_domains',
+        'do_upgrade',
+        'do_upgrade_check',
+        'get_pricing_data',
+        'save_domain_pricing',
     );
     //Only load this hook if an ajax request is being run
-    if (! (isset($_REQUEST['action']) && in_array($_REQUEST['action'], $enom_actions)))
+    if (! (isset($_REQUEST['action']) && in_array($_REQUEST['action'], $enom_actions))) {
         return;
+    }
     //Include our class if needed
     if (!class_exists('enom_pro'))
         require_once 'enom_pro.php';
@@ -476,6 +490,16 @@ function enom_pro_admin_actions ()
                 if (is_bool($response)) {
                     echo "Sent!";
                 }
+            break;
+            
+            case 'do_upgrade':
+                $enom->do_upgrade();
+                header('Location: ' . enom_pro::MODULE_LINK .  '&upgraded');
+            break;
+            
+            case 'do_upgrade_check':
+                enom_pro_license::delete_latest_version();
+                header('Location: ' . enom_pro::MODULE_LINK .  '&checked');
             break;
             
             case 'resubmit_enom_transfer_order':
@@ -492,6 +516,99 @@ function enom_pro_admin_actions ()
                 }
                 enom_pro::set_addon_setting('import_per_page', $per_page);
                 echo 'set';
+            break;
+            
+            case 'save_domain_pricing':
+                if (isset($_POST['pricing'])) {
+                    $validated_data = array();
+                    $tlds = $enom->getAllDomainsPricing();
+                    foreach ($_POST['pricing'] as $tld => $years) {
+                        $tld_pricing = array();
+                        foreach ($years as $year => $price) {
+                            $validated_year = (int) $year;
+                            if ($validated_year > 10 || $validated_year <= 0) {
+                                $validated_year = false;
+                            }
+                            if ($validated_year) {
+                                $tld_pricing[$validated_year] = (double) $price;
+                            }
+                        }
+                        $validated_tld = (string) $tld;
+                        if (in_array($validated_tld, $tlds)) {
+                            $validated_data[$validated_tld] = $tld_pricing;
+                        }
+                    }
+                }
+                $updated = $new = $deleted = 0;
+                foreach ($validated_data as $tld => $pricing) {
+                    $pricing_data = array(
+                            'msetupfee'     => $pricing[1],
+                            'qsetupfee'     => $pricing[2],
+                            'ssetupfee'     => $pricing[3],
+                            'asetupfee'     => $pricing[4],
+                            'bsetupfee'     => $pricing[5],
+                            'monthly'       => $pricing[6],
+                            'quarterly'     => $pricing[7],
+                            'semiannually'  => $pricing[8],
+                            'annually'      => $pricing[9],
+                            'biennially'    => $pricing[10],
+                            'currency'      => 1,
+                    );
+                    $registration_types = array('domainregister', 'domainrenew', 'domaintransfer');
+                    $existing_pricing = $enom->get_whmcs_domain_pricing($tld);
+                    if (! empty($existing_pricing)) {
+                    //Update
+                        $result = mysql_fetch_assoc(select_query('tbldomainpricing', 'id', array('extension' => '.' . $tld)));
+                        $relid = $result['id'];
+                        $total_minus_1 = 0;
+                        foreach ($pricing_data as $key => $price) {
+                            if ($price == '-1.00') {
+                                $total_minus_1++;
+                            }
+                        }
+                        if ($total_minus_1 == 10 ) {
+                            $sql = 'DELETE FROM `tblpricing` WHERE `relid`="'.$relid.'"';
+                            mysql_query($sql);
+                            $sql = 'DELETE FROM `tbldomainpricing` WHERE `id` = "'.$relid.'"';
+                            mysql_query($sql);
+                            $deleted++;
+                        //delete
+                        } else {
+                            foreach ($registration_types as $type) {
+                                $where = array('type' => $type, 'relid' => $relid);
+                                update_query('tblpricing', $pricing_data, $where);
+                            }
+                            $updated++;
+                        }
+                    } else {
+                    //Insert
+                        $relid = insert_query('tbldomainpricing', array('extension' => '.' . $tld));
+                        $pricing_data['relid'] = $relid;
+                        foreach ($registration_types as $type) {
+                            $this_pricing_data = $pricing_data;
+                            $this_pricing_data['type'] = $type;
+                            insert_query('tblpricing', $this_pricing_data);
+                        }
+                        $new++;
+                    }
+                }
+                $url = enom_pro::MODULE_LINK . '&view=pricing_import';
+                if (isset($_POST['start']) && $_POST['start'] > 0) {
+                    $url .= '&start='.(int) $_POST['start'];
+                }
+                if ($new > 0) {
+                    $url .= '&new='.$new;
+                }
+                if ($updated > 0) {
+                    $url .= '&updated='.$updated;
+                }
+                if ($deleted > 0) {
+                    $url .= '&deleted='.$deleted;
+                }
+                if ($updated == 0 && $new == 0 && 0 == $deleted) {
+                    $url .= '&nochange';
+                }
+                header('Location: '.$url);
             break;
             
             case 'get_domains':
@@ -516,7 +633,16 @@ function enom_pro_admin_actions ()
             break;
             
             case 'render_import_table':
+                ob_start();
                 require_once ENOM_PRO_INCLUDES . 'domain_import_table.php';
+                $contents = ob_get_contents();
+                ob_end_clean();
+                header('Content-Type: application/json');
+                header('Content-Encoding: gzip');
+                echo gzencode(json_encode(array(
+                    'html'=>$contents,
+                    'cache_date' => $enom->get_domain_cache_date(),
+                )), 9);
             break;
             
             case 'get_domain_whois':
@@ -530,8 +656,19 @@ function enom_pro_admin_actions ()
             
             case 'clear_cache':
                 $enom->clear_domains_cache();
-                header('Location: addonmodules.php?module=enom_pro&view=import&cleared');
+                header('Location: addonmodules.php?module=enom_pro&view=domain_import&cleared');
             break;
+            
+            case 'clear_price_cache':
+                $enom->clear_price_cache();
+                header('Location: addonmodules.php?module=enom_pro&view=pricing_import&cleared');
+            break;
+            
+            case 'get_pricing_data':
+                $enom->getAllDomainsPricing();
+                echo 'success';
+            break;
+            
             case 'add_enom_pro_domain_order':
                 $data = array(
                         'clientid' => $_REQUEST['clientid'],
@@ -762,3 +899,9 @@ function enom_pro_srv_page ($vars)
     return $vars;
 }
 add_hook("ClientAreaPage",3,"enom_pro_srv_page");
+add_hook("DailyCronJob", 1, "enom_pro_cron");
+function enom_pro_cron  ()
+{
+    echo 'hello world!';
+    logActivity('ENOM PRO: CRON JOB');
+}
