@@ -8,6 +8,25 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		parent::setUp();
 	}
 	/**
+	 * @group domains
+	 */
+	function  test_getAllImportedDomains()
+	{
+	    $this->markTestIncomplete('different ways we track imported vs. whmcs statuses');
+	    $imported = $this->e->getDomainsWithClients(100, 0, 'imported');
+	    $domains = enom_pro::whmcs_api('getclientsdomains', array());
+	    $total = 0;
+	    foreach ($domains['domains']['domain'] as $domain) {
+	        echo '<pre>';
+	        print_r($domain);
+	        echo '</pre>';
+	        if ($domain['registrar'] == 'enom' && $domain['status'] == 'Active') {
+	            $total++;
+	        }
+	    }
+	    $this->assertEquals($total, count($imported));
+	}
+	/**
 	 * @group tlds
 	 */
 	function  test_get_TLDs ()
@@ -58,7 +77,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	function  test_getDomains_withClients_show_only_imported()
 	{
 	    $imported = $this->e->getDomainsWithClients(1, 1, 'imported');
-	    $this->assertCount(1, $imported);
+	    $this->assertCount(1, $imported, 'make sure there is one imported domain in whmcs db');
 	    $this->assertArrayHasKey('client', $imported[0]);
 	}
 	/**
@@ -70,6 +89,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	    $page_2 = $this->e->getDomains(5,6);
 	    $this->assertNotEquals($page_1, $page_2);
 	}
+	
 	/**
 	 * @group domains
 	 */
@@ -145,23 +165,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	    $this->assertNotEmpty($first_result, 'No pending transfers in WHMCS. Add one');
 	    $response = $this->e->resendActivation($first_result['domain']);
 	}
-	/**
-	 * @group domains
-	 */
-	function  test_getAllImportedDomains()
-	{
-	    $imported = $this->e->getDomainsWithClients(100, 0, 'imported');
-	    $meta = $this->e->getListMeta();
-	    $domains = enom_pro::whmcs_api('getclientsdomains', array());
-	    $total = 0;
-	    foreach ($domains['domains']['domain'] as $domain) {
-	        if ($domain['registrar'] == 'enom' && $domain['status'] == 'Active') {
-                $total++;
-	        }
-	    }
-	    
-	    $this->assertEquals($total, count($imported));
-	}
+
     /**
      * @group settings
      */
