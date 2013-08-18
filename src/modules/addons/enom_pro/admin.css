@@ -676,6 +676,11 @@ FORM.refreshbutton {
     -khtml-border-radius: 8px;
     border-radius: 8px;
 }
+.enom_pro_loader.small.whois {
+    text-indent: 10px;
+    width: 120px;
+    background-position: left center;
+}
 #enom_pro_import_page .enom_pro_loader {
     top: 0px;
     left:0px;
@@ -799,3 +804,94 @@ a.btn-primary, a.btn-danger, a.btn-info, a.btn-inverse, a.btn-warning {
 #meta td {
     vertical-align: top;
 }
+#enom_pro_changelog {
+    max-height: 200px;
+    overflow: auto;
+    border: 1px solid #999999;
+    /*+border-radius:5px;*/
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+#enom_pro_changelog P,
+#enom_pro_changelog LI {
+    color: #363636;
+}
+
+#enom_pro_changelog H3 {
+    color: #000000;
+    line-height: 1.5;
+    margin: 5px 0 3px;
+    border-bottom: 1px solid #D6E9C6;
+}
+
+#enom_pro_changelog UL {
+    margin: 0 0 3px;
+}
+#enom_pro_pricing_import TH A {
+    color: #000000;
+}
+
+#enom_pro_pricing_import A.btn-mini {
+    padding: 2px;
+    line-height: 1;
+}
+
+#enom_pro_pricing_import SPAN.toggle_this_val {
+    padding: 1px 4px;
+    margin: 0 0 0 0px;
+    position: relative;
+}
+
+#enom_pro_pricing_import .datatable TR TD {
+    position: relative;
+}
+
+#enom_pro_pricing_import TABLE TBODY TR TD SPAN.price {
+    font-size: 10px;
+}
+
+#enom_pro_import_page .enom_pro_loader {
+    width: 100%;
+}
+#enom_pro_import_page .enom_pro_loader.small {
+    width: inherit;
+}
+#enom_pro_pricing_table TD {
+    background-color: transparent;
+}
+#enom_pro_pricing_table TD.hover {
+    background-color: #FCF8E3;
+}
+#tooltip
+{
+    position: absolute;
+    z-index: 3000;
+    /*+border-radius:4px;*/
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    border-radius: 4px;
+    /*+box-shadow:0px 0px 10px #000;*/
+    -moz-box-shadow: 0px 0px 10px #000;
+    -webkit-box-shadow: 0px 0px 10px #000;
+    -o-box-shadow: 0px 0px 10px #000;
+    box-shadow: 0px 0px 10px #000;
+    border: 1px solid #111;
+    background-color: #EEE;
+    padding: 5px;
+}
+#tooltip H3, #tooltip DIV
+{
+    margin: 0;
+}
+#tooltip.viewport-right
+{
+    margin-left: 715px;
+}
+
