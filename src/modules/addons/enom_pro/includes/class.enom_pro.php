@@ -10,7 +10,7 @@ class EnomException extends Exception
      *
      * @param string $error
      */
-    public function  set_error ($error)
+    public function set_error ($error)
     {
         $this->message = $error;
         $this->errors[] = $error;
@@ -18,7 +18,7 @@ class EnomException extends Exception
     /**
      * @return array
      */
-    public function  get_errors ()
+    public function get_errors ()
     {
         return $this->errors;
     }
@@ -511,7 +511,7 @@ class enom_pro
     {
         return ! (FALSE === $this->get_cache_data($this->cache_file_all_prices));
     }
-    public function  render_domain_import ()
+    public function render_domain_import ()
     {
         require_once ENOM_PRO_INCLUDES . 'domain_import.php';
     }
@@ -618,7 +618,7 @@ class enom_pro
      * );
      * </code>
      */
-    public function  get_SRV_records($domain = null)
+    public function get_SRV_records($domain = null)
     {
         if (! is_null($domain)) {
             $this->setDomain($domain);
@@ -651,7 +651,7 @@ class enom_pro
 
         return array_reverse($response, true);
     }
-    private function  parse_xml_to_srv( array $record )
+    private function parse_xml_to_srv( array $record )
     {
         return array(
                         'service'   =>  $record['HostName'],
@@ -674,7 +674,7 @@ class enom_pro
      *     'port'     => int (1-65536)
      *     'target'   => string hostname
      */
-    public function  set_SRV_Records($records)
+    public function set_SRV_Records($records)
     {
         $srv_index = 1;
         foreach ($records as $record) {
@@ -1303,7 +1303,7 @@ class enom_pro
 
         return self::$settings[ $key ];
     }
-    public static function  set_addon_setting ($key, $value)
+    public static function set_addon_setting ($key, $value)
     {
         //Flush cache
         self::$settings = array();
@@ -1344,7 +1344,7 @@ class enom_pro
 	 * @throws Exception on mysql db error  
 	 * @return resource mysql_result
 	 */
-	private static function  query ($query) {
+	private static function query ($query) {
 		$result = mysql_query($query);
 		if (mysql_error()) {
 		    throw new Exception(mysql_error() . '. Query : ' . $query);
@@ -1357,7 +1357,7 @@ class enom_pro
 	 * @param int $since
 	 * @param string $use_instead function or method to use instead, optional
 	 */
-	public static function  deprecated ($msg, $since, $use_instead = null)
+	public static function deprecated ($msg, $since, $use_instead = null)
 	{
 	    if (! self::debug()) {
 	        return;
@@ -1481,7 +1481,7 @@ class enom_pro
         }
         return $manual_template_files;
 	}
-	public static function  send_SSL_reminder_email($client_id, $cert_data)
+	public static function send_SSL_reminder_email($client_id, $cert_data)
 	{
 	    $vars = array(
 	            'expiry_date' => $cert_data['expiration_date'],
@@ -1541,7 +1541,7 @@ class enom_pro
 	 * Wrapper for the WHMCS activity log
 	 * @param string $msg
 	 */
-	public static function  log_activity ($msg)
+	public static function log_activity ($msg)
 	{
 	    logActivity($msg);
 	}
@@ -1554,7 +1554,7 @@ class enom_pro
 	{
 	    return date('m-d-Y', $ts);
 	}
-	public static function  install_ssl_email()
+	public static function install_ssl_email()
 	{
 	    if (self::is_ssl_email_installed()) {
 	        return self::is_ssl_email_installed();
@@ -1571,7 +1571,7 @@ class enom_pro
 	 * 
 	 * @return false or int template  id on installed
 	 */
-	public static function  is_ssl_email_installed()
+	public static function is_ssl_email_installed()
 	{
 	    $sql = 'SELECT `id` FROM `tblemailtemplates` WHERE `name` = \'SSL Expiring Soon\'';
 	    $result = self::query($sql);
@@ -1579,7 +1579,7 @@ class enom_pro
 	    $id = $array['id'];
 	    return mysql_num_rows($result) == 0 ? false : $id;
 	}
-	public static function  render_admin_widget($function)
+	public static function render_admin_widget($function)
 	{
 	    if (! function_exists($function)) {
 	        throw new InvalidArgumentException('Invalid Admin Widget Function: '.$function);
