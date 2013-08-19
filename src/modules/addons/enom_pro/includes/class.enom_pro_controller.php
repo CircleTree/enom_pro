@@ -2,49 +2,52 @@
 class enom_pro_controller {
     private $enom;
     function __construct() {
-        if (method_exists(__CLASS__, $_GET['action'])) {
-            $this->enom = new enom_pro();
-            call_user_func(array(__CLASS__, $_GET['action']));
-        } else {
-            throw new InvalidArgumentException('Unknown action: ' . $_GET['action']);
-        }
     }
-    private function resend_enom_transfer_email ()
+    public function route ()
+    {
+        if (method_exists(__CLASS__, $_REQUEST['action'])) {
+            $this->enom = new enom_pro();
+            call_user_func(array(__CLASS__, $_REQUEST['action']));
+        } else {
+            throw new InvalidArgumentException('Unknown action: ' . $_REQUEST['action']);
+        }        
+    }
+    protected function resend_enom_transfer_email ()
     {
         $response = $this->enom->resend_activation((string) $_REQUEST['domain']);
         if (is_bool($response)) {
             echo "Sent!";
         }
     }
-    private function do_upgrade ()
+    protected function do_upgrade ()
     {
         $manual_files = $this->enom->do_upgrade();
         $_SESSION['manual_files'] = $manual_files;
         header('Location: ' . enom_pro::MODULE_LINK .  '&upgraded');
     }
-    private function dismiss_manual_upgrade ()
+    protected function dismiss_manual_upgrade ()
     {
         unset($_SESSION['manual_files']);
         header('Location: ' . enom_pro::MODULE_LINK .  '&dismissed');
     }
-    private function do_upgrade_check ()
+    protected function do_upgrade_check ()
     {
         enom_pro_license::delete_latest_version();
         header('Location: ' . enom_pro::MODULE_LINK .  '&checked');
     }
-    private function resubmit_enom_transfer_order ()
+    protected function resubmit_enom_transfer_order ()
     {
         $response = $this->enom->resubmit_locked((int) $_REQUEST['orderid']);
         if (is_bool($response)) {
             echo "Submitted!";
         }       
     }
-    private function install_ssl_template ()
+    protected function install_ssl_template ()
     {
         $return = $this->enom->install_ssl_email();
         header('Location: ' . enom_pro::MODULE_LINK . '&ssl_email='.$return);
     }
-    private function set_results_per_page ()
+    protected function set_results_per_page ()
     {
         $per_page = (int) $_REQUEST['per_page'];
         if ($per_page > 100 || $per_page < 0) {
@@ -53,7 +56,7 @@ class enom_pro_controller {
         enom_pro::set_addon_setting('import_per_page', $per_page);
         echo 'set';
     }
-    private function get_domains ()
+    protected function get_domains ()
     {
         if (isset($_GET['tab'])) {
             switch ($_GET['tab']) {
@@ -74,20 +77,20 @@ class enom_pro_controller {
         $domains = $this->enom->getDomainsTab($tab, enom_pro::get_addon_setting('import_per_page'), $start);
         require_once ENOM_PRO_INCLUDES . 'domain_widget_response.php';
     }
-    private function render_import_table ()
+    protected function render_import_table ()
     {
         ob_start();
         require_once ENOM_PRO_INCLUDES . 'domain_import_table.php';
         $contents = ob_get_contents();
         ob_end_clean();
-        header('Content-Type: application/json');
-        header('Content-Encoding: gzip');
-        echo gzencode(json_encode(array(
+        $data = array(
                 'html'=>$contents,
                 'cache_date' => $this->enom->get_domain_cache_date(),
-        )), 9);
+        );
+        $this->send_json($data);
+        
     }
-    private function get_domain_whois ()
+    protected function get_domain_whois ()
     {
         $whois = $this->enom->getWHOIS($_REQUEST['domain']);
         $response = array(
@@ -96,23 +99,24 @@ class enom_pro_controller {
         header('Content-Type: application/json');
         echo json_encode($response);
     }
-    private function clear_cache ()
+    protected function clear_cache ()
     {
         $this->enom->clear_domains_cache();
         header('Location: addonmodules.php?module=enom_pro&view=domain_import&cleared');
     }
-    private function clear_price_cache ()
+    protected function clear_price_cache ()
     {
         $this->enom->clear_price_cache();
         header('Location: addonmodules.php?module=enom_pro&view=pricing_import&cleared');
     }
-    private function get_pricing_data ()
+    protected function get_pricing_data ()
     {
         $this->enom->getAllDomainsPricing();
         echo 'success';
     }
-    private function add_enom_pro_domain_order ()
+    protected function add_enom_pro_domain_order ()
     {
+        
         $data = array(
                 'clientid' => $_REQUEST['clientid'],
                 'domaintype' => array('register'),
@@ -139,26 +143,54 @@ class enom_pro_controller {
         }
         //We have to set this by default because WHMCS stops execution if there is a domain configuration issue
         header("HTTP/1.0 404 Not Found");
-        $response = localapi('addorder', $data);
+        if (enom_pro::is_domain_in_whmcs($_REQUEST['domain'])) {
+            echo 'Domain already in WHMCS';
+            return;
+        }
+        $whmcs_order = enom_pro::whmcs_api('addorder', $data);
         header('Content-Type: text/html');
-        $success = 'success' == $response['result'] ? true : false;
+        $success = 'success' == $whmcs_order['result'] ? true : false;
+        $data = array(
+                'success'   => $success,
+        );
         if ($success) {
             //Here we replace the error header :-)
             header("HTTP/1.0 200 Ok", true);
-            $message = 'Created new order #'.$response['orderid'];
-            if (! empty($response['invoiceid']))
-                $message .= PHP_EOL . 'Created new invoice #'.$response['invoiceid'];
+            $data['orderid']   = $whmcs_order['orderid'];
+            if (strtolower(enom_pro::get_addon_setting('auto_activate')) == 'on') {
+                $accept_data = array(
+                        'orderid'   =>  $whmcs_order['orderid'],
+                        'sendemail' =>  false,
+                        'autosetup' =>  false,
+                        'registrar' =>  'enom'
+                );
+                $accept_response = enom_pro::whmcs_api('acceptorder', $accept_data);
+            } else {
+                //No isset errors
+                $accept_response['result'] = false;
+            }
+           
+            $data['domainid'] = $whmcs_order['domainids'];
+            $data['activated'] = $accept_response['result'] == 'success' ? true : false;
+            //@TODO set `tbldomains`.`donotrenew` = 'on'
         } else {
-            $message = 'Error: '. $response['message'];
+            $message = 'Error: '. $whmcs_order['message'];
+            $data['error'] = $message;
         }
-        header('Content-Type: application/json', true);
-        echo json_encode( array(
-                'success' => $success,
-                'message' => $message
-        )
-        );
+        
+        if ($success && !empty($whmcs_order['invoiceid'])) {
+            $data['invoiceid'] = $whmcs_order['invoiceid'];
+        }
+         
+        if (enom_pro::is_debug_enabled()) {
+            $data['debug'] = array(
+                    '$accept_response' => print_r($accept_response, true),
+                    '$whmcs_order'  => print_r($whmcs_order, true),
+            );
+        }
+        $this->send_json($data);
     }
-    private function save_domain_pricing ()
+    protected function save_domain_pricing ()
     {
         if (isset($_POST['pricing'])) {
             $validated_data = array();
@@ -250,5 +282,22 @@ class enom_pro_controller {
             $url .= '&nochange';
         }
         header('Location: '.$url);
+    }
+    /**
+     * Send GZIP'd json if browser supports it
+     * @param array $data
+     */
+    private function send_json ($data)
+    {
+        header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+        header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+        header('Content-Type: application/json', true);
+        $json_data = json_encode($data);
+        if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) {
+            header('Content-Encoding: gzip');
+            echo gzencode($json_data, 9);
+        } else {
+            echo $json_data;
+        }
     }
 }

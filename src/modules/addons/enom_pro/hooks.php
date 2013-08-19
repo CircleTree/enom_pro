@@ -491,7 +491,8 @@ function enom_pro_admin_actions ()
     if (!class_exists('enom_pro'))
         require_once 'enom_pro.php';
     try {
-        new enom_pro_controller();
+        $controller = new enom_pro_controller();
+        $controller->route();
     } catch (Exception $e) {
         header("HTTP/1.0 400 Bad Request", true);
         echo $e->getMessage();
