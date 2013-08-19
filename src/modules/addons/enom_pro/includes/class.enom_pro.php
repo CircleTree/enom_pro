@@ -1498,8 +1498,6 @@ class enom_pro
 	}
 	public function send_all_ssl_reminder_emails ()
 	{
-	    //@TODO remove mock!
-	    $this->_load_xml('/Users/robertgregor/git/enom_pro/tests/files/expiring_ssl.xml');
 	    $expiry_days_before = self::get_addon_setting('ssl_email_days');
 	    if ('Disabled' == $expiry_days_before) {
 	        return 0;
