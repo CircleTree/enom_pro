@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="ENOM PRO!" default="deploy">
+<project name="ENOM PRO!" default="local">
 	<property name="name" value="eNom PRO"/>
 	<property name="version" value="2.1.0"/>
 	<property name="build_temp_dir" value="build"/>
@@ -105,7 +105,7 @@
 	        <exec logoutput="true" command="phpcb --log ${build_temp_dir}/logs --source ${src_dir} --output ${build_temp_dir}/code-browser" />
 	    </target>
 	    <target name="ci" depends="clean,phpunit,try_ParallelTasks,phpcb" />
-    <target name="deploy">
+    <target name="replace">
     	<delete dir="${build_temp_dir}"/>
     	<mkdir dir="build/encoded_prep/"/>
     	<sync sourcedir="src/"
@@ -163,11 +163,17 @@
 				<comment>* Please see included EULA.txt for the full End User License Agreement. *</comment>
 				<comment>*************************************************************************</comment>
     	</ioncubeencoder>
-    	<echo msg="Copying encoded files to local WHMCS install" />
-        <copy todir="${deploy}">
-        	<fileset refid="encoded" />
-        </copy>
     </target>
+    	<!-- ================================= 
+          target: local              
+         ================================= -->
+    <target name="local" depends="replace" description="description">
+    	<echo msg="Copying encoded files to local WHMCS install" />
+    	        <copy todir="${deploy}">
+    	        	<fileset refid="encoded" />
+    	        </copy>
+    </target>
+
 	<target name="release" depends="zip">
         <copy todir="${encoded_prep}">
         	<filterchain>
@@ -211,8 +217,10 @@
 		  			</fileset>
 		  		</ftpdeploy>
     </target>
-	<target name="zip" depends="deploy">
+	<target name="zip" depends="replace">
     	<echo msg="Creating Zip files from encoded &amp; encoded_prep" />
+		<delete file="enom_pro.zip"/>
+		<delete file="enom_pro_open.zip"/>
 		<zip destfile="enom_pro.zip" basedir="${encoded}"/>
 		<zip destfile="enom_pro_open.zip" basedir="${encoded_prep}"/>
 	</target>

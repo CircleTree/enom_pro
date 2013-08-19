@@ -89,8 +89,8 @@ function enom_pro_admin_ssl_certs ($vars)
     if ($_REQUEST['checkenomssl']) {
         try {
         $enom = new enom_pro();
-            $str .= '<div class="enom_pro_widget alert '.(count($expiring_certs) > 0 ? 'alert-danger' : 'alert-success').'">';
             $expiring_certs = $enom->getExpiringCerts();
+            $str .= '<div class="enom_pro_widget alert '.(count($expiring_certs) > 0 ? 'alert-danger' : 'alert-success').'">';
             if (count($expiring_certs) > 0 ) {
                 $str .= ' <table class="datatable" width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
@@ -480,6 +480,8 @@ function enom_pro_admin_actions ()
         'do_upgrade_check',
         'get_pricing_data',
         'save_domain_pricing',
+        'dismiss_manual_upgrade',
+        'install_ssl_template',
     );
     //Only load this hook if an ajax request is being run
     if (! (isset($_REQUEST['action']) && in_array($_REQUEST['action'], $enom_actions))) {
@@ -499,10 +501,16 @@ function enom_pro_admin_actions ()
             break;
             
             case 'do_upgrade':
-                $enom->do_upgrade();
+                $manual_files = $enom->do_upgrade();
+                $_SESSION['manual_files'] = $manual_files;
                 header('Location: ' . enom_pro::MODULE_LINK .  '&upgraded');
             break;
             
+            case 'dismiss_manual_upgrade':
+                unset($_SESSION['manual_files']);
+                header('Location: ' . enom_pro::MODULE_LINK .  '&dismissed');
+                break;
+                
             case 'do_upgrade_check':
                 enom_pro_license::delete_latest_version();
                 header('Location: ' . enom_pro::MODULE_LINK .  '&checked');
@@ -513,6 +521,11 @@ function enom_pro_admin_actions ()
                 if (is_bool($response)) {
                     echo "Submitted!";
                 }
+            break;
+            
+            case 'install_ssl_template':
+                $return = $enom->install_ssl_email();
+                header('Location: ' . enom_pro::MODULE_LINK . '&ssl_email='.$return);
             break;
             
             case 'set_results_per_page':
@@ -908,6 +921,12 @@ add_hook("ClientAreaPage",3,"enom_pro_srv_page");
 add_hook("DailyCronJob", 1, "enom_pro_cron");
 function enom_pro_cron  ()
 {
-    echo 'hello world!';
-    logActivity('ENOM PRO: CRON JOB');
+    require_once 'enom_pro.php';
+    $enom = new enom_pro();
+    echo ENOM_PRO . ': Begin CRON' . PHP_EOL;
+    enom_pro::log_activity(ENOM_PRO.': Begin CRON Job');
+    $count = $enom->send_all_ssl_reminder_emails();
+    echo ENOM_PRO . ': Sent '. $count . ' SSL Reminder Email(s)' . PHP_EOL;
+    enom_pro::log_activity(ENOM_PRO.': End CRON Job. Sent ' . $count . ' SSL Reminder Email(s)');
+    echo ENOM_PRO . ': END CRON' . PHP_EOL;
 }

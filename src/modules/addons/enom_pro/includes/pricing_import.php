@@ -89,7 +89,7 @@ if ($this->is_pricing_cached()) :
             </div>
             <table class="datatable" id="enom_pro_pricing_table">
                 <tr>
-                    <th colspan="3">TLD</th>
+                    <th colspan="2">TLD</th>
                     <th>Status</th>
                     <?php foreach (array_keys(array_fill(1, 10, '')) as $key => $year) : ?>
                         <th colspan="2"><?php echo $year; ?> Year<?php if ($year > 1):?>s<?php endif;?>
@@ -111,23 +111,37 @@ if ($this->is_pricing_cached()) :
                             <?php $whmcs_pricing_for_tld = $this->get_whmcs_domain_pricing($tld);?>
                         </td>
                         <td>
-                            <a href="#" data-tld="<?php echo $tld?>" class="btn btn-mini toggle_tld ep_tt" title="Import Pricing from eNom for this TLD">&rarr;</a>
+                            <a href="#" 
+                            data-tld="<?php echo $tld?>" 
+                            class="btn btn-mini toggle_tld ep_tt" 
+                            title="Import &amp; Toggle Pricing from eNom for this TLD">&rarr;</a>
                         </td>
+                        <?php if (count($whmcs_pricing_for_tld) > 0) : ?>
+                        <?php $whmcs_id = $whmcs_pricing_for_tld['id']; ?>
                         <td>
-                            <a href="#" data-tld="<?php echo $tld?>" class="btn btn-mini delete_tld ep_tt" title="Delete Pricing from WHMCS">x</a>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-info">WHMCS</span>
+                                        <a target="_blank" class="ep_lightbox btn btn-mini" 
+                                            data-target="configdomains.php?action=editpricing&id=<?php echo $whmcs_id;?>"
+                                            data-title="Pricing for .<?php echo $tld;?>"
+                                            href="configdomains.php?action=editpricing&id=<?php echo $whmcs_id;?>">Edit</a>
+                                    </td>
+                                    <td>
+                                    <a href="#" 
+                                        data-tld="<?php echo $tld?>" 
+                                        class="btn btn-mini delete_tld ep_tt" 
+                                        title="Delete Pricing from WHMCS">x</a>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
-                        <td>
-                            <?php if (count($whmcs_pricing_for_tld) > 0) : ?>
-                            <?php $whmcs_id = $whmcs_pricing_for_tld['id']; ?>
-                                <span class="badge badge-info">WHMCS</span>
-                                <a target="_blank" class="ep_lightbox" 
-                                    data-target="configdomains.php?action=editpricing&id=<?php echo $whmcs_id;?>"
-                                    data-title="Pricing for .<?php echo $tld;?>"
-                                    href="configdomains.php?action=editpricing&id=<?php echo $whmcs_id;?>">Edit</a>
-                            <?php else:?>
-                                <span class="badge small">Not In WHMCS</span>
-                            <?php endif;?>
-                        </td>
+                        <?php else:?>
+                            <td>
+                               <span class="badge small">Not In WHMCS</span>
+                            </td>
+                        <?php endif;?>
                         <?php foreach (array_keys(array_fill(1, 10, '')) as $key => $year) : ?>
                             <td>
                                 <?php 
@@ -176,7 +190,7 @@ if ($this->is_pricing_cached()) :
         </div>
     </div><?php //End <div id="enom_pro_pricing_import_page">?>
 <?php else: ?>
-    <div class="alert">
+    <div class="alert" id="loading_pricing">
         <h3>Loading pricing for <?php echo count($this->getTLDs())?> top level domains.</h3>
         <div class="enom_pro_loader"></div>
         <h3 class="hidden a_minute"><em>This may take a minute...</em></h3>

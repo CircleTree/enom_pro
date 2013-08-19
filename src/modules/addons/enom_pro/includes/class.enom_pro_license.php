@@ -114,7 +114,7 @@ class enom_pro_license
         if (true == self::$latest_version) {
             return self::$latest_version;
         }
-        $version_file = ENOM_PRO_INCLUDES . 'version';
+        $version_file = ENOM_PRO_TEMP . 'version';
         if (file_exists($version_file)) {
             self::$latest_version = file_get_contents($version_file);
             return self::$latest_version;
@@ -146,7 +146,7 @@ class enom_pro_license
      */
     public static function get_last_checked_time_ago ()
     {
-        $version_file = ENOM_PRO_INCLUDES . 'version';
+        $version_file = ENOM_PRO_TEMP . 'version';
         if (! file_exists($version_file)) {
             self::get_latest_version();
         }
@@ -158,7 +158,7 @@ class enom_pro_license
     public static function delete_latest_version ()
     {
         self::$latest_version = false;
-        $version_file = ENOM_PRO_INCLUDES . 'version';
+        $version_file = ENOM_PRO_TEMP . 'version';
         unlink($version_file);
     }
     private function get_remote_license($licensekey,$localkey="")
