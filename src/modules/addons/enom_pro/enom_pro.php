@@ -32,6 +32,7 @@ define('ENOM_PRO', '@NAME@');
  */
 require_once ENOM_PRO_INCLUDES . 'exceptions.php';
 require_once ENOM_PRO_INCLUDES . 'class.enom_pro.php';
+require_once ENOM_PRO_INCLUDES . 'class.enom_pro_controller.php';
 require_once ENOM_PRO_INCLUDES . 'class.enom_pro_license.php';
 
 /**
@@ -54,9 +55,14 @@ function enom_pro_config ()
     } else {
         $view = '';
     }
-    $button = '<b><a class="btn btn-primary" '.
-                                ' style="color:white;text-decoration:none;"'.
-                                ' href="'.enom_pro::MODULE_LINK.'">Go to @NAME@ &rarr;</a></b>';
+    $button = '<a class="btn btn-inverse btn-small" '.
+                                ' style="color:white;text-decoration:none;display:inline;vertical-align:middle;"'.
+                                ' href="'.enom_pro::MODULE_LINK.'">Go to @NAME@ &rarr;</a>';
+    $save_button =  array(
+                            'FriendlyName'  =>  "Save",
+                            "Type"          =>  "null",
+                            "Description"   =>  '<input type="submit" name="msave_enom_pro" value="Save Changes" class="btn primary btn-success">'
+                    );
     $config = array(
             'name'=>'@NAME@' . $view,
             'version'=>'@VERSION@',
@@ -67,13 +73,9 @@ function enom_pro_config ()
                     'quicklink' =>  array(
                             'FriendlyName'  =>  "",
                             "Type"          =>  "null",
-                            "Description"   =>  '<h1 style="margin:0;line-height:1.3;" >@NAME@ Settings</h1>'.$button
+                            "Description"   =>  '<h1 style="margin:0;line-height:1.5;" >'.ENOM_PRO.' Settings '.$button.'</h1>'
                     ),
-                    'save' =>  array(
-                            'FriendlyName'  =>  "Save",
-                            "Type"          =>  "null",
-                            "Description"   =>  '<input type="submit" name="msave_enom_pro" value="Save Changes" class="btn primary btn-success">'
-                    ),
+                    'save' => $save_button,
                     'license'=>array('FriendlyName'=>"License Key","Type"=>"text","Size"=>"30"),
                     'api_request_limit'=> array('FriendlyName'=>"API Limit","Type"=>"dropdown",
                             "Options"=>"5,10,25,50,75,100,200,500,1000","Default"=>"5",
@@ -93,6 +95,12 @@ function enom_pro_config ()
                     'import_per_page'=>array('FriendlyName'=>"Import Results","Type"=>"dropdown",
                             "Options"=>"5,10,25,50,75,100","Default"=>"25",
                             "Description"=>"Results Per Page on the Domain Import Page"),
+                    'auto_activate' => array('FriendlyName'=>"Automatically Activate Orders on Import","Type"=>"yesno",
+                            "Description"=>"Set imported orders to active and eNom registrar", "Default" => "on"),
+                    'spinner_section' => array(
+                    	'type' => null,
+                        'Description' => '<h1 style="line-height:1.1;margin:0;" >NameSpinner Options '.$button.'</h1>'
+                    ),
                     'spinner_results'=>array('FriendlyName'=>"Namespinner Results","Type"=>"text","Default"=>10,
                             "Description"=>"Max Number of namespinner results to show".$spinner_help,'Size'=>10),
                     'spinner_columns'=>array('FriendlyName'=>"Namespinner Columns","Type"=>"dropdown",
@@ -147,6 +155,7 @@ function enom_pro_config ()
                     'spinner_topical'=>array('FriendlyName'=>"Topical Results","Type"=>"dropdown","Default"=>"High",
                             "Description"=>"Higher values return suggestions that reflect current topics 
                             and popular words.","Options"=>"Off,Low,Medium,High"),
+                    'save2' => $save_button,
                     'quicklink2'=>array(
                             'FriendlyName'=>"","Type"=>"null",
                             "Description"=> $button
@@ -215,12 +224,19 @@ function enom_pro_sidebar ($vars)
         href="<?php echo enom_pro::MODULE_LINK; ?>&view=pricing_import">Import Pricing <span class="badge">BETA</span></a>
     </li>
     <li>
-        <a class="btn btn-block" href="configaddonmods.php#enom_pro">Settings</a>
+        <a class="btn btn-block ep_lightbox" 
+            data-width="90%" 
+            title="<?php echo ENOM_PRO;?> Settings" 
+            href="configaddonmods.php#enom_pro">Settings</a>
     </li>
     <li>
         <?php $id = enom_pro::is_ssl_email_installed(); ?>
         <?php if ($id > 0) :?>
-            <a class="btn btn-block" href="configemailtemplates.php?action=edit&id=<?php echo $id?>">Edit SSL Email</a>
+            <a class="btn btn-block ep_lightbox" 
+            title="Edit SSL Reminder Email"
+            data-width="90%" 
+            data-no-refresh="true"
+            href="configemailtemplates.php?action=edit&id=<?php echo $id?>">Edit SSL Email</a>
         <?php else:?>
             <a class="btn btn-block" href="<?php echo enom_pro::MODULE_LINK ?>&action=install_ssl_template">Install SSL Email</a>
         <?php endif;?>
@@ -249,10 +265,22 @@ function enom_pro_sidebar ($vars)
 <span class="header">Helpful Links</span>
 <ul class="menu">
     <li>
-        <a target="_blank" href="systemmodulelog.php" class="ep_tt" title="Useful for API Activity">Module Log</a>
+        <a target="_blank" 
+            href="systemmodulelog.php" 
+            class="ep_tt ep_lightbox" 
+            data-title="WHMCS Module Log"
+            data-width="90%"
+            data-no-refresh="true"
+            title="Useful for API Activity">Module Log</a>
     </li>
     <li>
-        <a target="_blank" href="systemactivitylog.php" class="ep_tt" title="Useful for viewing CRON Job Activity">Activity Log</a>
+        <a target="_blank" 
+            href="systemactivitylog.php" 
+            class="ep_tt ep_lightbox"
+            data-title="WHMCS Activity Log"
+            data-width="90%"
+            data-no-refresh="true" 
+            title="Useful for viewing CRON Job Activity">Activity Log</a>
     </li>
     <li>
         <a href="configregistrars.php#enom">eNom Registrar Settings</a>
@@ -280,6 +308,9 @@ function enom_pro_output ($vars)
     try {
         $enom = new enom_pro();
         ?>
+         <div id="enom_pro_dialog" title="Loading..." style="display:none;" >
+            <iframe src="" id="enom_pro_dialog_iframe"></iframe>
+        </div>
         <?php if (! is_writable(ENOM_PRO_TEMP)) :?>
             <div class="alert alert-error">
                 <p>Temp Directory is unwriteable. You will need to CHMOD 777 <?php echo ENOM_PRO_TEMP; ?> to continue.</p>
@@ -448,5 +479,6 @@ function enom_pro_output ($vars)
                 <?php echo $e->getMessage(); ?>
             </div>
             <?php 
-    }
+    } //End Final Exception Catch ?>
+    <?php
 }

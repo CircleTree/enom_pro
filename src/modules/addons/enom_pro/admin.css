@@ -16,18 +16,7 @@
   border-color: #ddd;
   border-color: rgba(0, 0, 0, 0.15);
 }
-.well-large {
-  padding: 24px;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 6px;
-}
-.well-small {
-  padding: 9px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-}
+
 .label,
 .badge {
   display: inline-block;
@@ -617,6 +606,18 @@ html[xmlns] .clearfix {
 * html .clearfix {
     height: 1%;
 }
+.well-large {
+  padding: 24px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+}
+.well-small {
+  padding: 9px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
 PRE.api_error {
     background-color: #FFFFFF;
     overflow: scroll;
@@ -929,7 +930,7 @@ a.btn-primary, a.btn-danger, a.btn-info, a.btn-inverse, a.btn-warning {
 {
     margin-left: 715px;
 }
-#pricing_dialog_iframe {
+#enom_pro_dialog_iframe {
     width: 100%;
     height: 100%;
     border: none;
@@ -945,7 +946,7 @@ a.btn-primary, a.btn-danger, a.btn-info, a.btn-inverse, a.btn-warning {
     /*+placement:anchor-top-left 0px -35px;*/
     position: absolute;
     left: 0px;
-    top: -35px;
+    top: 0;
 }
 
 .slideup.fixed .alert {
@@ -1015,5 +1016,29 @@ a.btn-primary, a.btn-danger, a.btn-info, a.btn-inverse, a.btn-warning {
     -khtml-border-radius: 10px;
     border-radius: 10px;
     border: 1px solid #BCE8F1;
+}
+
+a[target='_blank'] {
+    cursor: alias;
+}
+.ep_lightbox {
+    cursor: context-menu !important;
+}
+
+#enom_pro_pricing_import .noborder {
+    width: 100%;
+}
+
+#enom_pro_pricing_import .noborder TD {
+    border: none;
+    padding: 0;
+}
+
+#enom_pro_pricing_table TD {
+    padding: 0;
+}
+
+#enom_pro_pricing_import_page {
+    overflow: auto;
 }
 
