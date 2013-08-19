@@ -3,6 +3,7 @@ $enom = new enom_pro();
 $show_only = isset($_GET['show_only']) ? $_GET['show_only'] : false;
 $per_page = $enom->get_addon_setting('import_per_page');
 $domains_array = $enom->getDomainsWithClients($enom->get_addon_setting('import_per_page'), (int) $_GET['start'], $show_only);
+
 $list_meta = $enom->getListMeta();
 if ( empty($domains_array) ) { ?>
     <div class="alert alert-error"><p>No domains returned from eNom.</p></div>
@@ -54,6 +55,9 @@ if ( empty($domains_array) ) { ?>
                     <p>
                         Not Found <a class="btn btn-primary create_order"
                             data-domain="<?php echo $domain_name;?>"
+                            data-id-protect="<?php echo $domain['privacy']?>"
+                            data-dns="<?php echo $domain['enom_dns']?>"
+                            data-autorenew="<?php echo $domain['autorenew']?>"
                             href="#">Create Order</a>
                     </p>
                     <div class="domain_whois clearfix" data-action="get_domain_whois" data-domain="<?php echo $domain_name; ?>">
