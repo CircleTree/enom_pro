@@ -209,6 +209,10 @@ class enom_pro
     {
         return self::$debug;
     }
+    public static function is_debug_enabled ()
+    {
+        return self::debug();
+    }
     public function getBalance ()
     {
         if (! isset($this->xml->Balance)) {
@@ -519,6 +523,17 @@ class enom_pro
     {
         require_once ENOM_PRO_INCLUDES . 'pricing_import.php';
     }
+    public static function is_domain_in_whmcs ($domain)
+    {
+        $result = self::whmcs_api('getclientsdomains', array('domain' => $domain));
+        $domains = $result['totalresults'];
+        if ($domains >= 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     /**
      * XML Override check
      * @var boolean 
@@ -589,7 +604,8 @@ class enom_pro
         return $transfers;
     }
     /**
-     * returns array with # domains: registered,expiring,expired,redemption, ext redemptioon
+     * returns array with # domains: registered,
+     * expiring, expired, redemption, ext_redemption
      */
     public function getAccountStats ()
     {
@@ -600,7 +616,7 @@ class enom_pro
                 'expired' => (int) $this->xml->ExpiredDomainsCount,
                 'redemption' => (int) $this->xml->RGP,
                 'ext_redemption' => (int) $this->xml->ExtendedRGP,
-                );
+            );
 
         return $response;
     }
@@ -697,7 +713,7 @@ class enom_pro
     }
     /**
      * Parses a field and returns an empty string if it's not set
-     * @param unknown $field
+     * @param string $field
      */
     private function parse_field ($field)
     {
