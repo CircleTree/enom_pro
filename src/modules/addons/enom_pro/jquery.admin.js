@@ -147,68 +147,47 @@ jQuery(function($) {
         $target.find('.response').html(data.email);
     }
     var $loader = $(".enom_pro_loader");
-    $("#create_order_form")
-            .bind(
-                    'submit',
-                    function() {
-                        $message.removeClass('alert-error alert-success')
-                                .hide();
-                        $process.hide();
-                        $
-                                .ajax({
-                                    url : 'addonmodules.php?module=enom_pro',
-                                    data : $(this).serialize(),
-                                    success : function(data) {
-                                        if (data.success) {
-                                            $process.hide();
-                                            $message.addClass('alert-success');
-                                            $("#import_table_form")
-                                                    .trigger('submit')
-                                                    .on(
-                                                            'ajaxComplete',
-                                                            function() {
-                                                                var $new_elem = $(
-                                                                        "[data-domain='"
-                                                                                + last_domain
-                                                                                + "']")
-                                                                        .closest(
-                                                                                '.alert');
-                                                                $new_elem
-                                                                        .removeClass('alert-success');
-                                                                setTimeout(
-                                                                        function() {
-                                                                            $new_elem
-                                                                                    .addClass('alert-success');
-                                                                        }, 250);
-                                                                setTimeout(
-                                                                        function() {
-                                                                            $new_elem
-                                                                                    .removeClass('alert-success');
-                                                                        }, 500);
-                                                                setTimeout(
-                                                                        function() {
-                                                                            $new_elem
-                                                                                    .addClass('alert-success');
-                                                                        }, 750);
-                                                            });
-                                        } else {
-                                            $loader.hide();
-                                            $message.addClass('alert-error');
-                                            $process.slideDown();
-                                        }
-                                        $message.html(data.message).slideDown();
-                                    },
-                                    error : function(xhr, text) {
-                                        $loader.hide();
-                                        $message.addClass('alert-error').html(
-                                                'WHMCS Error: '
-                                                        + xhr.responseText)
-                                                .slideDown();
-                                        $process.slideDown();
-                                    }
-                                });
-                        return false;
-                    });
+    $("#create_order_form").bind('submit', function() {
+        $message.removeClass('alert-error alert-success').hide();
+        $process.hide();
+        $.ajax({
+                    url : 'addonmodules.php?module=enom_pro',
+                    data : $(this).serialize(),
+                    success : function(data) {
+                        if (data.success) {
+                            $process.hide();
+                            $message.addClass('alert-success');
+                            $("#import_table_form").trigger('submit').on('ajaxComplete', function() {
+                                var $new_elem = $("[data-domain='"+ last_domain+ "']").closest('.alert');
+                                $new_elem.removeClass('alert-success');
+                                setTimeout(function() {
+                                	$new_elem.addClass('alert-success');
+                                }, 250);
+                                setTimeout(function() {
+                                    $new_elem.removeClass('alert-success');
+                                }, 500);
+                                setTimeout(function() {
+                                    $new_elem.addClass('alert-success');
+                                }, 750);
+                            });
+                        } else {
+                            $loader.hide();
+                            $message.addClass('alert-error');
+                            $process.slideDown();
+                        }
+                        $message.html(data.message).slideDown();
+                    },
+                    error : function(xhr, text) {
+                        $loader.hide();
+                        $message.addClass('alert-error').html(
+                                'WHMCS Error: '
+                                        + xhr.responseText)
+                                .slideDown();
+                        $process.slideDown();
+                    }
+            });
+        return false;
+    });
     $(".no-js").hide(); 
     $("#import_table_form").on('submit', function() {
         $(".enom_pro_loader").not('.small').removeClass('hidden');
