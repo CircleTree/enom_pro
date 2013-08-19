@@ -217,10 +217,11 @@ jQuery(function($) {
     		$elem.removeAttr('checked');
     	}
     }
-    var $loader = $(".enom_pro_loader");
     $("#create_order_form").bind('submit', function() {
         $message.removeClass('alert-error alert-success').hide();
         $process.hide();
+        var $loader = $(".enom_pro_loader", $(this));
+        $loader.show();
         $.ajax({
 	                url : 'addonmodules.php?module=enom_pro',
 	                data : $(this).serialize(),
@@ -255,11 +256,11 @@ jQuery(function($) {
 	                        $message.html(message);
 	                        
 	                    } else {
-	                        $loader.hide();
 	                        $message.addClass('alert-error');
 	                        $process.slideDown();
 	                        $message.html(data.error);
 	                    }
+	                    $loader.hide();
 	                    $message.slideDown();
 	                },
 	                error : function(xhr, text) {
