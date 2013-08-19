@@ -1,79 +1,79 @@
 <!--?xml version="1.0" encoding="utf-8"? xmlns="default namespace" -->
 <interface-response>
-<certgetcerts>
-  <certs>
-    <cert>
+<CertGetCerts>
+  <Certs>
+    <Cert>
       <isexpired>False</isexpired>
       <certid>398591</certid>
       <orderdate>7/9/2013</orderdate>
       <configdate></configdate>
-      <domainname><!--[CDATA[ppgo.org]]--></domainname>
+      <DomainName>ppgo.org</DomainName>
       <validityperiod>24</validityperiod>
       <renewalindicator>False</renewalindicator>
       <prodtype>211</prodtype>
-      <proddesc>SSL Certificate - Comodo Essential</proddesc>
-      <expirationdate>7/9/2015</expirationdate>
+      <ProdDesc>SSL Certificate - Comodo Essential</ProdDesc>
+      <ExpirationDate>8/25/2013</ExpirationDate>
       <servercount>1</servercount>
-      <certstatus>Certificate Issued</certstatus>
+      <CertStatus>Certificate Issued</CertStatus>
       <certstatusid>4</certstatusid>
       <orderid>233934278</orderid>
       <domaincountallowed></domaincountallowed>
       <reissuestatus></reissuestatus>
-    </cert>
-    <cert>
+    </Cert>
+    <Cert>
+    	<!--
+    		
+    		 'domain'=> (array) $cert->DomainName,
+                        'status'=> (string) $cert->CertStatus,
+                        'expiration_date' => (string) $cert->ExpirationDate,
+                        'OrderID' => (int) $cert->OrderID,
+                        'desc' => (string) $cert->ProdDesc, -->
+    	
       <isexpired>False</isexpired>
       <certid>350574</certid>
       <orderdate>12/22/2012</orderdate>
       <configdate></configdate>
-      <domainname><!--[CDATA[*.mycircletree.com]]--></domainname>
+      <DomainName>*.mycircletree.com</DomainName>
       <validityperiod>12</validityperiod>
       <renewalindicator>False</renewalindicator>
       <prodtype>214</prodtype>
-      <proddesc>SSL Certificate - Comodo Essential Wildcard</proddesc>
-      <expirationdate>12/23/2013</expirationdate>
+      <ProdDesc>SSL Certificate - Comodo Essential Wildcard</ProdDesc>
+      <ExpirationDate>12/23/2013</ExpirationDate>
       <servercount>1</servercount>
-      <certstatus>Certificate Issued</certstatus>
-      <certstatusid>4</certstatusid>
+      <CertStatus>Certificate Issued</CertStatus>
+      <CertStatusid>4</CertStatusid>
       <orderid>228725658</orderid>
       <domaincountallowed></domaincountallowed>
       <reissuestatus></reissuestatus>
-    </cert>
-    <cert>
-      <isexpired>False</isexpired>
+    </Cert>
+    <Cert>
       <certid>320843</certid>
-      <orderdate>8/23/2012</orderdate>
-      <configdate></configdate>
-      <domainname><!--[CDATA[mycircletree.com]]--></domainname>
-      <validityperiod>12</validityperiod>
-      <renewalindicator>False</renewalindicator>
-      <prodtype>222</prodtype>
-      <proddesc>SSL Certificate - Comodo EV SGC</proddesc>
-      <expirationdate>9/17/2013</expirationdate>
+      <DomainName>mycircletree.com</DomainName>
+      <ProdDesc>SSL Certificate - Comodo EV SGC</ProdDesc>
+      <ExpirationDate>8/18/2014</ExpirationDate>
       <servercount>1</servercount>
-      <certstatus>Certificate Issued</certstatus>
-      <certstatusid>4</certstatusid>
+      <CertStatus>Certificate Issued</CertStatus>
+      <CertStatusid>4</CertStatusid>
       <orderid>225666964</orderid>
-      <domaincountallowed></domaincountallowed>
-      <reissuestatus></reissuestatus>
-    </cert>
-    <cert>
+    </Cert>
+    <Cert>
       <isexpired>True</isexpired>
       <certid>225726</certid>
       <orderdate>6/29/2011</orderdate>
       <configdate></configdate>
-      <domainname><!--[CDATA[ppgo.org]]--></domainname>
+      <DomainName>ppgo.org</DomainName>
       <validityperiod>24</validityperiod>
       <renewalindicator>False</renewalindicator>
       <prodtype>212</prodtype>
-      <proddesc>SSL Certificate - Comodo Instant</proddesc>
-      <expirationdate>7/5/2013</expirationdate>
+      <ProdDesc>SSL Certificate - Comodo Instant</ProdDesc>
+      <ExpirationDate>7/5/2013</ExpirationDate>
       <servercount>1</servercount>
-      <certstatus>Certificate Issued</certstatus>
-      <certstatusid>4</certstatusid>
+      <CertStatus>Certificate Issued</CertStatus>
+      <CertStatusid>4</CertStatusid>
       <orderid>214076663</orderid>
       <domaincountallowed></domaincountallowed>
       <reissuestatus></reissuestatus>
-    </cert>
+    </Cert>
     <producttype>all</producttype>
     <statusid>all</statusid>
     <startposition>1</startposition>
@@ -82,8 +82,8 @@
     <sortby></sortby>
     <sortbydirection>desc</sortbydirection>
     <totalrecords>4</totalrecords>
-  </certs>
-</certgetcerts>
+  </Certs>
+</CertGetCerts>
 <totalcertcount>4</totalcertcount>
 <command>CERTGETCERTS</command>
 <language>eng</language>

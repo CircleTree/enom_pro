@@ -100,8 +100,8 @@ class enom_pro
         self::$debug = ($this->get_addon_setting("debug") == "on" ? true : false);
         $this->setParams(array("ResponseType"=>"XML"));
         $this->get_login_credientials();
-        $this->cache_file_all_domains = ENOM_PRO_INCLUDES . 'all_domains.cache';
-        $this->cache_file_all_prices = ENOM_PRO_INCLUDES . 'all_prices.cache';
+        $this->cache_file_all_domains = ENOM_PRO_TEMP . 'all_domains.cache';
+        $this->cache_file_all_prices = ENOM_PRO_TEMP . 'all_prices.cache';
         $this->remote_request_limit = $this->get_addon_setting('api_request_limit');
         if (php_sapi_name() == 'cli') {
             self::$cli = true;
@@ -324,6 +324,9 @@ class enom_pro
      */
     public function runTransaction ($command)
     {
+        if ($this->xml_override) {
+            return true;
+        }
         //Set the command
         if (! in_array(strtoupper(trim($command)), self::array_to_upper($this->implemented_commands))) {
             throw new InvalidArgumentException('API Method '. $command . ' not implemented', 400);
@@ -517,6 +520,11 @@ class enom_pro
         require_once ENOM_PRO_INCLUDES . 'pricing_import.php';
     }
     /**
+     * XML Override check
+     * @var boolean 
+     */
+    private $xml_override = false;
+    /**
      * Load XML file for testing
      * @param string $file path to valid XML file
      * @access private unit testing mock interface
@@ -527,6 +535,7 @@ class enom_pro
             throw new InvalidArgumentException('XML File not found: '.$file);
         }
         $string = file_get_contents($file);
+        $this->xml_override = true;
         $this->load_xml($string);
     }
     /**
@@ -694,6 +703,10 @@ class enom_pro
     {
         return isset($field) ? $field : '';
     }
+    /**
+     * 
+     * @return array domain, status, expiration_date, desc
+     */
     public function getExpiringCerts ()
     {
         $this->runTransaction('CertGetCerts');
@@ -715,7 +728,7 @@ class enom_pro
                 $return[] = $formatted_result;
             }
         }
-
+        
         return $return;
     }
     public function getSpinner ($domain)
@@ -998,6 +1011,13 @@ class enom_pro
     private function set_cached_data ($file_path, array $data)
     {
         $handle = fopen($file_path, 'w');
+        if (false === $handle) {
+            throw new Exception(
+                    'Unable to open ' .
+                     dirname($file_path) . 
+                    ' for writing. You will need to CHMOD 777 to continue'
+            );
+        }
         if (count($data) > 0) {
             $serialized_data = serialize($data);
             $md5 = md5($serialized_data);
@@ -1104,7 +1124,6 @@ class enom_pro
      */
     public function getDomainsWithClients($limit = true, $start = 1, $show_only = false)
     {
-        //TODO determine sub call limit & starts
         $domains = $this->getDomains(true, $start);
         $show_only_unimported = $show_only == 'unimported' ? true : false;
         $show_only_imported = $show_only == 'imported' ? true : false;
@@ -1148,7 +1167,7 @@ class enom_pro
      */
     public static function whmcs_api ($command, $data)
     {
-        $response =  self::$cli ? self::whmcs_curl($command, $data) : localAPI($command, $data);
+        $response =  defined('UNIT_TESTS') ? self::whmcs_curl($command, $data) : localAPI($command, $data, 1);
         if ($response['result'] != 'success') {
             throw new WHMCSException($response['message']);
         }
@@ -1351,7 +1370,28 @@ class enom_pro
 	}
 	public static function get_upgrade_zip_url ()
 	{
-	    return 'http://mycircletree.com/client-area/get_enom_pro.php?key=' . self::get_addon_setting('license');
+	    if (defined('DEV')) {
+            return 'http://ep.com/enom_pro.zip';	        
+	    } else {
+    	    return 'http://mycircletree.com/client-area/get_enom_pro.php?key=' . self::get_addon_setting('license');
+	    }
+	}
+	/**
+	 * Recursively remove a directory
+	 * @param string $path full path of dir to remove
+	 */
+	private function rmdir ($path)
+	{
+	    foreach(
+	            new RecursiveIteratorIterator(
+	                    new RecursiveDirectoryIterator(
+	                            $path,
+	                            FilesystemIterator::SKIP_DOTS
+                        ),
+	                    RecursiveIteratorIterator::CHILD_FIRST
+        ) as $path) {
+	        $path->isFile() ? unlink($path->getPathname()) : rmdir($path->getPathname());
+	    }
 	}
 	public function do_upgrade () {
 	    if (! class_exists('ZipArchive')) {
@@ -1360,9 +1400,10 @@ class enom_pro
 	                 http://www.php.net/manual/en/class.ziparchive.php'
             );
 	    }
+	    //Get ZIP contents
 	    $zipfile = self::curl_get(self::get_upgrade_zip_url());
-	    $zip_dir = 'modules/addons/enom_pro/';
-	    $filename = ENOM_PRO_INCLUDES . 'upgrade.zip';
+	    $filename = ENOM_PRO_TEMP . 'upgrade.zip';
+	    //Open handle to write zip contents
 	    $handle = fopen($filename, 'w');
 	    if (false === $handle) {
 	        throw new Exception('Unable to open temporary zip file for writing: '. $filename);
@@ -1371,50 +1412,81 @@ class enom_pro
 	    fclose($handle);
 	    $zip = new ZipArchive();
 	    $zip_response = $zip->open($filename);
-	    if (true === $zip_response) {
-	        $upgrade_dir = ENOM_PRO_INCLUDES . 'upgrade/';
-	        $zip->extractTo($upgrade_dir);
-	        $zip->close();
-	        unlink($filename);
-	        //Get the subfolder we want
-	        $upgrade_files_dir = $upgrade_dir . 'modules/addons/enom_pro/';
-	        $objects = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($upgrade_files_dir, FilesystemIterator::SKIP_DOTS)
-            );
-	        //Subfolders to extract into, used for security
-	        $core_dirs = array('images', 'includes');
-	        foreach($objects as $object){
-	            if (is_readable($object->getPathname())) {
-	                //Get current file directory
-	                $file_path = $object->getPathInfo();
-	                //Array it
-	                $dir_array = explode(DIRECTORY_SEPARATOR, $file_path);
-	                //Get the last directory;
-	                $last_dir = end($dir_array);
-	                //Check if it's a core dir
-	                if (in_array($last_dir, $core_dirs)) {
-	                    $dirname = $last_dir . DIRECTORY_SEPARATOR;
-	                } else {
-	                    $dirname = '';
-	                }
-	                //Build new file string
-	                $dest = ENOM_PRO_ROOT . $dirname . $object->getBasename();
-	                //Copy it
-	                copy($object->getPathname(), $dest);
-	                //delete old file
-	                unlink($object->getPathname()) ;           
-	            }
-	        }
-	        //Cleanup temp dir
-	        rmdir($upgrade_dir);
-	    } else {
+	    if (true !== $zip_response) {
 	        throw new RemoteException('Error extracting ZIP file.', $zip_response);
 	    }
+	    
+        $upgrade_dir = ENOM_PRO_TEMP . 'upgrade/';
+        $zip->extractTo($upgrade_dir);
+        $zip->close();
+        //Delete ZipFile
+        unlink($filename);
+        $frontend_files = new DirectoryIterator($upgrade_dir);
+        //File types to extract to frontend directories
+        $frontend_types = array('php');
+        foreach ($frontend_files as $file) {
+            if (! $file->isDot() && in_array($file->getExtension(), $frontend_types)) {
+                $frontend_dest = ROOTDIR;
+                copy($file->getPathname(), $frontend_dest);
+            }
+        }
+        $template_files = $upgrade_dir . 'templates/default/';
+        $tpl_files = new DirectoryIterator($template_files);
+        $manual_template_files = array();
+        foreach ($tpl_files as $file) {
+            if (! $file->isDot() && in_array($file->getExtension(), array('tpl'))) {
+                //Build new file string
+                $template_dest = ROOTDIR . '/templates/' .$GLOBALS['CONFIG']['Template'] .'/'. $file->getBasename();
+                if (file_exists($template_dest)) {
+                    $manual_template_files[] = $template_dest;
+                } else {
+                    copy($file->getPathname(), $template_dest);
+                }
+            }
+        }
+
+        //Get the subfolder we want
+        $upgrade_files_dir = $upgrade_dir . 'modules/addons/enom_pro/';
+        $objects = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($upgrade_files_dir, FilesystemIterator::SKIP_DOTS)
+        );
+        //Subfolders to extract into, used for security
+        $core_dirs = array('images', 'includes');
+        foreach($objects as $object){
+            if (is_readable($object->getPathname())) {
+                //Get current file directory
+                $file_path = $object->getPathInfo();
+                //Array it
+                $dir_array = explode(DIRECTORY_SEPARATOR, $file_path);
+                //Get the last directory;
+                $last_dir = end($dir_array);
+                //Check if it's a core dir
+                if (in_array($last_dir, $core_dirs)) {
+                    $dirname = $last_dir . DIRECTORY_SEPARATOR;
+                } else {
+                    $dirname = '';
+                }
+                //Build new file string
+                $dest = ENOM_PRO_ROOT . $dirname . $object->getBasename();
+                //Copy it
+                copy($object->getPathname(), $dest);
+                //delete old file
+                unlink($object->getPathname()) ;           
+            }
+        }
+        //Check if files need to be manually upgraded
+        if (empty($manual_template_files)) {
+            //Cleanup temp dir
+            $this->rmdir($upgrade_dir);
+        }
+        return $manual_template_files;
 	}
-	public static function  send_SSL_reminder_email($client_id)
+	public static function  send_SSL_reminder_email($client_id, $cert_data)
 	{
 	    $vars = array(
-	            'expiry_date' => '@TODO' //TODO mail merge fields
+	            'expiry_date' => $cert_data['expiration_date'],
+	            'domain_name' => reset($cert_data['domain']),
+	            'product'     => $cert_data['desc'],
 	    );
 	    $data = array(
 	            'id' => 1,
@@ -1422,12 +1494,92 @@ class enom_pro
 	            'messagename' => 'SSL Expiring Soon',
 	            'customvars' => base64_encode(serialize($vars)),
 	    );
-	    //@TODO fixme
-	    echo __FILE__ .':'. __LINE__ . ' @TODO';
-	    echo '<pre>';
-	    print_r($data);
-	    echo '</pre>';
 	    return self::whmcs_api('sendemail', $data);
+	}
+	public function send_all_ssl_reminder_emails ()
+	{
+	    //@TODO remove mock!
+	    $this->_load_xml('/Users/robertgregor/git/enom_pro/tests/files/expiring_ssl.xml');
+	    $expiry_days_before = self::get_addon_setting('ssl_email_days');
+	    if ('Disabled' == $expiry_days_before) {
+	        return 0;
+	    }
+	    $certs = $this->getExpiringCerts();
+	    $send_timestamp = strtotime("+$expiry_days_before days");
+	    $reminder_count = 0;
+	    foreach ($certs as $cert) {
+	        $expiry_timestamp = strtotime($cert['expiration_date']);
+	        if ($this->format_ts($expiry_timestamp) == $this->format_ts($send_timestamp)) {
+	            //Get client id for $domain
+	            $client_id = $this->getClientIdByDomain(reset($cert['domain']));
+	            if (FALSE !== $client_id) {
+    	            //Send Email
+    	            $this->send_SSL_reminder_email($client_id, $cert);
+    	            $reminder_count++;
+	            }
+	        }
+	    }
+	    return $reminder_count; 
+	}
+	private function getClientIdByDomain ($domain)
+	{
+	    $search = self::whmcs_api('getclientsdomains', array('domain' => $domain));
+	    //Search by Domains
+	    if (empty($search['domains'])) {
+	        self::log_activity(ENOM_PRO . ': No Client Domain Found for '.$domain . ' to send reminder email');
+	    } else {
+	        return $search['domains']['domain'][0]['clientid'];
+	    }
+	    //Try Searching by Product
+	    $search2 = self::whmcs_api('getclientsproducts', array('domain' => $domain));
+	    if (empty($search2['products'])) {
+	        self::log_activity(ENOM_PRO . ': No Client Product Found for '. $domain . ' to send reminder email');
+	    } else {
+	        return $search['products']['product'][0]['clientid'];
+	    }
+	    return false;
+	}
+	/**
+	 * Wrapper for the WHMCS activity log
+	 * @param string $msg
+	 */
+	public static function  log_activity ($msg)
+	{
+	    logActivity($msg);
+	}
+	/**
+	 * Format a timestamp into a date. Used for rounding days. 
+	 * @param int $ts unix timestamp
+	 * @return string m-d-Y
+	 */
+	private function format_ts ($ts)
+	{
+	    return date('m-d-Y', $ts);
+	}
+	public static function  install_ssl_email()
+	{
+	    if (self::is_ssl_email_installed()) {
+	        return self::is_ssl_email_installed();
+	    }
+	    $ssl_message = '<p>Your {$product} for {$domain_name} is set to expire on&nbsp;{$expiry_date} <br/>'.
+	    'Please renew today to avoid any interruption. <br/><br/> {$signature}</p>';
+	    $sql = "INSERT INTO `tblemailtemplates`
+	       (`type`, `name`, `subject`, `message`, `attachments`, `fromname`, `fromemail`, `disabled`, `custom`, `language`, `copyto`, `plaintext`) VALUES
+            ('general', 'SSL Expiring Soon', 'SSL Expiring Soon', '{$ssl_message}', '', '', '', '', '1', '', '', 0);";
+	    self::query($sql);
+	    return mysql_insert_id();
+	}
+	/**
+	 * 
+	 * @return false or int template  id on installed
+	 */
+	public static function  is_ssl_email_installed()
+	{
+	    $sql = 'SELECT `id` FROM `tblemailtemplates` WHERE `name` = \'SSL Expiring Soon\'';
+	    $result = self::query($sql);
+	    $array = mysql_fetch_assoc($result);
+	    $id = $array['id'];
+	    return mysql_num_rows($result) == 0 ? false : $id;
 	}
 	public static function  render_admin_widget($function)
 	{

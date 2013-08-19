@@ -1,7 +1,8 @@
 watch('./(.*).php')  { |m| code_changed(m[0]) }
 
 def code_changed(file)
-    run "phpunit"
+    run "sudo phing"
+    #run "phpunit"
 end
 
 def run(cmd)

@@ -23,9 +23,10 @@ define('ENOM_PRO_ROOT', ROOTDIR . '/modules/addons/enom_pro/');
 define('ENOM_PRO_INCLUDES', ENOM_PRO_ROOT . 'includes/');
 
 /**
- * @var string temp dir
+ * @var string full path to temp dir, with trailing / 
  */
 define('ENOM_PRO_TEMP', ENOM_PRO_ROOT . 'temp/');
+define('ENOM_PRO', '@NAME@');
 /**
  * Load required core files
  */
@@ -53,8 +54,8 @@ function enom_pro_config ()
     } else {
         $view = '';
     }
-    $button = '<b><a class="btn btn-large btn-success" '.
-                                ' style="display:block;width:90%;color:white;text-decoration:none;"'.
+    $button = '<b><a class="btn btn-primary" '.
+                                ' style="color:white;text-decoration:none;"'.
                                 ' href="'.enom_pro::MODULE_LINK.'">Go to @NAME@ &rarr;</a></b>';
     $config = array(
             'name'=>'@NAME@' . $view,
@@ -68,6 +69,11 @@ function enom_pro_config ()
                             "Type"          =>  "null",
                             "Description"   =>  '<h1 style="margin:0;line-height:1.3;" >@NAME@ Settings</h1>'.$button
                     ),
+                    'save' =>  array(
+                            'FriendlyName'  =>  "Save",
+                            "Type"          =>  "null",
+                            "Description"   =>  '<input type="submit" name="msave_enom_pro" value="Save Changes" class="btn primary btn-success">'
+                    ),
                     'license'=>array('FriendlyName'=>"License Key","Type"=>"text","Size"=>"30"),
                     'api_request_limit'=> array('FriendlyName'=>"API Limit","Type"=>"dropdown",
                             "Options"=>"5,10,25,50,75,100,200,500,1000","Default"=>"5",
@@ -75,9 +81,12 @@ function enom_pro_config ()
                     'debug'=>array('FriendlyName'=>"Debug Mode","Type"=>"yesno",
                             "Description"=>"Enable debug messages on frontend. Used for troubleshooting the namespinner,
                              for example."),
-                    'ssl_days'=>array('FriendlyName'=>"Expiring SSL Days","Type"=>"dropdown",
+                    'ssl_days'=>array('FriendlyName'=>"Widget Expiring SSL Days","Type"=>"dropdown",
                             "Options"=>"7,15,30,60,90,180,365,730","Default"=>"30",
                             "Description"=>"Number of days until SSL Certificate Expiration to show in Widget"),
+                    'ssl_email_days'=>array('FriendlyName'=>"Expiring SSL Email Days","Type"=>"dropdown",
+                            "Options"=>"Disabled,7,15,30,60,90,180,365,730","Default"=>"30",
+                            "Description"=>"Number of days before sending the SSL Certificate Expiration email to client"),
                     'balance_warning'=>array('FriendlyName'=>"Credit Balance Warning Threshold","Type"=>"dropdown",
                             "Options"=>"Off,10,25,50,100,150,200,500,1000,5000","Default"=>"50",
                             "Description"=>"Turns the Credit Balance Widget into a RED flashing warning indicator"),
@@ -182,7 +191,6 @@ function enom_pro_activate ()
     if (mysql_error()) die (mysql_error());
 }
 
-
 /**
  * @param array $vars module vars
  * @return string
@@ -209,6 +217,14 @@ function enom_pro_sidebar ($vars)
     <li>
         <a class="btn btn-block" href="configaddonmods.php#enom_pro">Settings</a>
     </li>
+    <li>
+        <?php $id = enom_pro::is_ssl_email_installed(); ?>
+        <?php if ($id > 0) :?>
+            <a class="btn btn-block" href="configemailtemplates.php?action=edit&id=<?php echo $id?>">Edit SSL Email</a>
+        <?php else:?>
+            <a class="btn btn-block" href="<?php echo enom_pro::MODULE_LINK ?>&action=install_ssl_template">Install SSL Email</a>
+        <?php endif;?>
+    </li>
 </ul>
 <span class="header">@NAME@ Meta</span>
 <ul class="menu">
@@ -233,7 +249,10 @@ function enom_pro_sidebar ($vars)
 <span class="header">Helpful Links</span>
 <ul class="menu">
     <li>
-        <a target="_blank" href="systemmodulelog.php">Module Log</a>
+        <a target="_blank" href="systemmodulelog.php" class="ep_tt" title="Useful for API Activity">Module Log</a>
+    </li>
+    <li>
+        <a target="_blank" href="systemactivitylog.php" class="ep_tt" title="Useful for viewing CRON Job Activity">Activity Log</a>
     </li>
     <li>
         <a href="configregistrars.php#enom">eNom Registrar Settings</a>
@@ -260,7 +279,46 @@ function enom_pro_output ($vars)
    
     try {
         $enom = new enom_pro();
-       
+        ?>
+        <?php if (! is_writable(ENOM_PRO_TEMP)) :?>
+            <div class="alert alert-error">
+                <p>Temp Directory is unwriteable. You will need to CHMOD 777 <?php echo ENOM_PRO_TEMP; ?> to continue.</p>
+            </div>
+        <?php endif;?>
+        <?php if (! enom_pro::is_ssl_email_installed()) :?>
+            <div class="alert">
+                <p>
+                    SSL Email template is not installed.
+                    <a href="<?php echo enom_pro::MODULE_LINK?>&action=install_ssl_template">Install Now</a>
+                </p>
+            </div>
+        <?php endif;?>
+        <?php if (isset($_GET['ssl_email'])) :?>
+            <?php if ((int) $_GET['ssl_email'] > 0) :?>
+                <div class="alert alert-success">
+                    <p>Installed.
+                            <a class="btn" 
+                                href="configemailtemplates.php?action=edit&id=<?php echo (int) $_GET['ssl_email']?>">
+                                Edit Now
+                            </a>
+                    </p>
+                </div>
+            <?php endif;?>
+        <?php endif;?>
+        <?php if (! empty($_SESSION['manual_files'])) :?>
+        <div class="alert alert-error">
+            <p>
+                The following template files were already in place, and will need to be manually upgraded:
+            </p>
+            <ul>
+                <?php foreach ($_SESSION['manual_files'] as $filepath):?>
+                    <li><?php echo basename($filepath);?></li>
+                <?php endforeach;?>
+            </ul>
+            <a class="btn" href="<?php echo enom_pro::MODULE_LINK?>&action=dismiss_manual_upgrade">Dismiss Reminder</a>
+        </div>
+        <?php endif;?>
+        <?php 
         if (isset($_GET['view']) && method_exists($enom, render_.$_GET['view'])) {
             $view = (string) $_GET['view'];
             $method = "render_$view";
@@ -275,6 +333,11 @@ function enom_pro_output ($vars)
         <div class="alert alert-success">
             Upgrade Successful. Running version <?php echo ENOM_PRO_VERSION;?>.
         </div>
+    <?php endif;?>
+    <?php if (isset($_GET['dismissed'])) :?>
+    <div class="alert alert-success slideup">
+        <p>Dismissed</p>
+    </div>
     <?php endif;?>
     <?php if (isset($_GET['checked'])):?>
         <div class="alert <?php echo enom_pro_license::is_update_available() ? 'alert-warning' : 'alert-success';?>">
