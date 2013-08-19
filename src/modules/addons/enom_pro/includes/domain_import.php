@@ -76,6 +76,12 @@
             <div id="ajax_messages" class="alert" style="display: none;"></div>
             <div class="enom_pro_loader" style="display: none;"></div>
             <div id="order_process">
+            <div class="alert alert-warning hidden" id="auto-renew-warning">
+                <p>     Auto-Renew is enabled for this domain. 
+                        Make sure to disable it after it has been imported into WHMCS,
+                        to avoid double billing. 
+                </p>
+            </div>
                 <input type="hidden" name="action" value="add_enom_pro_domain_order" />
                 <input type="hidden" name="domaintype" value="register" /> <input
                     type="hidden" name="domain" value="" id="domain_field2" /><br />
