@@ -8,8 +8,13 @@ for ($i = 0; $i < $limit; $i++) {
     $word = "";
     while($length > strlen($word)) {
         $word .= $chars_array[mt_rand(0, (count($chars_array)-1) )];
+        //Valid domains do not start with -
         $word = ltrim($word, '-');        
+        //Make 1st char @ the end of alphabet
+        $word = ltrim($word, 'abcdefghijklmnop1234567890');        
     }
     $word .= '.com';
-    echo $word.PHP_EOL;
+    $prefix = 'auto-renew-';
+    
+    echo $prefix . $word.PHP_EOL;
 }
