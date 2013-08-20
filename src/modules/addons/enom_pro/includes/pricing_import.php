@@ -71,7 +71,6 @@ if ($this->is_pricing_cached()) :
                 <em>If in doubt, please <a href="#" class="clear_all btn btn-mini" >Clear All Pricing</a> before saving.</em> 
             </span>
         </div>
-        <script src="../modules/addons/enom_pro/jquery.admin.js"></script>
         <?php //pager($this);?>
         <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>?module=enom_pro&view=pricing_import" id="enom_pro_pricing_import">
             <input type="hidden" name="action" value="save_domain_pricing" />

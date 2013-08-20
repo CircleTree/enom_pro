@@ -688,7 +688,7 @@ FORM.refreshbutton {
 .enom_pro_loader {
     width: 160px;
     height: 20px;
-    background-image: url(images/loading.gif);
+    background-image: url(../images/loading.gif);
     background-repeat: no-repeat;
     background-position: center;
     display: block;
@@ -698,7 +698,7 @@ FORM.refreshbutton {
 .enom_pro_loader.small {
     width: 16px;
     height: 16px;
-    background-image: url(images/loading-small.gif);
+    background-image: url(../images/loading-small.gif);
     background-color: #FFFFFF;
     /*+border-radius:8px;*/
     -moz-border-radius: 8px;
@@ -940,7 +940,7 @@ a.btn-primary, a.btn-danger, a.btn-info, a.btn-inverse, a.btn-warning {
 }
 
 .loading .body-loader {
-    background: #FFFFFF url(images/loading.gif) no-repeat 50% 50%;
+    background: #FFFFFF url(../images/loading.gif) no-repeat 50% 50%;
 }
 .slideup.fixed {
     /*+placement:anchor-top-left 0px -35px;*/

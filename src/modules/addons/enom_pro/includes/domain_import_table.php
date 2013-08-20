@@ -85,7 +85,7 @@ if ( empty($domains_array) ) { ?>
     <?php if ($prev_start >= 1) :?>
         <li class="previous">
             <a data-start="<?php echo $prev_start;?>"
-                href="<?php echo enom_pro::MODULE_LINK; ?>&view=import&start=<?php echo $prev_start;?>#import_table">&larr;
+                href="<?php echo enom_pro::MODULE_LINK; ?>&view=domain_import&start=<?php echo $prev_start;?>#import_table">&larr;
                 Previous
             </a>
         </li>
@@ -94,7 +94,7 @@ if ( empty($domains_array) ) { ?>
     <?php if ($next_start <= $list_meta['total_domains']) :?>
         <li class="next">
             <a data-start="<?php echo $next_start;?>"
-               href="<?php echo enom_pro::MODULE_LINK; ?>&view=import&start=<?php echo $next_start;?>#import_table">Next 
+               href="<?php echo enom_pro::MODULE_LINK; ?>&view=domain_import&start=<?php echo $next_start;?>#import_table">Next 
                &rarr;</a>
        </li>
     <?php endif; ?>

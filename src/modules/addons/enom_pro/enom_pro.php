@@ -304,16 +304,16 @@ function enom_pro_output ($vars)
     if (isset($_REQUEST['action'])) {
         return;
     }
-   
     try {
         $enom = new enom_pro();
         ?>
+        <script src="../modules/addons/enom_pro/js/jquery.admin.min.js"></script>
          <div id="enom_pro_dialog" title="Loading..." style="display:none;" >
             <iframe src="" id="enom_pro_dialog_iframe"></iframe>
         </div>
         <?php if (! is_writable(ENOM_PRO_TEMP)) :?>
             <div class="alert alert-error">
-                <p>Temp Directory is unwriteable. You will need to CHMOD 777 <?php echo ENOM_PRO_TEMP; ?> to continue.</p>
+                <p>Temp Directory is unwriteable. Please CHMOD 777 <?php echo ENOM_PRO_TEMP; ?> to continue.</p>
             </div>
         <?php endif;?>
         <?php if (! enom_pro::is_ssl_email_installed()) :?>
@@ -336,19 +336,37 @@ function enom_pro_output ($vars)
                 </div>
             <?php endif;?>
         <?php endif;?>
-        <?php if (! empty($_SESSION['manual_files'])) :?>
-        <div class="alert alert-error">
-            <p>
-                The following template files were already in place, and will need to be manually upgraded:
-            </p>
-            <ul>
-                <?php foreach ($_SESSION['manual_files'] as $filepath):?>
-                    <li><?php echo basename($filepath);?></li>
-                <?php endforeach;?>
-            </ul>
-            <a class="btn" href="<?php echo enom_pro::MODULE_LINK?>&action=dismiss_manual_upgrade">Dismiss Reminder</a>
-        </div>
+        <?php if (isset($_SESSION['manual_files'])) :?>
+            <?php if (! empty($_SESSION['manual_files']['templates'])):?>
+                <div class="alert alert-info">
+                    <p>
+                        The following template files were already in place, and will need to be manually upgraded / merged:
+                    </p>
+                    <ul>
+                        <?php foreach ($_SESSION['manual_files']['templates'] as $filepath):?>
+                            <li><a href="#" title="<?php echo $filepath?>" class="ep_tt" ><?php echo basename($filepath);?></a></li>
+                        <?php endforeach;?>
+                    </ul>
+                    <a class="btn" href="<?php echo enom_pro::MODULE_LINK?>&action=dismiss_manual_upgrade">Dismiss Reminder</a>
+                </div>
+            <?php endif;?>
+            <?php if (! empty($_SESSION['manual_files']['core_files'])):?>
+                <div class="alert alert-error">
+                <div>
+                        The following files were not writeable by the webserver, and will need to be manually upgraded, or
+                        you can <input type="text" size="90" value="chmod -R 777 <?php echo ENOM_PRO_ROOT;?>"/> and 
+                        <a class="btn" href="<?php echo enom_pro::MODULE_LINK?>&action=do_upgrade">Try Again</a>
+                </div>
+                    <ul>
+                        <?php foreach ($_SESSION['manual_files']['core_files'] as $filepath):?>
+                            <li><a href="#" title="<?php echo $filepath?>" class="ep_tt" ><?php echo basename($filepath);?></a></li>
+                        <?php endforeach;?>
+                    </ul>
+                    <a class="btn" href="<?php echo enom_pro::MODULE_LINK?>&action=dismiss_manual_upgrade">Dismiss Reminder</a>
+                </div>
+            <?php endif;?>
         <?php endif;?>
+        
         <?php 
         if (isset($_GET['view']) && method_exists($enom, render_.$_GET['view'])) {
             $view = (string) $_GET['view'];
@@ -366,20 +384,21 @@ function enom_pro_output ($vars)
         </div>
     <?php endif;?>
     <?php if (isset($_GET['dismissed'])) :?>
-    <div class="alert alert-success slideup">
-        <p>Dismissed</p>
-    </div>
+        <div class="alert alert-success slideup">
+            <p>Dismissed</p>
+        </div>
     <?php endif;?>
     <?php if (isset($_GET['checked'])):?>
         <div class="alert <?php echo enom_pro_license::is_update_available() ? 'alert-warning' : 'alert-success';?>">
             <h4>Checked for updates.</h4>
             <?php if (! enom_pro_license::is_update_available()):?>
                 You are running the latest release.
+            <?php else:?>
+                Upgrade available.
             <?php endif;?>
         </div>
     <?php endif;?>
     <?php if (enom_pro_license::is_update_available()) :?>
-    <script src="../modules/addons/enom_pro/jquery.admin.js"></script>
         <div class="alert alert-success">
             <h2>Upgrade available!</h2>
             <span class="badge" >Update using our 1-click upgrade system.</span>

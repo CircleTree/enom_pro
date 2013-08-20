@@ -459,7 +459,7 @@ function enom_pro_admin_css ()
     //	Only load on applicable pages
     $pages = array('index.php', 'addonmodules.php');
     if (in_array(basename($_SERVER['SCRIPT_NAME']), $pages) || ( isset($_GET['module']) && 'enom_pro' == $_GET['module']) ) {
-        return '<link rel="stylesheet" href="../modules/addons/enom_pro/admin.css" />';
+        return '<link rel="stylesheet" href="../modules/addons/enom_pro/css/admin.min.css" />';
     } else {
         return '';
     }
