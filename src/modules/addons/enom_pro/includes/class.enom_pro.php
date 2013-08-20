@@ -1261,6 +1261,13 @@ class enom_pro
     public function getDomainsTab ($tab, $limit = 25, $start = 1)
     {
         $this->setParams(array('Tab' => $tab));
+        if ($tab == 'ExpiringNames') {
+            $this->setParams(array(
+                    'DaysToExpired' => 30,
+                    'OrderBy' => 'ExpirationDate'
+            ));
+            
+        }
         $domains = $this->getDomains($limit, $start);
         foreach ($domains as $key => $domain) {
             $domain_name = $domain['sld'] . '.' . $domain['tld'];
