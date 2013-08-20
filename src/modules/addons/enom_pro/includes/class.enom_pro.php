@@ -341,9 +341,10 @@ class enom_pro
             );
         }
         $this->setParams(array('command' => $command));
+        
 
         //Save the cURL response
-        $this->response = $this->curl_get($this->URL, $this->parameters);
+        $this->response = $this->curl_get($this->URL, $this->getParams());
         //Parse the XML
         $this->load_xml($this->response);
         // @codeCoverageIgnoreStart
@@ -1433,6 +1434,10 @@ class enom_pro
 	    }
 	    
         $upgrade_dir = ENOM_PRO_TEMP . 'upgrade/';
+        $temp_dir_created = mkdir($upgrade_dir);
+        if (true === $temp_dir_created) {
+            throw new Exception('Unable to open temporary folder for writing: '. $upgrade_dir);
+        }
         $zip->extractTo($upgrade_dir);
         $zip->close();
         //Delete ZipFile
@@ -1466,8 +1471,10 @@ class enom_pro
         $objects = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($upgrade_files_dir, FilesystemIterator::SKIP_DOTS)
         );
+        
         //Subfolders to extract into, used for security
-        $core_dirs = array('images', 'includes');
+        $core_dirs = array('images', 'includes', 'js', 'css');
+        $core_files = array();
         foreach($objects as $object){
             if (is_readable($object->getPathname())) {
                 //Get current file directory
@@ -1485,17 +1492,25 @@ class enom_pro
                 //Build new file string
                 $dest = ENOM_PRO_ROOT . $dirname . $object->getBasename();
                 //Copy it
-                copy($object->getPathname(), $dest);
+                $result = copy($object->getPathname(), $dest);
+                if (FALSE === $result) {
+                    $core_files[] = $dest;
+                }
                 //delete old file
                 unlink($object->getPathname()) ;           
             }
         }
-        //Check if files need to be manually upgraded
-        if (empty($manual_template_files)) {
-            //Cleanup temp dir
-            $this->rmdir($upgrade_dir);
+        //Cleanup temp dir
+        $this->rmdir($upgrade_dir);
+        rmdir($upgrade_dir);
+        $return = array();
+        if (! empty($manual_template_files)) {
+            $return['templates'] = $manual_template_files;
         }
-        return $manual_template_files;
+        if (! empty($core_files)) {
+            $return['core_files'] = $core_files;
+        }
+        return $return;
 	}
 	public static function send_SSL_reminder_email($client_id, $cert_data)
 	{

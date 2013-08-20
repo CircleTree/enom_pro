@@ -184,8 +184,8 @@ class enom_pro_controller {
          
         if (enom_pro::is_debug_enabled()) {
             $data['debug'] = array(
-                    '$accept_response' => print_r($accept_response, true),
-                    '$whmcs_order'  => print_r($whmcs_order, true),
+                    '$accept_response' =>$accept_response,
+                    '$whmcs_order'  => $whmcs_order,
             );
         }
         $this->send_json($data);

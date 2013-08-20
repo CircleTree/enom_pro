@@ -12,6 +12,7 @@
 	<property name="encoded_prep" value="${build_dir}/encoded_prep"/>
 	<property name="ftp.password" value="vRki3ozG08Tt"/>
 	<property name="enc.secret" value="***REMOVED***"/><!-- Secret -->
+	<property name="yui.jarfile" value="~/java/yuicompressor-2.4.7.jar" />
 	<taskdef name="sync" classname="phing.tasks.ext.FileSyncTask" />
     <!-- FILESETS -->
     <fileset dir="${project.basedir}/${src_dir}" id="open_files">
@@ -108,12 +109,16 @@
     <target name="replace">
     	<delete dir="${build_temp_dir}"/>
     	<mkdir dir="build/encoded_prep/"/>
+    	<echo>Minifying admin.css</echo>
     	<sync sourcedir="src/"
     				destinationdir="build/encoded_prep/"
     				itemizechanges="true"
     				verbose="true"
     				checksum="true" />
     	<!-- delete files that need to be replaced -->
+    	<echo>minify files</echo>
+		<exec command="java -jar ${yui.jarfile} -o ${encoded_prep}/modules/addons/enom_pro/css/admin.min.css ${src_dir}modules/addons/enom_pro/css/admin.css" checkreturn="true" />
+		<exec command="java -jar ${yui.jarfile} -o ${encoded_prep}/modules/addons/enom_pro/js/jquery.admin.min.js ${src_dir}modules/addons/enom_pro/js/jquery.admin.js" checkreturn="true" />
     	<delete file="${encoded_prep}/modules/addons/enom_pro/includes/class.enom_pro_license.php"/>
     	<delete file="${encoded_prep}/modules/addons/enom_pro/enom_pro.php"/>
     	<delete file="${encoded_prep}/modules/addons/enom_pro/hooks.php"/>

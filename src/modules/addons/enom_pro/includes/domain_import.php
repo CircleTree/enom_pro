@@ -9,7 +9,6 @@
         <h3>Cache Cleared</h3>
     </div>
 <?php endif; ?>
-    <script src="../modules/addons/enom_pro/jquery.admin.js"></script>
     <div class="enom_pro_loader" id="top_loader"></div>
      <table id="meta">
         <tr>
@@ -60,7 +59,7 @@
     </table>
     <form method="POST" id="import_table_form">
         <input type="hidden" name="action" value="render_import_table" />
-        <input type="hidden" name="start" value="1" />
+        <input type="hidden" name="start" value="<?php echo isset($_GET['start']) ? (int) $_GET['start'] : 1;?>" />
         <input type="hidden" name="s" value="" />
         <input type="hidden" name="per_page" value="<?php echo enom_pro::get_addon_setting('import_per_page')?>" />
         <input type="hidden" name="show_only" value="<?php if (in_array($_GET['show_only'], array('imported', 'unimported'))): echo $_GET['show_only']; endif;?>" />
@@ -156,6 +155,9 @@
                         </td>
                     </tr>
                 </table>
+            </div>
+            <div class="hidden btn btn-block btn-success" id="import_next_button">
+                Import Next &rarr;
             </div>
         </form>
     </div>
