@@ -51,7 +51,7 @@
             </td>
             <td>
                 <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>" id="search_form">
-                    <input type="text" name="s" placeholder="Search"/>
+                    <input type="text" name="s" placeholder="Search" value="<?php echo isset($_GET['s']) ? htmlentities($_GET['s']) : '';?>"/>
                     <input type="submit" value="Go" />
                 </form>
             </td>
@@ -60,7 +60,7 @@
     <form method="POST" id="import_table_form">
         <input type="hidden" name="action" value="render_import_table" />
         <input type="hidden" name="start" value="<?php echo isset($_GET['start']) ? (int) $_GET['start'] : 1;?>" />
-        <input type="hidden" name="s" value="" />
+        <input type="hidden" name="s" value="<?php echo isset($_GET['s']) ? htmlentities($_GET['s']) : '';?>" />
         <input type="hidden" name="per_page" value="<?php echo enom_pro::get_addon_setting('import_per_page')?>" />
         <input type="hidden" name="show_only" value="<?php if (in_array($_GET['show_only'], array('imported', 'unimported'))): echo $_GET['show_only']; endif;?>" />
         <?php if (isset($_GET['domain'])) :?>
@@ -95,7 +95,9 @@
                     id="client_select">
                     <?php
                     foreach ($clients_array as $client) {
-                                echo '<option data-email="'.$client['email'].'" value="'.$client['id'].'">'.$client['firstname'] . ' ' . $client['lastname'] . (! empty($client['companyname']) ? ' ('.$client['companyname'].')' : '') . '</option>';
+                        $label = htmlentities(utf8_decode($client['firstname'])) . ' ' . htmlentities(utf8_decode($client['lastname'])) . 
+                                (! empty($client['companyname']) ? ' ('. htmlentities($client['companyname']) .')' : '');
+                                echo '<option data-email="'.$client['email'].'" value="'.$client['id'].'">'. $label . '</option>';
                             }
                             ?>
                 </select>

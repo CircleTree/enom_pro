@@ -250,9 +250,17 @@ function enom_pro_admin_expiring_domains ($vars)
                             }
                             var $loader = $(this).closest(".enom_stat_button").find(".enom_pro_loader");
                             $loader.show();
-                            $.get($(this).attr("href"), function  (data) {
-                                $("#enom_pro_"+tab).html(data);
-                                $loader.hide(); 
+                            $.ajax({
+                                url: $(this).attr("href"),
+                                success: function  (data){
+                                    $("#enom_pro_"+tab).html(data);
+                                },
+                                complete: function  (){
+                                    $loader.hide();
+                                },
+                                error: function  (xhr){
+                                    console.log(xhr.responseText);
+                                }
                             });
                             return false;
                         });
