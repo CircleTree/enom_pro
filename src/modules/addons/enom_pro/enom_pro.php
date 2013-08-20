@@ -78,8 +78,8 @@ function enom_pro_config ()
                     'save' => $save_button,
                     'license'=>array('FriendlyName'=>"License Key","Type"=>"text","Size"=>"30"),
                     'api_request_limit'=> array('FriendlyName'=>"API Limit","Type"=>"dropdown",
-                            "Options"=>"5,10,25,50,75,100,200,500,1000","Default"=>"5",
-                            "Description"=>"Number of remote API requests. IE - 5 * 100 = 500 domains"),
+                            "Options"=>"5,10,25,50,75,100,200,500,1000","Default"=>"10",
+                            "Description"=>"Limit Number of remote API requests. IE - 5 * 100 = 500 domains"),
                     'debug'=>array('FriendlyName'=>"Debug Mode","Type"=>"yesno",
                             "Description"=>"Enable debug messages on frontend. Used for troubleshooting the namespinner,
                              for example."),
@@ -399,14 +399,23 @@ function enom_pro_output ($vars)
         </div>
     <?php endif;?>
     <?php if (enom_pro_license::is_update_available()) :?>
+        <?php $status = $enom->license->get_supportandUpdates();?>
+        <?php if ($status['status'] != 'active') :?>
+            <div class="alert alert-error">
+                <p>Update Subscription Expired. Expired on <?php echo $status['duedate'];?></p>
+                <h1><a href="https://mycircletree.com/client-area/cart.php?gid=addons" class="btn btn-inverse" >Renew Now</a> to enjoy these great new features:</h1>
+                <div id="enom_pro_changelog"></div>
+            </div>
+        <?php else:?>
         <div class="alert alert-success">
             <h2>Upgrade available!</h2>
             <span class="badge" >Update using our 1-click upgrade system.</span>
                 <a id="doUpgrade" class="btn btn-large btn-success" href="<?php echo enom_pro_license::DO_UPGRADE_URL;?>">
                 Upgrade to Version <?php echo enom_pro_license::get_latest_version();?> now!
-            </a> -or- <a href="<?php echo enom_pro::get_upgrade_zip_url()?>">Download Now</a>
+            </a> -or- <a href="<?php echo $enom->get_upgrade_zip_url()?>">Download Now</a>
             <div id="enom_pro_changelog"></div>
         </div>
+        <?php endif;?>
     <?php endif;?>
     <div id="enom_pro_admin_widgets" class="clearfix" >
         <div class="floatleft" style="width:50%;">

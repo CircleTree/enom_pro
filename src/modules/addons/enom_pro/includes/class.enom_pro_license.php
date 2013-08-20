@@ -16,7 +16,7 @@ class enom_pro_license
         $return = "";
         if ($license == "") {
             $return .= '<h1><span class="textred">No License entered:</span>
-                    <a href="configaddonmods.php">Enter a License on the addon page</a></h1>';
+                    <a href="configaddonmods.php#enom_pro">Enter a License on the addon page</a></h1>';
             $return .= '<h2><a href="https://mycircletree.com/client-area/order/?gid=5" target="_blank">
                     Visit myCircleTree.com to get a license &amp; support.</a></h2>';
             throw new LicenseExeption($return);
@@ -41,6 +41,28 @@ class enom_pro_license
             //No license err
             $this->error = FALSE;
         }
+    }
+    public function  get_id()
+    {
+        return $this->license['serviceid'];
+    }
+    /**
+     * 
+     * @return array 'status', duedate
+     */
+    public function get_supportandUpdates ()
+    {
+        if (! isset($this->license['addons'])) {
+            return false;
+        }
+        $addons = $this->license['addons'];
+        $addons = str_ireplace('&amp;', '&', $addons);
+        $addons_array = explode(';', $addons);
+        return array(
+                'status' => strtolower(substr($addons_array[2], 7)),
+                'duedate'=> substr($addons_array[1], 12)
+        );
+        
     }
     /**
      * utility to check local license, latest version, etc.
@@ -206,7 +228,7 @@ class enom_pro_license
                             $localkeyresults["status"] = "Invalid";
                             $results = array();
                         }
-                        if ($results["validdirectory"]!=dirname(__FILE__)) {
+                        if ($results["validdirectory"]!= dirname(dirname(__FILE__))) {
                             $localkeyvalid = false;
                             $localkeyresults["status"] = "Invalid";
                             $results = array();

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="ENOM PRO!" default="local">
 	<property name="name" value="eNom PRO"/>
-	<property name="version" value="2.1.0"/>
+	<property name="version" value="2.1.1"/>
 	<property name="build_temp_dir" value="build"/>
 	<property name="build_dir" value="${build_temp_dir}"/>
 	<property name="src_dir" value="src/"/>
@@ -112,6 +112,7 @@
     	<echo>Minifying admin.css</echo>
     	<sync sourcedir="src/"
     				destinationdir="build/encoded_prep/"
+    				
     				itemizechanges="true"
     				verbose="true"
     				checksum="true" />
@@ -132,13 +133,15 @@
         	</filterchain>
         	<fileset refid="open_files"/>
         </copy>
+   <!--     	obfuscate="linenos" -->
         <ioncubeencoder
-        	phpversion="53"
-        	obfuscate="linenos"
+        	phpversion="5"
         	optimize="max"
         	ioncubepath="/Users/robertgregor/ioncube"
         	targetoption="replace"
         	fromdir="${encoded_prep}"
+        	copy="index.php"
+        	ignore="*.DS_Store *.cache"
         	todir="${encoded}">
     			<comment>*************************************************************************</comment>
 				<comment>* enom PRO Addon for WHMCS                                              *</comment>
