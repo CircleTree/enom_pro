@@ -86,7 +86,9 @@
                     type="hidden" name="domain" value="" id="domain_field2" /><br />
                 <input type="text" name="domain_display" value="" id="domain_field"
                     disabled="disabled" readonly="readonly" size="60" /> <br />
-                <?php $clients = enom_pro::whmcs_api('getclients', array('limitnum' => enom_pro::get_addon_setting('client_limit')));
+                <?php $clients = enom_pro::whmcs_api('getclients', array('limitnum' =>
+                        ('Unlimited' == enom_pro::get_addon_setting('client_limit') ? 9999999999999 : enom_pro::get_addon_setting('client_limit')) 
+                ));
                 if ('success' == $clients['result']):
                     $clients_array = $clients['clients']['client']; ?>
                 <label for="client_select">Client</label> <select name="clientid"
