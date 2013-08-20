@@ -32,6 +32,7 @@ class enom_pro_controller {
     }
     protected function do_upgrade_check ()
     {
+        enom_pro_license::clearLicense();
         enom_pro_license::delete_latest_version();
         header('Location: ' . enom_pro::MODULE_LINK .  '&checked');
     }
