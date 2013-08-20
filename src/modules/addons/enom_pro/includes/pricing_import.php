@@ -197,6 +197,7 @@ if ($this->is_pricing_cached()) :
             Cached from <?php echo $this->get_price_cache_date();?>
             <a class="btn btn-mini" href="<?php echo enom_pro::MODULE_LINK; ?>&action=clear_price_cache">Clear Cache</a>
         </div>
+        <a href="<?php echo enom_pro::HELP_URL;?>" target="_blank" class="btn btn-block btn-info"><?php echo ENOM_PRO; ?> | Pricing Import Feedback? Suggestions?</a>
     </div><?php //End <div id="enom_pro_pricing_import_page">?>
 <?php else: ?>
     <div class="alert" id="loading_pricing">
