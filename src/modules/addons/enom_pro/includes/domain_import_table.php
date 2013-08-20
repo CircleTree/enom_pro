@@ -48,7 +48,9 @@ if ( empty($domains_array) ) { ?>
     $domain_name = $domain['sld'] . '.' .  $domain ['tld'];
     ?>
     <tr>
-        <td><?php echo $domain_name;?></td>
+        <td>
+            <a href="http://<?php echo $domain_name;?>" target="_blank" ><?php echo $domain_name;?></a>
+        </td>
         <td>
             <?php if (! isset($domain['client'])) : ?>
                 <div class="alert alert-error">
