@@ -1451,7 +1451,7 @@ class enom_pro
 	    $zip = new ZipArchive();
 	    $zip_response = $zip->open($filename);
 	    if (true !== $zip_response) {
-	        throw new RemoteException('Error extracting ZIP file.', $zip_response);
+	        throw new RemoteException('Error extracting ZIP file: '.$zip_response);
 	    }
 	    
         $upgrade_dir = ENOM_PRO_TEMP . 'upgrade/';
