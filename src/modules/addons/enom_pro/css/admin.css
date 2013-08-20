@@ -638,7 +638,9 @@ PRE.code.inline {
     margin: 0;
     padding: 5px;
 }
-
+#client_select {
+    width: 100%;
+}
 .inline-wrap {
     padding: 10px 0;
 }
@@ -1042,3 +1044,9 @@ a[target='_blank'] {
     overflow: auto;
 }
 
+.domain-widget-response .badge {
+    margin: 0 auto;
+    width: 30px;
+    text-align: center;
+    display: block;
+}

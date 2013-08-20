@@ -11,18 +11,17 @@ if ($first_page):
 <table class="table-hover domain-widget-response">
     <thead>
         <tr>
-            <th>domain</th>
-            <th>expire<?php echo $tab == 'IOwn' ? 's' : 'd';?></th>
-            <th>enom_dns</th>
-            <th>privacy</th>
-            <th>autorenew</th>
-            <th>user</th>
-            <th>domain</th>
+            <th>Domain</th>
+            <th>Expire<?php echo (! isset($_GET['tab']) || $tab == 'expiring') ? 's' : 'd';?></th>
+            <th>Enom DNS</th>
+            <th>Privacy</th>
+            <th>Auto-Renew</th>
+            <th colspan="2">Actions</th>
         </tr>
     </thead>
     <tbody>
 <?php endif;?>
-        <?php foreach ($domains as $key => $domain): ?>
+        <?php foreach ($domains as $key => $domain):?>
             <tr>
                 <td><?php echo $domain['sld'] . '.' . $domain['tld'];?></td>
                 <td>
@@ -32,17 +31,23 @@ if ($first_page):
                 echo $diff->format('%R%a days');
                 ?>
                 </td>
-                <td><span class="badge <?php echo ($domain['enom_dns'] == 1) ? 'badge-success' : 'badge-important' ?>">
+                <td><span 
+                    title="<?php echo ($domain['enom_dns'] == 1) ? 'Enom DNS' : 'Self Hosted DNS'; ?>"
+                    class="badge ep_tt <?php echo ($domain['enom_dns'] == 1) ? 'badge-success' : 'badge-important' ?>">
                         <?php echo ($domain['enom_dns'] == 1) ? 'On' : 'Off'; ?>
                     </span>
                 </td>
                 <td>
-                    <span class="badge <?php echo ($domain['privacy'] == 1) ? 'badge-success' : 'badge-important' ?>">
+                    <span 
+                    title="<?php echo ($domain['privacy'] == 1) ? 'Privacy Enabled' : 'Privacy Disabled'; ?>"
+                        class="badge ep_tt <?php echo ($domain['privacy'] == 1) ? 'badge-success' : 'badge-important' ?>">
                         <?php echo ($domain['privacy'] == 1) ? 'On' : 'Off'; ?>
                     </span>
                 </td>
                 <td>
-                    <span class="badge <?php echo ($domain['autorenew'] == 1) ? 'badge-success' : 'badge-important' ?>">
+                    <span 
+                        title="<?php echo ($domain['autorenew'] == 1) ? 'Auto-Renew Enabled' : 'Auto-Renew Disabled'; ?>"
+                        class="badge ep_tt <?php echo ($domain['autorenew'] == 1) ? 'badge-success' : 'badge-important' ?>">
                         <?php echo ($domain['autorenew'] == 1) ? 'On' : 'Off'; ?>
                     </span>
                 </td>
@@ -55,7 +60,7 @@ if ($first_page):
                     <?php if (isset($domain['domainid'])) :?>
                         <a class="btn" href="clientsdomains.php?id=<?php echo $domain['domainid'];?>">Domain</a>
                     <?php else:?>
-                        <a class="btn" href="addonmodules.php?module=enom_pro&view=import&domain=<?php echo urlencode($domain['sld'].'.'.$domain['tld']);?>">Import</a>
+                        <a class="btn" href="addonmodules.php?module=enom_pro&view=domain_import&s=<?php echo urlencode($domain['sld'].'.'.$domain['tld']);?>">Import</a>
                     <?php endif;?>
                 </td>
             </tr>
@@ -64,7 +69,7 @@ if ($first_page):
                 <td colspan="7">
                     <a class="btn btn-block btn-mini load_more"
                     href="<?php echo enom_pro::MODULE_LINK.'&action=get_domains' . ( isset($_GET['tab']) ? '&tab='.$_GET['tab'] : '')
-                    . '&start='.(count($domains) + 1); ?>">Load More</a>
+                    . '&start='.(count($domains) + $start); ?>">Load More</a>
                     <div class="enom_pro_loader small hidden"></div>
                 </td>
             </tr>
@@ -82,6 +87,7 @@ jQuery(function($) {
         $.get($(this).attr('href'), function  (data) {
             $(".domain-widget-response tbody").append(data);
             $button.add($row).hide(); 
+            $(".ep_tt").tooltip();
         });
         return false;
     });

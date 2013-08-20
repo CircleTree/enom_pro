@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="ENOM PRO!" default="local">
 	<property name="name" value="eNom PRO"/>
-	<property name="version" value="2.1.4"/>
+	<property name="version" value="2.1.11"/>
 	<property name="build_temp_dir" value="build"/>
 	<property name="build_dir" value="${build_temp_dir}"/>
 	<property name="src_dir" value="src/"/>

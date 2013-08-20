@@ -12,6 +12,7 @@ if ( empty($domains_array) ) { ?>
 }?>
 <?php if (isset($_REQUEST['s']) && ! empty($_REQUEST['s'])):?>
     <?php
+    //@TODO search on next page
     $results = array();
     $s = trim(strtolower($_REQUEST['s'])); 
     foreach ($domains_array as $domain) {
@@ -32,10 +33,9 @@ if ( empty($domains_array) ) { ?>
         $domains_array = $results; ?>
         Search: <?php echo htmlentities($_REQUEST['s']);?>
         <?php 
-    } else {
-        echo '<div class="alert alert-error">No Results</div>';
-    }
-    ?>
+    } else { ?>
+        <div class="alert alert-error">No Results for Current Page.</div>
+    <?php } ?>
     <a class="btn btn-block btn-inverse clear_search" href="#">Clear Search</a>
 <?php endif;?>
 

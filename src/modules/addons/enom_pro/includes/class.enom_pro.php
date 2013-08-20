@@ -945,7 +945,17 @@ class enom_pro
         
         $this->runTransaction('GetDomains');
         $return = array();
-        foreach ($this->xml->GetDomains->{'domain-list'}->domain as $domain) {
+        $list_node =  "domain-list";  
+        $sub_node = 'domain';
+        if ($this->getParam('Tab') && $this->getParam('Tab') != 'IOwn') {
+            $tab = $this->getParam('Tab');
+            $list_node = 'Get'. $tab;
+            if ($tab == 'RGP') {
+                $list_node .= 'Domains';
+            }
+            $sub_node = 'item';            
+        }
+        foreach ($this->xml->GetDomains->{$list_node}->{$sub_node} as $domain) {
             $return[] = array(
                     'id'			=>		(int) $domain->DomainNameID,
                     'sld'			=>		(string) $domain->sld,
@@ -961,6 +971,7 @@ class enom_pro
         } else {
             $this->last_result = $return;
         }
+        
         
         $meta = $this->getListMeta();
 
@@ -1125,13 +1136,13 @@ class enom_pro
     }
     /**
      * Gets domains with assocaited whmcs clients
-     * @param number|true $limit number or true to return all 
+     * @param number $limit number 
      * @param number $start default 1
      * @param mixed $show_only imported, unimported, defaults to false to not filter results 
      * @return array $domains with client key with client details
      *  array( domain...details, 'client' => array());
      */
-    public function getDomainsWithClients($limit = true, $start = 1, $show_only = false)
+    public function getDomainsWithClients($limit = 30, $start = 1, $show_only = false)
     {
         $domains = $this->getDomains(true, $start);
         $show_only_unimported = $show_only == 'unimported' ? true : false;
@@ -1461,9 +1472,11 @@ class enom_pro
         $upgrade_dir = ENOM_PRO_TEMP . 'upgrade/';
         if (! is_writeable($upgrade_dir)) {
             $temp_dir_created = mkdir($upgrade_dir);
-            if (true === $temp_dir_created) {
-                throw new Exception('Unable to open temporary upgrade folder for writing: '. $upgrade_dir);
+            if (false === $temp_dir_created) {
+                throw new Exception('Unable to open temporary upgrade folder for writing: '. $upgrade_dir . ".
+                        Try chmod -R 777 $upgrade_dir and pressing refresh to continue");
             }
+            chmod($upgrade_dir, 0777);
         }
         $zip->extractTo($upgrade_dir);
         $zip->close();
