@@ -120,7 +120,6 @@ class enom_pro_license
      */
     public static function is_update_available()
     {
-        return true;
         //Compare the response from the server to the locally defined version
         if (version_compare(self::get_latest_version(), ENOM_PRO_VERSION, 'gt')) {
             //The remote is newer than local, return the string upgrade notice
