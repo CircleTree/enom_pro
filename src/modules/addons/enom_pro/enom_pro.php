@@ -212,7 +212,7 @@ function enom_pro_sidebar ($vars)
 {
     ob_start(); ?>
 <span class="header"> <img src="images/icons/domainresolver.png"
-    class="absmiddle" width=16 height=16 />@NAME@
+    class="absmiddle" width=16 height=16 /><?php echo ENOM_PRO?>
 </span>
 <ul class="menu">
     <li>
@@ -235,7 +235,8 @@ function enom_pro_sidebar ($vars)
     <li>
         <?php $id = enom_pro::is_ssl_email_installed(); ?>
         <?php if ($id > 0) :?>
-            <a class="btn btn-block ep_lightbox" 
+            <a class="btn btn-block ep_lightbox"
+            id="edit_ssl_sidebar"
             title="Edit SSL Reminder Email"
             data-width="90%" 
             data-no-refresh="true"
@@ -245,7 +246,7 @@ function enom_pro_sidebar ($vars)
         <?php endif;?>
     </li>
 </ul>
-<span class="header">@NAME@ Meta</span>
+<span class="header"><?php echo ENOM_PRO; ?> Meta</span>
 <ul class="menu">
     <li>
         Version: <?php echo ENOM_PRO_VERSION; ?><br/>
@@ -308,6 +309,7 @@ function enom_pro_output ($vars)
         return;
     }
     try {
+        
         $enom = new enom_pro();
         ?>
         <script src="../modules/addons/enom_pro/js/jquery.admin.min.js"></script>
@@ -320,10 +322,10 @@ function enom_pro_output ($vars)
             </div>
         <?php endif;?>
         <?php if (! enom_pro::is_ssl_email_installed()) :?>
-            <div class="alert">
+            <div class="alert alert-danger">
                 <p>
                     SSL Email template is not installed.
-                    <a href="<?php echo enom_pro::MODULE_LINK?>&action=install_ssl_template">Install Now</a>
+                    <a class="btn btn-danger" href="<?php echo enom_pro::MODULE_LINK?>&action=install_ssl_template">Install Now</a>
                 </p>
             </div>
         <?php endif;?>
@@ -331,7 +333,7 @@ function enom_pro_output ($vars)
             <?php if ((int) $_GET['ssl_email'] > 0) :?>
                 <div class="alert alert-success">
                     <p>Installed.
-                            <a class="btn" 
+                            <a class="btn" onclick="javascript:$('#edit_ssl_sidebar').trigger('click');return false;"
                                 href="configemailtemplates.php?action=edit&id=<?php echo (int) $_GET['ssl_email']?>">
                                 Edit Now
                             </a>
@@ -405,8 +407,14 @@ function enom_pro_output ($vars)
         <?php $status = $enom->license->get_supportandUpdates();?>
         <?php if ($status['status'] != 'active') :?>
             <div class="alert alert-error">
+                <div class="floatright">
+                    <a class="btn btn-warning btn-large" href="<?php echo enom_pro::MODULE_LINK?>&action=do_upgrade_check">
+                        Already renewed? Click here to refresh.
+                    </a>
+                </div>
                 <p>Update Subscription Expired. Expired on <?php echo $status['duedate'];?></p>
-                <h1><a href="https://mycircletree.com/client-area/cart.php?gid=addons" class="btn btn-inverse" >Renew Now</a> to enjoy these great new features:</h1>
+                <h1><a target="_blank" href="https://mycircletree.com/client-area/cart.php?gid=addons" class="btn btn-inverse" >Renew Now</a> 
+                to enjoy these great new features:</h1>
                 <div id="enom_pro_changelog"></div>
             </div>
         <?php else:?>

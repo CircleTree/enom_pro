@@ -49,6 +49,8 @@ class enom_pro
     const RETRY_LIMIT = 2;
     const INSTALL_URL = 
         'https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7&subject=enom%20Install%20Service';
+    const HELP_URL = 
+        'https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7';
     const MODULE_LINK = 'addonmodules.php?module=enom_pro';
     const CHANGELOG_URI = 
         'http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43';
@@ -1355,7 +1357,7 @@ class enom_pro
 	 * @throws Exception on mysql db error  
 	 * @return resource mysql_result
 	 */
-	private static function query ($query) {
+	public static function query ($query) {
 		$result = mysql_query($query);
 		if (mysql_error()) {
 		    throw new Exception(mysql_error() . '. Query : ' . $query);
@@ -1426,6 +1428,8 @@ class enom_pro
 	                break;
 	            } elseif (strstr($head, '302')) {
 	                //Expired
+	                //Clear local key & redirect to renewal message
+	                enom_pro_license::clearLicense();
 	                header("Location: ".enom_pro::MODULE_LINK);
 	                die();
 	            }
