@@ -39,16 +39,7 @@ class enom_pro
      */
     private static $settings = array();
     private static $debug;
-    public $error = true;
-    public $latestvesion;
-    public $errorMessage;
-    public $name;
-    public $company;
-    public $status;
-    public $domain;
     public $license;
-    public $message;
-    public $productname;
     private $retry_count = 0;
     /**
      * Is the current request executing via PHP CLI?
@@ -102,7 +93,7 @@ class enom_pro
         $this->get_login_credientials();
         $this->cache_file_all_domains = ENOM_PRO_TEMP . 'all_domains.cache';
         $this->cache_file_all_prices = ENOM_PRO_TEMP . 'all_prices.cache';
-        $this->remote_request_limit = $this->get_addon_setting('api_request_limit');
+        $this->remote_request_limit = self::get_addon_setting('api_request_limit');
         if (php_sapi_name() == 'cli') {
             self::$cli = true;
         } else {
@@ -321,7 +312,6 @@ class enom_pro
      * sets $this->xml to a simplexml object
      * @param string $command the API command to run
      * $this->error (bool)
-     * $this->errorMessage (string) parsed HTML error message returned from API
      * @throws InvalidArgumentException
      * @throws EnomException
      * @throws RemoteException
@@ -1307,7 +1297,7 @@ class enom_pro
     public static function get_addon_setting ($key)
     {
         //Check to see if this value is already cached
-        if (! empty( self::$settings )) {
+        if (! empty( self::$settings ) && isset(self::$settings[$key])) {
              return self::$settings[$key];
          }
         //Fetch from db
@@ -1317,8 +1307,12 @@ class enom_pro
             //Set the value in the cache
             self::$settings[$setting['setting']] = $setting['value'];
         }
-
-        return self::$settings[ $key ];
+        $val = isset(self::$settings[ $key ]) ? self::$settings[ $key ] : false;
+        if (empty($val)) {
+            $settings = enom_pro_config();
+            $val = isset($settings['fields'][$key]['Default']) ? $settings['fields'][$key]['Default'] : false;
+        }    
+        return $val;
     }
     public static function set_addon_setting ($key, $value)
     {
@@ -1385,14 +1379,16 @@ class enom_pro
 	        trigger_error( sprintf( __('%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.'), $msg, $since ) );
 	    }
 	}
-	public static function get_upgrade_zip_url ()
+	public function get_upgrade_zip_url ()
 	{
 	    if (defined('DEV')) {
             return 'http://ep.com/enom_pro.zip';	        
 	    } else {
-    	    return 'http://mycircletree.com/client-area/get_enom_pro.php?key=' . self::get_addon_setting('license');
+    	    return 'http://mycircletree.com/client-area/get_enom_pro.php?key=' . self::get_addon_setting('license').
+    	    '&id='.$this->license->get_id();
 	    }
 	}
+	
 	/**
 	 * Recursively remove a directory
 	 * @param string $path full path of dir to remove
@@ -1418,13 +1414,38 @@ class enom_pro
             );
 	    }
 	    //Get ZIP contents
-	    $zipfile = self::curl_get(self::get_upgrade_zip_url());
+	    $curl_response = self::curl_get(self::get_upgrade_zip_url(), array(), array(CURLOPT_HEADER => true));
+	    list($header, $body) = explode("\r\n\r\n", $curl_response, 2);
+	    $headers = explode(PHP_EOL, $header);
+	    $zipfile = false;
+	    foreach ($headers as $head) {
+	        if (strstr($head, 'HTTP/1.1')) {
+	            if (strstr($head, '200')) {
+	                //OK
+	                $zipfile = $body;
+	                break;
+	            } elseif (strstr($head, '302')) {
+	                //Expired
+	                header("Location: ".enom_pro::MODULE_LINK);
+	                die();
+	            }
+	        }
+	    }
+        if (! $zipfile) {
+            echo '<h1>Error Downloading ZIP File</h1>';
+            echo '<h2>Headers:</h2>';
+            foreach ($headers as $head) {
+                echo $head. '<br/>';
+            }
+            die();
+        }
 	    $filename = ENOM_PRO_TEMP . 'upgrade.zip';
 	    //Open handle to write zip contents
 	    $handle = fopen($filename, 'w');
 	    if (false === $handle) {
 	        throw new Exception('Unable to open temporary zip file for writing: '. $filename);
 	    }
+	    
 	    fwrite($handle, $zipfile);
 	    fclose($handle);
 	    $zip = new ZipArchive();
@@ -1434,9 +1455,11 @@ class enom_pro
 	    }
 	    
         $upgrade_dir = ENOM_PRO_TEMP . 'upgrade/';
-        $temp_dir_created = mkdir($upgrade_dir);
-        if (true === $temp_dir_created) {
-            throw new Exception('Unable to open temporary folder for writing: '. $upgrade_dir);
+        if (! is_writeable($upgrade_dir)) {
+            $temp_dir_created = mkdir($upgrade_dir);
+            if (true === $temp_dir_created) {
+                throw new Exception('Unable to open temporary upgrade folder for writing: '. $upgrade_dir);
+            }
         }
         $zip->extractTo($upgrade_dir);
         $zip->close();
@@ -1466,7 +1489,7 @@ class enom_pro
             }
         }
 
-        //Get the subfolder we want
+        //Upgrade Core Files
         $upgrade_files_dir = $upgrade_dir . 'modules/addons/enom_pro/';
         $objects = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($upgrade_files_dir, FilesystemIterator::SKIP_DOTS)
@@ -1474,7 +1497,7 @@ class enom_pro
         
         //Subfolders to extract into, used for security
         $core_dirs = array('images', 'includes', 'js', 'css');
-        $core_files = array();
+        $failed_core_files = array();
         foreach($objects as $object){
             if (is_readable($object->getPathname())) {
                 //Get current file directory
@@ -1494,7 +1517,7 @@ class enom_pro
                 //Copy it
                 $result = copy($object->getPathname(), $dest);
                 if (FALSE === $result) {
-                    $core_files[] = $dest;
+                    $failed_core_files[] = $dest;
                 }
                 //delete old file
                 unlink($object->getPathname()) ;           
@@ -1507,8 +1530,8 @@ class enom_pro
         if (! empty($manual_template_files)) {
             $return['templates'] = $manual_template_files;
         }
-        if (! empty($core_files)) {
-            $return['core_files'] = $core_files;
+        if (! empty($failed_core_files)) {
+            $return['core_files'] = $failed_core_files;
         }
         return $return;
 	}
