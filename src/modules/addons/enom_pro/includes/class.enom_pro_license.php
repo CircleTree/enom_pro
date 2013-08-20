@@ -21,12 +21,15 @@ class enom_pro_license
                     Visit myCircleTree.com to get a license &amp; support.</a></h2>';
             throw new LicenseExeption($return);
         } elseif (!$this->checkLicense()) {
-            $return .='<h1>Uh, oh! There seems to be a problem with your license</h1>';
+            $return .='<h1>There seems to be a problem with your license</h1>';
+            $reissue_href = 'https://mycircletree.com/client-area/clientarea.php?action=products';
+            $reissue_link = '<a href="'.$reissue_href.'" class="btn btn-primary btn-large" target="_blank">Reissue directly from the Client Area</a>';
+            $return .= '<h2>You may:'.$reissue_link.'</h2><pre>'.$license.'</pre>';
             $support_link = "
                 https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7&
             subject=Product%20Support%20for:'.$this->productname.'.%20License:%20'.$license.'";
-            $return .='<h2>Please <a class="btn" href="'.enom_pro::minify($support_link).'">
-                    click here to open a support ticket from the Circle Tree client area</a></h2>';
+            $return .='<h2>or, please <a class="btn" href="'. $support_link .'">
+                    open a support ticket</a></h2>';
             $return .='<h3>Enter a new License from the <a href="configaddonmods.php">addon page</a></h3>';
             $return .='<div class="errorbox"><b>Support Information</b><br/>';
             $return .='License Number: '.$license.'<br/>';
@@ -35,7 +38,7 @@ class enom_pro_license
             }
             $return .='License Status: '.$this->status.'<br/>';
             $return .='</div>';
-            throw new LicenseExeption($return);
+            throw new LicenseExeption(enom_pro::minify($return));
             $this->error = true;
         } else {
             //No license err
@@ -64,13 +67,14 @@ class enom_pro_license
         );
         
     }
+    
     /**
      * utility to check local license, latest version, etc.
      * @return boolean true for license OK
      */
     public function checkLicense ()
     {
-        $query = "SELECT `local` FROM `mod_enom_pro`";
+        $query = "SELECT `local` FROM `mod_enom_pro` WHERE `id`=0";
         $local = mysql_fetch_assoc(mysql_query($query));
         $localKey = $local['local'];
         $results = $this->get_remote_license(enom_pro::get_addon_setting('license'),$localKey);
@@ -105,9 +109,10 @@ class enom_pro_license
             return false;
         }
     }
-    public function  clearLicense()
+    public static function  clearLicense()
     {
-        mysql_query('UPDATE  `mod_enom_pro` SET  `local` =  \'\' WHERE  `mod_enom_pro`.`id` =0;');
+        $query = 'UPDATE  `mod_enom_pro` SET  `local` =  \' \' WHERE  `id` =0;';
+        enom_pro::query($query);
     }
     /**
      * Checks for the latest version of the addon
@@ -241,7 +246,7 @@ class enom_pro_license
             $postfields["licensekey"] = $licensekey;
             $postfields["domain"] = $server_name;
             $postfields["ip"] = $usersip;
-            $postfields["dir"] = dirname(__FILE__);
+            $postfields["dir"] = dirname(dirname(__FILE__));
             if ($check_token) $postfields["check_token"] = $check_token;
             if (function_exists("curl_exec")) {
                 $ch = curl_init();
