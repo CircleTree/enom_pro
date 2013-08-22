@@ -23,9 +23,11 @@ define('ENOM_PRO_ROOT', ROOTDIR . '/modules/addons/enom_pro/');
 define('ENOM_PRO_INCLUDES', ENOM_PRO_ROOT . 'includes/');
 
 /**
- * @var string full path to temp dir, with trailing / 
+ * @var string full path to temp dir, with trailing /
+ * Override here to change the temp file location 
  */
-define('ENOM_PRO_TEMP', ENOM_PRO_ROOT . 'temp/');
+defined('ENOM_PRO_TEMP') or define('ENOM_PRO_TEMP', ENOM_PRO_ROOT . 'temp/');
+
 define('ENOM_PRO', '@NAME@');
 /**
  * Load required core files
@@ -82,10 +84,11 @@ function enom_pro_config ()
                             "Description"=>"Limit Number of remote API requests. IE - 5 * 100 = 500 domains"),
                     'client_limit'=> array('FriendlyName'=>"Client Dropdown Limit","Type"=>"dropdown",
                             "Options"=>"50,250,500,1000,10000,Unlimited","Default"=>"Unlimited",
-                            "Description"=>"Limit Number of remote API requests. IE - 5 * 100 = 500 domains"),
-                    'debug'=>array('FriendlyName'=>"Debug Mode","Type"=>"yesno",
-                            "Description"=>"Enable debug messages on frontend. Used for troubleshooting the namespinner,
-                             for example."),
+                            "Description"=>"Limit size of new order client list"),
+                    'pricing_years'=>array('FriendlyName'=>"Import TLD Pricing Max Years","Type"=>"dropdown",
+                            "Options"=>"1,2,3,4,5,6,7,8,9,10","Default"=>"10",
+                            "Description"=>"Limit the maximum number of years to import TLD pricing for. 
+                                Speeds Up the Import Process if you only offer registrations up to 3 years, for example."),
                     'ssl_days'=>array('FriendlyName'=>"Widget Expiring SSL Days","Type"=>"dropdown",
                             "Options"=>"7,15,30,60,90,180,365,730","Default"=>"30",
                             "Description"=>"Number of days until SSL Certificate Expiration to show in Widget"),
@@ -100,6 +103,9 @@ function enom_pro_config ()
                             "Description"=>"Results Per Page on the Domain Import Page"),
                     'auto_activate' => array('FriendlyName'=>"Automatically Activate Orders on Import","Type"=>"yesno",
                             "Description"=>"Set imported orders to active and eNom registrar", "Default" => "on"),
+                    'debug'=>array('FriendlyName'=>"Debug Mode","Type"=>"yesno",
+                            "Description"=>"Enable debug messages on frontend. Used for troubleshooting the namespinner,
+                             for example."),
                     'spinner_section' => array(
                     	'type' => null,
                         'Description' => '<h1 style="line-height:1.1;margin:0;" >NameSpinner Options '.$button.'</h1>'
