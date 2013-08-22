@@ -21,7 +21,15 @@ class enom_pro_controller {
     }
     protected function do_upgrade ()
     {
-        $manual_files = $this->enom->do_upgrade();
+        try {
+            $manual_files = $this->enom->do_upgrade();
+        } catch (Exception $e) {
+            echo '<h1>Auto-upgrade error</h1>';
+            echo $e->getMessage() . '<br/>';
+            echo '<h2>Please correct any permissions errors, and '.
+                '<a href="'.$_SERVER['REQUEST_URI'].'">try again</a>.</h2>';
+            die;
+        }
         $_SESSION['manual_files'] = $manual_files;
         header('Location: ' . enom_pro::MODULE_LINK .  '&upgraded');
     }
@@ -240,7 +248,7 @@ class enom_pro_controller {
                         $total_minus_1++;
                     }
                 }
-                if ($total_minus_1 == 10 ) {
+                if ($total_minus_1 == enom_pro::get_addon_setting('pricing_years')) {
                     $sql = 'DELETE FROM `tblpricing` WHERE `relid`="'.$relid.'"';
                     mysql_query($sql);
                     $sql = 'DELETE FROM `tbldomainpricing` WHERE `id` = "'.$relid.'"';
