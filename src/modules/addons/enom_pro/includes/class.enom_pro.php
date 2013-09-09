@@ -732,6 +732,7 @@ class enom_pro
                         'status'=> (string) $cert->CertStatus,
                         'expiration_date' => (string) $cert->ExpirationDate,
                         'OrderID' => (int) $cert->OrderID,
+                        'CertID' => (int) $cert->CertID,
                         'desc' => (string) $cert->ProdDesc,
                         );
                 $return[] = $formatted_result;
@@ -921,9 +922,11 @@ class enom_pro
     public function getDomains ($limit = 25, $start = 1)
     {
         $this->limit = $limit;
-        if (is_bool($this->limit) && true == $this->limit && $this->get_domains_cache()) {
+        
+        if (true === $this->limit && $this->get_domains_cache()) {
             return $this->get_domains_cache();
         }
+        
         if (true === $this->limit || $this->limit >= 100) {
             //No limit or gte 100 records 
             $this->remote_limit = 100;
@@ -972,7 +975,6 @@ class enom_pro
             $this->last_result = $return;
         }
         
-        
         $meta = $this->getListMeta();
 
         $this->last_result_count = count($this->last_result);
@@ -1017,6 +1019,9 @@ class enom_pro
             return false;
         } else {
             $handle = fopen($file_path, 'r');
+            if (false == filesize($file_path)) {
+                return false;
+            }
             $data = fread($handle, filesize($file_path));
             fclose($handle);
             $md5 = substr($data, 0, 32);
@@ -1334,6 +1339,11 @@ class enom_pro
         }    
         return $val;
     }
+    public static function is_retail_pricing ()
+    {
+        $pricing = self::get_addon_setting('pricing_retail');
+        return 'on' == $pricing ? true : false;
+    }
     public static function set_addon_setting ($key, $value)
     {
         //Flush cache
@@ -1447,6 +1457,7 @@ class enom_pro
 	            } elseif (strstr($head, '302')) {
 	                //Expired
 	                //Clear local key & redirect to renewal message
+	                //Need to clear local key to make sure the message appears
 	                enom_pro_license::clearLicense();
 	                header("Location: ".enom_pro::MODULE_LINK);
 	                die();
@@ -1461,9 +1472,12 @@ class enom_pro
             }
             die();
         }
+        if (! is_writeable(ENOM_PRO_TEMP)) {
+            throw new Exception('Enom Pro Temp dir is unwriteable ('.ENOM_PRO_TEMP.'.).');
+        }
 	    $filename = ENOM_PRO_TEMP . 'upgrade.zip';
 	    //Open handle to write zip contents
-	    $handle = fopen($filename, 'w');
+	    $handle = @fopen($filename, 'w');
 	    if (false === $handle) {
 	        throw new Exception('Unable to open temporary zip file for writing: '. $filename);
 	    }
@@ -1662,7 +1676,11 @@ class enom_pro
 	    if (! function_exists($function)) {
 	        throw new InvalidArgumentException('Invalid Admin Widget Function: '.$function);
 	    }
-	    $result = call_user_func($function);
+	    if (self::is_widget_enabled_for_this_user($function)) {
+    	    $result = call_user_func($function);
+	    } else {
+	        return;
+	    }
 	    echo '<div class="homewidget">';
     	    echo '<div class="widget-header">';
     	        echo $result['title'];
@@ -1674,5 +1692,12 @@ class enom_pro
 	    echo '<script>';
 	    echo $result['jquerycode'];
 	    echo '</script>';
+	}
+	private static function is_widget_enabled_for_this_user($function) {
+	    $whmcs_string = substr($function, 7);
+	    $role = mysql_fetch_assoc(self::query('SELECT `roleid` FROM `tbladmins` WHERE `id` = '. (int) $_SESSION['adminid']));
+	    $widgets = mysql_fetch_assoc(self::query('SELECT `widgets` FROM `tbladminroles` WHERE `id` = '. $role['roleid']));
+	    $widgets_array = explode(',', $widgets['widgets']);
+	    return in_array($whmcs_string, $widgets_array);
 	}
 }

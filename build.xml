@@ -1,7 +1,10 @@
 <?xml version="1.0"?>
 <project name="ENOM PRO!" default="local">
 	<property name="name" value="eNom PRO"/>
-	<property name="version" value="2.1.11"/>
+	<!-- Remember to pad the License header version # when the number of digits changes
+	Or, just make the next major version # 2.2.00
+	-->
+	<property name="version" value="2.1.22"/>
 	<property name="build_temp_dir" value="build"/>
 	<property name="build_dir" value="${build_temp_dir}"/>
 	<property name="src_dir" value="src/"/>
@@ -145,6 +148,7 @@
         	todir="${encoded}">
     			<comment>*************************************************************************</comment>
 				<comment>* enom PRO Addon for WHMCS                                              *</comment>
+				<comment>* Version ${version}                                                        *</comment>
 				<comment>* Copyright (c) 2001-2013 Orion IP Ventures, LLC. All Rights Reserved   *</comment>
 				<comment>*************************************************************************</comment>
 				<comment>* Licenses Resold and Supported by Circle Tree, LLC                     *</comment>
@@ -225,6 +229,12 @@
 		  			</fileset>
 		  		</ftpdeploy>
     </target>
+    	<target name="verify">
+    		<ssh username="root" host="myc.mycircletree.com" property="md5_enc" command="md5sum /home/mycircle/downloads/enom_pro.zip"/>
+    				<echo>${md5_enc}</echo>
+    				<ssh username="root" host="myc.mycircletree.com" property="md5_open" command="md5sum /home/mycircle/downloads/enom_pro_open.zip"/>
+    				<echo>${md5_open}</echo>
+    	</target>
 	<target name="zip" depends="replace">
     	<echo msg="Creating Zip files from encoded &amp; encoded_prep" />
 		<delete file="enom_pro.zip"/>
