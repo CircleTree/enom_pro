@@ -1,6 +1,6 @@
 <?php 
 $enom = new enom_pro();
-$show_only = isset($_GET['show_only']) ? $_GET['show_only'] : false;
+$show_only = (isset($_GET['show_only'])  && ! empty($_GET['show_only'])) ? $_GET['show_only'] : false;
 $per_page = $enom->get_addon_setting('import_per_page');
 $domains_array = $enom->getDomainsWithClients($enom->get_addon_setting('import_per_page'), (int) $_GET['start'], $show_only);
 

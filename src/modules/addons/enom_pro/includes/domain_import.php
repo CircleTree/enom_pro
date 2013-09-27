@@ -57,6 +57,7 @@
             </td>
         </tr>
     </table>
+    <div id="import_ajax_messages" class="alert alert-error hidden" ></div>
     <form method="POST" id="import_table_form">
         <input type="hidden" name="action" value="render_import_table" />
         <input type="hidden" name="start" value="<?php echo isset($_GET['start']) ? (int) $_GET['start'] : 1;?>" />

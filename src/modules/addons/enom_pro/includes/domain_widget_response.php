@@ -25,8 +25,8 @@ if ($first_page):
             <tr>
                 <td><?php echo $domain['sld'] . '.' . $domain['tld'];?></td>
                 <td>
-                <?php $expires = new DateTime($domain['expiration']);
-                $now = new DateTime('now');
+                <?php $expires = @new DateTime($domain['expiration']);
+                $now = @new DateTime('now');
                 $diff = $now->diff($expires);
                 echo $diff->format('%R%a days');
                 ?>
