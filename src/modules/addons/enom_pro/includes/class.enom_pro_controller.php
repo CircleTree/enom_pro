@@ -44,6 +44,10 @@ class enom_pro_controller {
         enom_pro_license::delete_latest_version();
         header('Location: ' . enom_pro::MODULE_LINK .  '&checked');
     }
+    public static function is_ajax ()
+    {
+        return  isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH']  == 'XMLHttpRequest';
+    }
     protected function resubmit_enom_transfer_order ()
     {
         $response = $this->enom->resubmit_locked((int) $_REQUEST['orderid']);
@@ -120,9 +124,11 @@ class enom_pro_controller {
     }
     protected function get_pricing_data ()
     {
-        $this->enom->getAllDomainsPricing();
+        $retail =  enom_pro::is_retail_pricing();
+        $this->enom->getAllDomainsPricing($retail);
         echo 'success';
     }
+    
     protected function add_enom_pro_domain_order ()
     {
         
