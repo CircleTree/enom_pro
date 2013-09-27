@@ -69,16 +69,16 @@ if ($this->is_pricing_cached()) :
             <span><b>IMPORTANT:</b> Clicking Save will overwrite any specific order type pricing that have been customized
                 (IE: Different prices for register vs. transfer). 
                 <em>If in doubt, please <a href="#" class="clear_all btn btn-mini" >Clear All Pricing</a> before saving.</em> 
-            </span>
+            </span><br/>
+        </div>
+        <div class="alert alert-info">
+            <span>If you change price mode from retail/wholesale - please make sure you <a class="btn btn-mini" href="<?php echo enom_pro::MODULE_LINK; ?>&action=clear_price_cache">clear the pricing cache</a></span>
         </div>
         <?php //pager($this);?>
         <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>?module=enom_pro&view=pricing_import" id="enom_pro_pricing_import">
             <input type="hidden" name="action" value="save_domain_pricing" />
             <input type="hidden" name="start" value="<?php echo isset($_GET['start']) ? (int) $_GET['start'] : '0';?>" />
             <div id="pricing_meta" class="clearfix">
-                <div class="floatleft">
-                    <input type="submit" value="Save" class="btn btn-success" />
-                </div>
                 <div class="floatright">
                     <a href="#"
                         class="btn ep_tt clear_all" 
@@ -92,7 +92,7 @@ if ($this->is_pricing_cached()) :
                 <tr>
                     <th colspan="2">TLD</th>
                     <th>Status</th>
-                    <?php foreach (array_keys(array_fill(1, 10, '')) as $key => $year) : ?>
+                    <?php foreach (array_keys(array_fill(1, enom_pro::get_addon_setting('pricing_years'), '')) as $key => $year) : ?>
                         <th colspan="1"><?php echo $year; ?> Year<?php if ($year > 1):?>s<?php endif;?>
                             <a href="#"
                                 data-year="<?php echo $year?>"
@@ -146,7 +146,7 @@ if ($this->is_pricing_cached()) :
                                <span class="badge small">Not In WHMCS</span>
                             </td>
                         <?php endif;?>
-                        <?php foreach (array_keys(array_fill(1, 10, '')) as $key => $year) : ?>
+                        <?php foreach (array_keys(array_fill(1, enom_pro::get_addon_setting('pricing_years'), '')) as $key => $year) : ?>
                             <td>
                                 <table class="noborder">
                                     <tr>
@@ -177,7 +177,10 @@ if ($this->is_pricing_cached()) :
                                         </td>
                                         <?php if ($year == 1):?>
                                             <td>
-                                                <a href="#" data-tld="<?php echo $tld?>" class="mult_row ep_tt" title="Multiply Current Price for Row">&raquo;</a>
+                                                <a href="#" 
+                                                    data-tld="<?php echo $tld?>" 
+                                                    class="mult_row ep_tt btn btn-mini" 
+                                                    title="Multiply Current Price for Row">&raquo;</a>
                                             </td>
                                         <?php endif;?>
                                         <?php if ($whmcs_price) :?>
@@ -190,6 +193,7 @@ if ($this->is_pricing_cached()) :
                     </tr>
                 <?php endforeach;?>
             </table>
+            <input type="submit" value="Save" class="btn btn-block btn-success">
         </form>
         <?php pager($this);?>
         <div>
@@ -197,11 +201,12 @@ if ($this->is_pricing_cached()) :
             Cached from <?php echo $this->get_price_cache_date();?>
             <a class="btn btn-mini" href="<?php echo enom_pro::MODULE_LINK; ?>&action=clear_price_cache">Clear Cache</a>
         </div>
-        <a href="<?php echo enom_pro::HELP_URL;?>" target="_blank" class="btn btn-block btn-info"><?php echo ENOM_PRO; ?> | Pricing Import Feedback? Suggestions?</a>
+        <br/>
+        <a href="<?php echo enom_pro::HELP_URL;?>" target="_blank" class="btn alignright btn-info">Pricing Import Feedback? Suggestions?</a>
     </div><?php //End <div id="enom_pro_pricing_import_page">?>
 <?php else: ?>
     <div class="alert" id="loading_pricing">
-        <h3>Loading pricing for <?php echo count($this->getTLDs())?> top level domains.</h3>
+        <h3>Loading <?php echo enom_pro::is_retail_pricing() ? 'retail' : 'wholesale';?> pricing for <?php echo count($this->getTLDs())?> top level domains.</h3>
         <div class="enom_pro_loader"></div>
         <h3 class="hidden a_minute"><em>This may take a minute...</em></h3>
     </div>
