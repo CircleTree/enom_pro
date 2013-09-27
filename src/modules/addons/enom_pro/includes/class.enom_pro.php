@@ -516,6 +516,14 @@ class enom_pro
     {
         require_once ENOM_PRO_INCLUDES . 'pricing_import.php';
     }
+    /**
+     * Check for upgrader compatibility against known missing core PHP components
+     * @return boolean
+     */
+    public static function is_upgrader_compatible ()
+    {
+        return method_exists('DirectoryIterator', 'getExtension');
+    }
     public static function is_domain_in_whmcs ($domain)
     {
         $result = self::whmcs_api('getclientsdomains', array('domain' => $domain));
@@ -1192,7 +1200,11 @@ class enom_pro
      */
     public static function whmcs_api ($command, $data)
     {
-        $response =  defined('UNIT_TESTS') ? self::whmcs_curl($command, $data) : localAPI($command, $data, 1);
+        $adminid = false;
+        if (isset($_SESSION) && isset($_SESSION['adminid'])) {
+            $adminid = (int) $_SESSION['adminid'];
+        }
+        $response =  defined('UNIT_TESTS') ? self::whmcs_curl($command, $data) : localAPI($command, $data, $adminid);
         if ($response['result'] != 'success') {
             throw new WHMCSException($response['message']);
         }
