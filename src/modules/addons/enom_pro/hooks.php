@@ -10,7 +10,7 @@ function enom_pro_admin_balance ($vars)
 {
     if (!class_exists('enom_pro'))
         require_once 'enom_pro.php';
-    if ($_REQUEST['checkenombalance']) {
+    if (isset($_REQUEST['enom_pro_get_enom_balance'])) {
         try {
             $enom = new enom_pro();
             $warning_level = $enom->get_addon_setting('balance_warning');
@@ -75,7 +75,7 @@ jQuery(function($) {
     return array(
             'title'=>'<a href="'.enom_pro::MODULE_LINK.'">@NAME@</a>' . 
                 ' - Reseller Balance <img src="images/icons/transactions.png" align="absmiddle" height="16px" width="16px" border="0">' . 
-                get_enom_pro_widget_form('checkenombalance', 'refreshEnomBalance'),
+                get_enom_pro_widget_form('enom_pro_get_enom_balance', 'refreshEnomBalance'),
             'content'=>$content,
             'jquerycode'=>enom_pro::minify($jquerycode),
         );
@@ -86,7 +86,7 @@ function enom_pro_admin_ssl_certs ($vars)
 {
     if (!class_exists('enom_pro'))
         require_once 'enom_pro.php';
-    if ($_REQUEST['checkenomssl']) {
+    if (isset($_REQUEST['enom_pro_get_ssl_certs'])) {
         try {
         $enom = new enom_pro();
             $expiring_certs = $enom->getExpiringCerts();
@@ -108,7 +108,7 @@ function enom_pro_admin_ssl_certs ($vars)
                     else
                         $str .= 'Not Issued';
                     $str .='</td>
-                    <td style="text-align:center;"><a href="http://www.enom.com/secure/configure-ssl-certificate.aspx?certid='.$cert['OrderID'].'" target="_blank" class="btn" >'.$cert['status'].'</a></td>
+                    <td style="text-align:center;"><a href="http://www.enom.com/secure/configure-ssl-certificate.aspx?certid='.$cert['CertID'].'" target="_blank" class="btn" >'.$cert['status'].'</a></td>
                     <td style="text-align:center;">'.$cert['desc'].'</td>
                     <td style="text-align:center;">'.$cert['expiration_date'].'</td>
                     ';
@@ -144,7 +144,7 @@ function enom_pro_admin_ssl_certs ($vars)
     return array(
             'title'=>'<a href="'.enom_pro::MODULE_LINK.'">@NAME@</a> - SSL Certificates '.
                     '<img src="images/icons/securityquestions.png" align="absmiddle" height="16px" width="16px" border="0">' . 
-                    get_enom_pro_widget_form('checkenomssl', 'refreshEnomSSL'),
+                    get_enom_pro_widget_form('enom_pro_get_ssl_certs', 'refreshEnomSSL'),
             'content'=>$content,
             'jquerycode'=>enom_pro::minify($jquerycode),
         );
@@ -155,7 +155,7 @@ function enom_pro_admin_expiring_domains ($vars)
 {
     if (!class_exists('enom_pro'))
         require_once 'enom_pro.php';
-    if ($_REQUEST['checkexpiring']) {
+    if (isset($_REQUEST['enom_pro_check_expiring_domains'])) {
         $enom = new enom_pro();
         try {
             $stats = $enom->getAccountStats();
@@ -294,7 +294,7 @@ function enom_pro_admin_expiring_domains ($vars)
             'title'	=>	'<a href="'.enom_pro::MODULE_LINK.'">@NAME@</a>' . 
                 ' - Domain Stats <img src="images/icons/domains.png"' . 
                 ' align="absmiddle" height="16px" width="16px" border="0">' . 
-                get_enom_pro_widget_form('checkexpiring', 'refreshExpiring'),
+                get_enom_pro_widget_form('enom_pro_check_expiring_domains', 'refreshExpiring'),
             'content'=>$content,
             'jquerycode'=>enom_pro::minify($jquerycode),
         );
@@ -305,7 +305,7 @@ function enom_pro_admin_transfers ($vars)
 {
     if (!class_exists('enom_pro'))
         require_once 'enom_pro.php';
-        if ($_REQUEST['checkenomtransfers']) {
+        if (isset($_REQUEST['enom_pro_check_transfers'])) {
             $enom = new enom_pro();
             try {
                 $transfers = $enom->getTransfers();
@@ -371,7 +371,7 @@ function enom_pro_admin_transfers ($vars)
                                 }
                                 $str .= "
                             <tr>
-                                <td><a target=\"_blank\" title=\"Order Date: {$status['orderdate']}\" href=\"http://www.enom.com/domains/TransferStatus.asp?transferorderid={$status['orderid']}\">{$status['orderid']}</a></td>
+                                <td><a target=\"_blank\" title=\"Order Date: {$status['orderdate']}\" href=\"https://www.enom.com/domains/TransferStatus.asp?transferorderid={$status['orderid']}\">{$status['orderid']}</a></td>
                                 <td style=\"text-align:center;\" >".($action ? $action : '<input type="image" src="images/icons/disabled.png "class="button" title="No actions for this order status"/>')."</td>
                                 <td>{$status['statusdesc']}</td>
                             </tr>
@@ -435,7 +435,7 @@ function enom_pro_admin_transfers ($vars)
         return array(
                 'title'	=>	'<a href="'.enom_pro::MODULE_LINK.'">@NAME@</a> ' . 
                     '- Pending Transfers <img src="images/icons/clientlogin.png" align="absmiddle" height="16px" width="16px" border="0">' . 
-                    get_enom_pro_widget_form('checkenomtransfers', 'refreshEnomTransfers'),
+                    get_enom_pro_widget_form('enom_pro_check_transfers', 'refreshEnomTransfers'),
                 'content'=>$content,
                 'jquerycode'=>enom_pro::minify($jquerycode),
             );
@@ -544,8 +544,9 @@ function enom_pro_namespinner ()
                             echo '</label>';
                                 echo '<select name="domainsregperiod['.$domain['domain'].']" >';
                                     foreach ($results['pricing'][$domain['tld']] as $year=>$price) {
-                                        if ((int) $price > 0)
+                                        if ((int) $price > 0 && 'id' !== $year) {
                                             echo '<option value="'.$year.'">'.$year.' '.$_LANG['orderyears'].' @ '.$price.'</option>';
+                                        }
                                     }
                             echo '</select>';
                     echo '</div>';
