@@ -48,7 +48,7 @@ function enom_pro_config ()
     if (isset($_GET['view'])) {
         switch ($_GET['view']) {
         	case 'pricing_import':
-        	   $view = ' - Import Pricing from eNom';
+        	   $view = ' - Import '.(enom_pro::is_retail_pricing() ? 'Retail' : 'Wholesale').' Pricing from eNom';
         	break;
         	case 'domain_import':
         	   $view = ' - Import Domains from eNom';
@@ -89,6 +89,9 @@ function enom_pro_config ()
                             "Options"=>"1,2,3,4,5,6,7,8,9,10","Default"=>"10",
                             "Description"=>"Limit the maximum number of years to import TLD pricing for. 
                                 Speeds Up the Import Process if you only offer registrations up to 3 years, for example."),
+                    'pricing_retail'=>array('FriendlyName'=>"Retail Pricing ","Type"=>"yesno",
+                            'default' => false,
+                            "Description"=>"Use eNom Retail Pricing"),
                     'ssl_days'=>array('FriendlyName'=>"Widget Expiring SSL Days","Type"=>"dropdown",
                             "Options"=>"7,15,30,60,90,180,365,730","Default"=>"30",
                             "Description"=>"Number of days until SSL Certificate Expiration to show in Widget"),
@@ -318,6 +321,7 @@ function enom_pro_output ($vars)
         
         $enom = new enom_pro();
         ?>
+        
         <script src="../modules/addons/enom_pro/js/jquery.admin.min.js"></script>
          <div id="enom_pro_dialog" title="Loading..." style="display:none;" >
             <iframe src="" id="enom_pro_dialog_iframe"></iframe>
@@ -351,14 +355,16 @@ function enom_pro_output ($vars)
             <?php if (! empty($_SESSION['manual_files']['templates'])):?>
                 <div class="alert alert-info">
                     <p>
-                        The following template files were already in place, and will need to be manually upgraded / merged:
+                        The following client area template files were already in place. You will only need to 
+                        manually update them if you are using the SRV Record Editor, Pending Transfers, and Namespinner on the Domain Checker Page. 
+                        If you are using the frontend features, the following files will need to be manually upgraded / merged:
                     </p>
                     <ul>
                         <?php foreach ($_SESSION['manual_files']['templates'] as $filepath):?>
                             <li><a href="#" title="<?php echo $filepath?>" class="ep_tt" ><?php echo basename($filepath);?></a></li>
                         <?php endforeach;?>
                     </ul>
-                    <a class="btn" href="<?php echo enom_pro::MODULE_LINK?>&action=dismiss_manual_upgrade">Dismiss Reminder</a>
+                    <p>Otherwise, feel free to <a class="btn" href="<?php echo enom_pro::MODULE_LINK?>&action=dismiss_manual_upgrade">Dismiss Reminder</a></p>
                 </div>
             <?php endif;?>
             <?php if (! empty($_SESSION['manual_files']['core_files'])):?>
@@ -412,6 +418,7 @@ function enom_pro_output ($vars)
     <?php if (enom_pro_license::is_update_available()) :?>
         <?php $status = $enom->license->get_supportandUpdates();?>
         <?php if ($status['status'] != 'active') :?>
+        <?php //Support & updates expired ?>
             <div class="alert alert-error">
                 <div class="floatright">
                     <a class="btn btn-warning btn-large" href="<?php echo enom_pro::MODULE_LINK?>&action=do_upgrade_check">
@@ -423,17 +430,24 @@ function enom_pro_output ($vars)
                 to enjoy these great new features:</h1>
                 <div id="enom_pro_changelog"></div>
             </div>
-        <?php else:?>
-        <div class="alert alert-success">
-            <h2>Upgrade available!</h2>
-            <span class="badge" >Update using our 1-click upgrade system.</span>
-                <a id="doUpgrade" class="btn btn-large btn-success" href="<?php echo enom_pro_license::DO_UPGRADE_URL;?>">
-                Upgrade to Version <?php echo enom_pro_license::get_latest_version();?> now!
-            </a> -or- <a href="<?php echo $enom->get_upgrade_zip_url()?>">Download Now</a>
-            <div id="enom_pro_changelog"></div>
-        </div>
-        <?php endif;?>
-    <?php endif;?>
+        <?php else://active & update available?>
+            <?php if (! enom_pro::is_upgrader_compatible()):?>
+            <div class="errorbox">
+                <h3>Please upgrade PHP to use our auto-upgrade feature. 
+                Current PHP Version: <code><?php echo PHP_VERSION?></code> Recommended: ><code>5.3.6</code></h3>
+            </div>
+            <?php else: //Compatible?>
+                <div class="alert alert-success">
+                    <h2>Upgrade available!</h2>
+                    <span class="badge" >Update using our 1-click upgrade system.</span>
+                        <a id="doUpgrade" class="btn btn-large btn-success" href="<?php echo enom_pro_license::DO_UPGRADE_URL;?>">
+                        Upgrade to Version <?php echo enom_pro_license::get_latest_version();?> now!
+                    </a> -or- <a href="<?php echo $enom->get_upgrade_zip_url()?>">Download Now</a>
+                    <div id="enom_pro_changelog"></div>
+                </div>
+            <?php endif; //End upgrader compat. check?>
+        <?php endif;//End Support & updates expired?>
+    <?php endif;//End Update is Available?>
     <div id="enom_pro_admin_widgets" class="clearfix" >
         <div class="floatleft" style="width:50%;">
             <?php enom_pro::render_admin_widget('enom_pro_admin_balance'); ?>
