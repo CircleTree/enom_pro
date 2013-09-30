@@ -88,7 +88,7 @@
                 <input type="text" name="domain_display" value="" id="domain_field"
                     disabled="disabled" readonly="readonly" size="60" /> <br />
                 <?php $clients = enom_pro::whmcs_api('getclients', array('limitnum' =>
-                        ('Unlimited' == enom_pro::get_addon_setting('client_limit') ? 9999999999999 : enom_pro::get_addon_setting('client_limit')) 
+                        ('Unlimited' == enom_pro::get_addon_setting('client_limit') ? 9999999999999 : enom_pro::get_addon_setting('client_limit')) //9 trillion 
                 ));
                 if ('success' == $clients['result']):
                     $clients_array = $clients['clients']['client']; ?>
@@ -116,6 +116,17 @@
                         echo '<option value="'.$i.'">'.$i.'</option>';
                       }?>
                 </select>
+                <div class="row">
+                    <label for="expiresdate">Expires:</label>
+                    <input id="expiresdate" type="text" name="expiresdatelabel" value="" readonly/>
+                    <input type="hidden" name="expiresdate" value="" readonly/>
+                </div>
+                <div class="row">
+                    <label for="nextduedate">Next Due:</label>
+                    <input id="nextduedate" type="text" name="nextduedatelabel" value="" readonly/>
+                    <input type="hidden" name="nextduedate" value="" readonly/>
+                    <small>Change relative due dates in settings.</small>
+                </div>
                 <table style="width: 100%">
                     <tr>
                         <td><label for="dnsmanagement" class="btn btn-mini">DNS Management</label>

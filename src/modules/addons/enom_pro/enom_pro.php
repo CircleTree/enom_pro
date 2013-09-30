@@ -106,6 +106,10 @@ function enom_pro_config ()
                             "Description"=>"Results Per Page on the Domain Import Page"),
                     'auto_activate' => array('FriendlyName'=>"Automatically Activate Orders on Import","Type"=>"yesno",
                             "Description"=>"Set imported orders to active and eNom registrar", "Default" => "on"),
+                    'next_due_date' => array('FriendlyName'=>"Next Due Date","Type"=>"dropdown",
+                            "Options"=>"Expiration Date,-1 Day,-3 Days,-5 Days,-7 Days,-14 Days", "Default"=>"-3 Days",
+                            "Description"=>"Set active, imported domain next billing due date, relative to # of days BEFORE expiration.
+                                    <b>Auto-Activation, above, must be enabled for this to function.</b>"),
                     'debug'=>array('FriendlyName'=>"Debug Mode","Type"=>"yesno",
                             "Description"=>"Enable debug messages on frontend. Used for troubleshooting the namespinner,
                              for example."),
@@ -475,7 +479,7 @@ function enom_pro_output ($vars)
             <h2>No Admin Widgets?</h2>
             <p class="textred">
                 Make sure you add the admin roles you want to see the widgets under <a
-                    class="btn" href="configadminroles.php">WHMCS Admin Roles</a>.
+                    class="btn ep_lightbox" target="_blank" href="configadminroles.php">WHMCS Admin Roles</a>.
             </p>
             <h1>Quick Start</h1>
             <h2>Client Area Transfers</h2>
