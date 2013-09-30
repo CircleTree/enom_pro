@@ -197,10 +197,15 @@ jQuery(function($) {
         	email = $button.data('email'),
         	id_protect = $button.data('id-protect'),
         	dns = $button.data('dns'),
-        	autorenew = $button.data('autorenew');
+        	autorenew = $button.data('autorenew'),
+        	nextduedate = $button.data('nextduedate');
         if (email != "") {
             $("option[data-email='" + email + "']").attr('selected', true);
         }
+        $("[name=nextduedate]").val($button.data('nextduedate')); 
+        $("[name=nextduedatelabel]").val($button.data('nextduedatelabel')); 
+        $("[name=expiresdate").val($button.data('expiresdate'));
+        $("[name=expiresdatelabel").val($button.data('expiresdatelabel')); 
         toggle_checkbox($("#idprotection") , (id_protect == 1 ? true : false));
         toggle_checkbox($("#dnsmanagement") , (dns == 1 ? true : false));
         if (autorenew == 1) {

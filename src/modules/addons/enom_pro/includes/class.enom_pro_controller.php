@@ -168,11 +168,14 @@ class enom_pro_controller {
         $data = array(
                 'success'   => $success,
         );
+        try {
+            
         if ($success) {
             //Here we replace the error header :-)
             header("HTTP/1.0 200 Ok", true);
             $data['orderid']   = $whmcs_order['orderid'];
             if (strtolower(enom_pro::get_addon_setting('auto_activate')) == 'on') {
+                //Auto-activate orders is enabled
                 $accept_data = array(
                         'orderid'   =>  $whmcs_order['orderid'],
                         'sendemail' =>  false,
@@ -180,14 +183,23 @@ class enom_pro_controller {
                         'registrar' =>  'enom'
                 );
                 $accept_response = enom_pro::whmcs_api('acceptorder', $accept_data);
+                if ($accept_response['result'] == 'success') {
+                    $due_response = enom_pro::whmcs_api('updateclientdomain', array(
+                    	'nextduedate'  => $_REQUEST['nextduedate'],
+                    	'expirydate'   =>  $_REQUEST['expiresdate'],
+                    	'domain'     => $_REQUEST['domain'],
+                    ));
+                }
+                if ($due_response['result'] !== 'success') {
+                    throw new WHMCSException($due_response['message']);
+                }
             } else {
                 //No isset errors
                 $accept_response['result'] = false;
             }
-           
             $data['domainid'] = $whmcs_order['domainids'];
             $data['activated'] = $accept_response['result'] == 'success' ? true : false;
-            //@TODO set `tbldomains`.`donotrenew` = 'on'
+            
         } else {
             $message = 'Error: '. $whmcs_order['message'];
             $data['error'] = $message;
@@ -202,6 +214,10 @@ class enom_pro_controller {
                     '$accept_response' =>$accept_response,
                     '$whmcs_order'  => $whmcs_order,
             );
+        }
+        } catch (Exception $e) {
+            $data['error'] = $e->getMessage();   
+            $data['success'] = false;
         }
         $this->send_json($data);
     }
