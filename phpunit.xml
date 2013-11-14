@@ -37,10 +37,11 @@
 	    -->
 	<php>
 		<const name="ROOTDIR" value="/Users/robertgregor/git/enom_pro/src" />
+		<const name="ENOM_PRO_TEMP" value="/var/tmp/" />
 		<const name="WHMCS" value="TRUE" />
 		<const name="UNIT_TESTS" value="TRUE" />
 		<const name="ENOM_USERNAME" value="circletree" />
-		<const name="ENOM_PASSWORD" value="nUc7OYeY" />
+		<const name="ENOM_PASSWORD" value="3trzjqFskMNW7F2T" />
 		<const name="WHMCS_API_UN" value="api" />
 		<const name="WHMCS_API_PW" value="1234" />
 		<const name="WHMCS_API_URL" value="http://localhost/whmcs/includes/api.php" />
