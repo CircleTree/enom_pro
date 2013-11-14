@@ -8,6 +8,7 @@ class enom_pro_license
 {
     private $license;
     private static $latest_version = false;
+    private $updates_addon_name = "Support & Updates - eNom PRO";
     const DO_UPGRADE_URL = 'addonmodules.php?module=enom_pro&action=do_upgrade';
     public function  __construct()
     {
@@ -60,12 +61,17 @@ class enom_pro_license
         }
         $addons = $this->license['addons'];
         $addons = str_ireplace('&amp;', '&', $addons);
-        $addons_array = explode(';', $addons);
-        return array(
-                'status' => strtolower(substr($addons_array[2], 7)),
-                'duedate'=> substr($addons_array[1], 12)
-        );
-        
+        $addons_array = explode('|', $addons);
+        foreach ($addons_array as $addon_string) {
+            $addon_array = explode(';', $addon_string);
+            if ("name={$this->updates_addon_name}" == $addon_array[0]) {
+                return array(
+                        'status' => strtolower(substr($addon_array[2], 7)),
+                        'duedate'=> substr($addon_array[1], 12)
+                );
+                break;
+            }
+        }
     }
     
     /**

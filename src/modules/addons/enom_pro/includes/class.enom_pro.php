@@ -165,12 +165,14 @@ class enom_pro
      * handles parsing of XML errors
      * @param  array  $errors
      * @return string of html formatted errors
+     * @TODO refactor to use enomException as param, instead of array.
      */
     public static function render_admin_errors(array $errors)
     {
         $s = count($errors) > 1 ? 's' : '';
         $string = '<div class="errorbox"><h3>Error'.$s.'</h3>'.PHP_EOL;
         foreach ($errors as $error) {
+            $error_code = 0;
             if ($error instanceof Exception) {
                 $error_msg = $error->getMessage();
             } elseif (is_string($error)) {
@@ -187,6 +189,14 @@ class enom_pro
                     For the Live API, you'll need to open a 
                     <a target=\"_blank\" href=\"http://www.enom.com/help/default.aspx\">support ticket with enom.
                     </a></li>";
+            }
+            if (strstr($error_msg, "Bad")) {
+                //The most common error message is for a non-whitelisted API IP
+                $string.= "<li>Check your eNom Login Credentials";
+                $click = "javascript:jQuery('#edit_registrar').trigger('click');return false;";
+                $string .= '
+                        <a href="#" onclick="'.$click.'">Edit Registrar Settings</a>
+                        '; ;
             }
 
         }
@@ -294,16 +304,6 @@ class enom_pro
         while ($i <= $errs) {
             $string = 'Err'.$i;
             $error = (string) $this->xml->errors->$string;
-            // @codeCoverageIgnoreStart
-            if (strstr($this->xml->errors->$string, "IP")) {
-                //The most common error message is for a non-whitelisted API IP
-                $error.= ". You need to whitelist your IP with enom, here's the link for the 
-                    <a target=\"_blank\" href=\"http://www.enom.com/resellers/reseller-testaccount.aspx\">
-                        Test API.</a><br/>
-                    For the Live API, you'll need to open a 
-                    <a target=\"_blank\" href=\"http://www.enom.com/help/default.aspx\">support ticket with enom.</a>";
-            }
-            // @codeCoverageIgnoreEnd
             $exception->set_error($error);
             $i++;
         }
@@ -966,16 +966,18 @@ class enom_pro
             }
             $sub_node = 'item';            
         }
-        foreach ($this->xml->GetDomains->{$list_node}->{$sub_node} as $domain) {
-            $return[] = array(
-                    'id'			=>		(int) $domain->DomainNameID,
-                    'sld'			=>		(string) $domain->sld,
-                    'tld'			=> 		(string) $domain->tld,
-                    'expiration'	=>		(string) $domain->{'expiration-date'},
-                    'enom_dns'		=>		(strtolower($domain->{'ns-status'}) == 'yes' ? true : false),
-                    'privacy'		=>		($domain->wppsstatus == 'Enabled' ? true : false),
-                    'autorenew'		=>		(strtolower($domain->{'auto-renew'}) == "yes" ? true : false),
-                );
+        if (! empty($this->xml->GetDomains->{$list_node}->{$sub_node})) {
+            foreach ($this->xml->GetDomains->{$list_node}->{$sub_node} as $domain) {
+                $return[] = array(
+                        'id'			=>		(int) $domain->DomainNameID,
+                        'sld'			=>		(string) $domain->sld,
+                        'tld'			=> 		(string) $domain->tld,
+                        'expiration'	=>		(string) $domain->{'expiration-date'},
+                        'enom_dns'		=>		(strtolower($domain->{'ns-status'}) == 'yes' ? true : false),
+                        'privacy'		=>		($domain->wppsstatus == 'Enabled' ? true : false),
+                        'autorenew'		=>		(strtolower($domain->{'auto-renew'}) == "yes" ? true : false),
+                    );
+            }
         }
         if (true == $this->last_result) {
             $this->last_result = array_merge($this->last_result, $return);
