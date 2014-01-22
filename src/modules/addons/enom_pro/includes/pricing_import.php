@@ -1,6 +1,6 @@
 <?php
 global $per_page;
-$per_page = 10; 
+$per_page = 25;
 function pager ($enom_pro)
 {
     global $per_page;
@@ -8,12 +8,14 @@ function pager ($enom_pro)
     <ul class="pager">
     <li class="previous">
             	   <?php if (@$_GET['start'] >= $per_page) :?>
-                        <a href="<?php echo $_SERVER['PHP_SELF'];?>?module=enom_pro&view=pricing_import&start=<?php echo isset($_GET['start']) ? (int) $_GET['start'] - $per_page : $per_page?>">&larr; Prev</a>
+                   <?php $prev_start = isset( $_GET['start'] ) ? (int) $_GET['start'] - $per_page : $per_page;?>
+                        <a data-start="<?php echo $prev_start ?>" href="<?php echo $_SERVER['PHP_SELF'];?>?module=enom_pro&view=pricing_import&start=<?php echo $prev_start ?>">&larr; Prev</a>
                     <?php endif;?>
             	</li>
             	<li class="next">
                     <?php if (@$_GET['start'] <= ( count($enom_pro->getAllDomainsPricing()) - $per_page)) :?>
-                        <a href="<?php echo $_SERVER['PHP_SELF'];?>?module=enom_pro&view=pricing_import&start=<?php echo isset($_GET['start']) ? (int) $_GET['start'] + $per_page : $per_page?>">Next &rarr;</a>
+                      <?php $next_start = isset( $_GET['start'] ) ? (int) $_GET['start'] + $per_page : $per_page; ?>
+                        <a data-start="<?php echo $next_start ?>" href="<?php echo $_SERVER['PHP_SELF'];?>?module=enom_pro&view=pricing_import&start=<?php echo $next_start ?>">Next &rarr;</a>
                     <?php endif;?>	   
             	</li>
             </ul>
@@ -65,12 +67,15 @@ if ($this->is_pricing_cached()) :
         bulk edit all 3 pricing tiers, or you can fine tune pricing in directly in whmcs by 
         clicking the edit link: <span class="badge badge-info">WHMCS</span> 
         <a href="#" class="btn btn-mini" onClick="alert('Click the pricing row you want to edit, silly!');return false;">Edit</a></p>
-        <div class="alert">
-            <span><b>IMPORTANT:</b> Clicking Save will overwrite any specific order type pricing that have been customized
-                (IE: Different prices for register vs. transfer). 
-                <em>If in doubt, please <a href="#" class="clear_all btn btn-mini" >Clear All Pricing</a> before saving.</em> 
-            </span><br/>
+        <div class="alert alert-danger">
+            <p><b>USD Only:</b> eNom only supports USD currency, please make sure you set up your pricing accordingly.</p>
         </div>
+      <div class="alert">
+        <span><b>IMPORTANT:</b> Clicking Save will overwrite any specific order type pricing that have been customized
+                (IE: Different prices for register vs. transfer).
+                <em>If in doubt, please <a href="#" class="clear_all btn btn-mini" >Clear All Pricing</a> before saving.</em>
+            </span><br/>
+      </div>
         <div class="alert alert-info">
             <span>If you change price mode from retail/wholesale - please make sure you <a class="btn btn-mini" href="<?php echo enom_pro::MODULE_LINK; ?>&action=clear_price_cache">clear the pricing cache</a></span>
         </div>
@@ -169,6 +174,10 @@ if ($this->is_pricing_cached()) :
                                                 data-tld="<?php echo $tld?>"
                                                 data-year="<?php echo $year;?>"
                                                 data-price="<?php echo $enom_price;?>"
+                                                <?php if ($whmcs_price) :?>
+                                                  data-whmcs="<?php echo $whmcs_price; ?>"
+                                                <?php endif;?>
+                                              class="price"
                                                 size="6"
                                                 type="text"
                                                 name="pricing[<?php echo $tld?>][<?php echo $year?>]"
@@ -180,7 +189,7 @@ if ($this->is_pricing_cached()) :
                                                 <a href="#" 
                                                     data-tld="<?php echo $tld?>" 
                                                     class="mult_row ep_tt btn btn-mini" 
-                                                    title="Multiply Current Price for Row">&raquo;</a>
+                                                    title="Multiply Current Price for Row">X</a>
                                             </td>
                                         <?php endif;?>
                                         <?php if ($whmcs_price) :?>
@@ -203,7 +212,31 @@ if ($this->is_pricing_cached()) :
         </div>
         <br/>
         <a href="<?php echo enom_pro::HELP_URL;?>" target="_blank" class="btn alignright btn-info">Pricing Import Feedback? Suggestions?</a>
-    </div><?php //End <div id="enom_pro_pricing_import_page">?>
+    </div>
+  <script>
+jQuery(function($) {
+  $(".pager a").on('click', function () {
+    var unsaved = false, $link = $(this);
+    $('.price').each(function (k,v) {
+      $input = $(v);
+      console.log($input.val(),$input.data('whmcs'));
+      if ($input.val() != '' && $input.val() != $input.data('whmcs')) {
+        unsaved = true;
+      }
+      if ($input.val() != '' && ! $input.data('whmcs')) {
+        unsaved = true;
+      }
+    });
+    if (unsaved) {
+      $("input[name=start]").val($link.data('start'));
+      $("#enom_pro_pricing_import").trigger('submit');
+      return false;
+    }
+  })
+})
+
+  </script>
+<?php //End <div id="enom_pro_pricing_import_page">?>
 <?php else: ?>
     <div class="alert" id="loading_pricing">
         <h3>Loading <?php echo enom_pro::is_retail_pricing() ? 'retail' : 'wholesale';?> pricing for <?php echo count($this->getTLDs())?> top level domains.</h3>

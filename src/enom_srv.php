@@ -31,13 +31,11 @@ if (isset($_REQUEST['action'])) {
                 /*
                 */
                 if (! empty($_REQUEST['records']) ) {
+                    try {
                     $enom->set_SRV_Records($_REQUEST['records']);
-                    echo '<pre>';
-                    print_r($enom);
-                    echo '</pre>';
-                    if ($enom->is_error()) {
+                    } catch (EnomException $e) {
                         header("HTTP/1.0 400 Bad Request");
-                        echo 'Error: ' . implode(', ', $enom->get_errors_array());
+                        echo 'Error: ' . implode(', ', $e->get_errors());
                         die;
                     }
                     $records = $enom->get_SRV_records();

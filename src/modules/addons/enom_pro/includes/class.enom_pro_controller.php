@@ -1,4 +1,4 @@
-<?php 
+<?php
 class enom_pro_controller {
     private $enom;
     function __construct() {
@@ -10,7 +10,7 @@ class enom_pro_controller {
             call_user_func(array(__CLASS__, $_REQUEST['action']));
         } else {
             throw new InvalidArgumentException('Unknown action: ' . $_REQUEST['action']);
-        }        
+        }
     }
     protected function resend_enom_transfer_email ()
     {
@@ -53,7 +53,7 @@ class enom_pro_controller {
         $response = $this->enom->resubmit_locked((int) $_REQUEST['orderid']);
         if (is_bool($response)) {
             echo "Submitted!";
-        }       
+        }
     }
     protected function install_ssl_template ()
     {
@@ -101,7 +101,7 @@ class enom_pro_controller {
                 'cache_date' => $this->enom->get_domain_cache_date(),
         );
         $this->send_json($data);
-        
+
     }
     protected function get_domain_whois ()
     {
@@ -128,33 +128,39 @@ class enom_pro_controller {
         $this->enom->getAllDomainsPricing($retail);
         echo 'success';
     }
-    
+
     protected function add_enom_pro_domain_order ()
     {
-        
-        $data = array(
+
+      $whmcsAddOrderData = array(
                 'clientid' => $_REQUEST['clientid'],
                 'domaintype' => array('register'),
                 'domain'	=> array( $_REQUEST['domain'] ),
                 'paymentmethod' => $_REQUEST['paymentmethod']
         );
         if (isset($_REQUEST['regperiod'])) {
-            $data['regperiod'] = array( $_REQUEST['regperiod'] );
+          $whmcsAddOrderData['regperiod'] = array( $_REQUEST['regperiod'] );
+        }
+        $free_domain = false;
+        if (isset($_REQUEST['free_domain'])) {
+          $free_domain = true;
+          //Doesn't appear to work in WHMCS 5.2.12
+          $whmcsAddOrderData['priceoverride'] = '0.00';
         }
         if (isset($_REQUEST['dnsmanagement'])) {
-            $data['dnsmanagement'] = array('on');
+          $whmcsAddOrderData['dnsmanagement'] = array('on');
         }
         if (isset($_REQUEST['idprotection'])) {
-            $data['idprotection'] = array('on');
+          $whmcsAddOrderData['idprotection'] = array('on');
         }
         if (!isset($_REQUEST['noemail'])) {
-            $data['noemail'] = true;
+          $whmcsAddOrderData['noemail'] = true;
         }
         if (!isset($_REQUEST['noinvoice'])) {
-            $data['noinvoice'] = true;
+          $whmcsAddOrderData['noinvoice'] = true;
         }
         if (!isset($_REQUEST['noinvoiceemail'])) {
-            $data['noinvoiceemail'] = true;
+          $whmcsAddOrderData['noinvoiceemail'] = true;
         }
         //We have to set this by default because WHMCS stops execution if there is a domain configuration issue
         header("HTTP/1.0 404 Not Found");
@@ -162,61 +168,69 @@ class enom_pro_controller {
             echo 'Domain already in WHMCS';
             return;
         }
-        $whmcs_order = enom_pro::whmcs_api('addorder', $data);
+        $whmcs_order = enom_pro::whmcs_api('addorder', $whmcsAddOrderData);
         header('Content-Type: text/html');
         $success = 'success' == $whmcs_order['result'] ? true : false;
         $data = array(
                 'success'   => $success,
         );
         try {
-            
+
         if ($success) {
-            //Here we replace the error header :-)
-            header("HTTP/1.0 200 Ok", true);
-            $data['orderid']   = $whmcs_order['orderid'];
-            if (strtolower(enom_pro::get_addon_setting('auto_activate')) == 'on') {
-                //Auto-activate orders is enabled
-                $accept_data = array(
-                        'orderid'   =>  $whmcs_order['orderid'],
-                        'sendemail' =>  false,
-                        'autosetup' =>  false,
-                        'registrar' =>  'enom'
-                );
-                $accept_response = enom_pro::whmcs_api('acceptorder', $accept_data);
-                if ($accept_response['result'] == 'success') {
-                    $due_response = enom_pro::whmcs_api('updateclientdomain', array(
-                    	'nextduedate'  => $_REQUEST['nextduedate'],
-                    	'expirydate'   =>  $_REQUEST['expiresdate'],
-                    	'domain'     => $_REQUEST['domain'],
-                    ));
-                }
-                if ($due_response['result'] !== 'success') {
-                    throw new WHMCSException($due_response['message']);
-                }
-            } else {
-                //No isset errors
-                $accept_response['result'] = false;
+          //Here we replace the error header :-)
+          header("HTTP/1.0 200 Ok", true);
+          $data['orderid']   = $whmcs_order['orderid'];
+          $autoActivateDomainOrders = strtolower(enom_pro::get_addon_setting('auto_activate')) == 'on' ? true : false;
+          $accept_response = array();
+          $accept_response['result'] = false; //No isset errors
+          if ($autoActivateDomainOrders) {
+            //Auto-activate orders is enabled
+            $accept_data = array(
+                    'orderid'   =>  $whmcs_order['orderid'],
+                    'sendemail' =>  false,
+                    'autosetup' =>  false,
+                    'registrar' =>  'enom'
+            );
+            $accept_response = enom_pro::whmcs_api('acceptorder', $accept_data);
+            $accept_response['run'] = true;
+            if ($accept_response['result'] !== 'success') {
+              throw new WHMCSException($accept_response['message']);
             }
-            $data['domainid'] = $whmcs_order['domainids'];
-            $data['activated'] = $accept_response['result'] == 'success' ? true : false;
-            
+          }
+          $updateClientData = array(
+            'nextduedate' => $_REQUEST['nextduedate'],
+            'expirydate'  => $_REQUEST['expiresdate'],
+            'domain'      => $_REQUEST['domain'],
+          );
+          if ($free_domain) {
+            //Free domains
+            $updateClientData['firstpaymentamount'] = $updateClientData['recurringamount'] = '0.00';
+          }
+          $due_response = enom_pro::whmcs_api('updateclientdomain', $updateClientData);
+          if ($due_response['result'] !== 'success') {
+              throw new WHMCSException($due_response['message']);
+          }
+          $data['domainid'] = $whmcs_order['domainids'];
+          $data['activated'] = $accept_response['result'] == 'success' ? true : false;
+
         } else {
             $message = 'Error: '. $whmcs_order['message'];
             $data['error'] = $message;
         }
-        
+
         if ($success && !empty($whmcs_order['invoiceid'])) {
             $data['invoiceid'] = $whmcs_order['invoiceid'];
         }
-         
+
         if (enom_pro::is_debug_enabled()) {
             $data['debug'] = array(
                     '$accept_response' =>$accept_response,
                     '$whmcs_order'  => $whmcs_order,
+                    '$whmcsAddOrderData' =>$whmcsAddOrderData,
             );
         }
         } catch (Exception $e) {
-            $data['error'] = $e->getMessage();   
+            $data['error'] = $e->getMessage();
             $data['success'] = false;
         }
         $this->send_json($data);

@@ -4,7 +4,7 @@
 	<!-- Remember to pad the License header version # when the number of digits changes
 	Or, just make the next major version # 2.2.00
 	-->
-	<property name="version" value="2.1.27"/>
+	<property name="version" value="2.1.28"/>
 	<property name="build_temp_dir" value="build"/>
 	<property name="build_dir" value="${build_temp_dir}"/>
 	<property name="src_dir" value="src/"/>
