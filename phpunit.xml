@@ -9,8 +9,8 @@
          mapTestClassNameToCoveredClassName="false"
          printerClass="PHPUnit_TextUI_ResultPrinter"
          processIsolation="false"
-         stopOnError="true"
-         stopOnFailure="true"
+         stopOnError="false"
+         stopOnFailure="false"
          stopOnIncomplete="false"
          stopOnSkipped="false"
          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
@@ -18,7 +18,7 @@
          strict="true"
          verbose="true">
 	<testsuites>
-	  <testsuite name="My Test Suite">
+	  <testsuite name="eNom Pro Tests">
 	    <directory suffix=".php">tests/</directory>
 	  </testsuite>
 	</testsuites>

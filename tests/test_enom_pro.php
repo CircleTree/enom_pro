@@ -2,7 +2,10 @@
 
 
 class test_enom_pro extends PHPUnit_Framework_TestCase {
-	private $e;
+  /**
+   * @var enom_pro $e
+   */
+  private $e;
 	function  setUp() {
 		$this->e = new enom_pro();
 		parent::setUp();
@@ -32,7 +35,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 */
 	function  test_getAllDomains()
 	{
-	    $this->markTestIncomplete('TODO re-look at this process of validating orders / domains');
+//	    $this->markTestIncomplete('TODO re-look at this process of validating orders / domains');
 	    $domains = $this->e->getDomains(true);
 	    $ids = array();
 	    foreach ($domains as $key => $domain) {
@@ -117,6 +120,9 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	{
 	    $file = 'tests/files/expiring_ssl.xml';
 	    $this->e->_load_xml($file);
+    $resp = $this->e->getExpiringCerts();
+    $this->assertNotEmpty($resp);
+    $this->assertNotEmpty($resp[0]['domain']);
 	}
 	/**
 	 * @group domains

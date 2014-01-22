@@ -165,6 +165,13 @@
                             </div>
                         </td>
                     </tr>
+                  <tr>
+                    <td colspan="2">
+                      <label for="free_domain" class="btn btn-mini">
+                        Free Domain
+                      </label> <input type="checkbox" name="free_domain" id="free_domain" />
+                    </td>
+                  </tr>
                     <tr>
                         <td colspan="2"><input type="submit" value="Create Order"
                             class="btn btn-success btn-block aligncenter" />

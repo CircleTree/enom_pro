@@ -3,7 +3,7 @@
 *  Compatible with WHMCS 5.2+                            *
 *                                                        *
 *  README                                                *
-*  ©2013 Orion IP Ventures, LLC - ALL RIGHTS RESERVED    *
+*  2014 Orion IP Ventures, LLC - ALL RIGHTS RESERVED     *
 *  If you like this addon, please support us!            *
 *  This software must be licensed, please only use       *
 *  it if you pay for it. There is an open source version *
@@ -22,7 +22,12 @@
 
 Backup your files & DB
 Unzip this package to your local machine
-Upload the addon to the /whmcs/modules/addons directory
+Upload the addon directory to the /whmcs/modules/addons/ directory
+--You should be uploading the "enom_pro" directory to the 
+--  same directory on the server
+--  For example, the server should have a /whmcs/modules/addons/enom_pro/
+--  Folder, and inside that folder, there should be an enom_pro.php file
+
 Upload enom_srv.php to the /whmcs/ directory 
 Copy the templates to your active WHMCS template.
 	If you have customized your templates, see the 

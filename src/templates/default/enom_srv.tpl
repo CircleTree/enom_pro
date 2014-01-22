@@ -81,7 +81,7 @@ jQuery(function($) {
 		});
 		return false;
 	}).trigger('submit');
-})
+});
 {/literal}
 </script>
 {else}
