@@ -1,6 +1,9 @@
 <?php
 class enom_pro_controller {
-    private $enom;
+  /**
+   * @var enom_pro
+   */
+  private $enom;
     function __construct() {
     }
     public function route ()
@@ -248,7 +251,7 @@ class enom_pro_controller {
                         $validated_year = false;
                     }
                     if ($validated_year) {
-                        $tld_pricing[$validated_year] = (double) $price;
+                        $tld_pricing[$validated_year] = str_replace(',', '', $price);
                     }
                 }
                 $validated_tld = (string) $tld;

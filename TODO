@@ -1,4 +1,7 @@
-Fix clientareadomains.tpl with main template (enable replacing the file on install!)
+Add Domain verification dashboard: https://supportcenter.custhelp.com/app/account/questions/detail/i_id/598945
+http://www.enom.com/APICommandCatalog/RPT_GetReport.htm
+-- 31 Domain Verification/Suspension
+
 ==2.2==
 Add bulk domain import
 	"I'd like to be able to filter the list based on any of the available whois fields, 
