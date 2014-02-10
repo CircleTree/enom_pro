@@ -204,8 +204,8 @@ jQuery(function($) {
         }
         $("[name=nextduedate]").val($button.data('nextduedate')); 
         $("[name=nextduedatelabel]").val($button.data('nextduedatelabel')); 
-        $("[name=expiresdate").val($button.data('expiresdate'));
-        $("[name=expiresdatelabel").val($button.data('expiresdatelabel')); 
+        $("[name=expiresdate]").val($button.data('expiresdate'));
+        $("[name=expiresdatelabel]").val($button.data('expiresdatelabel'));
         toggle_checkbox($("#idprotection") , (id_protect == 1 ? true : false));
         toggle_checkbox($("#dnsmanagement") , (dns == 1 ? true : false));
         if (autorenew == 1) {
