@@ -1,6 +1,7 @@
 Add Domain verification dashboard: https://supportcenter.custhelp.com/app/account/questions/detail/i_id/598945
 http://www.enom.com/APICommandCatalog/RPT_GetReport.htm
 -- 31 Domain Verification/Suspension
+Add checkbox to disable the flashing warning icon
 
 ==2.2==
 Add bulk domain import
