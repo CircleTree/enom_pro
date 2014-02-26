@@ -91,7 +91,7 @@ function enom_pro_config ()
                                 Speeds Up the Import Process if you only offer registrations up to 3 years, for example."),
                     'pricing_retail'=>array('FriendlyName'=>"Retail Pricing ","Type"=>"yesno",
                             'default' => false,
-                            "Description"=>"Use eNom Retail Pricing"),
+                            "Description"=>"Use your eNom Retail Pricing. Un-check to use wholesale pricing (Your Cost)"),
                     'ssl_days'=>array('FriendlyName'=>"Widget Expiring SSL Days","Type"=>"dropdown",
                             "Options"=>"7,15,30,60,90,180,365,730","Default"=>"30",
                             "Description"=>"Number of days until SSL Certificate Expiration to show in Widget"),

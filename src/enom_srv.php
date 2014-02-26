@@ -1,5 +1,5 @@
 <?php
-require_once 'init.php';
+require 'init.php';
 $ca = new WHMCS_clientarea();
 $ca->setPageTitle('SRV Records');
 $ca->initPage();
