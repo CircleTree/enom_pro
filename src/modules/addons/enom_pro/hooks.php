@@ -19,6 +19,7 @@ function enom_pro_admin_balance ($vars)
             if ('off' == strtolower($warning_level))
                 $warning = false;
             $class = $warning ? 'alert-error' : 'alert-success';
+						$str = '';
             $str .= '<div id="enom_balance_message" class="alert enom_pro_widget '.$class.'">';
             $str .= '&nbsp;Enom Credit Balance: '.$enom->getBalance()." Available: <b>".$enom->getAvailableBalance().'</b>
             <a class="btn btn-mini" href="https://www.enom.com/myaccount/RefillAccount.asp" target="_blank">Refill Account</a>';
@@ -90,6 +91,7 @@ function enom_pro_admin_ssl_certs ($vars)
         try {
         $enom = new enom_pro();
             $expiring_certs = $enom->getExpiringCerts();
+						$str = '';
             $str .= '<div class="enom_pro_widget alert '.(count($expiring_certs) > 0 ? 'alert-danger' : 'alert-success').'">';
             if (count($expiring_certs) > 0 ) {
                 $str .= ' <table class="datatable" width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -159,6 +161,7 @@ function enom_pro_admin_expiring_domains ($vars)
         $enom = new enom_pro();
         try {
             $stats = $enom->getAccountStats();
+						$str = '';
             $str .= '<div class="enom_pro_widget">';
             $str .= '<table class="table-hover" ><tbody>
                     <tr>
@@ -309,6 +312,7 @@ function enom_pro_admin_transfers ($vars)
             $enom = new enom_pro();
             try {
                 $transfers = $enom->getTransfers();
+								$str = '';
                 if (empty($transfers)) {
                     $str .= '<div class="alert alert-success enom_pro_widget">No pending transfers found in WHMCS</div>';
                     $str .= '</div>';
@@ -629,6 +633,7 @@ function enom_pro_namespinner ()
     return array('namespinner' => $spinnercode);
 }
 add_hook("ClientAreaPage",1,"enom_pro_namespinner");
+
 function enom_pro_clientarea_transfers ($vars)
 {
     global $enom_pro_transfers;
@@ -638,7 +643,7 @@ function enom_pro_clientarea_transfers ($vars)
     $uid = isset($_SESSION['uid']) ? (int) $_SESSION['uid'] : 0; //Set this to 0 for security to return no results if the WHMCS uid is not set in the session
     //This is where the magic happens
     //Only do the API request asynchronously if there are transfers
-    if ($_REQUEST['action'] == 'domains' && $_REQUEST['refresh'] == 'true') {
+    if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'domains' && $_REQUEST['refresh'] == 'true') {
         $enom = new enom_pro();
         //Set cache control headers so IE doesn't cache the response (causing support tickets when a transfer has been approved, for instance)
         header("Cache-Control: no-cache, must-revalidate");
@@ -686,14 +691,22 @@ function enom_pro_srv_page ($vars)
 }
 add_hook("ClientAreaPage",3,"enom_pro_srv_page");
 add_hook("DailyCronJob", 1, "enom_pro_cron");
-function enom_pro_cron  ()
-{
-    require_once 'enom_pro.php';
-    $enom = new enom_pro();
-    echo ENOM_PRO . ': Begin CRON' . PHP_EOL;
-    enom_pro::log_activity(ENOM_PRO.': Begin CRON Job');
-    $count = $enom->send_all_ssl_reminder_emails();
-    echo ENOM_PRO . ': Sent '. $count . ' SSL Reminder Email(s)' . PHP_EOL;
-    enom_pro::log_activity(ENOM_PRO.': End CRON Job. Sent ' . $count . ' SSL Reminder Email(s)');
-    echo ENOM_PRO . ': END CRON' . PHP_EOL;
+function enom_pro_cron() {
+	$salt = 'lJsif3n1F9GKeStIdM9VAeJrrPC1grpBpSZLtWMb';
+	require_once 'enom_pro.php';
+	$enom = new enom_pro();
+	$lock = $enom->get_addon_setting( 'cron_lock' );
+	if ( empty( $lock ) || false === $lock || $lock !== md5( strrev( $salt ) . date( 'Ymd' ) . $salt ) ) {
+			echo ENOM_PRO . ': Begin CRON' . PHP_EOL;
+			enom_pro::log_activity( ENOM_PRO . ': Begin CRON Job' );
+			$count = $enom->send_all_ssl_reminder_emails();
+			echo ENOM_PRO . ': Sent ' . $count . ' SSL Reminder Email(s)' . PHP_EOL;
+			enom_pro::log_activity( ENOM_PRO . ': End CRON Job. Sent ' . $count . ' SSL Reminder Email(s)' );
+			echo ENOM_PRO . ': END CRON' . PHP_EOL;
+			$new_lock = md5( strrev( $salt ) . date( 'Ymd' ) . $salt );
+			$enom->set_addon_setting( 'cron_lock', $new_lock );
+		} else {
+			echo ENOM_PRO . ': Cron Already Ran Once Today' . PHP_EOL;
+			//echo 'Tomorrows lock: ' . md5( strrev( $salt ) . date( 'Ymd', strtotime('+1 day') ) . $salt ) . PHP_EOL;
+	}
 }

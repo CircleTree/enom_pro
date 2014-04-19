@@ -10,6 +10,20 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$this->e = new enom_pro();
 		parent::setUp();
 	}
+
+	/**
+	 * @group whmcs
+	 */
+	function test_whmcs_getSupportDepts () {
+		$depts = $this->e->getSupportDepartments();
+		$this->assertNotEmpty($depts);
+		$this->assertArrayHasKey(1, $depts);
+		$this->assertArrayHasKey(2, $depts);
+		$this->assertArrayHasKey('id', $depts[1]);
+		$this->assertArrayHasKey('name', $depts[1]);
+		$this->assertArrayHasKey('awaitingreply', $depts[1]);
+		$this->assertArrayHasKey('opentickets', $depts[1]);
+	}
 	function test_whmcs_create_acct ()
 	{
 	    $email = 'awef@af.co';
@@ -171,8 +185,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 */
 	function  testGetWhois()
 	{
-	    $domains = $this->e->getDomains(2,0);
-	    $name = $domains[0]['sld'] .'.'.$domains[0]['tld'];
+	    $name = 'aol.com';
 	    $return = $this->e->getWHOIS($name);
 	    $this->assertTrue(is_array($return));
 	    $this->assertArrayHasKey('technical', $return);
@@ -434,6 +447,19 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 */
 	function  test_debug_mode() {
 		$this->assertEquals(('on' == enom_pro::get_addon_setting('debug')), $this->e->debug());
+	}
+	function test_open_ssl_ticket () {
+		$this->e->send_SSL_reminder_email(1, array('expiration_date' => date('y-m-d'), 'domain' => array('unittests.com', 'www.unittests.com'), 'desc' => 'Super SSL'));
+		$tickets = $this->e->whmcs_api('gettickets', array('clientid' => 1 ));
+		$this->assertNotEmpty($tickets);
+		$this->assertGreaterThanOrEqual(1, $tickets['totalresults']);
+	}
+	/**
+	 * WTH does a whmcs checkbox get returned as?
+	 * @group whmcs
+	 */
+	function test_WHMCSCheckboxReturn () {
+		$this->assertSame('on', $this->e->get_addon_setting('debug'));
 	}
 	/**
 	 * @group transfers
