@@ -196,7 +196,7 @@ class enom_pro_license
     private function get_remote_license($licensekey,$localkey="")
     {
         $whmcsurl = "http://mycircletree.com/client-area/";
-        $licensing_secret_key = "@SECRET@";
+        $licensing_secret_key = "***REMOVED***";
         $check_token = time().md5(mt_rand(1000000000,9999999999).$licensekey);
         $checkdate = date("Ymd"); # Current date
         $usersip = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : false;

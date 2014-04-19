@@ -14,7 +14,6 @@
 	<property name="encoded" value="${build_dir}/encoded"/>
 	<property name="encoded_prep" value="${build_dir}/encoded_prep"/>
 	<property name="ftp.password" value="vRki3ozG08Tt"/>
-	<property name="enc.secret" value="***REMOVED***"/><!-- Secret -->
 	<property name="yui.jarfile" value="~/java/yuicompressor-2.4.7.jar" />
 	<taskdef name="sync" classname="phing.tasks.ext.FileSyncTask" />
     <!-- FILESETS -->

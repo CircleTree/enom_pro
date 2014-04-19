@@ -21,14 +21,6 @@
       <reissuestatus></reissuestatus>
     </Cert>
     <Cert>
-    	<!--
-    		
-    		 'domain'=> (array) $cert->DomainName,
-                        'status'=> (string) $cert->CertStatus,
-                        'expiration_date' => (string) $cert->ExpirationDate,
-                        'OrderID' => (int) $cert->OrderID,
-                        'desc' => (string) $cert->ProdDesc, -->
-    	
       <isexpired>False</isexpired>
       <certid>350574</certid>
       <orderdate>12/22/2012</orderdate>

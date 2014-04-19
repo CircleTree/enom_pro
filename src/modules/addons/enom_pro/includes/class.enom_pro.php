@@ -299,7 +299,7 @@ class enom_pro
         $i = 1;
         $exception = new EnomException(
                 (string) $this->xml->responses->response->ResponseString,
-                (string) $this->xml->responses->response->ResponseNumber
+                (int) $this->xml->responses->response->ResponseNumber
         );
         while ($i <= $errs) {
             $string = 'Err'.$i;
@@ -1202,7 +1202,7 @@ class enom_pro
      */
     public static function whmcs_api ($command, $data)
     {
-        $adminid = false;
+        $adminid = 1;
         if (isset($_SESSION) && isset($_SESSION['adminid'])) {
             $adminid = (int) $_SESSION['adminid'];
         }
@@ -1212,18 +1212,23 @@ class enom_pro
         }
         return $response;   
     }
-    /**
-     * Test interface for unit testing in WHMCS
-     * @param string $command
-     * @param array $data additonal fields to pass to API
-     * @return mixed
-     */
+
+	/**
+	 * Test interface for unit testing in WHMCS
+	 *
+	 * @param string $command
+	 * @param array  $data additional fields to pass to API
+	 *
+	 * @throws RemoteException
+	 * @return mixed
+	 */
     private static function whmcs_curl($command, $data) {
         $postfields = array();
         $postfields["username"] = WHMCS_API_UN;
         $postfields["password"] = md5(WHMCS_API_PW);
         $postfields["action"] = $command;
         $postfields["responsetype"] = "json";
+        $postfields["whmcsAPISilence"] = true; //We use this to silence the buggy whmcs API for development
         $postfields = array_merge($postfields, $data);
         
         $ch = curl_init();
@@ -1341,6 +1346,7 @@ class enom_pro
          }
         //Fetch from db
         $result = mysql_query("SELECT `setting`, `value` FROM `tbladdonmodules` WHERE `module`='enom_pro'");
+			if ($result) {
         $settings = array();
         while ($setting = mysql_fetch_assoc($result)) {
             //Set the value in the cache
@@ -1350,8 +1356,10 @@ class enom_pro
         if (empty($val)) {
             $settings = enom_pro_config();
             $val = isset($settings['fields'][$key]['Default']) ? $settings['fields'][$key]['Default'] : false;
-        }    
+        }
         return $val;
+			}
+			return '';
     }
     public static function is_retail_pricing ()
     {
@@ -1417,8 +1425,8 @@ class enom_pro
 	    if (! self::debug()) {
 	        return;
 	    }
-	    if ( ! is_null($replacement) ) {
-	        trigger_error( sprintf( __('%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.'), $msg, $version, $use_instead ) );
+	    if ( ! is_null($use_instead) ) {
+	        trigger_error( sprintf( __('%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.'), $msg, $since, $use_instead ) );
 	    } else {
 	        trigger_error( sprintf( __('%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.'), $msg, $since ) );
 	    }
@@ -1589,25 +1597,91 @@ class enom_pro
 	}
 	public static function send_SSL_reminder_email($client_id, $cert_data)
 	{
-	    $vars = array(
+	    $cert_meta_array = array(
 	            'expiry_date' => $cert_data['expiration_date'],
 	            'domain_name' => reset($cert_data['domain']),
 	            'product'     => $cert_data['desc'],
 	    );
-	    $data = array(
-	            'id' => 1,
-	            'customtype' => 'general',
-	            'messagename' => 'SSL Expiring Soon',
-	            'customvars' => base64_encode(serialize($vars)),
-	    );
-	    return self::whmcs_api('sendemail', $data);
+		$return = false;
+		//TODO finish admin implementation pending feedback
+		try {
+			$email_enabled = self::get_addon_setting( 'ssl_email_enabled' ) == "on" ? true : false;
+			//Back compat
+			$email_days = trim(self::get_addon_setting( 'ssl_email_days' ));
+			if ('Disabled' !== $email_days && $email_enabled ) {
+				//Send to WHOIS
+				$data = array(
+					'id' => $client_id,
+					'customtype' => 'general',
+					'messagename' => 'SSL Expiring Soon',
+					'customvars' => base64_encode(serialize($cert_meta_array)),
+				);
+				self::whmcs_api('sendemail', $data);
+			}
+		} catch ( Exception $e ) {
+			self::log_activity( ENOM_PRO . ': Error Sending SSL Notification: ' . $e->getMessage() );
+		}
+		try {
+			$ticket_dept = self::get_addon_setting('ssl_open_ticket');
+			if ('Disabled' !== $ticket_dept) {
+				//Parse string into department id
+				$ticket_dept_array = explode( '|', $ticket_dept );
+				$dept_id = reset( $ticket_dept_array );
+				$smarty_cert_meta_array = array();
+				foreach ($cert_meta_array as $key => $value ) {
+					//WHMCS's api doesn't support open ticket merge values
+					//We have to hack them in using str_replace
+					$smarty_cert_meta_array['{$'.$key.'}'] = $value;
+				}
+				//Open ticket
+				$data = array(
+					'clientid' => $client_id,
+					'deptid' => $dept_id,
+					'priority' => self::get_addon_setting('ssl_ticket_priority'),
+					'subject' => self::get_addon_setting('ssl_ticket_subject'),
+					'message' => str_replace(array_keys($smarty_cert_meta_array), array_values($smarty_cert_meta_array), self::get_addon_setting('ssl_ticket_message')),
+					'noemail' => ( "on" == self::get_addon_setting('ssl_ticket_email_enabled') ? false : true ),
+				);
+				$ticket_default_name = trim(self::get_addon_setting('ssl_ticket_default_name'));
+				if (empty($client_id) && ! empty($ticket_default_name)) {
+					//No matching client found, fall back to defaults
+					$data['clientid'] = 0;
+					$data['name'] = $ticket_default_name;
+					$data['email'] = self::get_addon_setting('ssl_ticket_default_email');
+				}
+				self::whmcs_api('openticket', $data);
+			}
+			$return = true;
+		} catch ( Exception $e ) {
+			self::log_activity( ENOM_PRO . ': Error Opening SSL Ticket: ' . $e->getMessage() );
+		}
+
+
+	    return $return;
+	}
+
+	/**
+	 * Gets WHMCS support departments
+	 * @return array id => array (id, name, awaitingreply, opentickets)
+	 */
+	public static function getSupportDepartments( ){
+		$response = $api_response = array();
+		try {
+			$api_response = self::whmcs_api('getsupportdepartments', array('ignore_dept_assignments' => true));
+		} catch ( Exception $e ) {
+			$api_response['totalresults'] = 0;
+		}
+		if ($api_response['totalresults'] > 0 ) {
+			$departments = $api_response['departments']['department'];
+			foreach ($departments as $department) {
+				$response[$department['id']] = $department;
+			}
+		}
+		return $response;
 	}
 	public function send_all_ssl_reminder_emails ()
 	{
 	    $expiry_days_before = self::get_addon_setting('ssl_email_days');
-	    if ('Disabled' == $expiry_days_before) {
-	        return 0;
-	    }
 	    $certs = $this->getExpiringCerts();
 	    $send_timestamp = strtotime("+$expiry_days_before days");
 	    $reminder_count = 0;
@@ -1632,14 +1706,14 @@ class enom_pro
 	    if (empty($search['domains'])) {
 	        self::log_activity(ENOM_PRO . ': No Client Domain Found for '.$domain . ' to send reminder email');
 	    } else {
-	        return $search['domains']['domain'][0]['clientid'];
+	        return (int) $search['domains']['domain'][0]['clientid'];
 	    }
 	    //Try Searching by Product
 	    $search2 = self::whmcs_api('getclientsproducts', array('domain' => $domain));
 	    if (empty($search2['products'])) {
 	        self::log_activity(ENOM_PRO . ': No Client Product Found for '. $domain . ' to send reminder email');
 	    } else {
-	        return $search['products']['product'][0]['clientid'];
+	        return (int) $search['products']['product'][0]['clientid'];
 	    }
 	    return false;
 	}
@@ -1673,17 +1747,21 @@ class enom_pro
 	    self::query($sql);
 	    return mysql_insert_id();
 	}
+	private static $ssl_email_id = null;
 	/**
 	 * 
 	 * @return false or int template  id on installed
 	 */
 	public static function is_ssl_email_installed()
 	{
+		if (null === self::$ssl_email_id) {
 	    $sql = 'SELECT `id` FROM `tblemailtemplates` WHERE `name` = \'SSL Expiring Soon\'';
 	    $result = self::query($sql);
 	    $array = mysql_fetch_assoc($result);
 	    $id = $array['id'];
-	    return mysql_num_rows($result) == 0 ? false : $id;
+			self::$ssl_email_id = mysql_num_rows($result) == 0 ? false : $id;
+		}
+		return self::$ssl_email_id;
 	}
 	public static function render_admin_widget($function)
 	{
