@@ -10,10 +10,28 @@
     <orderEntry type="module-library">
       <library name="PHARS">
         <CLASSES>
+          <root url="phar:///Applications/MAMP/bin/php/php5.4.26/lib/php/data/phpDocumentor/box.phar" />
           <root url="phar://$MODULE_DIR$/phing-latest.phar" />
+          <root url="phar:///Applications/MAMP/bin/php/php5.4.26/lib/php/doc/Net_Growl/examples/growlDefaultCollection.phar" />
+          <root url="phar:///Applications/MAMP/bin/php/php5.4.26/lib/php/data/phpDocumentor/vendor/phpdocumentor/fileset/tests/data/test.phar" />
+          <root url="phar:///Applications/MAMP/bin/php/php5.4.26/lib/php/phpDocumentor/tests/data/test.phar" />
         </CLASSES>
         <SOURCES>
+          <root url="phar:///Applications/MAMP/bin/php/php5.4.26/lib/php/data/phpDocumentor/box.phar" />
           <root url="phar://$MODULE_DIR$/phing-latest.phar" />
+          <root url="phar:///Applications/MAMP/bin/php/php5.4.26/lib/php/doc/Net_Growl/examples/growlDefaultCollection.phar" />
+          <root url="phar:///Applications/MAMP/bin/php/php5.4.26/lib/php/data/phpDocumentor/vendor/phpdocumentor/fileset/tests/data/test.phar" />
+          <root url="phar:///Applications/MAMP/bin/php/php5.4.26/lib/php/phpDocumentor/tests/data/test.phar" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="PHP">
+        <CLASSES>
+          <root url="file:///Applications/MAMP/bin/php/php5.4.26/lib/php" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file:///Applications/MAMP/bin/php/php5.4.26/lib/php" />
         </SOURCES>
       </library>
     </orderEntry>

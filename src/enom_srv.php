@@ -1,6 +1,6 @@
 <?php
 require 'init.php';
-$ca = new WHMCS_clientarea();
+$ca = new WHMCS_ClientArea();
 $ca->setPageTitle('SRV Records');
 $ca->initPage();
 $ca->requireLogin();

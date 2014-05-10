@@ -1,7 +1,6 @@
 <?php
-
 /**
-* eNom Pro WHMCS Addon Hooks
+* eNom Pro WHMCS Add-on Hooks
 * @version @VERSION@
 * Copyright 2012 Orion IP Ventures, LLC.
 * Licenses Resold by Circle Tree, LLC. Under Reseller Licensing Agreement
@@ -18,11 +17,11 @@ function enom_pro_admin_balance ($vars)
             $warning = $available <= $warning_level ? true : false;
             if ('off' == strtolower($warning_level))
                 $warning = false;
-            $class = $warning ? 'alert-error' : 'alert-success';
+            $class = $warning ? 'alert-danger' : 'alert-success';
 						$str = '';
             $str .= '<div id="enom_balance_message" class="alert enom_pro_widget '.$class.'">';
             $str .= '&nbsp;Enom Credit Balance: '.$enom->getBalance()." Available: <b>".$enom->getAvailableBalance().'</b>
-            <a class="btn btn-mini" href="https://www.enom.com/myaccount/RefillAccount.asp" target="_blank">Refill Account</a>';
+            <a class="btn btn-default btn-xs" href="https://www.enom.com/myaccount/RefillAccount.asp" target="_blank">Refill Account</a>';
             $str .= "</div>";
             if ($warning) {
                 $str .= '
@@ -47,7 +46,7 @@ jQuery(function($) {
             ) {
                 $content .= '<div class="alert alert-warning aligncenter">Update available: ';
                 $content .=     $enom->license->get_latest_version() . '<br/>';
-                $content .= '<a class="btn" href="'.enom_pro_license::DO_UPGRADE_URL.'">Upgrade automatically</a>';
+                $content .= '<a class="btn btn-default" href="'.enom_pro_license::DO_UPGRADE_URL.'">Upgrade automatically</a>';
                 $content .= '</div>';
             }
         } catch (Exception $e) {
@@ -85,8 +84,9 @@ add_hook("AdminHomeWidgets",1,"enom_pro_admin_balance");
 
 function enom_pro_admin_ssl_certs ($vars)
 {
-    if (!class_exists('enom_pro'))
-        require_once 'enom_pro.php';
+	if ( !class_exists( 'enom_pro' ) ) {
+		require_once 'enom_pro.php';
+	}
     if (isset($_REQUEST['enom_pro_get_ssl_certs'])) {
         try {
         $enom = new enom_pro();
@@ -94,12 +94,13 @@ function enom_pro_admin_ssl_certs ($vars)
 						$str = '';
             $str .= '<div class="enom_pro_widget alert '.(count($expiring_certs) > 0 ? 'alert-danger' : 'alert-success').'">';
             if (count($expiring_certs) > 0 ) {
-                $str .= ' <table class="datatable" width="100%" border="0" cellspacing="0" cellpadding="0">
+                $str .= ' <table class="table table-condensed table-hover">
                 <tr>
-                <th>Domain</th>
-                <th>Status</th>
-                <th>Product</th>
-                <th>Expiration Date</th>
+									<th>Domain</th>
+									<th>Status</th>
+									<th>Product</th>
+									<th>Expiration Date</th>
+									<th>Hide</th>
                 </tr>
                 ';
                 foreach ($expiring_certs as $cert) {
@@ -110,12 +111,18 @@ function enom_pro_admin_ssl_certs ($vars)
                     else
                         $str .= 'Not Issued';
                     $str .='</td>
-                    <td style="text-align:center;"><a href="http://www.enom.com/secure/configure-ssl-certificate.aspx?certid='.$cert['CertID'].'" target="_blank" class="btn" >'.$cert['status'].'</a></td>
+                    <td style="text-align:center;"><a href="http://www.enom.com/secure/configure-ssl-certificate.aspx?certid='.$cert['CertID'].'" target="_blank" class="btn btn-default" >'.$cert['status'].'</a></td>
                     <td style="text-align:center;">'.$cert['desc'].'</td>
                     <td style="text-align:center;">'.$cert['expiration_date'].'</td>
                     ';
+									$str .= '<td><a href="index.php?action=enom_pro_hide_ssl&certid='.$cert['CertID'].'">[x]</a></td>';
                 }
-            } else {
+            } elseif (! isset($_REQUEST['show_all']) && "" != ($hidden = enom_pro::get_addon_setting('ssl_hidden'))) {
+							//May be hidden
+							$count = count($hidden);
+							$str .= '<p>No Certificates Expiring in the next '.$enom->get_addon_setting('ssl_days').' days. </p>';
+							$str .= "<p><b>But there are $count hidden certificates</b>" . ' <a href="#" class="show_hidden_ssl">Show All</a></p>';
+						} else {
                 //No expiring certs
                 $str .= '<p>Phew! No Certificates Expiring in the next '.$enom->get_addon_setting('ssl_days').' days.</p>';
             }
@@ -130,18 +137,23 @@ function enom_pro_admin_ssl_certs ($vars)
     $content = '<div id="enomSSL"><span class="enom_pro_loader"></span></div>';
     $jquerycode = '
     var $refresh_ssl = jQuery("#refreshEnomSSL");
-    $refresh_ssl.live("submit", function  () {
-    var $elem = jQuery("#enomSSL");
-    $elem.html(\'<span class="enom_pro_loader"></span>\');
+    $refresh_ssl.on("submit", function  () {
+    	var $elem = jQuery("#enomSSL");
+    	$elem.html(\'<span class="enom_pro_loader"></span>\');
         jQuery.post("index.php", $(this).serialize(),
             function(data){
                 $elem.html(data);
         });
         return false;
     });
-        if($refresh_ssl.is(":visible")) {
-            $refresh_ssl.trigger("submit");
-        }
+		if($refresh_ssl.is(":visible")) {
+				$refresh_ssl.trigger("submit");
+		}
+		$("#enomSSL").on("click", ".show_hidden_ssl", function  (){
+			$refresh_ssl.append("<input type=\"hidden\" name=\"show_all\" value=\"true\" />");
+			$refresh_ssl.trigger("submit");
+			return false;
+		});
 ';
     return array(
             'title'=>'<a href="'.enom_pro::MODULE_LINK.'">@NAME@</a> - SSL Certificates '.
@@ -151,6 +163,7 @@ function enom_pro_admin_ssl_certs ($vars)
             'jquerycode'=>enom_pro::minify($jquerycode),
         );
 }
+
 add_hook("AdminHomeWidgets",1,"enom_pro_admin_ssl_certs");
 
 function enom_pro_admin_expiring_domains ($vars)
@@ -240,36 +253,6 @@ function enom_pro_admin_expiring_domains ($vars)
                         <td class="enom_stat_label">Extended Redemption Period</td>
                     </tr>
             </tbody></table>';
-            $str .= '
-                    <script>
-                    jQuery(function($) {
-                        $("body").on("click", ".enom_stat_button .btn", function  () {
-                            if ($(this).hasClass("disabled")) {
-                                return false;
-                            }
-                            var tab = $(this).data("tab");
-                            if (! tab) {
-                                return true;
-                            }
-                            var $loader = $(this).closest(".enom_stat_button").find(".enom_pro_loader");
-                            $loader.show();
-                            $.ajax({
-                                url: $(this).attr("href"),
-                                success: function  (data){
-                                    $("#enom_pro_"+tab).html(data);
-                                },
-                                complete: function  (){
-                                    $loader.hide();
-                                },
-                                error: function  (xhr){
-                                    console.log(xhr.responseText);
-                                }
-                            });
-                            return false;
-                        });
-                    });
-                    </script>
-                    ';
             $content = $str;
         } catch (Exception $e) {
             $content = $e->getMessage();
@@ -280,7 +263,7 @@ function enom_pro_admin_expiring_domains ($vars)
     $content = '<div id="enomExpiring"><span class="enom_pro_loader"></span></div>';
     $jquerycode = '
             var $refresh_expiring = jQuery("#refreshExpiring");
-    $refresh_expiring.live("submit", function  () {
+    $refresh_expiring.on("submit", function  () {
         var $elem = jQuery("#enomExpiring");
         $elem.html(\'<span class="enom_pro_loader"></span>\');
         jQuery.post("index.php", $(this).serialize(),
@@ -330,7 +313,7 @@ function enom_pro_admin_transfers ($vars)
                 ';
                 foreach ($transfers as $domain) {
                     //Loop through the actual domains returned from WHMCS
-                    $edit_domain_button = '<a href="clientsdomains.php?userid='.$domain['userid'].'&id='.$domain['id'].'" class="btn" >Edit</a>';
+                    $edit_domain_button = '<a href="clientsdomains.php?userid='.$domain['userid'].'&id='.$domain['id'].'" class="btn btn-default" >Edit</a>';
                     $str .= '<tr>
                     <td>
                         <a class="domain_name" target="_blank" title="View WHOIS" href="http://www.whois.net/whois/'.$domain['domain'].'">'.$domain['domain'].'
@@ -376,7 +359,7 @@ function enom_pro_admin_transfers ($vars)
                                 $str .= "
                             <tr>
                                 <td><a target=\"_blank\" title=\"Order Date: {$status['orderdate']}\" href=\"https://www.enom.com/domains/TransferStatus.asp?transferorderid={$status['orderid']}\">{$status['orderid']}</a></td>
-                                <td style=\"text-align:center;\" >".($action ? $action : '<input type="image" src="images/icons/disabled.png "class="button" title="No actions for this order status"/>')."</td>
+                                <td style=\"text-align:center;\" >".($action ? $action : '<input type="image" src="images/icons/disabled.png" class="btn btn-default" title="No actions for this order status"/>')."</td>
                                 <td>{$status['statusdesc']}</td>
                             </tr>
                                 ";
@@ -453,7 +436,7 @@ function get_enom_pro_widget_form ($action, $id)
     ob_start();?>
     <form id="<?php echo $id; ?>" class="refreshbutton" action="<?php echo $_SERVER['PHP_SELF'];?>">
         <input type="hidden" name="<?php echo $action; ?>" value="1" />
-        <input type="submit" value="Refresh" class="btn" />
+        <input type="submit" value="Refresh" class="btn btn-default" />
     </form>
     <?php
     $return = ob_get_contents();
@@ -465,13 +448,21 @@ function get_enom_pro_widget_form ($action, $id)
 /**
  * Admin Page Action API Hooks
  */
-add_hook("AdminAreaHeadOutput", 1, "enom_pro_admin_css");
+add_hook("AdminAreaHeadOutput", -89512, "enom_pro_admin_css");
 function enom_pro_admin_css ()
 {
     //	Only load on applicable pages
     $pages = array('index.php', 'addonmodules.php');
-    if (in_array(basename($_SERVER['SCRIPT_NAME']), $pages) || ( isset($_GET['module']) && 'enom_pro' == $_GET['module']) ) {
-        return '<link rel="stylesheet" href="../modules/addons/enom_pro/css/admin.min.css" />';
+    if (in_array(basename($_SERVER['SCRIPT_NAME']), $pages) || ( isset($_GET['module']) && 'enom_pro' == $_GET['module']) ) { ob_start(); ?>
+			<link rel="stylesheet" href="../modules/addons/enom_pro/css/admin.min.css" />
+			<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap.min.css" />
+			<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap-theme.min.css" />
+			<script src="<?php echo enom_pro::MODULE_LINK ?>&action=getAdminJS"></script>
+<?php
+
+			$return = ob_get_contents();
+			ob_end_clean();
+			return $return;
     } else {
         return '';
     }
@@ -494,6 +485,10 @@ function enom_pro_admin_actions ()
         'save_domain_pricing',
         'dismiss_manual_upgrade',
         'install_ssl_template',
+				'enom_pro_hide_ssl',
+				'sort_domains',
+				'dismiss_alert',
+				'getAdminJS'
     );
     //Only load this hook if an ajax request is being run
     if (! (isset($_REQUEST['action']) && in_array($_REQUEST['action'], $enom_actions))) {
@@ -511,7 +506,7 @@ function enom_pro_admin_actions ()
     }
     die(); 
 }
-add_hook("AdminAreaPage",1,"enom_pro_admin_actions");
+add_hook("AdminAreaPage",-284917,"enom_pro_admin_actions");
 /**
  * Makes the namespinner markup
  */
@@ -544,7 +539,7 @@ function enom_pro_namespinner ()
                     $id = str_replace(array(".","-"), "_", $domain['domain']);
                     echo ' <div class="spin_result">';
                             echo '<input type="checkbox" id="'.$id.'" name="domains[]" value="'.$domain['domain'].'" />';
-                            echo '<label class="btn" for="'.$id.'">'.$domain['domain'];
+                            echo '<label class="btn btn-default" for="'.$id.'">'.$domain['domain'];
                             echo '</label>';
                                 echo '<select name="domainsregperiod['.$domain['domain'].']" >';
                                     foreach ($results['pricing'][$domain['tld']] as $year=>$price) {
@@ -581,18 +576,22 @@ function enom_pro_namespinner ()
         $spinnercode .= '<link rel="stylesheet" href="modules/addons/enom_pro/spinner_style.css" />';
     }
     switch (enom_pro::get_addon_setting("spinner_animation")) {
-        case "Off":
-            $animation = '.show();';
-        break;
-        case "Slow":
-            $animation = '.slideDown(750);';
-        break;
-        case "Medium":
-            $animation = '.slideDown(400);';
-        break;
-        case "Fast":
-            $animation = '.slideDown(200);';
-        break;
+			case "Slow":
+				$animation = '.slideDown(750);';
+			break;
+
+			case "Medium":
+				$animation = '.slideDown(400);';
+			break;
+
+			case "Fast":
+				$animation = '.slideDown(200);';
+			break;
+
+			case "Off":
+			default:
+				$animation = '.show();';
+			break;
     }
     $spinnercode .= '
     <div id="spinner_ajax_results" style="display:none"></div>
@@ -603,7 +602,7 @@ function enom_pro_namespinner ()
             if (typeof(jQuery) == "undefined") alert("eNom Pro Debug\n\njQuery is not loaded. Make sure your template includes jquery javascript library in header.tpl. See jquery.org for more info.");
             ';
     }
-    if (count($_REQUEST['sld']) > 1) {
+    if (isset($_REQUEST['sld']) && count($_REQUEST['sld']) > 1) {
         //Check for the cart SLD array
         $domain = $_REQUEST['sld'][0].'.'.ltrim($_REQUEST['tld'][0],'.');
     } elseif (isset($_REQUEST['sld'])) {
@@ -615,12 +614,11 @@ function enom_pro_namespinner ()
     $domain = addslashes($domain);
     $spinnercode .= '
     jQuery(function($) {
-        $.post("'.$_SERVER['PHP_SELF'].'", {action:"spinner", domain:"'.$domain.'" }, function  (data) {
+        $.post("'.$_SERVER['PHP_SELF'].'", {action:"spinner", domain:"'.$domain.'", token: "'.$GLOBALS['smarty']->_tpl_vars['token'].'" }, function  (data) {
             $("#spinner_ajax_results").html(data)'.$animation.'
         });
-        $("#spinner_ajax_results INPUT").live("click", function  () {
+        $("#spinner_ajax_results").on("click", "INPUT", function  () {
             var $elem = $(this);
-            console.log($elem);
             if ($elem.is(":checked")) {
                 $elem.parent("div").addClass("checked")
             } else {
@@ -632,7 +630,9 @@ function enom_pro_namespinner ()
 
     return array('namespinner' => $spinnercode);
 }
-add_hook("ClientAreaPage",1,"enom_pro_namespinner");
+
+
+add_hook("ClientAreaPage",-10101,"enom_pro_namespinner");
 
 function enom_pro_clientarea_transfers ($vars)
 {
@@ -654,9 +654,6 @@ function enom_pro_clientarea_transfers ($vars)
         echo json_encode($enom->getTransfers($uid));
         //Exit, we don't need to send WHMCS ;-)
         die();
-        //The purpose of this method reduces lag by eliminating the expensive remote API calls that must be made to enom and deferring them until after the page has loaded
-        //This ensures that your webserver is not waiting for the API response to send your WHMCS clientarea
-        //End AJAX
     } else {
         //Prepare the query to check if the current user has any pending enom transfers
         $query = "SELECT `userid`,`type`,`domain`,`status` 
@@ -666,7 +663,7 @@ function enom_pro_clientarea_transfers ($vars)
                     AND `userid`=" . $uid;
         $result = mysql_query($query);
         //Check if there are any results
-        $there_are_results = (mysql_num_rows($result) > 0) ? true : false;
+				$there_are_results = $result && (mysql_num_rows($result) > 0) ? true : false;
         if ($there_are_results) {
             $enom_pro_transfers = true;
         } else {
@@ -680,16 +677,15 @@ add_hook("ClientAreaPage",2,"enom_pro_clientarea_transfers");
 function enom_pro_srv_page ($vars)
 {
     if (! ('clientarea.php' == basename($_SERVER['SCRIPT_NAME']) && isset($_GET['action']) && 'domaindetails' == $_GET['action']))
-        return;
-    $domain_id = $vars['domainid'];
+        return $vars;
     if (! (isset( $vars['registrar']) && 'enom' == $vars['registrar']) )
-        return;
+        return $vars;
     //We only get here if there is an active enom domain on the domain details.tpl page
     $vars['enom_srv'] = true;
 
     return $vars;
 }
-add_hook("ClientAreaPage",3,"enom_pro_srv_page");
+add_hook("ClientAreaPage",-30101,"enom_pro_srv_page");
 add_hook("DailyCronJob", 1, "enom_pro_cron");
 function enom_pro_cron() {
 	$salt = 'lJsif3n1F9GKeStIdM9VAeJrrPC1grpBpSZLtWMb';
@@ -706,7 +702,8 @@ function enom_pro_cron() {
 			$new_lock = md5( strrev( $salt ) . date( 'Ymd' ) . $salt );
 			$enom->set_addon_setting( 'cron_lock', $new_lock );
 		} else {
-			echo ENOM_PRO . ': Cron Already Ran Once Today' . PHP_EOL;
-			//echo 'Tomorrows lock: ' . md5( strrev( $salt ) . date( 'Ymd', strtotime('+1 day') ) . $salt ) . PHP_EOL;
+		$msg = ENOM_PRO . ': Cron Already Ran Once Today';
+		echo $msg . PHP_EOL;
+		enom_pro::log_activity( $msg );
 	}
 }

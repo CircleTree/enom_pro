@@ -1,6 +1,9 @@
 <?php
 global $per_page;
 $per_page = 25;
+/**
+ * @param enom_pro $enom_pro
+ */
 function pager ($enom_pro)
 {
     global $per_page;
@@ -26,7 +29,6 @@ function pager ($enom_pro)
 /**
  * @var $this enom_pro
  */
-// $this = new enom_pro();
 if ($this->is_pricing_cached()) :
 ?>
     <div id="enom_pro_pricing_import_page">
@@ -39,72 +41,123 @@ if ($this->is_pricing_cached()) :
             ?>
             <div class="slideup fixed" data-timeout="3">
                 <?php if (isset($_GET['cleared'])) : ?>
+											<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <div class="alert alert-info">Cache Cleared</div>
                 <?php endif; ?>
                 <?php if (isset($_GET['new'])):?>
                     <div class="alert alert-success">
+											<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                         <p>Created <?php echo (int) $_GET['new']?> new TLD pricing in WHMCS</p>
                     </div>
                 <?php endif;?>
                 <?php if (isset($_GET['updated'])):?>
                     <div class="alert alert-success">
+											<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                         <p>Updated <?php echo (int) $_GET['updated']?> TLD pricing in WHMCS</p>
                     </div>
                 <?php endif;?>
                 <?php if (isset($_GET['deleted'])):?>
-                    <div class="alert alert-error">
+                    <div class="alert alert-danger">
+											<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                         <p>Deleted <?php echo (int) $_GET['deleted']?> TLD pricing from WHMCS</p>
                     </div>
                 <?php endif;?>
                 <?php if (isset($_GET['nochange'])):?>
-                    <div class="alert alert-error">
+                    <div class="alert alert-danger">
+											<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                         <p>No Pricing was Selected for Update</p>
                     </div>
                 <?php endif;?>
             </div>
         <?php endif;?>
-        <p>Import pricing for all 3 domain order types: register, transfer &amp; renew. Once they are imported, you can 
-        bulk edit all 3 pricing tiers, or you can fine tune pricing in directly in whmcs by 
-        clicking the edit link: <span class="badge badge-info">WHMCS</span> 
-        <a href="#" class="btn btn-mini" onClick="alert('Click the pricing row you want to edit, silly!');return false;">Edit</a></p>
-        <div class="alert alert-danger">
-            <p><b>USD Only:</b> eNom only supports USD currency, please make sure you set up your pricing accordingly.</p>
-        </div>
-      <div class="alert">
-        <span><b>IMPORTANT:</b> Clicking Save will overwrite any specific order type pricing that have been customized
-                (IE: Different prices for register vs. transfer).
-                <em>If in doubt, please <a href="#" class="clear_all btn btn-mini" >Clear All Pricing</a> before saving.</em>
-            </span><br/>
-      </div>
-        <div class="alert alert-info">
-            <span>If you change price mode from retail/wholesale - please make sure you <a class="btn btn-mini" href="<?php echo enom_pro::MODULE_LINK; ?>&action=clear_price_cache">clear the pricing cache</a></span>
-        </div>
+				<div class="alert alert-info">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&uarr;</button>
+					<p>
+						Import pricing for all 3 domain order types:
+					<ul class="list-inline">
+						<li><span class="badge">register</span></li>
+						<li><span class="badge">transfer</span></li>
+						<li><span class="badge">renew</span></li>
+					</ul>
+					Once they are imported, you can
+					bulk edit all 3 pricing tiers, or you can fine tune pricing in directly in whmcs by
+					clicking the edit link: <span class="badge">WHMCS</span>
+					<a href="#" class="btn btn-default btn-xs" onClick="alert('Click the pricing row you want to edit, silly!');return false;">Edit</a></p>
+				</div>
+				<?php if (! enom_pro_controller::isDismissed('usd')) :?>
+					<div class="alert alert-danger fade in">
+						<button type="button" class="close" data-dismiss="alert" data-alert="usd" aria-hidden="true">&times;</button>
+							<p><b>USD Only:</b> eNom only supports USD currency, please make sure you set up your pricing accordingly.</p>
+					</div>
+				<?php endif;?>
+				<?php if (! enom_pro_controller::isDismissed('order-types')) :?>
+					<div class="alert alert-warning fade in">
+						<button type="button" class="close" data-dismiss="alert" data-alert="order-types" aria-hidden="true">&times;</button>
+						<span><b>IMPORTANT:</b> Clicking Save will overwrite any specific order type pricing that have been customized
+										(IE: Different prices for register vs. transfer).<br/>
+										<em>If in doubt, please <a href="#" class="clear_all btn  btn-default btn-xs" >Clear All Pricing</a> before saving.</em>
+								</span>
+					</div>
+				<?php endif;?>
         <?php //pager($this);?>
+			<div class="well">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&uarr;</button>
+				<h3>Bulk Import</h3>
+				<p>Import all TLDs on this page</p>
+				<form class="bulkImport form-inline" role="form" action="<?php echo enom_pro::MODULE_LINK ?>">
+					<div class="form-group">
+						<div class="input-group">
+							<label for="percentMarkup" class="input-group-addon">Markup</label>
+							<input type="number" min="0" max="100" name="markup" id="percentMarkup" class="form-control input-sm" placeholder="Markup"/>
+							<span class="input-group-addon">%</span>
+						</div>
+						<div class="input-group">
+							<label for="roundTo" class="input-group-addon">Round up to $</label>
+							<select name="round" id="roundTo" class="form-control input-sm-2">
+								<option value="99">.99</option>
+								<option value="98">.98</option>
+								<option value="95">.95</option>
+								<option value="50">.50</option>
+								<option value="01">.01</option>
+								<option value="00">.00</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="input-group checkbox">
+							<label for="overWriteWHMCS">
+								<input type="checkbox" name="overwrite" id="overWriteWHMCS" class="input-group-addon"/>
+								Overwrite Values Already in WHMCS
+							</label>
+						</div>
+					</div>
+					<div class="btn-group pull-right">
+						<button type="submit" class="btn btn-primary">Preview</button>
+						<button type="button" class="btn btn-success savePricing">Save</button>
+
+						<div class="btn-group">
+							<button type="reset" class="btn btn-danger clear_all">Clear</button>
+							<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+								<span class="caret"></span>&nbsp;
+								<span class="sr-only">Toggle Dropdown</span>
+							</button>
+							<ul class="dropdown-menu clearDropdown" role="menu">
+								<li><a href="#" class="deleteFromWHMCS">Delete all from WHMCS</a></li>
+							</ul>
+						</div>
+					</div>
+				</form>
+			</div>
         <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>?module=enom_pro&view=pricing_import" id="enom_pro_pricing_import">
             <input type="hidden" name="action" value="save_domain_pricing" />
             <input type="hidden" name="start" value="<?php echo isset($_GET['start']) ? (int) $_GET['start'] : '0';?>" />
-            <div id="pricing_meta" class="clearfix">
-                <div class="floatright">
-                    <a href="#"
-                        class="btn ep_tt clear_all" 
-                        title="Clears current page pricing data">Clear All Pricing</a>
-                    <a href="#" 
-                        class="btn restore_all ep_tt"
-                        title="Restores all pricing to eNom Values">Restore All eNom Pricing</a>
-                </div>
-            </div>
-            <table class="datatable" id="enom_pro_pricing_table">
+            <table class="table table-bordered table-responsive" id="enom_pro_pricing_table">
                 <tr>
                     <th colspan="2">TLD</th>
                     <th>Status</th>
                     <?php foreach (array_keys(array_fill(1, enom_pro::get_addon_setting('pricing_years'), '')) as $key => $year) : ?>
                         <th colspan="1"><?php echo $year; ?> Year<?php if ($year > 1):?>s<?php endif;?>
-                            <a href="#"
-                                data-year="<?php echo $year?>"
-                                class="btn btn-mini toggle_years ep_tt"
-                                title="Toggle <?php echo $year; ?> year pricing">
-                                    Toggle
-                            </a>
                         </th>
                     <?php endforeach;?>
                 </tr>
@@ -119,7 +172,7 @@ if ($this->is_pricing_cached()) :
                         <td>
                             <a href="#" 
                             data-tld="<?php echo $tld?>" 
-                            class="btn btn-mini toggle_tld ep_tt" 
+                            class="btn btn-xs btn-default toggle_tld ep_tt"
                             title="Import &amp; Toggle Pricing from eNom for this TLD">&rarr;</a>
                         </td>
                         <?php if (count($whmcs_pricing_for_tld) > 0) : ?>
@@ -128,10 +181,10 @@ if ($this->is_pricing_cached()) :
                                 <table class="whmcs_actions noborder">
                                     <tr>
                                         <td>
-                                            <span class="badge badge-info">WHMCS</span>
+                                            <span class="badge alert-info">WHMCS</span>
                                         </td>
                                         <td>
-                                            <a target="_blank" class="ep_lightbox btn btn-mini" 
+                                            <a target="_blank" class="ep_lightbox btn btn-xs btn-default"
                                                 data-pricing="true"
                                                 data-target="configdomains.php?action=editpricing&id=<?php echo $whmcs_id;?>"
                                                 data-title="Pricing for .<?php echo $tld;?>"
@@ -140,7 +193,7 @@ if ($this->is_pricing_cached()) :
                                         <td>
                                         <a href="#" 
                                             data-tld="<?php echo $tld?>" 
-                                            class="btn btn-mini delete_tld ep_tt" 
+                                            class="btn btn-danger btn-xs delete_tld ep_tt"
                                             title="Delete Pricing from WHMCS">x</a>
                                         </td>
                                     </tr>
@@ -148,55 +201,53 @@ if ($this->is_pricing_cached()) :
                             </td>
                         <?php else:?>
                             <td>
-                               <span class="badge small">Not In WHMCS</span>
+                               <span class="badge">WHMCS</span>
                             </td>
                         <?php endif;?>
                         <?php foreach (array_keys(array_fill(1, enom_pro::get_addon_setting('pricing_years'), '')) as $key => $year) : ?>
+														<?php
+														$enom_price = number_format(($price * $year), 2);
+														$whmcs_price = isset($whmcs_pricing_for_tld[$year]) ? number_format($whmcs_pricing_for_tld[$year],2) : false;
+														?>
                             <td>
                                 <table class="noborder">
-                                    <tr>
-                                    <td>
-                                        <?php 
-                                        $enom_price = number_format(($price * $year), 2);
-                                        $whmcs_price = isset($whmcs_pricing_for_tld[$year]) ? number_format($whmcs_pricing_for_tld[$year],2) : false;
-                                        ?>
-                                        <span class="price ep_tt" title="eNom Price"><?php echo '$'. $enom_price;?></span>
-                                    </td>
-                                        <td>
-                                            <span
-                                                class="badge toggle_this_val ep_tt"
-                                                title="Copy eNom Price ($<?php echo $enom_price;?>)">
-                                                &rsaquo;
-                                            </span>
-                                        </td>
-                                        <td colspan="<?php echo ($whmcs_price ? 1 : 2)?>">
-                                            <input
-                                                data-tld="<?php echo $tld?>"
-                                                data-year="<?php echo $year;?>"
-                                                data-price="<?php echo $enom_price;?>"
-                                                <?php if ($whmcs_price) :?>
-                                                  data-whmcs="<?php echo $whmcs_price; ?>"
-                                                <?php endif;?>
-                                              class="price"
-                                                size="6"
-                                                type="text"
-                                                name="pricing[<?php echo $tld?>][<?php echo $year?>]"
-                                                value=""
-                                            />
-                                        </td>
-                                        <?php if ($year == 1):?>
-                                            <td>
-                                                <a href="#" 
-                                                    data-tld="<?php echo $tld?>" 
-                                                    class="mult_row ep_tt btn btn-mini" 
-                                                    title="Multiply Current Price for Row">X</a>
-                                            </td>
-                                        <?php endif;?>
-                                        <?php if ($whmcs_price) :?>
-                                          <td><span class="price ep_tt" title="WHMCS Registration Price">$<?php echo $whmcs_price; ?></span></td>
-                                        <?php endif;?>
-                                    </tr>
-                                </table>                        
+																	<tr>
+																			<td>
+																				<div class="input-group input-group-sm">
+																					<span class="price ep_tt input-group-addon input-sm" title="eNom Price">
+																						<?php echo '$'. $enom_price;?>
+																					</span>
+																					<input
+																							data-tld="<?php echo $tld?>"
+																							data-year="<?php echo $year;?>"
+																							data-price="<?php echo $enom_price;?>"
+																							<?php if ($whmcs_price) :?>
+																								data-whmcs="<?php echo $whmcs_price; ?>"
+																							<?php endif;?>
+																						class="myPrice form-control input-sm"
+																							size="6"
+																							type="text"
+																							name="pricing[<?php echo $tld?>][<?php echo $year?>]"
+																							value=""
+																					/>
+																					<?php if ($whmcs_price) :?>
+																						<span class="price ep_tt input-group-addon input-sm" title="WHMCS Price">
+																							$<?php echo $whmcs_price; ?></span>
+																					<?php endif;?>
+																				</div>
+																			</td>
+																	</tr>
+																	<?php if ($year == 1):?>
+																		<tr>
+																			<td>
+																				<a href="#"
+																					 data-tld="<?php echo $tld?>"
+																					 class="mult_row ep_tt btn  btn-default btn-xs"
+																					 title="Multiply Current Price for Row">&cross;</a>
+																			</td>
+																		</tr>
+																	<?php endif;?>
+                                </table>
                             </td>
                         <?php endforeach;?>
                     </tr>
@@ -208,18 +259,14 @@ if ($this->is_pricing_cached()) :
         <div>
             <?php echo count($this->getAllDomainsPricing()) ?> TLDs.
             Cached from <?php echo $this->get_price_cache_date();?>
-            <a class="btn btn-mini" href="<?php echo enom_pro::MODULE_LINK; ?>&action=clear_price_cache">Clear Cache</a>
+            <a class="btn btn-default btn-xs" href="<?php echo enom_pro::MODULE_LINK; ?>&action=clear_price_cache">Clear Cache</a>
         </div>
-        <br/>
-        <a href="<?php echo enom_pro::HELP_URL;?>" target="_blank" class="btn alignright btn-info">Pricing Import Feedback? Suggestions?</a>
-    </div>
   <script>
 jQuery(function($) {
   $(".pager a").on('click', function () {
     var unsaved = false, $link = $(this);
     $('.price').each(function (k,v) {
       $input = $(v);
-      console.log($input.val(),$input.data('whmcs'));
       if ($input.val() != '' && $input.val() != $input.data('whmcs')) {
         unsaved = true;
       }
@@ -234,20 +281,22 @@ jQuery(function($) {
     }
   })
 })
-
   </script>
+</div>
 <?php //End <div id="enom_pro_pricing_import_page">?>
 <?php else: ?>
-    <div class="alert" id="loading_pricing">
+    <div class="alert alert-warning" id="loading_pricing">
         <h3>Loading <?php echo enom_pro::is_retail_pricing() ? 'retail' : 'wholesale';?> pricing for <?php echo count($this->getTLDs())?> top level domains.</h3>
         <div class="enom_pro_loader"></div>
-        <h3 class="hidden a_minute"><em>This may take a minute...</em></h3>
+        <div class="alert alert-info hidden a_minute">
+					<h3><em>This will take a minute...</em></h3>
+        </div>
     </div>
     <script>
     jQuery(function($) {
     	setTimeout(function  (){
-    		$(".alert .hidden").fadeIn(); 
-    	}, 3000);
+    		$(".a_minute").removeClass('hidden').hide().fadeIn();
+    	}, 7000);
     	  $.ajax({
     		    url: '<?php echo enom_pro::MODULE_LINK; ?>&action=get_pricing_data',
     		    success: function  (data)

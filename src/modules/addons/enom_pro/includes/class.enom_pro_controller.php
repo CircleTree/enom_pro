@@ -6,7 +6,30 @@ class enom_pro_controller {
   private $enom;
     function __construct() {
     }
-    public function route ()
+
+	/**
+	 * @param $data
+	 */
+	public static function sendGzipped( $data ) {
+		if ( isset( $_SERVER['HTTP_ACCEPT_ENCODING'] ) && strstr( $_SERVER['HTTP_ACCEPT_ENCODING'],
+				'gzip' )
+		) {
+			header( 'Content-Encoding: gzip' );
+			$compressed = gzencode( $data, 9 );
+			$orignalLength = strlen($data);
+			$compressedLength = strlen($compressed);
+
+			if ($orignalLength) {
+				header( "X-Compression-Info: original $orignalLength bytes, gzipped $compressedLength bytes " .
+					'(' . round( 100 / $orignalLength * $compressedLength ) . '%)' );
+			}
+			echo $compressed;
+		} else {
+			echo $data;
+		}
+	}
+
+	public function route ()
     {
         if (method_exists(__CLASS__, $_REQUEST['action'])) {
             $this->enom = new enom_pro();
@@ -17,7 +40,7 @@ class enom_pro_controller {
     }
     protected function resend_enom_transfer_email ()
     {
-        $response = $this->enom->resend_activation((string) $_REQUEST['domain']);
+        $response = $this->enom->resendActivation((string) $_REQUEST['domain']);
         if (is_bool($response)) {
             echo "Sent!";
         }
@@ -238,6 +261,29 @@ class enom_pro_controller {
         }
         $this->send_json($data);
     }
+	protected function enom_pro_hide_ssl () {
+		$current = enom_pro::get_addon_setting('ssl_hidden');
+		if (empty($current)) {
+			$current = array();
+		}
+		if (! in_array($_REQUEST['certid'], $current)) {
+			$current[] = (int) $_REQUEST['certid'];
+		}
+		enom_pro::set_addon_setting('ssl_hidden', $current);
+		if (enom_pro::$cli) {
+			return;
+		}
+		if ($this->is_ajax()) {
+			$this->send_json(array('hidden'));
+		} else {
+			if (isset($_SERVER['HTTP_REFERER']) && strstr($_SERVER['HTTP_REFERER'], 'enom_pro')) {
+				$location = 'addonmodules.php?module=enom_pro';
+			} else {
+				$location = 'index.php';
+			}
+			header('Location: ' . $location);
+		}
+	}
     protected function save_domain_pricing ()
     {
         if (isset($_POST['pricing'])) {
@@ -329,7 +375,8 @@ class enom_pro_controller {
         if ($updated == 0 && $new == 0 && 0 == $deleted) {
             $url .= '&nochange';
         }
-        header('Location: '.$url);
+			$url .= '#enom_pro_pricing_table';
+			header('Location: '.$url);
     }
     /**
      * Send GZIP'd json if browser supports it
@@ -341,11 +388,124 @@ class enom_pro_controller {
         header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
         header('Content-Type: application/json', true);
         $json_data = json_encode($data);
-        if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) {
-            header('Content-Encoding: gzip');
-            echo gzencode($json_data, 9);
-        } else {
-            echo $json_data;
-        }
-    }
+			self::sendGzipped( $json_data );
+		}
+	protected function sort_domains () {
+		$query = 'SELECT `id`, `extension` FROM `tbldomainpricing`';
+		$result = mysql_query($query);
+		if (! $result) {
+			return false;
+		}
+		$sorted = array();
+		/** @var array $ignored  tlds that should be prepended before an update*/
+		$ignored = isset($_REQUEST['ignore']) ? array_keys($_REQUEST['ignore']) : array();
+
+		$found_ignored = array();
+		while ($row = mysql_fetch_assoc($result)) {
+			if (! in_array($row['extension'], $ignored)) {
+				$sorted[] = array(
+					'processed' => ltrim($row['extension'], '.'),
+					'extension' => $row['extension'],
+					'id'				=> $row['id']
+				);
+			} else {
+				$found_ignored[] = array(
+					'processed' => ltrim($row['extension'], '.'),
+					'extension' => $row['extension'],
+					'id'				=> $row['id']
+				);
+			}
+		}
+		array_multisort($sorted);
+		array_multisort($found_ignored);
+		//Reverse the array, because we're going to push them onto the $sorted 1 at a time
+		$found_ignored = array_reverse($found_ignored);
+		if ($_REQUEST['order'] == 'desc') {
+			$sorted = array_reverse($sorted);
+		}
+		foreach ($found_ignored as $ignored_row) {
+			array_unshift($sorted, $ignored_row);
+		}
+		foreach ($sorted as $new_order => $new_row) {
+			$id = $new_row['id'];
+			$query = "UPDATE `tbldomainpricing` SET `order` = '{$new_order}}' WHERE `id` = '{$id}}';";
+			mysql_query($query);
+		}
+
+		header("Location: " . enom_pro::MODULE_LINK . '&view=pricing_sort&sorted');
+	}
+
+	/**
+	 * Is this alert dismissed
+	 *
+	 * @param $alert
+	 *
+	 * @return bool
+	 */
+	public static function isDismissed ($alert)
+	{
+		return ! self::dismissAlert($alert, false);
+	}
+	const DISMISSED_ALERTS = 'dismissed_alerts';
+
+	/**
+	 * Dismiss the alert
+	 *
+	 * @param      $alert
+	 *
+	 * @param bool $save should it be saved? Default true
+	 *
+	 * @return bool true if dismissed, false if already dismissed
+	 */
+	private static function dismissAlert ($alert, $save = true)
+	{
+		$current = enom_pro::get_addon_setting(self::DISMISSED_ALERTS);
+		if (empty($current)) {
+			$current = array();
+		}
+		if (! in_array($alert, $current)) {
+			$current[] = $alert;
+			if ($save) {
+				enom_pro::set_addon_setting(self::DISMISSED_ALERTS, $current);
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+	public static function dismiss_alert ()
+	{
+		echo self::dismissAlert(trim($_REQUEST['alert']));
+	}
+	public static function getAdminJS ()
+	{
+		$filepath = ENOM_PRO_ROOT . 'js/jquery.admin.min.js';
+		$result = ioncube_read_file( $filepath );
+		if (is_int($result)) {
+			if (3 == $result) {
+			throw new Exception('An updated Loader should be installed to read the file. ', 3);
+			} else {
+				throw new Exception("Ioncube Loader Error #" . $result, $result);
+			}
+		}
+		header('Content-Type: application/javascript');
+		$expire = 'Expires: ' . gmdate('D, d M Y H:i:s', strtotime('+30 days')) . ' GMT';
+		header($expire, true);
+		self::caching_headers($filepath);
+		self::sendGzipped($result);
+	}
+	public static function caching_headers ($file) {
+		$timestamp = filemtime( $file );
+		$gmt_mtime = gmdate('r', $timestamp );
+		header('ETag: "'.md5($timestamp.$file).'"');
+		header('Last-Modified: '.$gmt_mtime);
+		header('Cache-Control: public');
+		header_remove('Pragma');
+		if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) || isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
+			if ($_SERVER['HTTP_IF_MODIFIED_SINCE'] == $gmt_mtime || str_replace('"', '', stripslashes($_SERVER['HTTP_IF_NONE_MATCH'])) == md5($timestamp.$file)) {
+				header('HTTP/1.1 304 Not Modified');
+				exit();
+			}
+		}
+	}
 }

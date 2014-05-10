@@ -459,6 +459,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group whmcs
 	 */
 	function test_WHMCSCheckboxReturn () {
+		$this->e->set_addon_setting('debug', 'on');
 		$this->assertSame('on', $this->e->get_addon_setting('debug'));
 	}
 	/**
@@ -548,4 +549,17 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		//We can see in code coverage if the cache is used, vs another db lookup
 		$this->e->get_addon_setting('ssl_days');
 	}
+
+	/**
+	 * @group whmcs
+	 */
+	public function testHideSSL() {
+		$c = new enom_pro_controller();
+		//http://localhost/whmcs/admin/index.php?action=enom_pro_hide_ssl&certid=26773
+		$_REQUEST['action'] = 'enom_pro_hide_ssl';
+		$_REQUEST['certid'] = '26773';
+		$c->route();
+		$this->assertContains($_REQUEST['certid'], enom_pro::get_addon_setting('ssl_hidden'));
+	}
+
 }
