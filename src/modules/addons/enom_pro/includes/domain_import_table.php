@@ -6,7 +6,7 @@ $domains_array = $enom->getDomainsWithClients($enom->get_addon_setting('import_p
 
 $list_meta = $enom->getListMeta();
 if ( empty($domains_array) ) { ?>
-<div class="alert alert-error">
+<div class="alert alert-danger">
 	<p>No domains returned from eNom.</p>
 </div>
 <?php 
@@ -36,7 +36,7 @@ if ( empty($domains_array) ) { ?>
         Search: <?php echo htmlentities($_REQUEST['s']);?>
         <?php 
     } else { ?>
-<div class="alert alert-error">No Results for Current Page.</div>
+<div class="alert alert-danger">No Results for Current Page.</div>
 <?php } ?>
 <a class="btn btn-block btn-inverse clear_search" href="#">Clear Search</a>
 <?php endif;?>
@@ -54,7 +54,7 @@ if ( empty($domains_array) ) { ?>
 		</td>
 		<td>
             <?php if (! isset($domain['client'])) : ?>
-                <div class="alert alert-error">
+                <div class="alert alert-danger">
 				<p>
 					Not Found <a class="btn btn-primary create_order"
 						data-domain="<?php echo $domain_name;?>"
@@ -110,7 +110,7 @@ if ( empty($domains_array) ) { ?>
             <?php else: ?>
                 <div class="alert alert-success">
 				<p>
-					Associated with client: <a class="btn"
+					Associated with client: <a class="btn btn-default"
 						data-domain="<?php echo $domain_name;?>"
 						href="clientsdomains.php?userid=<?php echo $domain['client']['userid'];?>&domainid=<?php echo $domain['whmcs_id'];?>">
                         <?php echo $domain['client']['firstname'] . ' ' . $domain['client']['lastname'];?>
@@ -129,7 +129,7 @@ if ( empty($domains_array) ) { ?>
 		href="<?php echo enom_pro::MODULE_LINK; ?>&view=domain_import&start=<?php echo $prev_start;?>#import_table">&larr;
 			Previous </a></li>
     <?php endif;?>
-    <?php $next_start = isset($_REQUEST['start']) ? ($_REQUEST['start'] + $per_page) : $per_page; ?>
+    <?php $next_start = isset($_REQUEST['start']) ? ((int)$_REQUEST['start'] + $per_page) : $per_page; ?>
     <?php if ($next_start <= $list_meta['total_domains']) :?>
         <li class="next"><a data-start="<?php echo $next_start;?>"
 		href="<?php echo enom_pro::MODULE_LINK; ?>&view=domain_import&start=<?php echo $next_start;?>#import_table">Next

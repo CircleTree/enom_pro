@@ -57,7 +57,7 @@
             </td>
         </tr>
     </table>
-    <div id="import_ajax_messages" class="alert alert-error hidden" ></div>
+    <div id="import_ajax_messages" class="alert alert-danger hidden" ></div>
     <form method="POST" id="import_table_form">
         <input type="hidden" name="action" value="render_import_table" />
         <input type="hidden" name="start" value="<?php echo isset($_GET['start']) ? (int) $_GET['start'] : 1;?>" />
@@ -103,7 +103,7 @@
                             ?>
                 </select>
                 <?php else :?>
-                <div class="alert alert-error">
+                <div class="alert alert-danger">
                     WHMCS API Error:
                     <?php echo '<pre>';
                     print_r($clients);
@@ -129,20 +129,20 @@
                 </div>
                 <table style="width: 100%">
                     <tr>
-                        <td><label for="dnsmanagement" class="btn btn-mini">DNS Management</label>
+                        <td><label for="dnsmanagement" class="btn btn-xs btn-default">DNS Management</label>
                             <input type="checkbox" name="dnsmanagement" id="dnsmanagement" />
                         </td>
                         <td style="width: 50%"><label for="idprotection"
-                            class="btn btn-mini">ID Protect</label> <input type="checkbox"
+                            class="btn btn-xs btn-default">ID Protect</label> <input type="checkbox"
                             name="idprotection" id="idprotection" />
                         </td>
                     </tr>
                     <tr>
-                        <td><label for="orderemail" class="btn btn-mini">Send order
+                        <td><label for="orderemail" class="btn btn-xs btn-default">Send order
                                 confirmation email</label> <input type="checkbox" name="noemail"
                             id="orderemail" />
                         </td>
-                        <td><label for="generateinvoice" class="btn btn-mini">Generate
+                        <td><label for="generateinvoice" class="btn btn-xs btn-default">Generate
                                 Invoice</label> <input type="checkbox" name="noinvoice"
                             id="generateinvoice" />
                         </td>
@@ -159,7 +159,7 @@
                         </td>
                         <td>
                             <div id="invoice_email" style="display: none;">
-                                <label for="noinvoiceemail" class="btn btn-mini">Send Invoice
+                                <label for="noinvoiceemail" class="btn btn-xs btn-default">Send Invoice
                                     Notification Email</label> <input type="checkbox"
                                     name="noinvoiceemail" id="noinvoiceemail" /><br />
                             </div>
@@ -167,7 +167,7 @@
                     </tr>
                   <tr>
                     <td colspan="2">
-                      <label for="free_domain" class="btn btn-mini">
+                      <label for="free_domain" class="btn btn-xs btn-default">
                         Free Domain
                       </label> <input type="checkbox" name="free_domain" id="free_domain" />
                     </td>
@@ -187,7 +187,7 @@
     <table id="domain_caches">
         <tr>
             <td>
-                <a class="btn btn-inverse btn-mini btn-block" href="addonmodules.php?module=enom_pro&action=clear_cache">Clear Cache</a><br/>
+                <a class="btn btn-inverse btn-xs btn-block" href="addonmodules.php?module=enom_pro&action=clear_cache">Clear Cache</a><br/>
                 Domains Cached from <span class="domains_cache_time"><?php echo $this->get_domain_cache_date(); ?></span>
             </td>
             <td id="local_storage">

@@ -24,12 +24,12 @@ class enom_pro_license
         } elseif (!$this->checkLicense()) {
             $return .='<h1>There seems to be a problem with your license</h1>';
             $reissue_href = 'https://mycircletree.com/client-area/clientarea.php?action=products';
-            $reissue_link = '<a href="'.$reissue_href.'" class="btn btn-primary btn-large" target="_blank">Reissue directly from the Client Area</a>';
+            $reissue_link = '<a href="'.$reissue_href.'" class="btn btn-primary btn-lg" target="_blank">Reissue directly from the Client Area</a>';
             $return .= '<h2>You may:'.$reissue_link.'</h2><pre>'.$license.'</pre>';
             $support_link = "
                 https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7&
             subject=Product%20Support%20for:'.$this->productname.'.%20License:%20'.$license.'";
-            $return .='<h2>or, please <a class="btn" href="'. $support_link .'">
+            $return .='<h2>or, please <a class="btn btn-default" href="'. $support_link .'">
                     open a support ticket</a></h2>';
             $return .='<h3>Enter a new License from the <a href="configaddonmods.php">addon page</a></h3>';
             $return .='<div class="errorbox"><b>Support Information</b><br/>';
@@ -39,8 +39,8 @@ class enom_pro_license
             }
             $return .='License Status: '.$this->status.'<br/>';
             $return .='</div>';
-            throw new LicenseExeption(enom_pro::minify($return));
             $this->error = true;
+            throw new LicenseExeption(enom_pro::minify($return));
         } else {
             //No license err
             $this->error = FALSE;

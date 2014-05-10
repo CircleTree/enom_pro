@@ -33,41 +33,41 @@ if ($first_page):
                 </td>
                 <td><span 
                     title="<?php echo ($domain['enom_dns'] == 1) ? 'Enom DNS' : 'Self Hosted DNS'; ?>"
-                    class="badge ep_tt <?php echo ($domain['enom_dns'] == 1) ? 'badge-success' : 'badge-important' ?>">
+                    class="badge ep_tt <?php echo ($domain['enom_dns'] == 1) ? 'alert-success' : 'alert-danger' ?>">
                         <?php echo ($domain['enom_dns'] == 1) ? 'On' : 'Off'; ?>
                     </span>
                 </td>
                 <td>
                     <span 
                     title="<?php echo ($domain['privacy'] == 1) ? 'Privacy Enabled' : 'Privacy Disabled'; ?>"
-                        class="badge ep_tt <?php echo ($domain['privacy'] == 1) ? 'badge-success' : 'badge-important' ?>">
+                        class="badge ep_tt <?php echo ($domain['privacy'] == 1) ? 'alert-success' : 'alert-danger' ?>">
                         <?php echo ($domain['privacy'] == 1) ? 'On' : 'Off'; ?>
                     </span>
                 </td>
                 <td>
                     <span 
                         title="<?php echo ($domain['autorenew'] == 1) ? 'Auto-Renew Enabled' : 'Auto-Renew Disabled'; ?>"
-                        class="badge ep_tt <?php echo ($domain['autorenew'] == 1) ? 'badge-success' : 'badge-important' ?>">
+                        class="badge ep_tt <?php echo ($domain['autorenew'] == 1) ? 'alert-success' : 'alert-danger' ?>">
                         <?php echo ($domain['autorenew'] == 1) ? 'On' : 'Off'; ?>
                     </span>
                 </td>
                 <td>
                     <?php if (isset($domain['userid'])) :?>
-                        <a class="btn" href="clientssummary.php?userid=<?php echo $domain['userid'];?>">User</a>
+                        <a class="btn btn-primary" href="clientssummary.php?userid=<?php echo $domain['userid'];?>">User</a>
                     <?php endif;?>
                 </td>
                 <td>
                     <?php if (isset($domain['domainid'])) :?>
-                        <a class="btn" href="clientsdomains.php?id=<?php echo $domain['domainid'];?>">Domain</a>
+                        <a class="btn btn-primary" href="clientsdomains.php?id=<?php echo $domain['domainid'];?>">Domain</a>
                     <?php else:?>
-                        <a class="btn" href="addonmodules.php?module=enom_pro&view=domain_import&s=<?php echo urlencode($domain['sld'].'.'.$domain['tld']);?>">Import</a>
+                        <a class="btn btn-primary" href="addonmodules.php?module=enom_pro&view=domain_import&s=<?php echo urlencode($domain['sld'].'.'.$domain['tld']);?>">Import</a>
                     <?php endif;?>
                 </td>
             </tr>
             <?php if ($key == (count($domains) - 1)) : ?>
             <tr>
                 <td colspan="7">
-                    <a class="btn btn-block btn-mini load_more"
+                    <a class="btn btn-block btn-default btn-xs load_more"
                     href="<?php echo enom_pro::MODULE_LINK.'&action=get_domains' . ( isset($_GET['tab']) ? '&tab='.$_GET['tab'] : '')
                     . '&start='.(count($domains) + $start); ?>">Load More</a>
                     <div class="enom_pro_loader small hidden"></div>
@@ -83,11 +83,14 @@ if ($first_page):
 jQuery(function($) {
     $(".load_more").on('click', function  () {
         var $button = $(this),
-        $row = $button.closest('tr');
+        $row = $button.closest('tr'),
+					$loader = $button.closest('td').find('.enom_pro_loader');
+			$loader.removeClass('hidden');
         $.get($(this).attr('href'), function  (data) {
             $(".domain-widget-response tbody").append(data);
             $button.add($row).hide(); 
             $(".ep_tt").tooltip();
+					$loader.remove();
         });
         return false;
     });

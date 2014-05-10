@@ -43,6 +43,7 @@ require_once ENOM_PRO_INCLUDES . 'class.enom_pro_license.php';
  */
 function enom_pro_config ()
 {
+	$view = '';
     $spinner_help = " <br/><span class=\"textred\" >
             Make sure your active cart & domain checker templates have {\$namespinner} in them.</span>";
     if (isset($_GET['view'])) {
@@ -53,11 +54,12 @@ function enom_pro_config ()
         	case 'domain_import':
         	   $view = ' - Import Domains from eNom';
             break;
+					case 'pricing_sort':
+						$view = ' - Sort TLD Pricing';
+						break;
         }        
-    } else {
-        $view = '';
     }
-    $button = '<a class="btn btn-inverse btn-small" '.
+    $button = '<a class="btn btn-inverse btn-sm" '.
                                 ' style="color:white;text-decoration:none;display:inline;vertical-align:middle;"'.
                                 ' href="'.enom_pro::MODULE_LINK.'">Go to @NAME@ &rarr;</a>';
     $save_button =  array(
@@ -163,7 +165,7 @@ function enom_pro_config ()
 				'ssl_email_enabled' => array(
 					'FriendlyName' => "Enable SSL Reminder Email", "Type" => "yesno",
 					'default' => true,
-					"Description" => enom_pro::is_ssl_email_installed() > 0 ?  '<a class="btn btn-block" href="configemailtemplates.php?action=edit&id='.enom_pro::is_ssl_email_installed().'">Edit SSL Email</a>' : '<a class="btn btn-block" href="' . enom_pro::MODULE_LINK . '&action=install_ssl_template">Install SSL Email</a>'
+					"Description" => enom_pro::is_ssl_email_installed() > 0 ?  '<a class="btn btn-block btn-default" href="configemailtemplates.php?action=edit&id='.enom_pro::is_ssl_email_installed().'">Edit SSL Email</a>' : '<a class="btn btn-block btn-default" href="' . enom_pro::MODULE_LINK . '&action=install_ssl_template">Install SSL Email</a>'
 				),
 				'ssl_email_days' => array(
 					'FriendlyName' => "Expiring SSL Reminder Time",
@@ -380,23 +382,29 @@ function enom_pro_activate ()
 function enom_pro_sidebar ($vars)
 {
     ob_start(); ?>
+	<div class="enom_pro_output">
 <span class="header"> <img src="images/icons/domainresolver.png"
     class="absmiddle" width=16 height=16 /><?php echo ENOM_PRO?>
 </span>
 <ul class="menu">
     <li>
-        <a class="btn btn-block" href="<?php echo enom_pro::MODULE_LINK; ?>">Home</a>
+        <a class="btn btn-block btn-default" href="<?php echo enom_pro::MODULE_LINK; ?>">Home</a>
     </li>
     <li>
-        <a class="btn btn-block"
+        <a class="btn btn-block btn-default"
         href="<?php echo enom_pro::MODULE_LINK; ?>&view=domain_import">Import Domains</a>
     </li>
     <li>
-        <a class="btn btn-block"
-        href="<?php echo enom_pro::MODULE_LINK; ?>&view=pricing_import">Import Pricing <span class="badge">BETA</span></a>
+        <a class="btn btn-block btn-default"
+        href="<?php echo enom_pro::MODULE_LINK; ?>&view=pricing_import">Import Pricing</a>
     </li>
+	<li>
+        <a class="btn btn-block btn-default"
+        href="<?php echo enom_pro::MODULE_LINK; ?>&view=pricing_sort"><span class="label label-primary">NEW!</span>Sort Pricing</a>
+    </li>
+
     <li>
-        <a class="btn btn-block ep_lightbox" 
+        <a class="btn btn-block btn-default ep_lightbox"
             data-width="90%" 
             title="<?php echo ENOM_PRO;?> Settings" 
             href="configaddonmods.php#enom_pro">Settings</a>
@@ -404,17 +412,49 @@ function enom_pro_sidebar ($vars)
     <li>
         <?php $id = enom_pro::is_ssl_email_installed(); ?>
         <?php if ($id > 0) :?>
-            <a class="btn btn-block ep_lightbox"
+            <a class="btn btn-block btn-default ep_lightbox"
             id="edit_ssl_sidebar"
             title="Edit SSL Reminder Email"
             data-width="90%" 
             data-no-refresh="true"
             href="configemailtemplates.php?action=edit&id=<?php echo $id?>">Edit SSL Email</a>
         <?php else:?>
-            <a class="btn btn-block" href="<?php echo enom_pro::MODULE_LINK ?>&action=install_ssl_template">Install SSL Email</a>
+            <a class="btn btn-block btn-default" href="<?php echo enom_pro::MODULE_LINK ?>&action=install_ssl_template">Install SSL Email</a>
         <?php endif;?>
     </li>
 </ul>
+	<span class="header"><?php echo ENOM_PRO; ?> Helpful Links</span>
+	<ul class="menu">
+		<li>
+			<a target="_blank"
+				 href="systemmodulelog.php"
+				 class="ep_tt ep_lightbox"
+				 data-title="WHMCS Module Log"
+				 data-width="90%"
+				 data-no-refresh="true"
+				 title="Useful for API Activity">Module Log</a>
+		</li>
+		<li>
+			<a target="_blank"
+				 href="systemactivitylog.php"
+				 class="ep_tt ep_lightbox"
+				 data-title="WHMCS Activity Log"
+				 data-width="90%"
+				 data-no-refresh="true"
+				 title="Useful for viewing CRON Job Activity">Activity Log</a>
+		</li>
+		<li>
+			<a href="configregistrars.php#enom"
+				 class="ep_lightbox"
+				 id="edit_registrar"
+				 title="Edit eNom Registrar Settings"
+				 data-width="90%"
+				>eNom Registrar Settings</a>
+		</li>
+		<li>
+			<a href="configaddonmods.php#enom_pro"><?php echo ENOM_PRO; ?> Settings</a>
+		</li>
+	</ul>
 <span class="header"><?php echo ENOM_PRO; ?> Meta</span>
 <ul class="menu">
     <li>
@@ -423,51 +463,20 @@ function enom_pro_sidebar ($vars)
         <?php echo enom_pro_license::get_last_checked_time_ago();?>
     </li>
     <li>
-        <a class="btn btn-mini btn-block" href="<?php echo enom_pro::MODULE_LINK?>&action=do_upgrade_check">
+        <a class="btn btn-default btn-xs btn-block" href="<?php echo enom_pro::MODULE_LINK?>&action=do_upgrade_check">
             Check for updates
         </a>
     </li>
     <li><a
         href="http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43"
-        target="_blank">View Changelog</a>
+        target="_blank">View Change-log</a>
     </li>
     <li>
-        <a href="'.enom_pro::INSTALL_URL.'" target="_blank">Install Service</a>
+        <a href="<?php echo enom_pro::INSTALL_URL; ?>" target="_blank">Install Service</a>
     </li>
 </ul>
-<span class="header">Helpful Links</span>
-<ul class="menu">
-    <li>
-        <a target="_blank" 
-            href="systemmodulelog.php" 
-            class="ep_tt ep_lightbox" 
-            data-title="WHMCS Module Log"
-            data-width="90%"
-            data-no-refresh="true"
-            title="Useful for API Activity">Module Log</a>
-    </li>
-    <li>
-        <a target="_blank" 
-            href="systemactivitylog.php" 
-            class="ep_tt ep_lightbox"
-            data-title="WHMCS Activity Log"
-            data-width="90%"
-            data-no-refresh="true" 
-            title="Useful for viewing CRON Job Activity">Activity Log</a>
-    </li>
-    <li>
-        <a href="configregistrars.php#enom"
-            class="ep_lightbox"
-            id="edit_registrar"
-            title="Edit eNom Registrar Settings"
-            data-width="90%" 
-        >eNom Registrar Settings</a>
-    </li>
-    <li>
-        <a href="configaddonmods.php#enom_pro">@NAME@ Settings</a>
-    </li>
-</ul>
-<?php 
+	</div>
+<?php
     $sidebar = ob_get_contents();
     ob_end_clean();
     return $sidebar;
@@ -487,12 +496,13 @@ function enom_pro_output ($vars)
         $enom = new enom_pro();
         ?>
         
-        <script src="../modules/addons/enom_pro/js/jquery.admin.min.js"></script>
+        <script src="../modules/addons/enom_pro/js/bootstrap.min.js"></script>
          <div id="enom_pro_dialog" title="Loading..." style="display:none;" >
-            <iframe src="" id="enom_pro_dialog_iframe"></iframe>
+            <iframe src="about:blank" id="enom_pro_dialog_iframe"></iframe>
         </div>
+			<div class="enom_pro_output">
         <?php if (! is_writable(ENOM_PRO_TEMP)) :?>
-            <div class="alert alert-error">
+            <div class="alert alert-danger">
                 <p>Temp Directory is unwriteable. Please CHMOD 777 <?php echo ENOM_PRO_TEMP; ?> to continue.</p>
             </div>
         <?php endif;?>
@@ -508,7 +518,7 @@ function enom_pro_output ($vars)
             <?php if ((int) $_GET['ssl_email'] > 0) :?>
                 <div class="alert alert-success">
                     <p>Installed.
-                            <a class="btn" onclick="javascript:$('#edit_ssl_sidebar').trigger('click');return false;"
+                            <a class="btn btn-default" onclick="javascript:$('#edit_ssl_sidebar').trigger('click');return false;"
                                 href="configemailtemplates.php?action=edit&id=<?php echo (int) $_GET['ssl_email']?>">
                                 Edit Now
                             </a>
@@ -529,22 +539,22 @@ function enom_pro_output ($vars)
                             <li><a href="#" title="<?php echo $filepath?>" class="ep_tt" ><?php echo basename($filepath);?></a></li>
                         <?php endforeach;?>
                     </ul>
-                    <p>Otherwise, feel free to <a class="btn" href="<?php echo enom_pro::MODULE_LINK?>&action=dismiss_manual_upgrade">Dismiss Reminder</a></p>
+                    <p>Otherwise, feel free to <a class="btn btn-default" href="<?php echo enom_pro::MODULE_LINK?>&action=dismiss_manual_upgrade">Dismiss Reminder</a></p>
                 </div>
             <?php endif;?>
             <?php if (! empty($_SESSION['manual_files']['core_files'])):?>
-                <div class="alert alert-error">
+                <div class="alert alert-danger">
                 <div>
                         The following files were not writeable by the webserver, and will need to be manually upgraded, or
                         you can <input type="text" size="90" value="chmod -R 777 <?php echo ENOM_PRO_ROOT;?>"/> and 
-                        <a class="btn" href="<?php echo enom_pro::MODULE_LINK?>&action=do_upgrade">Try Again</a>
+                        <a class="btn btn-default" href="<?php echo enom_pro::MODULE_LINK?>&action=do_upgrade">Try Again</a>
                 </div>
                     <ul>
                         <?php foreach ($_SESSION['manual_files']['core_files'] as $filepath):?>
                             <li><a href="#" title="<?php echo $filepath?>" class="ep_tt" ><?php echo basename($filepath);?></a></li>
                         <?php endforeach;?>
                     </ul>
-                    <a class="btn" href="<?php echo enom_pro::MODULE_LINK?>&action=dismiss_manual_upgrade">Dismiss Reminder</a>
+                    <a class="btn btn-default" href="<?php echo enom_pro::MODULE_LINK?>&action=dismiss_manual_upgrade">Dismiss Reminder</a>
                 </div>
             <?php endif;?>
         <?php endif;?>
@@ -560,65 +570,13 @@ function enom_pro_output ($vars)
             $enom->getAvailableBalance();
         }
     ?>
-    <?php if (isset($_GET['upgraded'])) :?>
-        <div class="alert alert-success">
-            Upgrade Successful. Running version <?php echo ENOM_PRO_VERSION;?>.
-        </div>
-    <?php endif;?>
-    <?php if (isset($_GET['dismissed'])) :?>
-        <div class="alert alert-success slideup">
-            <p>Dismissed</p>
-        </div>
-    <?php endif;?>
-    <?php if (isset($_GET['checked'])):?>
-        <div class="alert <?php echo enom_pro_license::is_update_available() ? 'alert-warning' : 'alert-success';?>">
-            <h4>Checked for updates.</h4>
-            <?php if (! enom_pro_license::is_update_available()):?>
-                You are running the latest release.
-            <?php else:?>
-                Upgrade available.
-            <?php endif;?>
-        </div>
-    <?php endif;?>
-    <?php if (enom_pro_license::is_update_available()) :?>
-        <?php $status = $enom->license->get_supportandUpdates();?>
-        <?php if ($status['status'] != 'active') :?>
-        <?php //Support & updates expired ?>
-            <div class="alert alert-error">
-                <div class="floatright">
-                    <a class="btn btn-warning btn-large" href="<?php echo enom_pro::MODULE_LINK?>&action=do_upgrade_check">
-                        Already renewed? Click here to refresh.
-                    </a>
-                </div>
-                <p>Update Subscription Expired. Expired on <?php echo $status['duedate'];?></p>
-                <h1><a target="_blank" href="https://mycircletree.com/client-area/cart.php?gid=addons" class="btn btn-inverse" >Renew Now</a> 
-                to enjoy these great new features:</h1>
-                <div id="enom_pro_changelog"></div>
-            </div>
-        <?php else://active & update available?>
-            <?php if (! enom_pro::is_upgrader_compatible()):?>
-            <div class="errorbox">
-                <h3>Please upgrade PHP to use our auto-upgrade feature. 
-                Current PHP Version: <code><?php echo PHP_VERSION?></code> Recommended: ><code>5.3.6</code></h3>
-            </div>
-            <?php else: //Compatible?>
-                <div class="alert alert-success">
-                    <h2>Upgrade available!</h2>
-                    <span class="badge" >Update using our 1-click upgrade system.</span>
-                        <a id="doUpgrade" class="btn btn-large btn-success" href="<?php echo enom_pro_license::DO_UPGRADE_URL;?>">
-                        Upgrade to Version <?php echo enom_pro_license::get_latest_version();?> now!
-                    </a> -or- <a href="<?php echo $enom->get_upgrade_zip_url()?>">Download Now</a>
-                    <div id="enom_pro_changelog"></div>
-                </div>
-            <?php endif; //End upgrader compat. check?>
-        <?php endif;//End Support & updates expired?>
-    <?php endif;//End Update is Available?>
-    <div id="enom_pro_admin_widgets" class="clearfix" >
-        <div class="floatleft" style="width:50%;">
+   	<?php require_once ENOM_PRO_INCLUDES . 'admin_messages.php'; ?>
+    <div id="enom_pro_admin_widgets" class="row" >
+        <div class="col-xs-6">
             <?php enom_pro::render_admin_widget('enom_pro_admin_balance'); ?>
             <?php enom_pro::render_admin_widget('enom_pro_admin_expiring_domains');?>
         </div>
-        <div class="floatleft" style="width:50%;">
+        <div class="col-xs-6">
             <?php enom_pro::render_admin_widget('enom_pro_admin_transfers'); ?>
             <?php enom_pro::render_admin_widget('enom_pro_admin_ssl_certs'); ?>
         </div>
@@ -634,13 +592,13 @@ function enom_pro_output ($vars)
             <h2>Where do I enter my eNom API info?</h2>
             <p>
                 eNom PRO gets the registrar info directly from whmcs. To change your
-                registrar info, <a class="btn" href="configregistrars.php#enom">click
+                registrar info, <a class="btn btn-default" href="configregistrars.php#enom">click
                     here.</a>
             </p>
             <h2>No Admin Widgets?</h2>
             <p class="textred">
                 Make sure you add the admin roles you want to see the widgets under <a
-                    class="btn ep_lightbox" target="_blank" href="configadminroles.php">WHMCS Admin Roles</a>.
+                    class="btn  btn-default ep_lightbox" target="_blank" href="configadminroles.php">WHMCS Admin Roles</a>.
             </p>
             <h1>Quick Start</h1>
             <h2>Client Area Transfers</h2>
@@ -689,11 +647,12 @@ function enom_pro_output ($vars)
             <h3>
                 Lost? Order our professional installation service here: <a
                     href="<?php echo enom_pro::INSTALL_URL;?>" target="_blank"
-                    class="btn">Install Service</a>
+                    class="btn btn-default">Install Service</a>
             </h3>
         </div>
+			</div>
     <?php } catch (EnomException $e) { ?>
-            <div class="alert alert-error">
+            <div class="alert alert-danger">
                 <h2>There was a problem communicating with the eNom API:</h2>
                 <?php $system_bit = substr($e->getCode(), 0, 1); ?>
                 <?php 
@@ -750,7 +709,7 @@ switch ($error_bit) {
                 <?php echo enom_pro::render_admin_errors($e->get_errors());?>
             </div>
     <?php } catch (Exception $e) { ?>
-            <div class="alert alert-error">
+            <div class="alert alert-danger">
                 <h2>Error</h2>
                 <?php echo $e->getMessage(); ?>
             </div>

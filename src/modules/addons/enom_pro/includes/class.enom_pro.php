@@ -99,9 +99,12 @@ class enom_pro
         if (php_sapi_name() == 'cli') {
             self::$cli = true;
         } else {
+					if (! defined('CLIENTAREA')) {
             $this->license = new enom_pro_license();
+					}
         }
     }
+
     /**
      * Override api limit for specific request types
      * @param int $number
@@ -277,10 +280,14 @@ class enom_pro
 
         return (int) $this->xml->transferorder->transferorderdetail->transferorderdetailid;
     }
-    /**
-     * Converts all array values to uppercase
-     * @param array $values
-     */
+
+	/**
+	 * Converts all array values to uppercase
+	 *
+	 * @param array $values
+	 *
+	 * @return array
+	 */
     public static function array_to_upper (array $values)
     {
         $return = array();
@@ -309,15 +316,19 @@ class enom_pro
         }
         throw $exception;
     }
-    /**
-     * Run the cURL call to the eNom API with the given API command
-     * sets $this->xml to a simplexml object
-     * @param string $command the API command to run
-     * $this->error (bool)
-     * @throws InvalidArgumentException
-     * @throws EnomException
-     * @throws RemoteException
-     */
+
+	/**
+	 * Run the cURL call to the eNom API with the given API command
+	 * sets $this->xml to a simplexml object
+	 *
+	 * @param string $command the API command to run
+	 * $this->error (bool)
+	 *
+	 * @return bool
+	 * @throws InvalidArgumentException
+	 * @throws EnomException
+	 * @throws RemoteException
+	 */
     public function runTransaction ($command)
     {
         if ($this->xml_override) {
@@ -482,16 +493,20 @@ class enom_pro
             return array('price' => 0.00);
         }
     }
-    /**
-     * Cached interface for all pricing data
-     * @param string $retail
-     * @return array tld => pricing
-     */
+
+	/**
+	 * Cached interface for all pricing data
+	 *
+	 * @param bool|string $retail
+	 *
+	 * @return array tld => pricing
+	 */
     public function getAllDomainsPricing ($retail = false)
     {
-        if ($this->get_cache_data($this->cache_file_all_prices)) {
-            return $this->get_cache_data($this->cache_file_all_prices);
-        }
+			if ( $this->is_pricing_cached() ) {
+					$cache_data = $this->get_cache_data( $this->cache_file_all_prices );
+					return $cache_data['data'];
+			}
         $tlds = $this->getTLDs();
         $this->override_request_limit(count($tlds));
         $return = array();
@@ -500,13 +515,15 @@ class enom_pro
             $return[$tld] = $data['price'];
         }
         if (count($return) > 0) {
-            $this->set_cached_data($this->cache_file_all_prices, $return);
+					$cached = array('data' => $return, 'retail' => ($this->is_retail_pricing() ? 1 : 0));
+            $this->set_cached_data($this->cache_file_all_prices, $cached);
         }
         return $return;
     }
     public function is_pricing_cached ()
     {
-        return ! (FALSE === $this->get_cache_data($this->cache_file_all_prices));
+			$cache_data = $this->get_cache_data( $this->cache_file_all_prices );
+			return (false !== $cache_data  && isset($cache_data['retail']) && $cache_data['retail'] == $this->is_retail_pricing());
     }
     public function render_domain_import ()
     {
@@ -516,6 +533,11 @@ class enom_pro
     {
         require_once ENOM_PRO_INCLUDES . 'pricing_import.php';
     }
+	public function  render_pricing_sort()
+	{
+        require_once ENOM_PRO_INCLUDES . 'pricing_sort.php';
+
+	}
     /**
      * Check for upgrader compatibility against known missing core PHP components
      * @return boolean
@@ -563,7 +585,7 @@ class enom_pro
     {
         $query = "SELECT `id`,`userid`,`type`,`domain`,`status` FROM `tbldomains` 
                 WHERE `registrar`='enom' AND `status`='Pending Transfer'";
-        if (!is_null($userid)) {
+        if (! is_null($userid)) {
             $query .= " AND `userid`=".(int) $userid;
         }
         $result = mysql_query($query);
@@ -729,12 +751,19 @@ class enom_pro
         $this->runTransaction('CertGetCerts');
         $return = array();
         $days = $this->get_addon_setting('ssl_days');
+			$hidden = $this->get_addon_setting('ssl_hidden');
+			if (empty($hidden)) {
+				$hidden = array();
+			}
+			if (isset($_REQUEST['show_all'])) {
+				$hidden = array();
+			}
         if ( empty( $this->xml->CertGetCerts->Certs->Cert) )
             return $return;
         foreach ($this->xml->CertGetCerts->Certs->Cert as $cert) {
             $expiring_timestamp = strtotime($cert->ExpirationDate);
-            $expiry_filter = (time() + ($days * 60 * 60 * 24));
-            if ($expiring_timestamp < $expiry_filter) {
+            $expiry_filter = (time() + ((int)$days * 60 * 60 * 24));
+            if ($expiring_timestamp < $expiry_filter && ! in_array((int) $cert->CertID, $hidden)) {
                 $formatted_result = array(
                         'domain'=> (array) $cert->DomainName,
                         'status'=> (string) $cert->CertStatus,
@@ -921,12 +950,16 @@ class enom_pro
      * @var bool
      */
     private $is_get_all_domains = false;
-    /**
-     * Get domains
-     * @param number||true $limit number of results to get, true to get all 
-     * @param number $start offset of returned record. default 1
-     * @return multitype:multitype:number string boolean
-     */
+
+	/**
+	 * Get domains
+	 *
+	 * @param int        $limit
+	 * @param int|number $start offset of returned record. default 1
+	 *
+	 * @internal param $ number||true $limit number of results to get, true to get all
+	 * @return multitype:multitype:number string boolean
+	 */
     public function getDomains ($limit = 25, $start = 1)
     {
         $this->limit = $limit;
@@ -974,7 +1007,7 @@ class enom_pro
                         'tld'			=> 		(string) $domain->tld,
                         'expiration'	=>		(string) $domain->{'expiration-date'},
                         'enom_dns'		=>		(strtolower($domain->{'ns-status'}) == 'yes' ? true : false),
-                        'privacy'		=>		($domain->wppsstatus == 'Enabled' ? true : false),
+                        'privacy'		=>		(strtolower($domain->wppsstatus) == 'enabled' ? true : false),
                         'autorenew'		=>		(strtolower($domain->{'auto-renew'}) == "yes" ? true : false),
                     );
             }
@@ -1123,12 +1156,15 @@ class enom_pro
     }
     /**
      * Gets WHOIS data for domain
+		 *
      * @param string $domain domain name
-     * @return 
+     *
+		 * @return
      *     array ('registrant', 'administrative', 'technical' =>
-     *         array ('organization' => '..', 
-     *             fname, lname, address1, address2, city, stateprovince,
+     *         array ('organization' =>
+		 * 					array ( fname, lname, address1, address2, city, stateprovince,
      *             postalcode, country, phone, phoneext, fax, emailaddress )
+		 * 					)
      *     )
      */
     public function getWHOIS ($domain)
@@ -1271,17 +1307,19 @@ class enom_pro
             );
         }
     }
-    /**
-     * 
-     * @param string $tab IOwn current names in this account
-     *      ExpiringNames names nearing expiration
-     *      ExpiredDomains expired but able to renew
-     *      RGP RGP and Extended RGP names
-     *      Promotion names on promotional basis
-     * @param number $limit
-     * @param number $start
-     * @return Ambigous <multitype:multitype:number, multitype:, boolean, mixed>
-     */
+
+	/**
+	 *
+	 * @param string     $tab IOwn current names in this account
+	 *      ExpiringNames names nearing expiration
+	 *      ExpiredDomains expired but able to renew
+	 *      RGP RGP and Extended RGP names
+	 *      Promotion names on promotional basis
+	 * @param int|number $limit
+	 * @param int|number $start
+	 *
+	 * @return Ambigous <multitype:multitype:number, multitype:, boolean, mixed>
+	 */
     public function getDomainsTab ($tab, $limit = 25, $start = 1)
     {
         $this->setParams(array('Tab' => $tab));
@@ -1303,14 +1341,17 @@ class enom_pro
         }
         return $domains;
     }
-    /**
-     *
-     * @param  string          $url
-     * @param  array           $get
-     * @param  array           $options
-     * @return mixed           $data
-     * @throws RemoteException On Failure
-     */
+
+	/**
+	 *
+	 * @param  string $url
+	 * @param  array  $get
+	 * @param  array  $options
+	 *
+	 * @throws RemoteException
+	 * @throws MissingDependencyException
+	 * @return mixed           $data
+	 */
     public static function curl_get($url, array $get = NULL, array $options = array())
     {
         if (! function_exists('curl_init') ) {
@@ -1330,14 +1371,18 @@ class enom_pro
         if (0 != curl_errno($ch)) {
             throw new RemoteException(curl_error($ch), RemoteException::CURL_EXCEPTION);
         }
-
-        return $result;
+			curl_close($ch);
+			return $result;
     }
-    /**
-     * Gets a setting for the addon
-     * @param  string $setting key for the setting to get
-     * @return string $value
-     */
+
+	/**
+	 * Gets a setting for the addon
+	 *
+	 * @param $key
+	 *
+	 * @internal param string $setting key for the setting to get
+	 * @return string $value
+	 */
     public static function get_addon_setting ($key)
     {
         //Check to see if this value is already cached
@@ -1345,12 +1390,12 @@ class enom_pro
              return self::$settings[$key];
          }
         //Fetch from db
-        $result = mysql_query("SELECT `setting`, `value` FROM `tbladdonmodules` WHERE `module`='enom_pro'");
+        $result = mysql_query('SELECT `setting`, `value` FROM `tbladdonmodules` WHERE `module`=\'enom_pro\'');
 			if ($result) {
         $settings = array();
         while ($setting = mysql_fetch_assoc($result)) {
             //Set the value in the cache
-            self::$settings[$setting['setting']] = $setting['value'];
+            self::$settings[$setting['setting']] = self::maybe_unserialize($setting['value']);
         }
         $val = isset(self::$settings[ $key ]) ? self::$settings[ $key ] : false;
         if (empty($val)) {
@@ -1372,9 +1417,10 @@ class enom_pro
         self::$settings = array();
         //Check for results
         $result = self::query("SELECT * from tbladdonmodules WHERE `setting` = '".self::escape($key)."'");
-        if (mysql_num_rows($result) == 1) {
+			$escValue = self::escape( self::maybe_serialize($value) );
+			if (mysql_num_rows($result) == 1) {
             //Update
-            self::query("UPDATE  `tbladdonmodules` SET  `value` =  '".self::escape($value)."' 
+            self::query("UPDATE  `tbladdonmodules` SET  `value` =  '". $escValue ."'
                     WHERE  `module` =  'enom_pro' 
                     AND  `setting` =  '".self::escape($key)."' 
                     LIMIT 1 ;");   
@@ -1387,7 +1433,7 @@ class enom_pro
                 ) VALUES (
                     'enom_pro',
                     '".self::escape($key)."',
-                    '".self::escape($value)."'
+                    '". $escValue ."'
                 );");
         }
     }
@@ -1426,9 +1472,9 @@ class enom_pro
 	        return;
 	    }
 	    if ( ! is_null($use_instead) ) {
-	        trigger_error( sprintf( __('%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.'), $msg, $since, $use_instead ) );
+	        trigger_error( sprintf( '%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.'), $msg, $since, $use_instead );
 	    } else {
-	        trigger_error( sprintf( __('%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.'), $msg, $since ) );
+	        trigger_error( sprintf( '%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.'), $msg, $since );
 	    }
 	}
 	public function get_upgrade_zip_url ()
@@ -1603,7 +1649,6 @@ class enom_pro
 	            'product'     => $cert_data['desc'],
 	    );
 		$return = false;
-		//TODO finish admin implementation pending feedback
 		try {
 			$email_enabled = self::get_addon_setting( 'ssl_email_enabled' ) == "on" ? true : false;
 			//Back compat
@@ -1791,5 +1836,96 @@ class enom_pro
 	    $widgets = mysql_fetch_assoc(self::query('SELECT `widgets` FROM `tbladminroles` WHERE `id` = '. $role['roleid']));
 	    $widgets_array = explode(',', $widgets['widgets']);
 	    return in_array($whmcs_string, $widgets_array);
+	}
+	/**
+	 * Unserialize value only if it was serialized.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $original Maybe unserialized original, if is needed.
+	 * @return mixed Unserialized data can be any type.
+	 */
+	static function maybe_unserialize( $original ) {
+		if ( self::is_serialized( $original ) ) // don't attempt to unserialize data that wasn't serialized going in
+			return @unserialize( $original );
+		return $original;
+	}
+
+	/**
+	 * Check value to find if it was serialized.
+	 *
+	 * If $data is not an string, then returned value will always be false.
+	 * Serialized data is always a string.
+	 *
+	 * @since 2.0.5
+	 *
+	 * @param mixed $data Value to check to see if was serialized.
+	 * @param bool $strict Optional. Whether to be strict about the end of the string. Defaults true.
+	 * @return bool False if not serialized and true if it was.
+	 */
+	static function is_serialized( $data, $strict = true ) {
+		// if it isn't a string, it isn't serialized
+		if ( ! is_string( $data ) )
+			return false;
+		$data = trim( $data );
+		if ( 'N;' == $data )
+			return true;
+		$length = strlen( $data );
+		if ( $length < 4 )
+			return false;
+		if ( ':' !== $data[1] )
+			return false;
+		if ( $strict ) {
+			$lastc = $data[ $length - 1 ];
+			if ( ';' !== $lastc && '}' !== $lastc )
+				return false;
+		} else {
+			$semicolon = strpos( $data, ';' );
+			$brace     = strpos( $data, '}' );
+			// Either ; or } must exist.
+			if ( false === $semicolon && false === $brace )
+				return false;
+			// But neither must be in the first X characters.
+			if ( false !== $semicolon && $semicolon < 3 )
+				return false;
+			if ( false !== $brace && $brace < 4 )
+				return false;
+		}
+		$token = $data[0];
+		switch ( $token ) {
+			case 's' :
+				if ( $strict ) {
+					if ( '"' !== $data[ $length - 2 ] )
+						return false;
+				} elseif ( false === strpos( $data, '"' ) ) {
+					return false;
+				}
+			// or else fall through
+			case 'a' :
+			case 'O' :
+				return (bool) preg_match( "/^{$token}:[0-9]+:/s", $data );
+			case 'b' :
+			case 'i' :
+			case 'd' :
+				$end = $strict ? '$' : '';
+				return (bool) preg_match( "/^{$token}:[0-9.E-]+;$end/", $data );
+		}
+		return false;
+	}
+
+
+	/**
+	 * Serialize data, if needed.
+	 *
+	 * @since 2.0.5
+	 *
+	 * @param mixed $data Data that might be serialized.
+	 * @return mixed A scalar data
+	 */
+	static function maybe_serialize( $data ) {
+		if ( is_array( $data ) || is_object( $data ) )
+			return serialize( $data );
+
+		return $data;
 	}
 }
