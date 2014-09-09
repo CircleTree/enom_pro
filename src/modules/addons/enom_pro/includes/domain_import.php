@@ -71,118 +71,166 @@
         </div>
     </form>
     <div id="create_order_dialog" title="Create Order">
-        <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>"
-            id="create_order_form">
-            <div id="ajax_messages" class="alert" style="display: none;"></div>
-            <div class="enom_pro_loader" style="display: none;"></div>
-            <div id="order_process">
-            <div class="alert alert-warning hidden" id="auto-renew-warning">
-                <p>     Auto-Renew is enabled for this domain. 
-                        Make sure to disable it after it has been imported into WHMCS,
-                        to avoid double billing. 
-                </p>
-            </div>
-                <input type="hidden" name="action" value="add_enom_pro_domain_order" />
-                <input type="hidden" name="domaintype" value="register" /> <input
-                    type="hidden" name="domain" value="" id="domain_field2" /><br />
-                <input type="text" name="domain_display" value="" id="domain_field"
-                    disabled="disabled" readonly="readonly" size="60" /> <br />
-                <?php $clients = enom_pro::whmcs_api('getclients', array('limitnum' =>
-                        ('Unlimited' == enom_pro::get_addon_setting('client_limit') ? 9999999999999 : enom_pro::get_addon_setting('client_limit')) //9 trillion 
-                ));
-                if ('success' == $clients['result']):
-                    $clients_array = $clients['clients']['client']; ?>
-                <label for="client_select">Client</label> <select name="clientid"
-                    id="client_select">
-                    <?php
-                    foreach ($clients_array as $client) {
-                        $label = htmlentities(utf8_decode($client['firstname'])) . ' ' . htmlentities(utf8_decode($client['lastname'])) . 
-                                (! empty($client['companyname']) ? ' ('. htmlentities($client['companyname']) .')' : '');
-                                echo '<option data-email="'.$client['email'].'" value="'.$client['id'].'">'. $label . '</option>';
-                            }
-                            ?>
-                </select>
-                <?php else :?>
-                <div class="alert alert-danger">
-                    WHMCS API Error:
-                    <?php echo '<pre>';
-                    print_r($clients);
-                                echo '</pre>';?>
-                </div>
-                <?php endif;?>
-                <label for="register_years">Years</label> <select name="regperiod"
-                    id="register_years">
-                    <?php for ($i = 1; $i <= 10; $i++) {
-                        echo '<option value="'.$i.'">'.$i.'</option>';
-                      }?>
-                </select>
-                <div class="row">
-                    <label for="expiresdate">Expires:</label>
-                    <input id="expiresdate" type="text" name="expiresdatelabel" value="" readonly/>
-                    <input type="hidden" name="expiresdate" value="" readonly/>
-                </div>
-                <div class="row">
-                    <label for="nextduedate">Next Due:</label>
-                    <input id="nextduedate" type="text" name="nextduedatelabel" value="" readonly/>
-                    <input type="hidden" name="nextduedate" value="" readonly/>
-                    <small>Change relative due dates in settings.</small>
-                </div>
-                <table style="width: 100%">
-                    <tr>
-                        <td><label for="dnsmanagement" class="btn btn-xs btn-default">DNS Management</label>
-                            <input type="checkbox" name="dnsmanagement" id="dnsmanagement" />
-                        </td>
-                        <td style="width: 50%"><label for="idprotection"
-                            class="btn btn-xs btn-default">ID Protect</label> <input type="checkbox"
-                            name="idprotection" id="idprotection" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="orderemail" class="btn btn-xs btn-default">Send order
-                                confirmation email</label> <input type="checkbox" name="noemail"
-                            id="orderemail" />
-                        </td>
-                        <td><label for="generateinvoice" class="btn btn-xs btn-default">Generate
-                                Invoice</label> <input type="checkbox" name="noinvoice"
-                            id="generateinvoice" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="payment_gateway">Payment gateway</label> <select
-                            name="paymentmethod" id="payment_gateway">
-                                <?php $methods = localapi('getpaymentmethods');
-                                foreach ($methods['paymentmethods']['paymentmethod'] as $gateway) {
-                                    echo '<option value="'.$gateway['module'].'">'.$gateway['displayname'].'</option>';
-                                }
-                                ?>
-                        </select>
-                        </td>
-                        <td>
-                            <div id="invoice_email" style="display: none;">
-                                <label for="noinvoiceemail" class="btn btn-xs btn-default">Send Invoice
-                                    Notification Email</label> <input type="checkbox"
-                                    name="noinvoiceemail" id="noinvoiceemail" /><br />
-                            </div>
-                        </td>
-                    </tr>
-                  <tr>
-                    <td colspan="2">
-                      <label for="free_domain" class="btn btn-xs btn-default">
-                        Free Domain
-                      </label> <input type="checkbox" name="free_domain" id="free_domain" />
-                    </td>
-                  </tr>
-                    <tr>
-                        <td colspan="2"><input type="submit" value="Create Order"
-                            class="btn btn-success btn-block aligncenter" />
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="hidden btn btn-block btn-success" id="import_next_button">
-                Import Next &rarr;
-            </div>
-        </form>
+			<form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>" id="create_order_form" class="container-fluid">
+				<input type="hidden" name="action" value="add_enom_pro_domain_order" />
+				<input type="hidden" name="domaintype" value="register" />
+				<input type="hidden" name="domain" value="" id="domain_field2" />
+				<div class="row">
+					<div id="ajax_messages" class="alert col-xs-12" style="display: none;"></div>
+					<div class="enom_pro_loader col-xs-6 col-xs-push-3" style="display: none;"></div>
+				</div>
+				<div id="order_process">
+					<div class="row">
+						<div class="alert alert-warning col-xs-12" id="auto-renew-warning" style="display: none;">
+							<p>     Auto-Renew is enabled for this domain.
+												Make sure to disable it after it has been imported into WHMCS,
+												to avoid double billing.
+							</p>
+						</div>
+						<div class="col-xs-12">
+							<label>
+								Domain<br/>
+								<input type="text" name="domain_display" value="" id="domain_field"
+									disabled="disabled" readonly="readonly" size="60"  class="col-xs-10"/>
+							</label>
+						</div>
+					</div>
+					<div class="row">
+
+						<?php $clients = enom_pro::whmcs_api('getclients', array('limitnum' =>
+										('Unlimited' == enom_pro::get_addon_setting('client_limit') ? 9999999999999 : enom_pro::get_addon_setting('client_limit')) //9 trillion
+						)); ?>
+
+					<?php if ('success' == $clients['result']):
+							$clients_array = $clients['clients']['client']; ?>
+						<label class="col-xs-6">
+							Client
+							<select name="clientid" id="client_select">
+								<?php foreach ($clients_array as $client) : ?>
+									<?php $label = htmlentities(utf8_decode($client['firstname'])) . ' ' .
+																 htmlentities(utf8_decode($client['lastname'])) .
+																(! empty($client['companyname']) ?
+																' ('. htmlentities($client['companyname']) .')' : ''); ?>
+										<option data-email="<?php echo $client['email']; ?>" value="<?php echo $client['id'] ?>">
+											<?php echo $label; ?>
+										</option>
+								<?php endforeach; ?>
+							</select>
+						</label>
+						<?php else :?>
+							<div class="alert alert-danger col-xs-12">
+								WHMCS API Error:
+								<pre>
+									<?php print_r($clients);?>
+								</pre>
+							</div>
+						<?php endif;?>
+						<label class="col-xs-4">
+							Years<br/>
+							<select name="regperiod" id="register_years">
+										<?php for ($i = 1; $i <= 10; $i++) {
+												echo '<option value="'.$i.'">'.$i.'</option>';
+											}?>
+							</select>
+						</label>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-4">
+							<div class="row">
+								<label for="expiresdate" class="col-xs-3">Expires</label>
+								<input id="expiresdate" type="text" name="expiresdatelabel" value="" readonly disabled class="col-xs-3" tabindex="-1"/>
+								<input type="hidden" name="expiresdate" value="" readonly/>
+							</div>
+						</div>
+						<div class="col-xs-6">
+							<div class="row">
+								<label for="nextduedate" class="col-xs-3">Next Due</label>
+								<input id="nextduedate" type="text" name="nextduedatelabel" value="" readonly disabled class="col-xs-3" tabindex="-1"/>
+								<input type="hidden" name="nextduedate" value="" readonly/>
+							</div>
+						</div>
+						<div class="col-xs-12">
+							<span class="help-block">Change relative due dates in settings.</span>
+						</div>
+					</div>
+
+					<div class="row">
+
+						<fieldset class="col-xs-4">
+							<legend>Domain Options</legend>
+							<label for="dnsmanagement" class="btn btn-xs btn-default">DNS Management</label>
+							<input type="checkbox" name="dnsmanagement" id="dnsmanagement" />
+
+							<label for="idprotection" class="btn btn-xs btn-default">ID Protect</label>
+							<input type="checkbox" name="idprotection" id="idprotection" />
+						</fieldset>
+
+						<fieldset class="col-xs-6">
+							<legend>Order Options</legend>
+							<div class="row">
+								<label for="payment_gateway" class="col-xs-12">Payment gateway</label>
+								<div class="col-xs-12">
+									<select
+												name="paymentmethod" id="payment_gateway">
+														<?php $methods = localapi('getpaymentmethods');
+														foreach ($methods['paymentmethods']['paymentmethod'] as $gateway) {
+																echo '<option value="'.$gateway['module'].'">'.$gateway['displayname'].'</option>';
+														}
+														?>
+									</select>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-8">
+									<label for="orderemail" class="btn btn-xs btn-default">Send order confirmation email</label>
+								</div>
+								<div class="col-xs-1">
+									<input type="checkbox" name="noemail" id="orderemail" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-8">
+									<label for="generateinvoice" class="btn btn-xs btn-default">
+										Generate Invoice</label>
+								</div>
+								<div class="col-xs-1">
+									<input type="checkbox" name="noinvoice" id="generateinvoice" />
+								</div>
+								<div class="col-xs-12 row">
+									 <div id="invoice_email" style="display: none;">
+										 <div class="col-xs-8">
+											 <label for="noinvoiceemail" class="btn btn-xs btn-default">
+												 Send Invoice Notification Email
+											 </label>
+										 </div>
+										 <div class="col-xs-1">
+											 <input type="checkbox" name="noinvoiceemail" id="noinvoiceemail" />
+										 </div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-8">
+									<label for="free_domain" class="btn btn-xs btn-default">
+										Free Domain
+									</label>
+								</div>
+								<div class="col-xs-1">
+									<input type="checkbox" name="free_domain" id="free_domain" />
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="center-block">
+						<input type="submit" value="Create Order" class="btn btn-success btn-block createOrder" />
+					</div>
+				</div> <?php //end #order_process ?>
+
+				<div class="btn btn-block btn-success" id="import_next_button" style="display: none;">
+						Import Next &rarr;
+				</div>
+			</form>
     </div>
     <table id="domain_caches">
         <tr>

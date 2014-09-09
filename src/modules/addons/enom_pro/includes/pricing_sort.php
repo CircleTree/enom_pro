@@ -11,30 +11,36 @@ $result = mysql_query('SELECT * from `tbldomainpricing` ORDER BY `order` ASC'); 
 			New order saved!
 		</div>
 	<?php endif;?>
-	<form method="get" action="<?php echo enom_pro::MODULE_LINK ?>" class="well">
+	<form method="get" action="<?php echo enom_pro::MODULE_LINK ?>" class="well form-inline row">
 		<input type="hidden" name="action" value="sort_domains" />
+			<div class="radio radio-inline col-xs-1">
+				<label>
+					<input type="radio" name="order" value="asc" checked/>
+					<span class="enom-pro-icon enom-pro-icon-sort-by-alpha" title="A-Z"></span>
+				</label>
+			</div>
+			<div class="radio radio-inline col-xs-1">
+				<label>
+					<input type="radio" name="order"  value="desc"/>
+						<span class="enom-pro-icon enom-pro-icon-sort-by-alpha-alt" title="Z-A"></span>
+				</label>
+			</div>
 
-		<label for="sortASC">A-Z</label>
-		<input type="radio" name="order" value="asc" id="sortASC" checked/>
+			<fieldset name="Ignore" title="Ignore" class="col-xs-2">
+				<legend>Keep these at the top:</legend>
+				<input type="checkbox" name="ignore[.com]" id="ignoreCOM" checked/>
+				<label for="ignoreCOM">.com</label>
 
-		<label for="sortDSC">Z-A</label>
-		<input type="radio" name="order"  value="desc" id="sortDSC"/>
-
-		<fieldset name="Ignore" title="Ignore" style="display: inline-block">
-			<legend>Keep these at the top:</legend>
-			<input type="checkbox" name="ignore[.com]" id="ignoreCOM" checked/>
-			<label for="ignoreCOM">.com</label>
-
-			<input type="checkbox" name="ignore[.net]" id="ignoreNET" checked/>
-			<label for="ignoreNET">.net</label>
-		</fieldset>
-		<input type="submit" class="btn btn-primary" value="Save new order"/>
+				<input type="checkbox" name="ignore[.net]" id="ignoreNET" checked/>
+				<label for="ignoreNET">.net</label>
+			</fieldset>
+		<input type="submit" class="btn btn-primary col-xs-2 col-xs-push-1" value="Save new order"/>
 	</form>
 	<h2>Current TLD Pricing Order</h2>
 	<table class="table table-hover table-condensed">
 		<tr>
 			<th>TLD</th>
-			<th>Order</th>
+			<th>Order <span class="enom-pro-icon enom-pro-icon-sort"></span></th>
 		</tr>
 		<?php while ($row = mysql_fetch_assoc($result)) : ?>
 			<tr>

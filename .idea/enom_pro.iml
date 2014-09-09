@@ -35,6 +35,7 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="jQuery 1.11.0" level="application" />
   </component>
 </module>
 

@@ -1,6 +1,193 @@
 try {
-;(function(C){var A=function(Q){var S=Q.rows;var K=S.length;var P=[];for(var I=0;I<K;I++){var R=S[I].cells;var O=R.length;for(var H=0;H<O;H++){var N=R[H];var M=N.rowSpan||1;var J=N.colSpan||1;var L=-1;if(!P[I]){P[I]=[]}var E=P[I];while(E[++L]){}N.realIndex=L;for(var G=I;G<I+M;G++){if(!P[G]){P[G]=[]}var D=P[G];for(var F=L;F<L+J;F++){D[F]=1}}}}};var B=function(H){var E=0,F,D,G=(H.tHead)?H.tHead.rows:0;if(G){for(F=0;F<G.length;F++){G[F].realRIndex=E++}}for(D=0;D<H.tBodies.length;D++){G=H.tBodies[D].rows;if(G){for(F=0;F<G.length;F++){G[F].realRIndex=E++}}}G=(H.tFoot)?H.tFoot.rows:0;if(G){for(F=0;F<G.length;F++){G[F].realRIndex=E++}}};C.fn.tableHover=function(D){var E=C.extend({allowHead:true,allowBody:true,allowFoot:true,headRows:false,bodyRows:true,footRows:false,spanRows:true,headCols:false,bodyCols:true,footCols:false,spanCols:true,ignoreCols:[],headCells:false,bodyCells:true,footCells:false,rowClass:"hover",colClass:"",cellClass:"",clickClass:""},D);return this.each(function(){var N=[],M=[],J=this,F,K=0,O=[-1,-1];if(!J.tBodies||!J.tBodies.length){return }var G=function(U,X){var W,V,T,R,Q,S;for(T=0;T<U.length;T++,K++){V=U[T];for(R=0;R<V.cells.length;R++){W=V.cells[R];if((X=="TBODY"&&E.bodyRows)||(X=="TFOOT"&&E.footRows)||(X=="THEAD"&&E.headRows)){S=W.rowSpan;while(--S>=0){M[K+S].push(W)}}if((X=="TBODY"&&E.bodyCols)||(X=="THEAD"&&E.headCols)||(X=="TFOOT"&&E.footCols)){S=W.colSpan;while(--S>=0){Q=W.realIndex+S;if(C.inArray(Q+1,E.ignoreCols)>-1){break}if(!N[Q]){N[Q]=[]}N[Q].push(W)}}if((X=="TBODY"&&E.allowBody)||(X=="THEAD"&&E.allowHead)||(X=="TFOOT"&&E.allowFoot)){W.thover=true}}}};var L=function(R){var Q=R.target;while(Q!=this&&Q.thover!==true){Q=Q.parentNode}if(Q.thover===true){H(Q,true)}};var I=function(R){var Q=R.target;while(Q!=this&&Q.thover!==true){Q=Q.parentNode}if(Q.thover===true){H(Q,false)}};var P=function(T){var R=T.target;while(R&&R!=J&&!R.thover){R=R.parentNode}if(R.thover&&E.clickClass!=""){var Q=R.realIndex,U=R.parentNode.realRIndex,S="";C("td."+E.clickClass+", th."+E.clickClass,J).removeClass(E.clickClass);if(Q!=O[0]||U!=O[1]){if(E.rowClass!=""){S+=",."+E.rowClass}if(E.colClass!=""){S+=",."+E.colClass}if(E.cellClass!=""){S+=",."+E.cellClass}if(S!=""){C("td, th",J).filter(S.substring(1)).addClass(E.clickClass)}O=[Q,U]}else{O=[-1,-1]}}};var H=function(R,T){if(T){C.fn.tableHoverHover=C.fn.addClass}else{C.fn.tableHoverHover=C.fn.removeClass}var V=N[R.realIndex]||[],S=[],U=0,Q,W;if(E.colClass!=""){while(E.spanCols&&++U<R.colSpan&&N[R.realIndex+U]){V=V.concat(N[R.realIndex+U])}C(V).tableHoverHover(E.colClass)}if(E.rowClass!=""){Q=R.parentNode.realRIndex;if(M[Q]){S=S.concat(M[Q])}U=0;while(E.spanRows&&++U<R.rowSpan){if(M[Q+U]){S=S.concat(M[Q+U])}}C(S).tableHoverHover(E.rowClass)}if(E.cellClass!=""){W=R.parentNode.parentNode.nodeName.toUpperCase();if((W=="TBODY"&&E.bodyCells)||(W=="THEAD"&&E.headCells)||(W=="TFOOT"&&E.footCells)){C(R).tableHoverHover(E.cellClass)}}};A(J);B(J);for(F=0;F<J.rows.length;F++){M[F]=[]}if(J.tHead){G(J.tHead.rows,"THEAD")}for(F=0;F<J.tBodies.length;F++){G(J.tBodies[F].rows,"TBODY")}if(J.tFoot){G(J.tFoot.rows,"TFOOT")}C(this).bind("mouseover",L).bind("mouseout",I).click(P)})}})(jQuery);
-var whois_xhrs = [];
+    (function(C) {
+        var A = function(Q) {
+            var S = Q.rows;
+            var K = S.length;
+            var P = [];
+            for (var I = 0; I < K; I ++) {
+                var R = S[I].cells;
+                var O = R.length;
+                for (var H = 0; H < O; H ++) {
+                    var N = R[H];
+                    var M = N.rowSpan || 1;
+                    var J = N.colSpan || 1;
+                    var L = - 1;
+                    if (! P[I]) {
+                        P[I] = []
+                    }
+                    var E = P[I];
+                    while (E[++ L]) {
+                    }
+                    N.realIndex = L;
+                    for (var G = I; G < I + M; G ++) {
+                        if (! P[G]) {
+                            P[G] = []
+                        }
+                        var D = P[G];
+                        for (var F = L; F < L + J; F ++) {
+                            D[F] = 1
+                        }
+                    }
+                }
+            }
+        };
+        var B = function(H) {
+            var E = 0, F, D, G = (H.tHead) ? H.tHead.rows : 0;
+            if (G) {
+                for (F = 0; F < G.length; F ++) {
+                    G[F].realRIndex = E ++
+                }
+            }
+            for (D = 0; D < H.tBodies.length; D ++) {
+                G = H.tBodies[D].rows;
+                if (G) {
+                    for (F = 0; F < G.length; F ++) {
+                        G[F].realRIndex = E ++
+                    }
+                }
+            }
+            G = (H.tFoot) ? H.tFoot.rows : 0;
+            if (G) {
+                for (F = 0; F < G.length; F ++) {
+                    G[F].realRIndex = E ++
+                }
+            }
+        };
+        C.fn.tableHover = function(D) {
+            var E = C.extend({allowHead: true, allowBody: true, allowFoot: true, headRows: false, bodyRows: true, footRows: false, spanRows: true, headCols: false, bodyCols: true, footCols: false, spanCols: true, ignoreCols: [], headCells: false, bodyCells: true, footCells: false, rowClass: "hover", colClass: "", cellClass: "", clickClass: ""}, D);
+            return this.each(function() {
+                var N = [], M = [], J = this, F, K = 0, O = [- 1, - 1];
+                if (! J.tBodies || ! J.tBodies.length) {
+                    return
+                }
+                var G = function(U, X) {
+                    var W, V, T, R, Q, S;
+                    for (T = 0; T < U.length; T ++, K ++) {
+                        V = U[T];
+                        for (R = 0; R < V.cells.length; R ++) {
+                            W = V.cells[R];
+                            if ((X == "TBODY" && E.bodyRows) || (X == "TFOOT" && E.footRows) || (X == "THEAD" && E.headRows)) {
+                                S = W.rowSpan;
+                                while (-- S >= 0) {
+                                    M[K + S].push(W)
+                                }
+                            }
+                            if ((X == "TBODY" && E.bodyCols) || (X == "THEAD" && E.headCols) || (X == "TFOOT" && E.footCols)) {
+                                S = W.colSpan;
+                                while (-- S >= 0) {
+                                    Q = W.realIndex + S;
+                                    if (C.inArray(Q + 1, E.ignoreCols) > - 1) {
+                                        break
+                                    }
+                                    if (! N[Q]) {
+                                        N[Q] = []
+                                    }
+                                    N[Q].push(W)
+                                }
+                            }
+                            if ((X == "TBODY" && E.allowBody) || (X == "THEAD" && E.allowHead) || (X == "TFOOT" && E.allowFoot)) {
+                                W.thover = true
+                            }
+                        }
+                    }
+                };
+                var L = function(R) {
+                    var Q = R.target;
+                    while (Q != this && Q.thover !== true) {
+                        Q = Q.parentNode
+                    }
+                    if (Q.thover === true) {
+                        H(Q, true)
+                    }
+                };
+                var I = function(R) {
+                    var Q = R.target;
+                    while (Q != this && Q.thover !== true) {
+                        Q = Q.parentNode
+                    }
+                    if (Q.thover === true) {
+                        H(Q, false)
+                    }
+                };
+                var P = function(T) {
+                    var R = T.target;
+                    while (R && R != J && ! R.thover) {
+                        R = R.parentNode
+                    }
+                    if (R.thover && E.clickClass != "") {
+                        var Q = R.realIndex, U = R.parentNode.realRIndex, S = "";
+                        C("td." + E.clickClass + ", th." + E.clickClass, J).removeClass(E.clickClass);
+                        if (Q != O[0] || U != O[1]) {
+                            if (E.rowClass != "") {
+                                S += ",." + E.rowClass
+                            }
+                            if (E.colClass != "") {
+                                S += ",." + E.colClass
+                            }
+                            if (E.cellClass != "") {
+                                S += ",." + E.cellClass
+                            }
+                            if (S != "") {
+                                C("td, th", J).filter(S.substring(1)).addClass(E.clickClass)
+                            }
+                            O = [Q, U]
+                        } else {
+                            O = [- 1, - 1]
+                        }
+                    }
+                };
+                var H = function(R, T) {
+                    if (T) {
+                        C.fn.tableHoverHover = C.fn.addClass
+                    } else {
+                        C.fn.tableHoverHover = C.fn.removeClass
+                    }
+                    var V = N[R.realIndex] || [], S = [], U = 0, Q, W;
+                    if (E.colClass != "") {
+                        while (E.spanCols && ++ U < R.colSpan && N[R.realIndex + U]) {
+                            V = V.concat(N[R.realIndex + U])
+                        }
+                        C(V).tableHoverHover(E.colClass)
+                    }
+                    if (E.rowClass != "") {
+                        Q = R.parentNode.realRIndex;
+                        if (M[Q]) {
+                            S = S.concat(M[Q])
+                        }
+                        U = 0;
+                        while (E.spanRows && ++ U < R.rowSpan) {
+                            if (M[Q + U]) {
+                                S = S.concat(M[Q + U])
+                            }
+                        }
+                        C(S).tableHoverHover(E.rowClass)
+                    }
+                    if (E.cellClass != "") {
+                        W = R.parentNode.parentNode.nodeName.toUpperCase();
+                        if ((W == "TBODY" && E.bodyCells) || (W == "THEAD" && E.headCells) || (W == "TFOOT" && E.footCells)) {
+                            C(R).tableHoverHover(E.cellClass)
+                        }
+                    }
+                };
+                A(J);
+                B(J);
+                for (F = 0; F < J.rows.length; F ++) {
+                    M[F] = []
+                }
+                if (J.tHead) {
+                    G(J.tHead.rows, "THEAD")
+                }
+                for (F = 0; F < J.tBodies.length; F ++) {
+                    G(J.tBodies[F].rows, "TBODY")
+                }
+                if (J.tFoot) {
+                    G(J.tFoot.rows, "TFOOT")
+                }
+                C(this).bind("mouseover", L).bind("mouseout", I).click(P)
+            })
+        }
+    })(jQuery);
+    var whois_xhrs = [];
 function abort_whois_xhrs ()
 {
 	if (whois_xhrs.length > 0) {
@@ -28,9 +215,10 @@ jQuery(function($) {
     });
     $("#create_order_dialog").dialog({
         width : 450,
-        autoOpen : false,
+        autoOpen : false
     });
-    $("#import_table_form").on('ajaxComplete', function(e, xhr, settings) {
+    var $importTableForm = $("#import_table_form");
+    $importTableForm.on('ajaxComplete', function(e, xhr, settings) {
         $(".domain_whois").trigger('getwhois');
     });
     var whois_cache = Array,
@@ -40,23 +228,6 @@ jQuery(function($) {
     } else {
         localStorage = false;
     }
-    $(".mult_row").on('click', function  (){
-    	var tld = $(this).data('tld');
-    	var val = $(this).closest('table').find('input').val();
-    	if (val == "") {
-    		alert('Please enter the price to multiply for this row');
-    		return false;
-    	}
-    	console.log('tld', tld);
-    	console.log('val', val);
-    	$.each($("[data-tld='"+tld+"']"), function  (k,v){
-    		var $elem = $(v),
-    		cell_val = precise_round(val * $elem.data('year'), 2);
-    		$elem.val(cell_val);
-		});
-    	return false;
-    });
-
     $('.ep_tt').tooltip({
         container: 'body',
         placement: 'auto top'
@@ -108,8 +279,9 @@ jQuery(function($) {
     $('body').on("click", '.ui-widget-overlay', function() {
         $("#enom_pro_dialog").dialog("close");
     });   
-    $("#import_table_form").on('getwhois', ".domain_whois", function(e) {
-        var $target = $(this);
+    $importTableForm.on('getwhois', ".domain_whois", function(e) {
+        var $target = $(this),
+            $loader = $target.find('.enom_pro_loader');
         var domain_name = $(this).data('domain');
         var data = false;
         if (localStorage && localStorage.getItem(domain_name)) {
@@ -129,6 +301,9 @@ jQuery(function($) {
                 action : 'get_domain_whois',
                 domain : domain_name
             },
+            beforeSend: function  (){
+                $loader.removeClass('hidden');
+            },
             success : function(data, xhr) {
                 if (localStorage) {
                 	try {
@@ -145,19 +320,39 @@ jQuery(function($) {
             complete: function  (xhr)
             {
             	if (xhr.statusText == 'abort') {
-            		do_whois_results($target, {"email": "Cancelled"});
+            		do_whois_results($target, {"error": "Cancelled"});
             	}
+                $loader.addClass('hidden');
             },
             error: function  (xhr)
             {
-            	do_whois_results($target, {"email": xhr.responseText});
+                var json = false;
+                try {
+                    json = $.parseJSON(xhr.responseText)
+                } catch (err) {
+                  json = xhr.responseText;
+                }
+                do_whois_results($target, {
+                    "error": json
+                });
             }
         })
         );
         return false;
     });
-    window.onbeforeunload = function  () {
-    	abort_whois_xhrs();
+    window.onbeforeunload = function  (e) {
+        var incomplete = 0;
+        if (whois_xhrs.length > 0) {
+            if ($.each(whois_xhrs, function  (k,v){
+                if (v.readyState == 1 || v.readyState == 2 || v.readyState == 3) {
+                    incomplete++;
+                }
+            }))
+            if (incomplete > 0) {
+                return 'Getting WHOIS results are still in progress.';
+    	        abort_whois_xhrs();
+            }
+        }
     };
     if (localStorage) {
         function getLabel() {
@@ -169,21 +364,32 @@ jQuery(function($) {
         }).on('click', '.btn', function  () {
             localStorage.clear();
             $(this).find('a').html(getLabel());
-            $("#import_table_form").trigger('submit');
+            $importTableForm.trigger('submit');
             return false;
         });
     }
     function do_whois_results($target, data) {
         $("#local_storage").trigger('refresh');
-        $target.closest('.alert').find('.create_order').data('email',
+        if (data.email) {
+            $target.closest('.alert').find('.create_order').data('email',
                 data.email);
+        }
+        var $response = $target.find('.response');
+        var label = data.error || data;
+        $response.html(label);
+        if (data.error) {
+            $('<button class="btn btn-danger">Try Again?</button>').on('click', function  (){
+                if (localStorage) {
+                    localStorage.removeItem($target.data('domain'));
+                }
+            }).appendTo($response);
+        }
         $target.find('.enom_pro_loader').addClass('hidden');
-        $target.find('.response').html(data.email);
     }
     var $message = $("#ajax_messages"), $process = $("#order_process");
     $process.hide(), last_domain = '';
     //Create Order
-    $("#import_table_form").on('click', 'a.create_order', function() {
+    $importTableForm.on('click', 'a.create_order', function() {
         var domain_name = $(this).data('domain');
         last_domain = domain_name;
         $("#import_next_button").hide();
@@ -243,7 +449,7 @@ jQuery(function($) {
 	                    if (data.success) {
 	                        $process.hide();
 	                        $message.addClass('alert-success');
-	                        $("#import_table_form").trigger('submit').on('ajaxComplete', function() {
+	                        $importTableForm.trigger('submit').on('ajaxComplete', function() {
 	                            var $new_elem = $("[data-domain='"+ last_domain+ "']").closest('.alert');
 	                            $new_elem.removeClass('alert-success');
 	                            setTimeout(function() {
@@ -291,7 +497,7 @@ jQuery(function($) {
         return false;
     });
     $(".no-js").hide(); 
-    $("#import_table_form").on('submit', function() {
+    $importTableForm.on('submit', function() {
         $(".enom_pro_loader").not('.small').removeClass('hidden');
         abort_whois_xhrs();
         $("#domain_caches").hide(); 
@@ -323,7 +529,7 @@ jQuery(function($) {
     $("#search_form").on('submit', function  (){
     	var search = $(this).find('input[name=s][type=text]').val();
     	$("input[name=s][type=hidden]").val(search); 
-    	$("#import_table_form").trigger('submit');
+    	$importTableForm.trigger('submit');
     	return false;
 	});
     $("#enom_pro_import_page").on('click',".clear_search", function  (){
@@ -412,20 +618,42 @@ jQuery(function($) {
         $years.on('keyup', function  (){
             var $t = $(this),
                 tld = $t.data('tld'),
-                $thisTrigger = $(".toggle_tld[data-tld='"+tld+"']");
+                $thisTrigger = $(".toggle_tld[data-tld='"+tld+"']"),
+                $action = $('.tldAction[data-tld="'+tld+'"');
             if ($t.val() == "") {
-               $thisTrigger.addClass('btn-default').removeClass('btn-danger').html('&rarr;');
+               $thisTrigger.html('Import eNom Pricing');
+                var btnClass = 'btn-default';
+                if ($action.data('whmcs')) {
+                    btnClass = 'btn-success';
+                }
+                $action.removeClass('btn-success btn-danger btn-default').addClass(btnClass);
+            } else if ($t.val() == '-1.00') {
+                $action.addClass('btn-danger').removeClass('btn-success btn-default');
             } else {
-                $thisTrigger.addClass('btn-danger').removeClass('btn-default').html('&otimes;');
+                $action.addClass('btn-success').removeClass('btn-danger btn-default');
+                $thisTrigger.html('Clear Current Pricing');
             }
         });
     }
 
     $(".delete_tld").on('click', function  () {
     	var $this = $(this);
-    	$("[data-tld='"+$this.data('tld')+"']").val('-1.00'); 
+    	$("[data-tld='"+$this.data('tld')+"']").val('-1.00').trigger('keyup');
     	return false;
-    }); 
+    });
+    $(".mult_row").on('click', function  (){
+        var tld = $(this).data('tld');
+        var val = $('input[data-tld="'+tld+'"][data-year=1]').val();
+        if (val == "") {
+            val = prompt('Please enter the 1-year price to multiply for this row', 9.99);
+        }
+        $.each($("[data-tld='"+tld+"']"), function  (k,v){
+            var $elem = $(v),
+                cell_val = precise_round(val * $elem.data('year'), 2);
+            $elem.val(cell_val).trigger('keyup');
+        });
+        return false;
+    });
     $("#enom_pro_pricing_import").on('submit', function  () {
     	$("input", '#enom_pro_pricing_import').each(function  (k,v){
     		var val = $(v).val();
@@ -434,6 +662,7 @@ jQuery(function($) {
     		}
     	});
     });
+
     $(".clear_all").on('click', function  (){
     	$('[data-price]').val('');
         $("[data-price][data-year=1]").trigger('keyup');
@@ -448,24 +677,33 @@ jQuery(function($) {
     	var start = $(this).data('start');
         $("input[name=start]").val(start);
     	abort_whois_xhrs();
-        $("#import_table_form").trigger('submit');
+        $importTableForm.trigger('submit');
         return false;
     });
-    $("[data-alert]").closest('.alert').on('close.bs.alert', function() {
-        var alertID = $(this).find('[data-alert]').data('alert');
+    $("[data-alert]").tooltip({
+      title : 'Never show this message',
+      container: 'body',
+      placement: 'left'
+    }).closest('.alert').on('close.bs.alert', function() {
+        var $alert = $(this).find('[data-alert]');
+        var alertID = $alert.data('alert');
         var alertData = {
             action: 'dismiss_alert',
             alert: alertID
         };
         $.ajax({
             url: 'addonmodules.php?module=enom_pro',
-            data: alertData
+            data: alertData,
+            success: function  (){
+                $alert.tooltip('hide');
+            }
        });
     });
+
     $("#filter_form").on('submit change', function() {
         $("input[name=start]").val(1);
         $("input[name=show_only]").val($(this).find('select').val());
-        $("#import_table_form").trigger('submit');
+        $importTableForm.trigger('submit');
         return false;
     });
     var slide_time = $(".slideup").data('timeout');
@@ -487,12 +725,12 @@ jQuery(function($) {
             },
             success : function() {
                 $("input[name=start]").val(1);
-                $("#import_table_form").trigger('submit');
+                $importTableForm.trigger('submit');
             }
         });
         return false;
     });
-    $("#enom_pro_pricing_table").tableHover({colClass: "hover", ignoreCols: [1,2,3,4]}); 
+    $("#enom_pro_pricing_table").tableHover({colClass: "hover", ignoreCols: [1,2,3]});
 	var $news = $("#enom_pro_changelog"),
 	loadingString = "<h3>Loading Changelog</h3><div class=\"enom_pro_loader\"></div>";
  	if ($news.length > 0) {

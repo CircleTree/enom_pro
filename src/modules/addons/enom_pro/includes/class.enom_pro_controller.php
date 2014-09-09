@@ -8,6 +8,7 @@ class enom_pro_controller {
     }
 
 	/**
+	 * Echo GZipped data
 	 * @param $data
 	 */
 	public static function sendGzipped( $data ) {
@@ -131,12 +132,16 @@ class enom_pro_controller {
     }
     protected function get_domain_whois ()
     {
+			try {
         $whois = $this->enom->getWHOIS($_REQUEST['domain']);
         $response = array(
                 'email' => $whois['registrant']['emailaddress'],
         );
-        header('Content-Type: application/json');
-        echo json_encode($response);
+			} catch (Exception $e ) {
+				$response = array('error' => $e->getMessage());
+			}
+			header('Content-Type: application/json');
+			self::sendGzipped(json_encode($response));
     }
     protected function clear_cache ()
     {
@@ -288,7 +293,7 @@ class enom_pro_controller {
     {
         if (isset($_POST['pricing'])) {
             $validated_data = array();
-            $tlds = $this->enom->getAllDomainsPricing();
+            $tlds = array_keys($this->enom->getAllDomainsPricing());
             foreach ($_POST['pricing'] as $tld => $years) {
                 $tld_pricing = array();
                 foreach ($years as $year => $price) {
@@ -306,6 +311,7 @@ class enom_pro_controller {
                 }
             }
         }
+
         $updated = $new = $deleted = 0;
         foreach ($validated_data as $tld => $pricing) {
             $pricing_data = array(
@@ -460,7 +466,7 @@ class enom_pro_controller {
 	private static function dismissAlert ($alert, $save = true)
 	{
 		$current = enom_pro::get_addon_setting(self::DISMISSED_ALERTS);
-		if (empty($current)) {
+		if (empty($current) || trim($current) === "") {
 			$current = array();
 		}
 		if (! in_array($alert, $current)) {
@@ -483,7 +489,7 @@ class enom_pro_controller {
 		$result = ioncube_read_file( $filepath );
 		if (is_int($result)) {
 			if (3 == $result) {
-			throw new Exception('An updated Loader should be installed to read the file. ', 3);
+				throw new Exception('An updated Ioncube Loader should be installed to read the file. ', 3);
 			} else {
 				throw new Exception("Ioncube Loader Error #" . $result, $result);
 			}
@@ -500,7 +506,9 @@ class enom_pro_controller {
 		header('ETag: "'.md5($timestamp.$file).'"');
 		header('Last-Modified: '.$gmt_mtime);
 		header('Cache-Control: public');
-		header_remove('Pragma');
+		if (function_exists('header_remove')) { //TODO remove with php 5.3+
+			header_remove('Pragma');
+		}
 		if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) || isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
 			if ($_SERVER['HTTP_IF_MODIFIED_SINCE'] == $gmt_mtime || str_replace('"', '', stripslashes($_SERVER['HTTP_IF_NONE_MATCH'])) == md5($timestamp.$file)) {
 				header('HTTP/1.1 304 Not Modified');
