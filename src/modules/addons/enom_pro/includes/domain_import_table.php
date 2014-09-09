@@ -1,9 +1,17 @@
-<?php 
+<?php
+$doingSearch = isset( $_REQUEST['s'] ) && !empty( $_REQUEST['s'] );
 $enom = new enom_pro();
 $show_only = (isset($_GET['show_only'])  && ! empty($_GET['show_only'])) ? $_GET['show_only'] : false;
 $per_page = $enom->get_addon_setting('import_per_page');
-$domains_array = $enom->getDomainsWithClients($enom->get_addon_setting('import_per_page'), (int) $_GET['start'], $show_only);
+if ($doingSearch) {
+	//Search all
+	$per_page = true;
+}
+$domains_array = $enom->getDomainsWithClients($per_page, (int) $_GET['start'], $show_only);
 
+//echo '<pre>';
+//print_r($domains_array);
+//echo '</pre>';
 $list_meta = $enom->getListMeta();
 if ( empty($domains_array) ) { ?>
 <div class="alert alert-danger">
@@ -12,7 +20,8 @@ if ( empty($domains_array) ) { ?>
 <?php 
     return;
 }?>
-<?php if (isset($_REQUEST['s']) && ! empty($_REQUEST['s'])):?>
+<?php
+if ( $doingSearch ):?>
     <?php
     //@TODO search on next page
     $results = array();
@@ -28,20 +37,25 @@ if ( empty($domains_array) ) { ?>
         if (strstr($domain['tld'], ltrim($s, '.'))) {
             $results[] = $domain;
         }
+			if (strstr($domain['sld'] . $domain['tld'], str_replace(array('.'), '', $s) )) {
+				$results[] = $domain;
+			}
         //Get unique values / deduplicate
         $results = array_map("unserialize", array_unique(array_map("serialize", $results)));
     }
     if (! empty($results)) {
         $domains_array = $results; ?>
-        Search: <?php echo htmlentities($_REQUEST['s']);?>
+			<h3>Search for <span class="label label-default"><?php echo htmlentities($_REQUEST['s']);?></span>
+				Found <span class="label label-success"><?php echo count($domains_array) ?></span> Results
+			</h3>
         <?php 
     } else { ?>
-<div class="alert alert-danger">No Results for Current Page.</div>
+<div class="alert alert-danger">No Search Results for <?php echo htmlentities($_REQUEST['s']); ?></div>
 <?php } ?>
 <a class="btn btn-block btn-inverse clear_search" href="#">Clear Search</a>
 <?php endif;?>
 
-<table class="table-hover" id="import_table">
+<table class="table table-hover" id="import_table">
 	<tr>
 		<th>Domain</th>
 		<th>Status</th>
@@ -138,8 +152,18 @@ if ( empty($domains_array) ) { ?>
 </ul>
 <div class="clearfix">
 	<span class="floatleft">
-        Page <?php echo ceil( $_GET['start'] / $enom->get_addon_setting('import_per_page'));?>
-    </span> <span class="floatright">
-        <?php echo $list_meta['total_domains']?> Total domains
+		Page
+		<span class="badge">
+			<?php echo ceil( $_GET['start'] / $per_page );?>
+		</span>
+		of
+		<span class="badge">
+			<?php $domainsCount = count( $enom->getDomains( true ) );
+			echo ceil( $domainsCount / $per_page); ?>
+		</span>
+    </span>
+		<span class="text-right">
+			<span class="badge"><?php echo $domainsCount;?></span>
+			Total domains
     </span>
 </div>

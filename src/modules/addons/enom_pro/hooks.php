@@ -5,6 +5,9 @@
 * Copyright 2012 Orion IP Ventures, LLC.
 * Licenses Resold by Circle Tree, LLC. Under Reseller Licensing Agreement
 */
+
+defined('ENOM_PRO_ROOT') or define('ENOM_PRO_ROOT', ROOTDIR . '/modules/addons/enom_pro/');
+defined('ENOM_PRO_INCLUDES') or define('ENOM_PRO_INCLUDES', ENOM_PRO_ROOT . 'includes/');
 function enom_pro_admin_balance ($vars)
 {
     if (!class_exists('enom_pro'))
@@ -74,7 +77,7 @@ jQuery(function($) {
 
     return array(
             'title'=>'<a href="'.enom_pro::MODULE_LINK.'">@NAME@</a>' . 
-                ' - Reseller Balance <img src="images/icons/transactions.png" align="absmiddle" height="16px" width="16px" border="0">' . 
+                ' - Reseller Balance <span class="enom-pro-icon enom-pro-icon-balance"></span>' .
                 get_enom_pro_widget_form('enom_pro_get_enom_balance', 'refreshEnomBalance'),
             'content'=>$content,
             'jquerycode'=>enom_pro::minify($jquerycode),
@@ -157,7 +160,7 @@ function enom_pro_admin_ssl_certs ($vars)
 ';
     return array(
             'title'=>'<a href="'.enom_pro::MODULE_LINK.'">@NAME@</a> - SSL Certificates '.
-                    '<img src="images/icons/securityquestions.png" align="absmiddle" height="16px" width="16px" border="0">' . 
+                    '<span class="enom-pro-icon enom-pro-icon-secure"></span>' .
                     get_enom_pro_widget_form('enom_pro_get_ssl_certs', 'refreshEnomSSL'),
             'content'=>$content,
             'jquerycode'=>enom_pro::minify($jquerycode),
@@ -278,8 +281,7 @@ function enom_pro_admin_expiring_domains ($vars)
 
     return array(
             'title'	=>	'<a href="'.enom_pro::MODULE_LINK.'">@NAME@</a>' . 
-                ' - Domain Stats <img src="images/icons/domains.png"' . 
-                ' align="absmiddle" height="16px" width="16px" border="0">' . 
+                ' - Domain Stats <span class="enom-pro-icon enom-pro-icon-domains"></span>' .
                 get_enom_pro_widget_form('enom_pro_check_expiring_domains', 'refreshExpiring'),
             'content'=>$content,
             'jquerycode'=>enom_pro::minify($jquerycode),
@@ -418,10 +420,9 @@ function enom_pro_admin_transfers ($vars)
         return false;
         });
     });';
-
         return array(
                 'title'	=>	'<a href="'.enom_pro::MODULE_LINK.'">@NAME@</a> ' . 
-                    '- Pending Transfers <img src="images/icons/clientlogin.png" align="absmiddle" height="16px" width="16px" border="0">' . 
+                    '- Pending Transfers <span class="enom-pro-icon enom-pro-icon-transfer"></span>' .
                     get_enom_pro_widget_form('enom_pro_check_transfers', 'refreshEnomTransfers'),
                 'content'=>$content,
                 'jquerycode'=>enom_pro::minify($jquerycode),
@@ -436,7 +437,9 @@ function get_enom_pro_widget_form ($action, $id)
     ob_start();?>
     <form id="<?php echo $id; ?>" class="refreshbutton" action="<?php echo $_SERVER['PHP_SELF'];?>">
         <input type="hidden" name="<?php echo $action; ?>" value="1" />
-        <input type="submit" value="Refresh" class="btn btn-default" />
+			<button type="submit" class="btn btn-default btn-xs">
+				Refresh <span class="enom-pro-icon enom-pro-icon-refresh-alt"></span>
+			</button>
     </form>
     <?php
     $return = ob_get_contents();
@@ -453,7 +456,12 @@ function enom_pro_admin_css ()
 {
     //	Only load on applicable pages
     $pages = array('index.php', 'addonmodules.php');
-    if (in_array(basename($_SERVER['SCRIPT_NAME']), $pages) || ( isset($_GET['module']) && 'enom_pro' == $_GET['module']) ) { ob_start(); ?>
+    if (in_array(basename($_SERVER['SCRIPT_NAME']), $pages) || ( isset($_GET['module']) && 'enom_pro' == $_GET['module']) ) {
+			//Include our class if needed
+			if (! class_exists('enom_pro') ) {
+				require_once ENOM_PRO_INCLUDES . 'class.enom_pro.php';
+			}
+			ob_start(); ?>
 			<link rel="stylesheet" href="../modules/addons/enom_pro/css/admin.min.css" />
 			<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap.min.css" />
 			<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap-theme.min.css" />
@@ -495,8 +503,8 @@ function enom_pro_admin_actions ()
         return;
     }
     //Include our class if needed
-    if (!class_exists('enom_pro'))
-        require_once 'enom_pro.php';
+    if (! class_exists('enom_pro') )
+        require_once ENOM_PRO_INCLUDES . 'class.enom_pro.php';
     try {
         $controller = new enom_pro_controller();
         $controller->route();
@@ -633,6 +641,16 @@ function enom_pro_namespinner ()
 
 
 add_hook("ClientAreaPage",-10101,"enom_pro_namespinner");
+function enom_pro_premium ($vars){
+	if (isset($vars['availabilityresults']) && ! empty($vars['availabilityresults'])) {
+		foreach ($vars['availabilityresults'] as $result) {
+			
+		}
+		$vars['availabilityresults'][0]['overwrite'] = 'overwrite.com';
+	}
+	return array('availabilityresults2' => $vars['availabilityresults']);
+}
+add_hook("ClientAreaPage",-101012,"enom_pro_premium");
 
 function enom_pro_clientarea_transfers ($vars)
 {

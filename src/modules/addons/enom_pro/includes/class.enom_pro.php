@@ -82,7 +82,11 @@ class enom_pro
      * @var string
      */
     private $cache_file_all_domains;
-    private $cache_file_all_prices;
+	/**
+	 * Pricing cache file
+	 * @var string
+	 */
+	private $cache_file_all_prices;
     private $parameters = array();
     /**
      * eNom API Class
@@ -471,28 +475,29 @@ class enom_pro
      * @param bool $retail true to get retail/subaccount pricing from eNom
      * @return array enabled => true/false, price => double
      */
-    public function getDomainPricing ($tld = 'com', $retail = false)
-    {
-        try {
-            $this->setParams(
-                    array(
-                            'TLD'=>$tld,
-                            'ProductType' => 10,
-                    )
-            );
-            if ($retail) {
-                $this->runTransaction('PE_GetRetailPrice');
-            } else {
-                $this->runTransaction('PE_GetProductPrice');
-            }
-            return array(
-                    'enabled' => ($this->xml->productprice->productenabled == 'True' ? true : false ),
-                    'price' => (string) $this->xml->productprice->price
-                );
-        } catch (Exception $e) {
-            return array('price' => 0.00);
-        }
-    }
+	public function getDomainPricing( $tld = 'com', $retail = false ) {
+		try {
+			$this->setParams(
+				array(
+					'TLD' => $tld,
+					'ProductType' => 10,
+				)
+			);
+			if ( $retail ) {
+				$this->runTransaction( 'PE_GetRetailPrice' );
+			} else {
+				$this->runTransaction( 'PE_GetProductPrice' );
+			}
+
+			return array(
+				'enabled' => ( $this->xml->productprice->productenabled == 'True' ? true : false ),
+				'price' => (string) $this->xml->productprice->price,
+				'min_period' => (int) $this->xml->productprice->minimumregistration
+			);
+		} catch ( Exception $e ) {
+			return array( 'price' => 0.00 );
+		}
+	}
 
 	/**
 	 * Cached interface for all pricing data
@@ -512,18 +517,36 @@ class enom_pro
         $return = array();
         foreach ($tlds as $tld) {
             $data = $this->getDomainPricing($tld, $retail);
-            $return[$tld] = $data['price'];
+            $return[$tld] = array(
+							'enabled' => $data['enabled'],
+							'price' => $data['price'],
+							'min_period' => $data['min_period']
+						);
         }
         if (count($return) > 0) {
-					$cached = array('data' => $return, 'retail' => ($this->is_retail_pricing() ? 1 : 0));
-            $this->set_cached_data($this->cache_file_all_prices, $cached);
+					$cached = array(
+						'data' => $return,
+						'retail' => ( $this->is_retail_pricing() ? 1 : 0 ),
+						'version' => self::DOMAIN_CACHE_VERSION
+					);
+					$this->set_cached_data($this->cache_file_all_prices, $cached);
         }
         return $return;
     }
+	const DOMAIN_CACHE_VERSION = 1;
     public function is_pricing_cached ()
     {
+			return false;
 			$cache_data = $this->get_cache_data( $this->cache_file_all_prices );
-			return (false !== $cache_data  && isset($cache_data['retail']) && $cache_data['retail'] == $this->is_retail_pricing());
+			if ($cache_data === false ) {
+				//Nothing Cached
+				return false;
+			}
+			//Has the price schema changed?
+			$isSameVersion = ( isset($cache_data['version']) && $cache_data['version'] == self::DOMAIN_CACHE_VERSION );
+			//Has the price type changed?
+			$isSamePriceType = ( isset($cache_data['retail']) && $cache_data['retail'] == $this->is_retail_pricing() );
+			return ($isSamePriceType && $isSameVersion);
     }
     public function render_domain_import ()
     {
@@ -954,7 +977,7 @@ class enom_pro
 	/**
 	 * Get domains
 	 *
-	 * @param int        $limit
+	 * @param int|true        $limit true get all, otherwise number of records
 	 * @param int|number $start offset of returned record. default 1
 	 *
 	 * @internal param $ number||true $limit number of results to get, true to get all
@@ -1185,14 +1208,17 @@ class enom_pro
         }
         return $return;
     }
-    /**
-     * Gets domains with assocaited whmcs clients
-     * @param number $limit number 
-     * @param number $start default 1
-     * @param mixed $show_only imported, unimported, defaults to false to not filter results 
-     * @return array $domains with client key with client details
-     *  array( domain...details, 'client' => array());
-     */
+
+	/**
+	 * Gets domains with assocaited whmcs clients
+	 *
+	 * @param int|true $limit true to get all, number to limit
+	 * @param int|number $start default 1
+	 * @param mixed      $show_only imported, unimported, defaults to false to not filter results
+	 *
+	 * @return array $domains with client key with client details
+	 *  array( domain...details, 'client' => array());
+	 */
     public function getDomainsWithClients($limit = 30, $start = 1, $show_only = false)
     {
         $domains = $this->getDomains(true, $start);
@@ -1231,7 +1257,12 @@ class enom_pro
                 }
             }
         }
-        return array_splice($return, ($start - 1), $limit);
+			if (true === $limit) {
+				$return = $return;
+			} else {
+				$return = array_splice($return, ($start - 1), $limit);
+			}
+			return $return;
     }
     /**
      * @throws WHMCSException

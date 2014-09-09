@@ -17,8 +17,17 @@
 **********************************************************
 
 /**
+* REQUIREMENTS
+**/
+    WHMCS 5.3.x+
+    IonCube Loaders 4.4+ (Latest 4.6.x recommended)
+    PHP 5.3.x+ (PHP 5.4 Recommended)
+    MySQL 5.1.x+
+
+
+/**
 * Installation Instructions *
-						   **/
+**/
 
 Backup your files & DB
 Unzip this package to your local machine

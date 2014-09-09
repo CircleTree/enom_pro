@@ -128,7 +128,7 @@
 		<exec command="java -jar ${yui.jarfile} -o ${encoded_prep}/modules/addons/enom_pro/js/jquery.admin.min.js ${src_dir}modules/addons/enom_pro/js/jquery.admin.js" checkreturn="true" />
 			<echo>delete old minify files</echo>
     	<delete file="${encoded_prep}/modules/addons/enom_pro/includes/class.enom_pro_license.php"/>
-    	<delete file="${encoded_prep}/modules/addons/enom_pro/enom_pro.php"/>
+    	<delete file="${encoded_prep}/modules/addons/enom_pro/enom_pro_compatible.php"/>
     	<delete file="${encoded_prep}/modules/addons/enom_pro/hooks.php"/>
         <copy todir="${encoded_prep}">
         	<filterchain>
@@ -180,6 +180,7 @@
 				<comment>*************************************************************************</comment>
     	</ioncubeencoder>
     </target>
+
     	<!-- ================================= 
           target: local              
          ================================= -->
@@ -220,6 +221,20 @@
 		<copy file="${bs-dir}js/bootstrap.min.js"
 					tofile="${bs-copy-dir}js/bootstrap.min.js"
 					overwrite="true"/>
+		<!--
+		<copy file="${bs-dir}fonts/glyphicons-halflings-regular.eot"
+					tofile="${bs-copy-dir}css/glyphicons-halflings-regular.eot"
+					overwrite="true"/>
+		<copy file="${bs-dir}fonts/glyphicons-halflings-regular.svg"
+					tofile="${bs-copy-dir}css/glyphicons-halflings-regular.svg"
+					overwrite="true"/>
+		<copy file="${bs-dir}fonts/glyphicons-halflings-regular.ttf"
+					tofile="${bs-copy-dir}css/glyphicons-halflings-regular.ttf"
+					overwrite="true"/>
+		<copy file="${bs-dir}fonts/glyphicons-halflings-regular.woff"
+					tofile="${bs-copy-dir}css/glyphicons-halflings-regular.woff"
+					overwrite="true"/>
+		-->
 	</target>
 	<target name="release" depends="zip">
         <copy todir="${encoded_prep}">
