@@ -642,6 +642,11 @@ class enom_pro {
 		require_once ENOM_PRO_INCLUDES . 'domain_widget.php';
 	}
 
+	public function render_ssl_widget() {
+		require_once ENOM_PRO_INCLUDES . 'ssl_widget.php';
+
+	}
+
 	/**
 	 * Check for upgrader compatibility against known missing core PHP components
 	 * @return boolean
