@@ -46,10 +46,19 @@ class enom_pro {
 	 */
 	public static $cli = false;
 	const RETRY_LIMIT = 2;
+	/**
+	 * Install service order URL
+	 */
 	const INSTALL_URL =
-		'https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7&subject=enom%20Install%20Service';
-	const HELP_URL =
-		'https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7';
+		'https://mycircletree.com/client-area/cart.php?a=add&pid=44';
+	/**
+	 * Submit Ticket url
+	 */
+	const TICKET_URL = 'https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7';
+	/**
+	 * Online help URL
+	 */
+	const HELP_URL = 'http://mycircletree.com/client-area/knowledgebase.php?action=displaycat&catid=11';
 	const MODULE_LINK = 'addonmodules.php?module=enom_pro';
 	const CHANGELOG_URI =
 		'http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43';
