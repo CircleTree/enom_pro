@@ -1,13 +1,114 @@
+<?php if ( !is_writable( ENOM_PRO_TEMP ) ) : ?>
+	<div class="alert alert-danger">
+		<p>Temp Directory is unwriteable. Please CHMOD 777 <?php echo ENOM_PRO_TEMP; ?> to continue.</p>
+	</div>
+<?php endif; ?>
+
+<?php if ( !enom_pro::is_ssl_email_installed() ) : ?>
+	<div class="alert alert-danger">
+		<p>
+			SSL Email template is not installed.
+			<a class="btn btn-danger"
+				 href="<?php echo enom_pro::MODULE_LINK ?>&action=install_ssl_template">Install Now</a>
+		</p>
+	</div>
+<?php endif; ?>
+
+<?php //SSL Email Installed. Edit Link ?>
+<?php if ( isset( $_GET['ssl_email'] ) && (int) $_GET['ssl_email'] > 0 ) : ?>
+		<div class="alert alert-success">
+			<p>Installed.
+				<a class="btn btn-default"
+					 onclick="javascript:$('#edit_ssl_sidebar').trigger('click');return false;"
+					 href="configemailtemplates.php?action=edit&id=<?php echo (int) $_GET['ssl_email'] ?>">
+					Edit Now
+				</a>
+			</p>
+		</div>
+<?php endif; ?>
+<?php if ( !enom_pro_controller::isDismissed( 'pro-install' ) ) : ?>
+	<div class="alert alert-success fade in">
+	<button type="button"
+					class="close"
+					data-dismiss="alert"
+					data-alert="pro-install"
+					aria-hidden="true">&times;</button>
+		<h1>Thank you<?php echo (false !== ($name = $enom->license->getCustomerName()) ? ', '.$name : '');?>, for your support!</h1>
+		<p>We appreciate your support of <?php echo ENOM_PRO; ?>, and hope it continues to provide a valuable service to you.</p>
+		<p>If you're just getting started, please view our comprehensive suite of <a href="<?php echo enom_pro::HELP_URL ?>" target="_blank" >online help articles</a>.</p>
+		<h3>Get Help with Integration/Installation of <?php echo ENOM_PRO; ?></h3>
+			<p>
+				Order our professional installation &amp; Integration service <br/>
+				<a
+					href="<?php echo enom_pro::INSTALL_URL; ?>" target="_blank"
+					class="btn btn-default">Order Install/Integration Service <span class="enom-pro-icon enom-pro-icon-secure"></span> </a>
+			</p>
+	</div>
+<?php endif; ?>
+
+<?php //Auto-upgrade manual overwrite files  ?>
+<?php if ( isset( $_SESSION['manual_files'] ) ) : ?>
+	<?php if ( !empty( $_SESSION['manual_files']['templates'] ) ): ?>
+		<div class="alert alert-info">
+			<p>
+				The following client area template files were already in place. You will only need to
+				manually update them if you are using the SRV Record Editor, Pending Transfers, and Namespinner on the Domain Checker Page.
+				If you are using the frontend features, the following files will need to be manually upgraded / merged:
+			</p>
+			<ul>
+				<?php foreach ( $_SESSION['manual_files']['templates'] as
+												$filepath ): ?>
+					<li><a href="#"
+								 title="<?php echo $filepath ?>"
+								 class="ep_tt"><?php echo basename( $filepath ); ?></a>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+			<p>Otherwise, feel free to <a class="btn btn-default"
+																		href="<?php echo enom_pro::MODULE_LINK ?>&action=dismiss_manual_upgrade">Dismiss Reminder</a>
+			</p>
+		</div>
+	<?php endif; ?>
+	<?php if ( !empty( $_SESSION['manual_files']['core_files'] ) ): ?>
+		<div class="alert alert-danger">
+			<div>
+				The following files were not writeable by the webserver, and will need to be manually upgraded, or
+				you can <input type="text"
+											 size="90"
+											 value="chmod -R 777 <?php echo ENOM_PRO_ROOT; ?>"/> and
+				<a class="btn btn-default"
+					 href="<?php echo enom_pro::MODULE_LINK ?>&action=do_upgrade">Try Again</a>
+			</div>
+			<ul>
+				<?php foreach ( $_SESSION['manual_files']['core_files'] as
+												$filepath ): ?>
+					<li><a href="#"
+								 title="<?php echo $filepath ?>"
+								 class="ep_tt"><?php echo basename( $filepath ); ?></a>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+			<a class="btn btn-default"
+				 href="<?php echo enom_pro::MODULE_LINK ?>&action=dismiss_manual_upgrade">Dismiss Reminder</a>
+		</div>
+	<?php endif; ?>
+<?php endif; ?>
+
+<?php //Upgrade Successful  ?>
 <?php if (isset($_GET['upgraded'])) :?>
 	<div class="alert alert-success">
 		Upgrade Successful. Running version <?php echo ENOM_PRO_VERSION;?>.
 	</div>
 <?php endif;?>
+
+<?php //Alert dismissed ?>
 <?php if (isset($_GET['dismissed'])) :?>
 	<div class="alert alert-success slideup">
 		<p>Dismissed</p>
 	</div>
 <?php endif;?>
+
+<?php //Update Check  ?>
 <?php if (isset($_GET['checked'])):?>
 	<div class="alert <?php echo enom_pro_license::is_update_available() ? 'alert-warning' : 'alert-success';?>">
 		<h4>Checked for updates.</h4>
@@ -18,6 +119,8 @@
 		<?php endif;?>
 	</div>
 <?php endif;?>
+
+<?php //Update Available  ?>
 <?php if (enom_pro_license::is_update_available()) :?>
 	<?php $status = $enom->license->get_supportandUpdates();?>
 	<?php if ($status['status'] != 'active') :?>
