@@ -38,16 +38,20 @@ $result = mysql_query('SELECT * from `tbldomainpricing` ORDER BY `order` ASC'); 
 	</form>
 	<h2>Current TLD Pricing Order</h2>
 	<table class="table table-hover table-condensed">
-		<tr>
-			<th>TLD</th>
-			<th>Order <span class="enom-pro-icon enom-pro-icon-sort"></span></th>
-		</tr>
-		<?php while ($row = mysql_fetch_assoc($result)) : ?>
+		<thead>
 			<tr>
-				<td><?php echo $row['extension'] ?></td>
-				<td><?php echo $row['order'] ?></td>
+				<th>TLD</th>
+				<th>Order <span class="enom-pro-icon enom-pro-icon-sort"></span></th>
 			</tr>
-		<?php endwhile; ?>
+		</thead>
+		<tbody class="ep_sortable">
+			<?php while ($row = mysql_fetch_assoc($result)) : ?>
+				<tr id="<?php echo $row['extension'] ?>_<?php echo $row['id'] ?>">
+					<td><?php echo $row['extension'] ?></td>
+					<td><?php echo $row['order'] ?></td>
+				</tr>
+			<?php endwhile; ?>
+		</tbody>
 	</table>
 
 <?php else: ?>

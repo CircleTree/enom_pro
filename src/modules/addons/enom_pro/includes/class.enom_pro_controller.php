@@ -405,43 +405,11 @@ class enom_pro_controller {
 		if ( !$result ) {
 			return false;
 		}
-		$sorted = array();
-		/** @var array $ignored tlds that should be prepended before an update */
-		$ignored = isset( $_REQUEST['ignore'] ) ? array_keys( $_REQUEST['ignore'] ) : array();
-
-		$found_ignored = array();
-		while ( $row = mysql_fetch_assoc( $result ) ) {
-			if ( !in_array( $row['extension'], $ignored ) ) {
-				$sorted[] = array(
-					'processed' => ltrim( $row['extension'], '.' ),
-					'extension' => $row['extension'],
-					'id' => $row['id']
-				);
-			} else {
-				$found_ignored[] = array(
-					'processed' => ltrim( $row['extension'], '.' ),
-					'extension' => $row['extension'],
-					'id' => $row['id']
-				);
-			}
+		if (self::is_ajax()) {
+			$this->sort_domains_ajax( );
+		} else {
+			$this->sort_domains_auto( $result );
 		}
-		array_multisort( $sorted );
-		array_multisort( $found_ignored );
-		//Reverse the array, because we're going to push them onto the $sorted 1 at a time
-		$found_ignored = array_reverse( $found_ignored );
-		if ( $_REQUEST['order'] == 'desc' ) {
-			$sorted = array_reverse( $sorted );
-		}
-		foreach ( $found_ignored as $ignored_row ) {
-			array_unshift( $sorted, $ignored_row );
-		}
-		foreach ( $sorted as $new_order => $new_row ) {
-			$id = $new_row['id'];
-			$query = "UPDATE `tbldomainpricing` SET `order` = '{$new_order}}' WHERE `id` = '{$id}}';";
-			mysql_query( $query );
-		}
-
-		header( "Location: " . enom_pro::MODULE_LINK . '&view=pricing_sort&sorted' );
 	}
 
 	/**
@@ -546,5 +514,65 @@ class enom_pro_controller {
 		} else {
 			echo $data;
 		}
+	}
+
+	/**
+	 * @param resource $result
+	 */
+	private function sort_domains_auto( $result ) {
+		$sorted = array();
+		/** @var array $ignored TLDs that should be prepended before an update */
+		$ignored = isset( $_REQUEST['ignore'] ) ? array_keys( $_REQUEST['ignore'] ) : array();
+
+		$found_ignored = array();
+		while ( $row = mysql_fetch_assoc( $result ) ) {
+			if ( !in_array( $row['extension'], $ignored ) ) {
+				$sorted[] = array(
+					'processed' => ltrim( $row['extension'], '.' ),
+					'extension' => $row['extension'],
+					'id' => $row['id']
+				);
+			} else {
+				$found_ignored[] = array(
+					'processed' => ltrim( $row['extension'], '.' ),
+					'extension' => $row['extension'],
+					'id' => $row['id']
+				);
+			}
+		}
+		array_multisort( $sorted );
+		array_multisort( $found_ignored );
+		//Reverse the array, because we're going to push them onto the $sorted 1 at a time
+		$found_ignored = array_reverse( $found_ignored );
+		if ( $_REQUEST['order'] == 'desc' ) {
+			$sorted = array_reverse( $sorted );
+		}
+		foreach ( $found_ignored as $ignored_row ) {
+			array_unshift( $sorted, $ignored_row );
+		}
+		foreach ( $sorted as $new_order => $new_row ) {
+			$id = $new_row['id'];
+			$query = "UPDATE `tbldomainpricing` SET `order` = '{$new_order}}' WHERE `id` = '{$id}}';";
+			mysql_query( $query );
+		}
+
+		header( "Location: " . enom_pro::MODULE_LINK . '&view=pricing_sort&sorted' );
+	}
+
+	/**
+	 * Sorts TLDs using jQuery-ui sortable
+	 */
+	private function sort_domains_ajax() {
+		$sorted = array();
+		foreach ($_REQUEST['order'] as $new_order => $tld) {
+			$tld_array = explode('_', $tld);
+			$tld_id = end($tld_array);
+			$sorted[$new_order] = $tld_id;
+		}
+		foreach ( $sorted as $new_order => $tld_id ) {
+			$query = "UPDATE `tbldomainpricing` SET `order` = '{$new_order}}' WHERE `id` = '{$tld_id}}';";
+			mysql_query( $query );
+		}
+		echo 'sorted';
 	}
 }
