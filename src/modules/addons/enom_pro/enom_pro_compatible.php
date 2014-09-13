@@ -492,7 +492,7 @@ function enom_pro_sidebar( $vars ) {
 			</div>
 			<div class="col-xs-6">
 				<?php if (enom_pro_license::isBetaOptedIn()) :?>
-					<input type="text" name="betaVersion" value="<?php echo ENOM_PRO_VERSION; ?>" onclick="this.select(); return false;"/>
+					<span class="badge"><?php echo ENOM_PRO_VERSION; ?></span>
 				<?php else: ?>
 					<?php echo ENOM_PRO_VERSION; ?>
 				<?php endif;?>
