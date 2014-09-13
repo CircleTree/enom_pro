@@ -93,44 +93,7 @@ function enom_pro_admin_ssl_certs ($vars)
     if (isset($_REQUEST['enom_pro_get_ssl_certs'])) {
         try {
         $enom = new enom_pro();
-            $expiring_certs = $enom->getExpiringCerts();
-						$str = '';
-            $str .= '<div class="enom_pro_widget alert '.(count($expiring_certs) > 0 ? 'alert-danger' : 'alert-success').'">';
-            if (count($expiring_certs) > 0 ) {
-                $str .= ' <table class="table table-condensed table-hover">
-                <tr>
-									<th>Domain</th>
-									<th>Status</th>
-									<th>Product</th>
-									<th>Expiration Date</th>
-									<th>Hide</th>
-                </tr>
-                ';
-                foreach ($expiring_certs as $cert) {
-                    $str .= '<tr>
-                    <td> ';
-                    if (count($cert['domain']) > 0)
-                        $str .= rtrim(implode(', ', array_values($cert['domain'])), ', ');
-                    else
-                        $str .= 'Not Issued';
-                    $str .='</td>
-                    <td style="text-align:center;"><a href="http://www.enom.com/secure/configure-ssl-certificate.aspx?certid='.$cert['CertID'].'" target="_blank" class="btn btn-default" >'.$cert['status'].'</a></td>
-                    <td style="text-align:center;">'.$cert['desc'].'</td>
-                    <td style="text-align:center;">'.$cert['expiration_date'].'</td>
-                    ';
-									$str .= '<td><a href="index.php?action=enom_pro_hide_ssl&certid='.$cert['CertID'].'">[x]</a></td>';
-                }
-            } elseif (! isset($_REQUEST['show_all']) && "" != ($hidden = enom_pro::get_addon_setting('ssl_hidden'))) {
-							//May be hidden
-							$count = count($hidden);
-							$str .= '<p>No Certificates Expiring in the next '.$enom->get_addon_setting('ssl_days').' days. </p>';
-							$str .= "<p><b>But there are $count hidden certificates</b>" . ' <a href="#" class="show_hidden_ssl">Show All</a></p>';
-						} else {
-                //No expiring certs
-                $str .= '<p>Phew! No Certificates Expiring in the next '.$enom->get_addon_setting('ssl_days').' days.</p>';
-            }
-            $str .= "</div>";
-            $content = $str;
+            $content = $enom->render_ssl_widget();
         } catch (Exception $e) {
             $content = $e->getMessage();
         }
@@ -352,8 +315,9 @@ add_hook("AdminHomeWidgets",1,"enom_pro_admin_transfers");
 
 function get_enom_pro_widget_form ($action, $id)
 {
-    if ('configadminroles.php' == basename($_SERVER['PHP_SELF']))
+    if ('configadminroles.php' == basename($_SERVER['PHP_SELF'])) {
         return '';
+		}
     ob_start();?>
     <form id="<?php echo $id; ?>" class="refreshbutton" action="<?php echo $_SERVER['PHP_SELF'];?>">
         <input type="hidden" name="<?php echo $action; ?>" value="1" />
@@ -433,7 +397,7 @@ function enom_pro_admin_actions ()
         header("HTTP/1.0 400 Bad Request", true);
         echo $e->getMessage();
     }
-    die(); 
+    die();
 }
 add_hook("AdminAreaPage",-284917,"enom_pro_admin_actions");
 /**
@@ -562,16 +526,6 @@ function enom_pro_namespinner ()
 
 
 add_hook("ClientAreaPage",-10101,"enom_pro_namespinner");
-function enom_pro_premium ($vars){
-	if (isset($vars['availabilityresults']) && ! empty($vars['availabilityresults'])) {
-		foreach ($vars['availabilityresults'] as $result) {
-			
-		}
-		$vars['availabilityresults'][0]['overwrite'] = 'overwrite.com';
-	}
-	return array('availabilityresults2' => $vars['availabilityresults']);
-}
-add_hook("ClientAreaPage",-101012,"enom_pro_premium");
 
 function enom_pro_clientarea_transfers ($vars)
 {
@@ -612,7 +566,8 @@ function enom_pro_clientarea_transfers ($vars)
         return array('enom_transfers' => $there_are_results);
     }
 }
-add_hook("ClientAreaPage",2,"enom_pro_clientarea_transfers");
+add_hook("ClientAreaPage",20291,"enom_pro_clientarea_transfers");
+
 function enom_pro_srv_page ($vars)
 {
     if (! ('clientarea.php' == basename($_SERVER['SCRIPT_NAME']) && isset($_GET['action']) && 'domaindetails' == $_GET['action']))
@@ -625,7 +580,7 @@ function enom_pro_srv_page ($vars)
     return $vars;
 }
 add_hook("ClientAreaPage",-30101,"enom_pro_srv_page");
-add_hook("DailyCronJob", 1, "enom_pro_cron");
+
 function enom_pro_cron() {
 	$salt = 'lJsif3n1F9GKeStIdM9VAeJrrPC1grpBpSZLtWMb';
 	require_once 'enom_pro.php';
@@ -646,3 +601,4 @@ function enom_pro_cron() {
 		enom_pro::log_activity( $msg );
 	}
 }
+add_hook("DailyCronJob", 10101, "enom_pro_cron");

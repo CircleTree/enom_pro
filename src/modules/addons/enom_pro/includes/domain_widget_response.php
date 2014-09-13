@@ -38,7 +38,7 @@ if ($first_page):
                     </span>
                 </td>
                 <td>
-                    <span 
+                    <span
                     title="<?php echo ($domain['privacy'] == 1) ? 'Privacy Enabled' : 'Privacy Disabled'; ?>"
                         class="badge ep_tt <?php echo ($domain['privacy'] == 1) ? 'alert-success' : 'alert-danger' ?>">
                         <?php echo ($domain['privacy'] == 1) ? 'On' : 'Off'; ?>
