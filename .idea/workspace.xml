@@ -1,0 +1,2714 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="08c765d3-25f4-4648-aca3-dd0842f231cc" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js" />
+    </list>
+    <ignored path="enom_pro.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <ignored path="build/" />
+    <ignored path="MAMP_php_error_log_MAMP" />
+    <ignored path="phing-latest.phar" />
+    <ignored path="src/modules/addons/enom_pro/temp/" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/enom_pro$test_enom_pro_test_open_ssl_ticket.coverage" NAME="test_enom_pro.test_open_ssl_ticket Coverage Results" MODIFIED="1394747705210" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/enom_pro$Domains.coverage" NAME="Domains Coverage Results" MODIFIED="1397586461486" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="enom_pro" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="build.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="298" column="23" selection-start="12540" selection-end="12540" vertical-scroll-proportion="0.0" vertical-offset="4985" max-vertical-offset="6983">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TODO" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TODO">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="19" selection-start="484" selection-end="484" vertical-scroll-proportion="0.0" vertical-offset="221" max-vertical-offset="561">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pricing_import.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pricing_import.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="125" column="16" selection-start="3886" selection-end="3886" vertical-scroll-proportion="0.0" vertical-offset="2125" max-vertical-offset="8007">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="domain_widget_response.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget_response.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="41" column="43" selection-start="1436" selection-end="1436" vertical-scroll-proportion="0.0" vertical-offset="697" max-vertical-offset="1683">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="jquery.admin.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="802" column="38" selection-start="30933" selection-end="30933" vertical-scroll-proportion="0.7160048" vertical-offset="13073" max-vertical-offset="14635">
+              <folding>
+                <marker date="1410651089000" expanded="false" signature="28939:28951" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="class.enom_pro_controller.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="29" column="41" selection-start="666" selection-end="666" vertical-scroll-proportion="-12.307693" vertical-offset="173" max-vertical-offset="10668">
+              <folding>
+                <marker date="1410639958000" expanded="true" signature="11990:12038" placeholder="SELECT `id`,..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="admin.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/css/admin.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="509" column="13" selection-start="9396" selection-end="9396" vertical-scroll-proportion="0.0" vertical-offset="8100" max-vertical-offset="11442">
+              <folding>
+                <marker date="1410639482000" expanded="true" signature="9292:9316" placeholder="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="class.enom_pro.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1894" column="38" selection-start="53944" selection-end="53944" vertical-scroll-proportion="-20.115385" vertical-offset="31675" max-vertical-offset="39636">
+              <folding>
+                <marker date="1410647908000" expanded="true" signature="5454:5870" placeholder="..." />
+                <marker date="1410647908000" expanded="true" signature="5626:5660" placeholder="..." />
+                <marker date="1410647908000" expanded="true" signature="5815:5865" placeholder="..." />
+                <marker date="1410647908000" expanded="true" signature="19111:19248" placeholder="SELECT `id`,..." />
+                <marker date="1410647908000" expanded="true" signature="28148:28735" placeholder="SELECT tlds...." />
+                <marker date="1410647908000" expanded="true" signature="45758:45834" placeholder="SELECT `sett..." />
+                <marker date="1410647908000" expanded="true" signature="59560:59858" placeholder="INSERT INTO ..." />
+                <marker date="1410647908000" expanded="true" signature="60124:60197" placeholder="SELECT `id` ..." />
+                <marker date="1410647908000" expanded="true" signature="64123:64430" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="domain_widget.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="33" column="0" selection-start="741" selection-end="1257" vertical-scroll-proportion="0.0" vertical-offset="561" max-vertical-offset="2023">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ssl_widget.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/ssl_widget.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="8" column="33" selection-start="141" selection-end="141" vertical-scroll-proportion="0.0" vertical-offset="136" max-vertical-offset="1037">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="hooks.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="393" column="9" selection-start="16280" selection-end="16280" vertical-scroll-proportion="0.0" vertical-offset="6681" max-vertical-offset="10319">
+              <folding>
+                <marker date="1410620101000" expanded="true" signature="1441:1721" placeholder="..." />
+                <marker date="1410620101000" expanded="true" signature="1462:1710" placeholder="{...}" />
+                <marker date="1410620101000" expanded="true" signature="1540:1703" placeholder="{...}" />
+                <marker date="1410620101000" expanded="true" signature="1582:1638" placeholder="{...}" />
+                <marker date="1410620101000" expanded="true" signature="1644:1697" placeholder="{...}" />
+                <marker date="1410620101000" expanded="true" signature="7277:7414" placeholder="..." />
+                <marker date="1410620101000" expanded="true" signature="8274:8514" placeholder="..." />
+                <marker date="1410620101000" expanded="true" signature="8303:8493" placeholder="..." />
+                <marker date="1410620101000" expanded="true" signature="8336:8383" placeholder="..." />
+                <marker date="1410620101000" expanded="true" signature="8387:8428" placeholder="..." />
+                <marker date="1410620101000" expanded="true" signature="8447:8488" placeholder="..." />
+                <marker date="1410620101000" expanded="true" signature="14072:14300" placeholder="..." />
+                <marker date="1410620101000" expanded="true" signature="14201:14288" placeholder="..." />
+                <marker date="1410620101000" expanded="false" signature="20424:20436" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pricing_sort.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pricing_sort.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="36" column="27" selection-start="1131" selection-end="1131" vertical-scroll-proportion="-20.923077" vertical-offset="0" max-vertical-offset="1928">
+              <folding>
+                <element signature="e#6#79#0" expanded="false" />
+                <marker date="1410639514000" expanded="true" signature="103:156" placeholder="SELECT * fro..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="enom_pro_compatible.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="494" column="68" selection-start="18881" selection-end="18881" vertical-scroll-proportion="-3.1375" vertical-offset="8147" max-vertical-offset="11974">
+              <folding>
+                <element signature="e#20319#20340#0" expanded="true" />
+                <marker date="1410649332000" expanded="true" signature="1188:1292" placeholder="..." />
+                <marker date="1410649332000" expanded="true" signature="13458:13608" placeholder="..." />
+                <marker date="1410649332000" expanded="true" signature="14430:14470" placeholder="INSERT INTO ..." />
+                <marker date="1410649332000" expanded="true" signature="14580:14637" placeholder="DELETE FROM ..." />
+                <marker date="1410649332000" expanded="true" signature="14766:14835" placeholder="INSERT INTO ..." />
+                <marker date="1410649332000" expanded="true" signature="14887:14956" placeholder="INSERT INTO ..." />
+                <marker date="1410649332000" expanded="true" signature="15008:15077" placeholder="INSERT INTO ..." />
+                <marker date="1410649332000" expanded="true" signature="15129:15203" placeholder="INSERT INTO ..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="enom_pro.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="69" column="25" selection-start="1962" selection-end="1962" vertical-scroll-proportion="-15.692307" vertical-offset="765" max-vertical-offset="2491">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="admin_messages.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="64" column="25" selection-start="2791" selection-end="2791" vertical-scroll-proportion="-5.8461537" vertical-offset="936" max-vertical-offset="3579">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="class.enom_pro_license.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="232" column="0" selection-start="6999" selection-end="6999" vertical-scroll-proportion="-7.0384617" vertical-offset="3761" max-vertical-offset="6960">
+              <folding>
+                <marker date="1410647908000" expanded="true" signature="552:702" placeholder="..." />
+                <marker date="1410647908000" expanded="true" signature="724:884" placeholder="..." />
+                <marker date="1410647908000" expanded="true" signature="800:879" placeholder="..." />
+                <marker date="1410647908000" expanded="true" signature="3579:3626" placeholder="SELECT `loca..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="batch-pricing" />
+      </map>
+    </option>
+  </component>
+  <component name="GitLogSettings">
+    <option name="myDateState">
+      <MyDateState />
+    </option>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/src/templates/default/enom_srv.tpl" />
+        <option value="$PROJECT_DIR$/bootstrap.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/A2B53B96-2EFF-4D29-AE24-B331942A7F69/clientareadomains.tpl" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/46CC9CD0-90C1-4616-91DC-CECE3B46D874/domainchecker.tpl" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/7A6FEC8D-ECDC-4034-A596-5320C52F3A76/nf.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/843751CD-2975-4B9C-9EC5-38E192E0F7D2/index.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/3E0769FE-74D9-44A7-9BBF-7A13FB6DAB9E/wp-config.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/25608DFC-A86A-4A16-8D67-597676D8F461/functions.php" />
+        <option value="$PROJECT_DIR$/tests/files/expiring_ssl.xml" />
+        <option value="$PROJECT_DIR$/phpunit.xml" />
+        <option value="$USER_HOME$/Sites/whmcs/configuration.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/temp/all_domains.cache" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/CFE3EE00-A122-4327-B115-DDD60FA7A4CB/loop.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/777AE5B8-9A1F-4F59-8636-188BFB3AFB4E/footer.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/BF131C09-8A4A-47BB-97AF-C670A86EFA3A/index.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/A7B1703E-3282-4E69-8D99-8FEA79916119/single.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/AE15463E-EFFF-49E8-8E9E-A68795B85B85/loop-single.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/76CADA38-061A-463C-A01D-F4CE2C1B1661/header.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/DD0EBD2A-13B9-4B17-932C-E3D19E327E17/style.css" />
+        <option value="$USER_HOME$/Sites/whmcs/templates/orderforms/cart/adddomain.tpl" />
+        <option value="$PROJECT_DIR$/src/enom_srv.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/F9C3BCF7-93AB-4145-9A3B-60254D858FD0/hooks.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/32AF1940-D5CA-45B9-A02A-C1B097981AE7/loop-single.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/css/bootstrap-theme.min.css" />
+        <option value="$PROJECT_DIR$/tests/test_enom_pro.php" />
+        <option value="$PROJECT_DIR$/tests/files/make_names.off" />
+        <option value="$PROJECT_DIR$/icomoon/enom-pro (4)/style.css" />
+        <option value="$PROJECT_DIR$/src/README.txt" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_import.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_import_table.php" />
+        <option value="$PROJECT_DIR$/TODO" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/4861BB24-2262-4ED0-9B87-1E14A07C9DFE/wp-config.php" />
+        <option value="$USER_HOME$/Sites/whmcs/templates/orderforms/verticalsteps/configureproductdomain.tpl" />
+        <option value="$USER_HOME$/Sites/whmcs/templates/orderforms/verticalsteps/adddomain.tpl" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/1910ADE4-91A2-491D-888D-6D592FA2EB44/wp-config.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/53E9E8A2-E018-401A-8F90-482D7B7A740A/header.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/2320560D-C430-4EFB-9676-99DA57648B23/library.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/4B79A89F-FF08-4E9E-8E48-2B7656BFCCC5/administrator.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/A98D1A94-6F06-4D30-B8EC-9CB69FACB8F4/template-child.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/F4AE8694-EE24-4905-B34A-2EDB63DBD8EE/header.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/53D79F08-91A0-401F-B873-A616807BC0E2/single.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/106FCE31-C0EB-4D77-8939-AF096CB7CBAA/page.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/2138F00E-81EE-481F-BC98-74F4F33C7FBD/style.css" />
+        <option value="$USER_HOME$/Sites/whmcs/templates/default/domainchecker.tpl" />
+        <option value="$USER_HOME$/Documents/WWWROOT/pinkvacationrentals.com/pinkvacationrentals_201405091128.sql" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/A4E28A83-A12B-45CC-9C7E-6474FB6463F9/configureproductdomain.tpl" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/9AB00044-32CA-4DBA-9770-C70101A3C54F/adddomain.tpl" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/435B3668-BEFC-4061-BC88-461E31F05533/clientareadomains.tpl" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/E5604320-5931-4B47-AB3F-90F494EDC9ED/clientareadomaindetails.tpl" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget_response.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/ssl_widget.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pricing_import.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/css/admin.css" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pricing_sort.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/exceptions.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" />
+        <option value="$PROJECT_DIR$/build.xml" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js" />
+      </list>
+    </option>
+  </component>
+  <component name="NamedScopeManager">
+    <scope name="src without built files" pattern="file:build.xml||file:src/modules/addons/enom_pro/includes/class.enom_pro.php||file:src/modules/addons/enom_pro/includes/class.enom_pro_controller.php||file:src/modules/addons/enom_pro/includes/class.enom_pro_whmcs_api.php||file:src/modules/addons/enom_pro/includes/domain_import.php||file:src/modules/addons/enom_pro/includes/domain_import_table.php||file:src/modules/addons/enom_pro/includes/domain_widget_response.php||file:src/modules/addons/enom_pro/includes/exceptions.php||file:src/modules/addons/enom_pro/includes/index.php||file:src/modules/addons/enom_pro/includes/pricing_import.php||file:src/modules/addons/enom_pro/includes/pricing_sort.php||file:src/modules/addons/enom_pro/js/jquery.admin.js||file:src/modules/addons/enom_pro/css/admin.css||file:src/modules/addons/enom_pro/enom_pro.php||file:src/modules/addons/enom_pro/hooks.php||file:src/modules/addons/enom_pro/includes//*||file:src/modules/addons/enom_pro/enom_pro_compatible.php" />
+  </component>
+  <component name="PerforceDirect.Settings">
+    <option name="ENABLED" value="false" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" interpreter_name="PHP 5.4 MAMP">
+    <include_path>
+      <path value="/Applications/MAMP/bin/php/php5.4.26/lib/php" />
+    </include_path>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="4" />
+    <option name="y" value="22" />
+    <option name="width" value="1676" />
+    <option name="height" value="1028" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Phing</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>PhingDomInspection</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="2" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="addons" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="addons" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="includes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="addons" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="icomoon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="icomoon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom-pro (4)" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="Errors" />
+    <property name="restartRequiresConfirmation" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/modules/addons/enom_pro/temp" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+    <property name="FullScreen" value="false" />
+    <property name="LayoutCode.rearrangeEntriesPHP" value="false" />
+    <property name="dynamic.classpath" value="false" />
+    <property name="SearchEverywhereHistory" value="&#10;sor" />
+    <property name="LayoutCode.rearrangeEntriesJavaScript" value="false" />
+    <property name="LayoutCode.rearrangeEntriesSmarty" value="false" />
+    <property name="LayoutCode.rearrangeEntriesXML" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/modules/addons/enom_pro" />
+    </key>
+  </component>
+  <component name="RestClientSettings">
+    <option name="REQUEST_HISTORY">
+      <list>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://www.whmcs.com" />
+          <option name="urlPath" value="/members/communityaddons.php" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="a78b2c7bfeffe7d3096b30f785a03afda933365c" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://www.whmcs.com" />
+          <option name="urlPath" value="/members/communityaddons.php" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://www.whmcs.com" />
+          <option name="urlPath" value="/members/communityaddons.php" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://www.whmcs.com" />
+          <option name="urlPath" value="/members/communityaddons.php" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://www.whmcs.com" />
+          <option name="urlPath" value="/members/communityaddons.php" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://www.whmcs.com" />
+          <option name="urlPath" value="/members/communityaddons.php" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="e899e08d29a1177fe51a13cc79d6c9dcdcb5a5b3" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://www.whmcs.com" />
+          <option name="urlPath" value="/members/communityaddons.php" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://www.whmcs.com" />
+          <option name="urlPath" value="/members/communityaddons.php" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://www.whmcs.com" />
+          <option name="urlPath" value="/members/communityaddons.php" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://www.whmcs.com" />
+          <option name="urlPath" value="/members/communityaddons.php" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="action" />
+                <option name="value" value="viewmod" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="id" />
+                <option name="value" value="443" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="vote" />
+                <option name="value" value="true" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="token" />
+                <option name="value" value="aef7f82ce871e26811938ae9d3ba2e97d555d55f" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="PHPUnit.PHPUnit">
+    <configuration default="false" name="test_enom_pro.test_open_ssl_ticket" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="test_enom_pro" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/test_enom_pro.php" method="test_open_ssl_ticket" scope="Method" use_alternative_configuration_file="true" />
+      <RunnerSettings RunnerId="PhpRunner" />
+      <RunnerSettings RunnerId="PhpUnitCoverageRunner" />
+      <RunnerSettings RunnerId="PhpUnitDebugRunner" />
+      <ConfigurationWrapper RunnerId="PhpRunner" />
+      <ConfigurationWrapper RunnerId="PhpUnitCoverageRunner" />
+      <ConfigurationWrapper RunnerId="PhpUnitDebugRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="test_enom_pro.test_retail_andWholeSaleNotEqual" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="test_enom_pro" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/test_enom_pro.php" method="test_retail_andWholeSaleNotEqual" scope="Method" use_alternative_configuration_file="true" />
+      <RunnerSettings RunnerId="PhpUnitDebugRunner" />
+      <ConfigurationWrapper RunnerId="PhpUnitDebugRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="test_enom_pro.test_get_imported_pagination" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="test_enom_pro" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/test_enom_pro.php" method="test_get_imported_pagination" scope="Method" options="--group domains" use_alternative_configuration_file="true" />
+      <RunnerSettings RunnerId="PhpRunner" />
+      <RunnerSettings RunnerId="PhpUnitDebugRunner" />
+      <ConfigurationWrapper RunnerId="PhpRunner" />
+      <ConfigurationWrapper RunnerId="PhpUnitDebugRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="test_enom_pro.testGetWhois" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="test_enom_pro" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/test_enom_pro.php" method="testGetWhois" scope="Method" use_alternative_configuration_file="true" />
+      <RunnerSettings RunnerId="PhpRunner" />
+      <RunnerSettings RunnerId="PhpUnitDebugRunner" />
+      <ConfigurationWrapper RunnerId="PhpRunner" />
+      <ConfigurationWrapper RunnerId="PhpUnitDebugRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="test_enom_pro.testHideSSL" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="test_enom_pro" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/test_enom_pro.php" method="testHideSSL" scope="Method" use_alternative_configuration_file="true" />
+      <RunnerSettings RunnerId="PhpRunner" />
+      <ConfigurationWrapper RunnerId="PhpRunner" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+      <TestRunner />
+      <method />
+    </configuration>
+    <configuration default="true" type="JSTestDriver:ConfigurationType" factoryName="JsTestDriver">
+      <setting name="configLocationType" value="CONFIG_FILE" />
+      <setting name="settingsFile" value="" />
+      <setting name="serverType" value="INTERNAL" />
+      <setting name="preferredDebugBrowser" value="CHROME" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpBuiltInWebServerConfigurationType" factoryName="PHP Built-in Web Server">
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpWebAppRunConfigurationType" factoryName="PHP Web Application">
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpHttpRequestRunConfigurationType" factoryName="PHP HTTP Request">
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpRemoteDebugRunConfigurationType" factoryName="PHP Remote Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+      <method />
+    </configuration>
+    <configuration default="true" type="XSLT" factoryName="XSLT">
+      <option name="myOutputFile" />
+      <option name="myOpenOutputFile" value="false" />
+      <option name="myOpenInBrowser" value="false" />
+      <option name="mySmartErrorHandling" value="true" />
+      <option name="myRunnerPort" value="34873" />
+      <option name="myVmArguments" />
+      <option name="myWorkingDirectory" />
+      <option name="myModule" />
+      <option name="myJdk" />
+      <parameters />
+      <OutputType value="CONSOLE" save-to-file="false" />
+      <FileType name="XML" />
+      <JdkChoice value="FROM_MODULE" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AppEnginePhpConfigurationType" factoryName="App Engine for PHP">
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server">
+      <method />
+    </configuration>
+    <configuration default="true" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
+      <option name="VM_PARAMETERS" value="" />
+      <option name="USER_CFG_CLASS" />
+      <option name="CONTEXT_PROVIDER" />
+      <method />
+    </configuration>
+    <configuration default="false" name="run cron" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$USER_HOME$/Sites/whmcs/admin/cron.php">
+      <RunnerSettings RunnerId="PhpRunner" />
+      <RunnerSettings RunnerId="PhpScriptDebugRunner" />
+      <ConfigurationWrapper RunnerId="PhpRunner" />
+      <ConfigurationWrapper RunnerId="PhpScriptDebugRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="PHPUnit" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+      <TestRunner configuration_file="$PROJECT_DIR$/phpunit.xml" scope="XML" use_alternative_configuration_file="true" />
+      <RunnerSettings RunnerId="PhpRunner" />
+      <RunnerSettings RunnerId="PhpUnitDebugRunner" />
+      <ConfigurationWrapper RunnerId="PhpRunner" />
+      <ConfigurationWrapper RunnerId="PhpUnitDebugRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Domains" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+      <TestRunner configuration_file="$PROJECT_DIR$/phpunit.xml" scope="XML" options="--group domains" use_alternative_configuration_file="true" />
+      <RunnerSettings RunnerId="PhpRunner" />
+      <RunnerSettings RunnerId="PhpUnitCoverageRunner" />
+      <RunnerSettings RunnerId="PhpUnitDebugRunner" />
+      <ConfigurationWrapper RunnerId="PhpRunner" />
+      <ConfigurationWrapper RunnerId="PhpUnitCoverageRunner" />
+      <ConfigurationWrapper RunnerId="PhpUnitDebugRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="WHMCS API" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+      <TestRunner configuration_file="$PROJECT_DIR$/phpunit.xml" scope="XML" options="--group whmcs" use_alternative_configuration_file="true" />
+      <RunnerSettings RunnerId="PhpRunner" />
+      <RunnerSettings RunnerId="PhpUnitDebugRunner" />
+      <ConfigurationWrapper RunnerId="PhpRunner" />
+      <ConfigurationWrapper RunnerId="PhpUnitDebugRunner" />
+      <method />
+    </configuration>
+    <list size="9">
+      <item index="0" class="java.lang.String" itemvalue="PHP Script.run cron" />
+      <item index="1" class="java.lang.String" itemvalue="PHPUnit.PHPUnit" />
+      <item index="2" class="java.lang.String" itemvalue="PHPUnit.Domains" />
+      <item index="3" class="java.lang.String" itemvalue="PHPUnit.WHMCS API" />
+      <item index="4" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_open_ssl_ticket" />
+      <item index="5" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_retail_andWholeSaleNotEqual" />
+      <item index="6" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_get_imported_pagination" />
+      <item index="7" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.testGetWhois" />
+      <item index="8" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.testHideSSL" />
+    </list>
+    <recent_temporary>
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.testHideSSL" />
+        <item index="1" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.testGetWhois" />
+        <item index="2" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_get_imported_pagination" />
+        <item index="3" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_retail_andWholeSaleNotEqual" />
+        <item index="4" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_open_ssl_ticket" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="StructureViewFactory">
+    <option name="ACTIVE_ACTIONS" value="VISIBILITY_SORTER,ALPHA_COMPARATOR" />
+  </component>
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false" SSL_PROTOCOLS="sslv3">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <option name="IGNORE_EXTERNALS" value="false" />
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="08c765d3-25f4-4648-aca3-dd0842f231cc" name="Default" comment="" />
+      <created>1390339058882</created>
+      <updated>1390339058882</updated>
+    </task>
+    <task id="LOCAL-00001" summary="2.1.28 bump">
+      <created>1390433164833</created>
+      <updated>1390433164833</updated>
+    </task>
+    <task id="LOCAL-00002" summary="2.1.30&#10;fixed save domain pricing with , bug">
+      <created>1392070705274</created>
+      <updated>1392070705274</updated>
+    </task>
+    <task id="LOCAL-00003" summary="updated inline help">
+      <created>1393450561328</created>
+      <updated>1393450561328</updated>
+    </task>
+    <task id="LOCAL-00004" summary="added cron locking system">
+      <created>1397866380827</created>
+      <updated>1397866380827</updated>
+    </task>
+    <task id="LOCAL-00005" summary="pricing sort&#10;extracted bootstrap to custom branch&#10;added dismissable alerts&#10;added gzip &amp; encrypt admin js">
+      <created>1399743255631</created>
+      <updated>1399743255631</updated>
+    </task>
+    <task id="LOCAL-00006" summary="added custom BS build">
+      <created>1399743275111</created>
+      <updated>1399743275111</updated>
+    </task>
+    <task id="LOCAL-00007" summary="added local files">
+      <created>1399743337437</created>
+      <updated>1399743337437</updated>
+    </task>
+    <task id="LOCAL-00008" summary="added icons&#10;remove pragma header&#10;domain import UX improvements&#10;added unencoded compat. checker">
+      <created>1410288448227</created>
+      <updated>1410288448227</updated>
+    </task>
+    <task id="LOCAL-00009" summary="extracted domain widget">
+      <created>1410574588608</created>
+      <updated>1410574588609</updated>
+    </task>
+    <task id="LOCAL-00010" summary="refactored pricing import">
+      <created>1410574625283</created>
+      <updated>1410574625283</updated>
+    </task>
+    <task id="LOCAL-00011" summary="added icon fonts">
+      <created>1410574700690</created>
+      <updated>1410574700690</updated>
+    </task>
+    <task id="LOCAL-00012" summary="extracted ssl widget to new file">
+      <created>1410576514993</created>
+      <updated>1410576514993</updated>
+    </task>
+    <task id="LOCAL-00013" summary="sort ssl certs by expiration date">
+      <created>1410619646029</created>
+      <updated>1410619646029</updated>
+    </task>
+    <task id="LOCAL-00014" summary="added jquery-ui sortable for TLDs">
+      <created>1410626978921</created>
+      <updated>1410626978921</updated>
+    </task>
+    <task id="LOCAL-00015" summary="CS fixes">
+      <created>1410633453393</created>
+      <updated>1410633453393</updated>
+    </task>
+    <task id="LOCAL-00016" summary="pricing sortable UX fixes&#10;pricing docs">
+      <created>1410638892078</created>
+      <updated>1410638892078</updated>
+    </task>
+    <task id="LOCAL-00017" summary="extract admin messages from main file">
+      <created>1410638931959</created>
+      <updated>1410638931959</updated>
+    </task>
+    <task id="LOCAL-00018" summary="&#10;refactor help link &amp; install order links">
+      <created>1410639016231</created>
+      <updated>1410639016231</updated>
+    </task>
+    <task id="LOCAL-00019" summary="added sortable ajax visual queue, and automatic abort with multiple requests">
+      <created>1410640000310</created>
+      <updated>1410640000310</updated>
+    </task>
+    <task id="LOCAL-00020" summary="added name accessor method&#10;fixed license typo">
+      <created>1410640023325</created>
+      <updated>1410640023325</updated>
+    </task>
+    <task id="LOCAL-00021" summary="help message for dismissable prompts">
+      <created>1410640247932</created>
+      <updated>1410640247932</updated>
+    </task>
+    <task id="LOCAL-00022" summary="added beta opt-in">
+      <created>1410647928247</created>
+      <updated>1410647928247</updated>
+    </task>
+    <task id="LOCAL-00023" summary="changed git hash to 12 digits">
+      <created>1410648298623</created>
+      <updated>1410648298623</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
+    <servers />
+  </component>
+  <component name="TodoView" selected-index="6">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="4" y="22" width="1676" height="1028" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Documentation" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17319462" sideWeight="0.4017094" order="2" side_tool="true" content_ui="tabs" x="104" y="122" width="1236" height="678" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13693467" sideWeight="0.6695353" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42307693" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32371795" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292683" sideWeight="0.67105263" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43176973" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32692307" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298153" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20405982" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19951041" sideWeight="0.65918803" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17319462" sideWeight="0.5972222" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37286323" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24847001" sideWeight="0.34081197" order="6" side_tool="true" content_ui="tabs" />
+      <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32942432" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="combo" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Documentation" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17135863" sideWeight="0.4008529" order="2" side_tool="true" content_ui="tabs" x="104" y="122" width="1236" height="678" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32951653" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13693467" sideWeight="0.6695353" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42307693" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32409382" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292683" sideWeight="0.67105263" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43176973" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3272921" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298153" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20405982" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32942432" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24847001" sideWeight="0.34081197" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19951041" sideWeight="0.65918803" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17135863" sideWeight="0.59808105" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37313432" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="false" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="myTodoPanelSettings">
+      <TodoPanelSettings />
+    </option>
+    <MESSAGE value="2.1.28 bump" />
+    <MESSAGE value="2.1.30&#10;fixed save domain pricing with , bug" />
+    <MESSAGE value="updated inline help" />
+    <MESSAGE value="added cron locking system" />
+    <MESSAGE value="pricing sort&#10;extracted bootstrap to custom branch&#10;added dismissable alerts&#10;added gzip &amp; encrypt admin js" />
+    <MESSAGE value="added custom BS build" />
+    <MESSAGE value="added local files" />
+    <MESSAGE value="added icons&#10;remove pragma header&#10;domain import UX improvements&#10;added unencoded compat. checker" />
+    <MESSAGE value="extracted domain widget" />
+    <MESSAGE value="refactored pricing import" />
+    <MESSAGE value="added icon fonts" />
+    <MESSAGE value="extracted ssl widget to new file" />
+    <MESSAGE value="sort ssl certs by expiration date" />
+    <MESSAGE value="added jquery-ui sortable for TLDs" />
+    <MESSAGE value="CS fixes" />
+    <MESSAGE value="pricing sortable UX fixes&#10;pricing docs" />
+    <MESSAGE value="extract admin messages from main file" />
+    <MESSAGE value="extract admin messages into main message file" />
+    <MESSAGE value="&#10;refactor help link &amp; install order links" />
+    <MESSAGE value="added sortable ajax visual queue, and automatic abort with multiple requests" />
+    <MESSAGE value="added name accessor method&#10;fixed license typo" />
+    <MESSAGE value="help message for dismissable prompts" />
+    <MESSAGE value="added beta opt-in" />
+    <MESSAGE value="changed git hash to 12 digits" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed git hash to 12 digits" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/tests/test_enom_pro.php</url>
+          <line>454</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/tests/test_enom_pro.php</url>
+          <line>188</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="13" />
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="103" column="25" selection-start="3603" selection-end="3603" vertical-scroll-proportion="0.0" vertical-offset="1751" max-vertical-offset="2346">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="36" selection-start="452" selection-end="452" vertical-scroll-proportion="0.0" vertical-offset="289" max-vertical-offset="12546">
+          <folding>
+            <element signature="e#20319#20340#0" expanded="true" />
+            <marker date="1410649332000" expanded="true" signature="1188:1292" placeholder="..." />
+            <marker date="1410649332000" expanded="true" signature="13458:13608" placeholder="..." />
+            <marker date="1410649332000" expanded="true" signature="14430:14470" placeholder="INSERT INTO ..." />
+            <marker date="1410649332000" expanded="true" signature="14580:14637" placeholder="DELETE FROM ..." />
+            <marker date="1410649332000" expanded="true" signature="14766:14835" placeholder="INSERT INTO ..." />
+            <marker date="1410649332000" expanded="true" signature="14887:14956" placeholder="INSERT INTO ..." />
+            <marker date="1410649332000" expanded="true" signature="15008:15077" placeholder="INSERT INTO ..." />
+            <marker date="1410649332000" expanded="true" signature="15129:15203" placeholder="INSERT INTO ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/css/bootstrap.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="37583" selection-start="37583" selection-end="37583" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="34">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="175" column="23" selection-start="9386" selection-end="9483" vertical-scroll-proportion="0.0" vertical-offset="2975" max-vertical-offset="5049">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TODO">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="19" selection-start="484" selection-end="484" vertical-scroll-proportion="0.0" vertical-offset="221" max-vertical-offset="561">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="702" column="0" selection-start="30990" selection-end="30990" vertical-scroll-proportion="0.0" vertical-offset="11934" max-vertical-offset="12291">
+          <folding>
+            <marker date="1410620101000" expanded="true" signature="1441:1721" placeholder="..." />
+            <marker date="1410620101000" expanded="true" signature="1462:1710" placeholder="{...}" />
+            <marker date="1410620101000" expanded="true" signature="1540:1703" placeholder="{...}" />
+            <marker date="1410620101000" expanded="true" signature="1582:1638" placeholder="{...}" />
+            <marker date="1410620101000" expanded="true" signature="1644:1697" placeholder="{...}" />
+            <marker date="1410620101000" expanded="true" signature="7277:7414" placeholder="..." />
+            <marker date="1410620101000" expanded="true" signature="8274:8514" placeholder="..." />
+            <marker date="1410620101000" expanded="true" signature="8303:8493" placeholder="..." />
+            <marker date="1410620101000" expanded="true" signature="8336:8383" placeholder="..." />
+            <marker date="1410620101000" expanded="true" signature="8387:8428" placeholder="..." />
+            <marker date="1410620101000" expanded="true" signature="8447:8488" placeholder="..." />
+            <marker date="1410620101000" expanded="true" signature="14072:14300" placeholder="..." />
+            <marker date="1410620101000" expanded="true" signature="14201:14288" placeholder="..." />
+            <marker date="1410620101000" expanded="false" signature="20424:20436" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="36" selection-start="452" selection-end="452" vertical-scroll-proportion="0.0" vertical-offset="289" max-vertical-offset="12546">
+          <folding>
+            <element signature="e#20319#20340#0" expanded="true" />
+            <marker date="1410649332000" expanded="true" signature="1188:1292" placeholder="..." />
+            <marker date="1410649332000" expanded="true" signature="13458:13608" placeholder="..." />
+            <marker date="1410649332000" expanded="true" signature="14430:14470" placeholder="INSERT INTO ..." />
+            <marker date="1410649332000" expanded="true" signature="14580:14637" placeholder="DELETE FROM ..." />
+            <marker date="1410649332000" expanded="true" signature="14766:14835" placeholder="INSERT INTO ..." />
+            <marker date="1410649332000" expanded="true" signature="14887:14956" placeholder="INSERT INTO ..." />
+            <marker date="1410649332000" expanded="true" signature="15008:15077" placeholder="INSERT INTO ..." />
+            <marker date="1410649332000" expanded="true" signature="15129:15203" placeholder="INSERT INTO ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="77" column="0" selection-start="2172" selection-end="2235" vertical-scroll-proportion="0.0" vertical-offset="1309" max-vertical-offset="1377">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="86" column="39" selection-start="2685" selection-end="2685" vertical-scroll-proportion="0.0" vertical-offset="1462" max-vertical-offset="8857">
+          <folding>
+            <marker date="1410639958000" expanded="true" signature="11990:12038" placeholder="SELECT `id`,..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Sites/whmcs/templates/orderforms/verticalsteps/configureproductdomain.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="99" column="16" selection-start="5842" selection-end="5842" vertical-scroll-proportion="0.0" vertical-offset="1683" max-vertical-offset="1802" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Sites/whmcs/templates/orderforms/verticalsteps/adddomain.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="85" column="6" selection-start="3318" selection-end="3318" vertical-scroll-proportion="0.0" vertical-offset="1445" max-vertical-offset="1513" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Sites/whmcs/templates/default/domainchecker.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="105" column="45" selection-start="4142" selection-end="4142" vertical-scroll-proportion="0.0" vertical-offset="1785" max-vertical-offset="3162" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1617" column="44" selection-start="58265" selection-end="58265" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="29206" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pricing_import.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="70" column="55" selection-start="3283" selection-end="3283" vertical-scroll-proportion="0.0" vertical-offset="1190" max-vertical-offset="4522" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/templates/default/clientareadomains.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="66" selection-start="672" selection-end="672" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="2771" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="694" column="33" selection-start="31146" selection-end="31146" vertical-scroll-proportion="0.0" vertical-offset="11798" max-vertical-offset="11917" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="29" selection-start="1198" selection-end="1198" vertical-scroll-proportion="0.0" vertical-offset="595" max-vertical-offset="5933" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="56" selection-start="166" selection-end="166" vertical-scroll-proportion="0.0" vertical-offset="68" max-vertical-offset="102" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="210" column="29" selection-start="13841" selection-end="13841" vertical-scroll-proportion="0.0" vertical-offset="3570" max-vertical-offset="7871" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1617" column="44" selection-start="58265" selection-end="58265" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="29206" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pricing_import.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="70" column="55" selection-start="3283" selection-end="3283" vertical-scroll-proportion="0.0" vertical-offset="1190" max-vertical-offset="4522" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/templates/default/clientareadomains.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="66" selection-start="672" selection-end="672" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="2771" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="694" column="33" selection-start="31146" selection-end="31146" vertical-scroll-proportion="0.0" vertical-offset="11798" max-vertical-offset="11917" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="29" selection-start="1198" selection-end="1198" vertical-scroll-proportion="0.0" vertical-offset="595" max-vertical-offset="5933" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="56" selection-start="166" selection-end="166" vertical-scroll-proportion="0.0" vertical-offset="68" max-vertical-offset="102" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="210" column="29" selection-start="13841" selection-end="13841" vertical-scroll-proportion="0.0" vertical-offset="3570" max-vertical-offset="7871" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1617" column="44" selection-start="58265" selection-end="58265" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="29206" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pricing_import.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="70" column="55" selection-start="3283" selection-end="3283" vertical-scroll-proportion="0.0" vertical-offset="1190" max-vertical-offset="4522" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/templates/default/clientareadomains.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="66" selection-start="672" selection-end="672" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="2771" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="694" column="33" selection-start="31146" selection-end="31146" vertical-scroll-proportion="0.0" vertical-offset="11798" max-vertical-offset="11917" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="29" selection-start="1198" selection-end="1198" vertical-scroll-proportion="0.0" vertical-offset="595" max-vertical-offset="5933" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="56" selection-start="166" selection-end="166" vertical-scroll-proportion="0.0" vertical-offset="68" max-vertical-offset="102" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="210" column="29" selection-start="13841" selection-end="13841" vertical-scroll-proportion="0.0" vertical-offset="3570" max-vertical-offset="7871" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1617" column="44" selection-start="58265" selection-end="58265" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="29206" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pricing_import.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="70" column="55" selection-start="3283" selection-end="3283" vertical-scroll-proportion="0.0" vertical-offset="1190" max-vertical-offset="4522" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/templates/default/clientareadomains.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="66" selection-start="672" selection-end="672" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="2771" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="694" column="33" selection-start="31146" selection-end="31146" vertical-scroll-proportion="0.0" vertical-offset="11798" max-vertical-offset="11917" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="23" selection-start="439" selection-end="439" vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="5933" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="56" selection-start="166" selection-end="166" vertical-scroll-proportion="0.0" vertical-offset="68" max-vertical-offset="102" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="210" column="29" selection-start="13841" selection-end="13841" vertical-scroll-proportion="0.0" vertical-offset="3570" max-vertical-offset="7871" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="574" column="23" selection-start="19107" selection-end="19107" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="29206" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pricing_import.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="70" column="55" selection-start="3283" selection-end="3283" vertical-scroll-proportion="0.0" vertical-offset="1190" max-vertical-offset="4522" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/templates/default/clientareadomains.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="38" selection-start="172" selection-end="172" vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="2771" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="502" column="25" selection-start="22570" selection-end="22570" vertical-scroll-proportion="0.0" vertical-offset="8534" max-vertical-offset="11917" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="162" column="54" selection-start="5543" selection-end="5598" vertical-scroll-proportion="0.0" vertical-offset="2754" max-vertical-offset="5933" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="30" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0" vertical-offset="68" max-vertical-offset="4233">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="56" selection-start="166" selection-end="166" vertical-scroll-proportion="0.0" vertical-offset="68" max-vertical-offset="102" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="358" column="49" selection-start="19821" selection-end="19821" vertical-scroll-proportion="0.0" vertical-offset="6086" max-vertical-offset="7871" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/templates/default/enom_srv.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="83" column="3" selection-start="3556" selection-end="3556" vertical-scroll-proportion="1.0384616" vertical-offset="1438" max-vertical-offset="2273" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/templates/default/clientareadomains.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="19" selection-start="547" selection-end="3625" vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="2771" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/files/expiring_ssl.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="37" selection-start="778" selection-end="778" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2177" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/phpunit.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="59" selection-start="1451" selection-end="1451" vertical-scroll-proportion="0.0" vertical-offset="323" max-vertical-offset="1395" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/temp/version">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="6" selection-start="6" selection-end="6" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="579" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Sites/whmcs/configuration.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="0" selection-start="451" selection-end="451" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="289" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Sites/whmcs/lang/english.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="0" selection-start="690" selection-end="690" vertical-scroll-proportion="0.0" vertical-offset="357" max-vertical-offset="24854" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Sites/whmcs/templates/orderforms/cart/adddomain.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="61" column="16" selection-start="3185" selection-end="3185" vertical-scroll-proportion="0.61207896" vertical-offset="612" max-vertical-offset="2119" />
+      </provider>
+    </entry>
+    <entry file="dbDummy://dbtable:/cdaaee59/473f518f-c9b6-4e15-b437-c072cac9b478/whmcs_3..tbldomainpricing">
+      <provider selected="true" editor-type-id="com.intellij.persistence.database.editor.DatabaseTableFileEditorProvider">
+        <state />
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="238" />
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/lib/phpstorm.jar!/resources/html5-schema/block.rnc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="206" column="30" selection-start="4192" selection-end="4192" vertical-scroll-proportion="0.51836735" vertical-offset="3121" max-vertical-offset="4475">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/files/make_names.off">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="1" selection-start="573" selection-end="573" vertical-scroll-proportion="0.6771488" vertical-offset="0" max-vertical-offset="800" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/icomoon (1)/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1146" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/icomoon (2)/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="0" selection-start="355" selection-end="355" vertical-scroll-proportion="0.23876405" vertical-offset="0" max-vertical-offset="1426" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/icomoon/enom-pro (1)/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="1567" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2033" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/icomoon/enom-pro/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="19" selection-start="17837" selection-end="17837" vertical-scroll-proportion="0.74010557" vertical-offset="0" max-vertical-offset="2050" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/icomoon/enom-pro (2)/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="16" selection-start="0" selection-end="1676" vertical-scroll-proportion="0.24670185" vertical-offset="0" max-vertical-offset="2135" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/icomoon/enom-pro (3)/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="37" selection-start="0" selection-end="1888" vertical-scroll-proportion="0.4934037" vertical-offset="0" max-vertical-offset="2339" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/icomoon/enom-pro (4)/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2418" />
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/standard_4.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="640" column="5" selection-start="21497" selection-end="21497" vertical-scroll-proportion="0.48942173" vertical-offset="10533" max-vertical-offset="19086">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/enom_srv.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="59" selection-start="1532" selection-end="1567" vertical-scroll-proportion="0.35099337" vertical-offset="470" max-vertical-offset="1609" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/README.txt">
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="0" selection-start="1151" selection-end="1151" vertical-scroll-proportion="-2.7160494" vertical-offset="222" max-vertical-offset="1036" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_import.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="6" selection-start="275" selection-end="275" vertical-scroll-proportion="-2.55" vertical-offset="0" max-vertical-offset="1301" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_import_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="46" selection-start="1156" selection-end="1168" vertical-scroll-proportion="-5.3125" vertical-offset="238" max-vertical-offset="3018" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_enom_pro.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="533" column="20" selection-start="15989" selection-end="15989" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="9622">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Sites/whmcs/templates/orderforms/verticalsteps/configureproductdomain.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="99" column="16" selection-start="5842" selection-end="5842" vertical-scroll-proportion="0.0" vertical-offset="1683" max-vertical-offset="1802" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Sites/whmcs/templates/orderforms/verticalsteps/adddomain.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="85" column="6" selection-start="3318" selection-end="3318" vertical-scroll-proportion="0.0" vertical-offset="1445" max-vertical-offset="1513" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Sites/whmcs/templates/default/domainchecker.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="105" column="45" selection-start="4142" selection-end="4142" vertical-scroll-proportion="0.0" vertical-offset="1785" max-vertical-offset="3162" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/WWWROOT/pinkvacationrentals.com/pinkvacationrentals_201405091128.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="28" selection-start="387" selection-end="387" vertical-scroll-proportion="0.3370044" vertical-offset="0" max-vertical-offset="2854176" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Sites/joomla15/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="55" column="31" selection-start="1382" selection-end="1382" vertical-scroll-proportion="0.53846157" vertical-offset="289" max-vertical-offset="2193" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Sites/whmcs/templates/orderforms/ajaxcart/configureproductdomain.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="23" selection-start="1413" selection-end="1413" vertical-scroll-proportion="0.5923345" vertical-offset="0" max-vertical-offset="2527" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Sites/whmcs/templates/orderforms/ajaxcart/adddomain.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="9" selection-start="1460" selection-end="1460" vertical-scroll-proportion="0.4738676" vertical-offset="0" max-vertical-offset="2374" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Sites/whmcs/templates/orderforms/ajaxcart/domainoptions.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="22" selection-start="1787" selection-end="1787" vertical-scroll-proportion="0.35506403" vertical-offset="613" max-vertical-offset="2083" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="56" selection-start="166" selection-end="166" vertical-scroll-proportion="0.0" vertical-offset="68" max-vertical-offset="102" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/css/bootstrap-theme.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2731" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/templates/default/clientareadomaindetails.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="31" column="0" selection-start="1349" selection-end="1530" vertical-scroll-proportion="0.5673941" vertical-offset="102" max-vertical-offset="6763" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TODO">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="19" selection-start="484" selection-end="484" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1304">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget_response.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="43" selection-start="1436" selection-end="1436" vertical-scroll-proportion="0.0" vertical-offset="697" max-vertical-offset="1683">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/css/bootstrap.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="51022" selection-start="51014" selection-end="51022" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="34">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="0" selection-start="741" selection-end="1257" vertical-scroll-proportion="0.0" vertical-offset="561" max-vertical-offset="2023">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/ssl_widget.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="33" selection-start="141" selection-end="141" vertical-scroll-proportion="0.0" vertical-offset="136" max-vertical-offset="1037">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="393" column="9" selection-start="16280" selection-end="16280" vertical-scroll-proportion="0.0" vertical-offset="6681" max-vertical-offset="10319">
+          <folding>
+            <marker date="1410620101000" expanded="true" signature="1441:1721" placeholder="..." />
+            <marker date="1410620101000" expanded="true" signature="1462:1710" placeholder="{...}" />
+            <marker date="1410620101000" expanded="true" signature="1540:1703" placeholder="{...}" />
+            <marker date="1410620101000" expanded="true" signature="1582:1638" placeholder="{...}" />
+            <marker date="1410620101000" expanded="true" signature="1644:1697" placeholder="{...}" />
+            <marker date="1410620101000" expanded="true" signature="7277:7414" placeholder="..." />
+            <marker date="1410620101000" expanded="true" signature="8274:8514" placeholder="..." />
+            <marker date="1410620101000" expanded="true" signature="8303:8493" placeholder="..." />
+            <marker date="1410620101000" expanded="true" signature="8336:8383" placeholder="..." />
+            <marker date="1410620101000" expanded="true" signature="8387:8428" placeholder="..." />
+            <marker date="1410620101000" expanded="true" signature="8447:8488" placeholder="..." />
+            <marker date="1410620101000" expanded="true" signature="14072:14300" placeholder="..." />
+            <marker date="1410620101000" expanded="true" signature="14201:14288" placeholder="..." />
+            <marker date="1410620101000" expanded="false" signature="20424:20436" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pricing_import.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="125" column="16" selection-start="3886" selection-end="3886" vertical-scroll-proportion="0.0" vertical-offset="2125" max-vertical-offset="8007">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/css/admin.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="509" column="13" selection-start="9396" selection-end="9396" vertical-scroll-proportion="0.0" vertical-offset="8100" max-vertical-offset="11442">
+          <folding>
+            <marker date="1410639482000" expanded="true" signature="9292:9316" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pricing_sort.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="27" selection-start="1131" selection-end="1131" vertical-scroll-proportion="-20.923077" vertical-offset="0" max-vertical-offset="1928">
+          <folding>
+            <element signature="e#6#79#0" expanded="false" />
+            <marker date="1410639514000" expanded="true" signature="103:156" placeholder="SELECT * fro..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/exceptions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="15" selection-start="49" selection-end="49" vertical-scroll-proportion="0.09895227" vertical-offset="0" max-vertical-offset="1318">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="41" selection-start="666" selection-end="666" vertical-scroll-proportion="-12.307693" vertical-offset="173" max-vertical-offset="10668">
+          <folding>
+            <marker date="1410639958000" expanded="true" signature="11990:12038" placeholder="SELECT `id`,..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="69" column="25" selection-start="1962" selection-end="1962" vertical-scroll-proportion="-15.692307" vertical-offset="765" max-vertical-offset="2491">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="232" column="0" selection-start="6999" selection-end="6999" vertical-scroll-proportion="-7.0384617" vertical-offset="3761" max-vertical-offset="6960">
+          <folding>
+            <marker date="1410647908000" expanded="true" signature="552:702" placeholder="..." />
+            <marker date="1410647908000" expanded="true" signature="724:884" placeholder="..." />
+            <marker date="1410647908000" expanded="true" signature="800:879" placeholder="..." />
+            <marker date="1410647908000" expanded="true" signature="3579:3626" placeholder="SELECT `loca..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1894" column="38" selection-start="53944" selection-end="53944" vertical-scroll-proportion="-20.115385" vertical-offset="31675" max-vertical-offset="39636">
+          <folding>
+            <marker date="1410647908000" expanded="true" signature="5454:5870" placeholder="..." />
+            <marker date="1410647908000" expanded="true" signature="5626:5660" placeholder="..." />
+            <marker date="1410647908000" expanded="true" signature="5815:5865" placeholder="..." />
+            <marker date="1410647908000" expanded="true" signature="19111:19248" placeholder="SELECT `id`,..." />
+            <marker date="1410647908000" expanded="true" signature="28148:28735" placeholder="SELECT tlds...." />
+            <marker date="1410647908000" expanded="true" signature="45758:45834" placeholder="SELECT `sett..." />
+            <marker date="1410647908000" expanded="true" signature="59560:59858" placeholder="INSERT INTO ..." />
+            <marker date="1410647908000" expanded="true" signature="60124:60197" placeholder="SELECT `id` ..." />
+            <marker date="1410647908000" expanded="true" signature="64123:64430" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="298" column="23" selection-start="12540" selection-end="12540" vertical-scroll-proportion="0.0" vertical-offset="4985" max-vertical-offset="6983">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="494" column="68" selection-start="18881" selection-end="18881" vertical-scroll-proportion="-3.1375" vertical-offset="8147" max-vertical-offset="11974">
+          <folding>
+            <element signature="e#20319#20340#0" expanded="true" />
+            <marker date="1410649332000" expanded="true" signature="1188:1292" placeholder="..." />
+            <marker date="1410649332000" expanded="true" signature="13458:13608" placeholder="..." />
+            <marker date="1410649332000" expanded="true" signature="14430:14470" placeholder="INSERT INTO ..." />
+            <marker date="1410649332000" expanded="true" signature="14580:14637" placeholder="DELETE FROM ..." />
+            <marker date="1410649332000" expanded="true" signature="14766:14835" placeholder="INSERT INTO ..." />
+            <marker date="1410649332000" expanded="true" signature="14887:14956" placeholder="INSERT INTO ..." />
+            <marker date="1410649332000" expanded="true" signature="15008:15077" placeholder="INSERT INTO ..." />
+            <marker date="1410649332000" expanded="true" signature="15129:15203" placeholder="INSERT INTO ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="64" column="25" selection-start="2791" selection-end="2791" vertical-scroll-proportion="-5.8461537" vertical-offset="936" max-vertical-offset="3579">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="802" column="38" selection-start="30933" selection-end="30933" vertical-scroll-proportion="0.7160048" vertical-offset="13073" max-vertical-offset="14635">
+          <folding>
+            <marker date="1410651089000" expanded="false" signature="28939:28951" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <last-edited>src without built files</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+          <order>
+            <scope name="build" />
+            <scope name="src without built files" />
+          </order>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
+
