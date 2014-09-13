@@ -131,6 +131,7 @@ class enom_pro {
 		}
 	}
 
+
 	/**
 	 * Override api limit for specific request types
 	 *
@@ -1725,13 +1726,15 @@ class enom_pro {
 	}
 
 	public function get_upgrade_zip_url() {
-		if ( defined( 'DEV' ) ) {
-			return 'http://ep.com/enom_pro.zip';
-		} else {
-			return 'http://mycircletree.com/client-area/get_enom_pro.php?key=' . self::get_addon_setting( 'license' ) .
-			'&id=' . $this->license->get_id();
-		}
+			$url = 'http://mycircletree.com/client-area/get_enom_pro.php?key=';
+			$url .= self::get_addon_setting( 'license' );
+			$url .= '&id=' . $this->license->get_id();
+			if (enom_pro_license::isBetaOptedIn()) {
+				$url .= '&beta=1';
+			}
+			return  $url;
 	}
+
 
 	/**
 	 * Recursively remove a directory
@@ -1882,6 +1885,9 @@ class enom_pro {
 				unlink( $object->getPathname() );
 			}
 		}
+
+		$this->migrate220();
+
 		//Cleanup temp dir
 		$this->rmdir( $upgrade_dir );
 		rmdir( $upgrade_dir );
@@ -1894,6 +1900,13 @@ class enom_pro {
 		}
 
 		return $return;
+	}
+
+	private function migrate220 () {
+		$legacy_version_file = ENOM_PRO_TEMP . 'version';
+		if (file_exists($legacy_version_file)) {
+			unlink($legacy_version_file);
+		}
 	}
 
 	public static function send_SSL_reminder_email( $client_id, $cert_data ) {
@@ -2217,4 +2230,54 @@ class enom_pro {
 
 		return $data;
 	}
+
+	public static function getBetaReportLink ()
+	{
+	?>
+		<a class="btn btn-block btn-warning"
+			 title="<?php echo ENOM_PRO; ?> Help"
+			 target="_blank"
+			 href="<?php echo self::TICKET_URL?>&subject=<?php echo urlencode(ENOM_PRO . ' Bug Report') .'&message='. self::getSupportMessage(); ?>">
+			<span class="enom-pro-icon enom-pro-icon-support"></span>
+			BETA Mode<br/> Please report bugs!
+		</a>
+<?php
+	}
+	public static function getSupportMessage() {
+		$raw_text = <<<EOL
+eNom PRO Version: %VERSION%
+PHP Version: %PHPVERSION%
+WHMCS Version: %WHMCSVERSION%
+Current Page: %CURRPAGE%
+
+Please list the steps to reproduce the issue:
+1 -
+2 -
+3 -
+
+Bug Behavior / Additional Info
+
+
+Thank you for your help!
+EOL;
+
+		return urlencode(
+			str_replace(
+				array(
+					'%VERSION%',
+					'%PHPVERSION%',
+					'%WHMCSVERSION%',
+					'%CURRPAGE%'
+				),
+				array(
+					ENOM_PRO_VERSION,
+					PHP_VERSION,
+					$GLOBALS['CONFIG']['Version'],
+					$_SERVER['REQUEST_URI']
+				),
+				$raw_text
+			)
+		);
+	}
+
 }

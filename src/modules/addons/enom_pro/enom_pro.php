@@ -6,7 +6,7 @@
  * Licenses Resold by Circle Tree, LLC. Under Reseller Licensing Agreement
  * @codeCoverageIgnore
  */
-defined("WHMCS") or die("This file cannot be accessed directly");
+defined( "WHMCS" ) or die( "This file cannot be accessed directly" );
 
 $requirements = array(
 	array(
@@ -24,6 +24,10 @@ $requirements = array(
 		'function' => 'curl_init',
 	),
 	array(
+		'label' => 'ZipArchive',
+		'class' => 'ZipArchive',
+	),
+	array(
 		'label' => 'SimpleXML',
 		'function' => 'simplexml_load_string',
 	),
@@ -34,16 +38,18 @@ $requirements = array(
 	)
 );
 $requirements_link = '<a target="_blank" href="http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=54">View Help</a>';
-foreach ($requirements as $requirement) {
-	if (isset($requirement['function'])) {
-		if (! function_exists($requirement['function'])) {
-			die(sprintf('%s is required for eNom PRO to function. %s', $requirement['label'], $requirements_link));
+foreach ( $requirements as $requirement ) {
+	if ( isset( $requirement['function'] ) ) {
+		if ( !function_exists( $requirement['function'] ) ) {
+			die( sprintf( '%s is required for eNom PRO to function. %s',
+				$requirement['label'],
+				$requirements_link ) );
 		}
-		if (isset($requirement['version'])) {
+		if ( isset( $requirement['version'] ) ) {
 			//Check Version callback supplied
 			$installedVersion = call_user_func( $requirement['function'] );
 			$requiredVersion = $requirement['version'];
-			if (version_compare( $requiredVersion, $installedVersion, 'ge')) {
+			if ( version_compare( $requiredVersion, $installedVersion, 'ge' ) ) {
 				$str = sprintf(
 					'%s is out of date. Version %s required. Installed version %s. %s',
 					$requirement['label'],
@@ -53,28 +59,40 @@ foreach ($requirements as $requirement) {
 				);
 				die( $str );
 			}
+			unset( $installedVersion, $requiredVersion );
 		}
 	}
-	if (isset($requirement['global'])) {
-		$keys = explode('][', substr($requirement['global'], 1, -1));
-		if (isset($GLOBALS[$keys[0]][$keys[1]])) {
+
+	if ( isset( $requirement['class'] ) ) {
+		if ( !class_exists( $requirement['class'] ) ) {
+			die( sprintf( '%s is required for eNom PRO to function. %s',
+				$requirement['label'],
+				$requirements_link ) );
+		}
+	}
+	if ( isset( $requirement['global'] ) ) {
+		$keys = explode( '][', substr( $requirement['global'], 1, -1 ) );
+		if ( isset( $GLOBALS[$keys[0]][$keys[1]] ) ) {
 			$whmcsVersion = $GLOBALS[$keys[0]][$keys[1]];
-			if (version_compare($requirement['version'], $whmcsVersion, 'ge')) {
-				die( sprintf( '%s version %s is required. Version %s installed. %s',
+			if ( version_compare( $requirement['version'], $whmcsVersion, 'ge' ) ) {
+				die( sprintf( '%s version %s is required for eNom PRO. Version %s installed. %s',
 					$requirement['label'],
 					$requirement['version'],
 					$whmcsVersion,
 					$requirements_link
 				) );
 			}
+			unset( $whmcsVersion, $keys );
 		}
 	}
 }
+unset( $requirements_link, $requirements, $requirement );
+
 // eNom PRO passed requirements check!
 
 /**
  * @var string full path to enom pro addon dir
  */
-define('ENOM_PRO_ROOT', ROOTDIR . '/modules/addons/enom_pro/');
+define( 'ENOM_PRO_ROOT', ROOTDIR . '/modules/addons/enom_pro/' );
 
 require_once ENOM_PRO_ROOT . '/enom_pro_compatible.php';

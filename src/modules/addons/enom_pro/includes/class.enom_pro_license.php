@@ -6,11 +6,19 @@
  * @codeCoverageIgnore
  */
 class enom_pro_license {
+	/**
+	 * @var
+	 */
 	private $license;
 	private static $latest_version = false;
 	private $updates_addon_name = "Support & Updates - eNom PRO";
 	const DO_UPGRADE_URL = 'addonmodules.php?module=enom_pro&action=do_upgrade';
 
+	/**
+	 * Checks remote license
+	 *
+	 * @throws LicenseException
+	 */
 	public function  __construct() {
 		$license = enom_pro::get_addon_setting( 'license' );
 		//Prep return string
@@ -20,8 +28,10 @@ class enom_pro_license {
                     <a href="configaddonmods.php#enom_pro">Enter a License on the addon page</a></h1>';
 			$return .= '<h2><a href="https://mycircletree.com/client-area/order/?gid=5" target="_blank">
                     Visit myCircleTree.com to get a license &amp; support.</a></h2>';
-			throw new LicenseExeption( $return );
-		} elseif ( !$this->checkLicense() ) {
+
+			throw new LicenseException( $return );
+
+		} elseif ( ! $this->checkLicense() ) {
 			$return .= '<h1>There seems to be a problem with your license</h1>';
 			$reissue_href = 'https://mycircletree.com/client-area/clientarea.php?action=products';
 			$reissue_link = '<a href="' . $reissue_href . '" class="btn btn-primary btn-lg" target="_blank">Reissue directly from the Client Area</a>';
@@ -40,7 +50,7 @@ class enom_pro_license {
 			$return .= 'License Status: ' . $this->status . '<br/>';
 			$return .= '</div>';
 			$this->error = true;
-			throw new LicenseExeption( enom_pro::minify( $return ) );
+			throw new LicenseException( enom_pro::minify( $return ) );
 		} else {
 			//No license err
 			$this->error = false;
@@ -73,6 +83,19 @@ class enom_pro_license {
 			}
 		}
 	}
+	public static function isBetaOptedIn ()
+	{
+		return enom_pro::get_addon_setting('beta') == 'on' ? true : false;
+	}
+
+	private static function getVersionCacheFile() {
+		if (self::isBetaOptedIn()) {
+			$filename = 'beta_version';
+		} else {
+			$filename = 'version';
+		}
+		return ENOM_PRO_TEMP . $filename . '.cache';
+	}
 
 	private $company;
 	private $name;
@@ -81,8 +104,7 @@ class enom_pro_license {
 	 * Gets customer name
 	 * @return string|false
 	 */
-	public function getCustomerName ()
-	{
+	public function getCustomerName() {
 		return $this->name;
 	}
 
@@ -99,7 +121,7 @@ class enom_pro_license {
 		$this->license = $results;
 		self::$latest_version = @$results['latestversion'];
 		$this->company = @$results['companyname'];
-		$this->name = isset($results['registeredname']) ? $results['registeredname'] : false;
+		$this->name = isset( $results['registeredname'] ) ? $results['registeredname'] : false;
 		$this->productname = @$results['productname'];
 		if ( $results["status"] == "Active" ) {
 			$this->status = "Active";
@@ -110,7 +132,6 @@ class enom_pro_license {
 				$query = "UPDATE `mod_enom_pro` SET `local`='" . $localkeydata . "' WHERE `id`=0";
 				mysql_query( $query );
 			}
-
 			return true;
 		} elseif ( $results["status"] == "Invalid" ) {
 			$this->status = "Invalid";
@@ -138,29 +159,37 @@ class enom_pro_license {
 	 * @return bool
 	 */
 	public static function is_update_available() {
-		//Compare the response from the server to the locally defined version
-		if ( version_compare( self::get_latest_version(),
-			ENOM_PRO_VERSION,
-			'gt' )
-		) {
-			//The remote is newer than local, return the string upgrade notice
-			return true;
+		if (self::isBetaOptedIn()) {
+			//Compare hashes
+			if (ENOM_PRO_VERSION == self::get_latest_version()) {
+				return false;
+			} else {
+				return true;
+			}
 		} else {
-			return false;
+			//Compare the response from the server to the locally defined version
+			if ( version_compare( self::get_latest_version(),
+				ENOM_PRO_VERSION,
+				'gt' )
+			) {
+				//The remote is newer than local, return the string upgrade notice
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 
+
 	private static function _get_latest_version() {
-		if ( true == self::$latest_version ) {
-			return self::$latest_version;
-		}
-		$version_file = ENOM_PRO_TEMP . 'version';
+		$version_file = self::getVersionCacheFile();
 		if ( file_exists( $version_file ) ) {
 			self::$latest_version = file_get_contents( $version_file );
 
 			return self::$latest_version;
 		}
-		$latest_version_xml = enom_pro::curl_get( 'http://mycircletree.com/versions/enom_pro_version.xml' );
+		$xml_filename = self::isBetaOptedIn() ? 'enom_pro_version_beta.xml' : 'enom_pro_version.xml';
+		$latest_version_xml = enom_pro::curl_get( "http://mycircletree.com/versions/{$xml_filename}" );
 		$latest_version = @simplexml_load_string( $latest_version_xml );
 		if ( is_object( $latest_version ) ) {
 			$latest_version_string = (string) $latest_version->version;
@@ -184,11 +213,11 @@ class enom_pro_license {
 	}
 
 	/**
-	 *
+	 * Last checked for updates
 	 * @return string Time ago
 	 */
 	public static function get_last_checked_time_ago() {
-		$version_file = ENOM_PRO_TEMP . 'version';
+		$version_file = self::getVersionCacheFile();
 		if ( !file_exists( $version_file ) ) {
 			self::get_latest_version();
 		}
@@ -201,15 +230,14 @@ class enom_pro_license {
 	 */
 	public static function delete_latest_version() {
 		self::$latest_version = false;
-		$version_file = ENOM_PRO_TEMP . 'version';
-		unlink( $version_file );
+		unlink( self::getVersionCacheFile() );
 	}
 
 	private function get_remote_license( $licensekey, $localkey = "" ) {
 		$whmcsurl = "http://mycircletree.com/client-area/";
 		$licensing_secret_key = "Hsyz2YQDuzVH7r6QQFjbcVE8RJ7ewk7F";
 		$check_token = time() . md5( mt_rand( 1000000000,
-				9999999999 ) . $licensekey );
+					9999999999 ) . $licensekey );
 		$checkdate = date( "Ymd" ); # Current date
 		$usersip = isset( $_SERVER['SERVER_ADDR'] ) ? $_SERVER['SERVER_ADDR'] : false;
 		$server_name = isset( $_SERVER['SERVER_NAME'] ) ? $_SERVER['SERVER_NAME'] : false;
