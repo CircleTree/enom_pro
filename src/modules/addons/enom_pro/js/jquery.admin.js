@@ -797,6 +797,14 @@ jQuery(function($) {
                 }
             });
         }});
+    $(".filePathToggle").on('click', function  (){
+        var $this = $(this),
+            filepath = $this.data('path'),
+            size = filepath.length + 7;
+        $this.hide();
+        $this.after('<input type="text" name="file[]" onclick="this.select();" size="'+size+'" value="'+filepath+'" />');
+        return false;
+    });
 }); //end jQuery Ready
 } catch (err) {
 	alert('Enom PRO JS Error: ' + err);
