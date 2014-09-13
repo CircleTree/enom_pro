@@ -490,6 +490,17 @@ a[target='_blank'] {
 #enom_pro_pricing_import_page ul.dropdown-menu.clearDropdown {
 	left: -90px;
 }
+.ep_sortable TR
+{
+	cursor: ns-resize;
+}
+.ep_sortable TR TD
+{
+	padding: 1px 0 1px 5px !important;
+}
+a.btn {
+	text-decoration: none;
+}
 
 /**
 Icons
