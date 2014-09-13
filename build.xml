@@ -304,6 +304,9 @@
 				<include name="enom_pro_open.zip"/>
 			</fileset>
 		</ftpdeploy>
+
+		<phingcall target="git-push"/>
+
 	</target>
 	<target name="zip" depends="replace">
 		<echo msg="Creating Zip files from encoded &amp; encoded_prep"/>
@@ -313,11 +316,15 @@
 		<zip destfile="enom_pro_open.zip" basedir="${encoded_prep}"/>
 	</target>
 
+<target name="git-push">
+	<echo>Pushing to remote GIT branch</echo>
+	<exec command="git push origin master" logoutput="true"/>
+</target>
 	<!-- BETA Release Prepares ZIP File-->
 
 	<target name="zip-beta">
-		<exec command="git rev-parse --short=12 HEAD" returnProperty="git_version" outputProperty="git_version"/>
-		<echo>${git_version}</echo>
+		<exec command="git rev-parse --short=12 HEAD" outputProperty="git_version"/>
+		<echo>Parsed Git Hash: ${git_version}</echo>
 		<phingcall target="replace">
 			<property name="version" value="${git_version}" />
 		</phingcall>
@@ -360,6 +367,7 @@
 				<include name="enom_pro_BETA.zip"/>
 			</fileset>
 		</ftpdeploy>
+		<phingcall target="git-push"/>
 	</target>
 
 	<target name="verify">
