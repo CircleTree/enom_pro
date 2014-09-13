@@ -501,6 +501,14 @@ a[target='_blank'] {
 a.btn {
 	text-decoration: none;
 }
+.sortLoader th {
+	position: relative;
+}
+.sortLoader th .enom_pro_loader {
+	position: absolute;
+	top: -2px;
+	left: 35px;
+}
 
 /**
 Icons

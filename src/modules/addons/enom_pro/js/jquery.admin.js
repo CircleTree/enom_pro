@@ -203,6 +203,7 @@ function abort_whois_xhrs ()
 function precise_round(num,decimals){
 	return Math.round(num*Math.pow(10,decimals))/Math.pow(10,decimals);
 }
+var sortTldXHR = null;
 jQuery(function($) {
     $("#generateinvoice").bind('click', function() {
         var $invoice_email = $("#invoice_email");
@@ -779,14 +780,23 @@ jQuery(function($) {
     });
     $(".ep_sortable").sortable({
         update: function(e, ui) {
+            var $loader = $(".enom_pro_loader");
+            $loader.removeClass('hidden');
             var sorted = $(this).sortable('toArray');
-            $.ajax({
+            if (sortTldXHR) {
+                sortTldXHR.abort();
+            }
+            sortTldXHR = $.ajax({
                 url: 'addonmodules.php?module=enom_pro',
                 data: {
                     'action' : 'sort_domains',
                     'order' : sorted
+                },
+                success: function () {
+                    $loader.addClass('hidden');
+                    sortTldXHR = null;
                 }
-            })
+            });
         }});
 }); //end jQuery Ready
 } catch (err) {
