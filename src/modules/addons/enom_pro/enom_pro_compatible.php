@@ -435,6 +435,15 @@ function enom_pro_sidebar( $vars ) {
 						 href="<?php echo enom_pro::MODULE_LINK ?>&action=install_ssl_template">Install SSL Email</a>
 				<?php endif; ?>
 			</li>
+			<li>
+				<a class="btn btn-block btn-default"
+					 title="<?php echo ENOM_PRO; ?> Help"
+					 target="_blank"
+					 href="<?php echo enom_pro::HELP_URL?>">
+					<span class="enom-pro-icon enom-pro-icon-question"></span>
+					Online Help
+				</a>
+			</li>
 		</ul>
 		<span class="header"><?php echo ENOM_PRO; ?> Helpful Links</span>
 		<ul class="menu">
@@ -526,80 +535,7 @@ function enom_pro_output( $vars ) {
 			<iframe src="about:blank" id="enom_pro_dialog_iframe"></iframe>
 		</div>
 		<div class="enom_pro_output">
-			<?php if ( !is_writable( ENOM_PRO_TEMP ) ) : ?>
-				<div class="alert alert-danger">
-					<p>Temp Directory is unwriteable. Please CHMOD 777 <?php echo ENOM_PRO_TEMP; ?> to continue.</p>
-				</div>
-			<?php endif; ?>
-			<?php if ( !enom_pro::is_ssl_email_installed() ) : ?>
-				<div class="alert alert-danger">
-					<p>
-						SSL Email template is not installed.
-						<a class="btn btn-danger"
-							 href="<?php echo enom_pro::MODULE_LINK ?>&action=install_ssl_template">Install Now</a>
-					</p>
-				</div>
-			<?php endif; ?>
-			<?php if ( isset( $_GET['ssl_email'] ) ) : ?>
-				<?php if ( (int) $_GET['ssl_email'] > 0 ) : ?>
-					<div class="alert alert-success">
-						<p>Installed.
-							<a class="btn btn-default"
-								 onclick="javascript:$('#edit_ssl_sidebar').trigger('click');return false;"
-								 href="configemailtemplates.php?action=edit&id=<?php echo (int) $_GET['ssl_email'] ?>">
-								Edit Now
-							</a>
-						</p>
-					</div>
-				<?php endif; ?>
-			<?php endif; ?>
-			<?php if ( isset( $_SESSION['manual_files'] ) ) : ?>
-				<?php if ( !empty( $_SESSION['manual_files']['templates'] ) ): ?>
-					<div class="alert alert-info">
-						<p>
-							The following client area template files were already in place. You will only need to
-							manually update them if you are using the SRV Record Editor, Pending Transfers, and Namespinner on the Domain Checker Page.
-							If you are using the frontend features, the following files will need to be manually upgraded / merged:
-						</p>
-						<ul>
-							<?php foreach ( $_SESSION['manual_files']['templates'] as
-															$filepath ): ?>
-								<li><a href="#"
-											 title="<?php echo $filepath ?>"
-											 class="ep_tt"><?php echo basename( $filepath ); ?></a>
-								</li>
-							<?php endforeach; ?>
-						</ul>
-						<p>Otherwise, feel free to <a class="btn btn-default"
-																					href="<?php echo enom_pro::MODULE_LINK ?>&action=dismiss_manual_upgrade">Dismiss Reminder</a>
-						</p>
-					</div>
-				<?php endif; ?>
-				<?php if ( !empty( $_SESSION['manual_files']['core_files'] ) ): ?>
-					<div class="alert alert-danger">
-						<div>
-							The following files were not writeable by the webserver, and will need to be manually upgraded, or
-							you can <input type="text"
-														 size="90"
-														 value="chmod -R 777 <?php echo ENOM_PRO_ROOT; ?>"/> and
-							<a class="btn btn-default"
-								 href="<?php echo enom_pro::MODULE_LINK ?>&action=do_upgrade">Try Again</a>
-						</div>
-						<ul>
-							<?php foreach ( $_SESSION['manual_files']['core_files'] as
-															$filepath ): ?>
-								<li><a href="#"
-											 title="<?php echo $filepath ?>"
-											 class="ep_tt"><?php echo basename( $filepath ); ?></a>
-								</li>
-							<?php endforeach; ?>
-						</ul>
-						<a class="btn btn-default"
-							 href="<?php echo enom_pro::MODULE_LINK ?>&action=dismiss_manual_upgrade">Dismiss Reminder</a>
-					</div>
-				<?php endif; ?>
-			<?php endif; ?>
-
+			<?php require_once ENOM_PRO_INCLUDES . 'admin_messages.php'; ?>
 			<?php
 			if ( isset( $_GET['view'] ) && method_exists( $enom,
 					render_ . $_GET['view'] )
@@ -614,7 +550,6 @@ function enom_pro_output( $vars ) {
 				$enom->getAvailableBalance();
 			}
 			?>
-			<?php require_once ENOM_PRO_INCLUDES . 'admin_messages.php'; ?>
 			<div id="enom_pro_admin_widgets" class="row">
 				<div class="col-xs-6">
 					<?php enom_pro::render_admin_widget( 'enom_pro_admin_balance' ); ?>
@@ -632,86 +567,6 @@ function enom_pro_output( $vars ) {
 										href="<?php echo $_SERVER['PHP_SELF'] . '?module=enom_pro&view=domain_import' ?>">Import
 						Domains!</a>
 				</p>
-
-				<h1>FAQ</h1>
-
-				<h2>Where do I enter my eNom API info?</h2>
-
-				<p>
-					eNom PRO gets the registrar info directly from whmcs. To change your
-					registrar info, <a class="btn btn-default"
-														 href="configregistrars.php#enom">click
-						here.</a>
-				</p>
-
-				<h2>No Admin Widgets?</h2>
-
-				<p class="textred">
-					Make sure you add the admin roles you want to see the widgets under <a
-						class="btn  btn-default ep_lightbox"
-						target="_blank"
-						href="configadminroles.php">WHMCS Admin Roles</a>.
-				</p>
-
-				<h1>Quick Start</h1>
-
-				<h2>Client Area Transfers</h2>
-
-				<p>You need to install the sample code included inside of
-					enom_pro/templates/ into your active WHMCS template.</p>
-
-				<h2>SRV Record Editor</h2>
-
-				<p>Copy the enom_srv.php file to the /whmcs directory and add the
-					enom_srv.tpl to your active template.</p>
-
-				<p>Then, link to it inside of clientareadomaindetails.tpl with:</p>
-            <pre class="code">
-<?php echo htmlentities( '{if $enom_srv }' ) . PHP_EOL; ?>
-<?php echo htmlentities( '<li><a href="enom_srv.php?id={$domainid}" id="enom_srv">SRV Records</a></li>' ) . PHP_EOL; ?>
-<?php echo htmlentities( '{/if}' ) . PHP_EOL ?>
-            </pre>
-				<div class="inline-wrap">
-					You can also send a client a link to /whmcs/enom_srv.php
-                <pre class="code inline">
-                    <?php echo htmlentities( '<a href="enom_srv.php">SRV Records</a>' ) ?>
-                </pre>
-					and they will be able to choose the active enom domain to edit SRV
-					records for.
-				</div>
-				<h2>NameSpinner</h2>
-
-				<h3>Domain Checker</h3>
-
-				<p>See the included domainchecker.tpl template for a working example.</p>
-
-				<h3>Order Form Setup</h3>
-
-				<div class="inline-wrap">
-					<span>Include the </span>
-					<pre class="code inline">{$namespinner}</pre>
-                <span> template tag in your domain (domainchecker.tpl) and shopping
-                    cart template files to include the enom name spinner!</span>
-				</div>
-				<b>Make sure you put it in the template as follows:</b>
-<pre class="code">
-{if $availabilityresults}
-	<?php echo htmlentities( '<form>' ) . PHP_EOL; ?>
-	<?php echo htmlentities( '<!-- IMPORTANT -->' ) . PHP_EOL; ?>
-	<?php echo htmlentities( '<!-- There will be WHMCS HTML here for the form. Put the tag below where you want the results to appear. -->' ) . PHP_EOL; ?>
-	<?php echo htmlentities( '<!-- See the included domainchecker.tpl for a working example -->' ) . PHP_EOL; ?>
-	{$namespinner}
-	<?php echo htmlentities( '</form>' ) . PHP_EOL; ?>
-	{/if}
-</pre>
-				<p>The place you put the code is where the domain spinner suggestions
-					will appear. See the included domainchecker.tpl for an example</p>
-
-				<h3>
-					Lost? Order our professional installation service here: <a
-						href="<?php echo enom_pro::INSTALL_URL; ?>" target="_blank"
-						class="btn btn-default">Install Service</a>
-				</h3>
 			</div>
 		</div>
 	<?php } catch ( EnomException $e ) { ?>
