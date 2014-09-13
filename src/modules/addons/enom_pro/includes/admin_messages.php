@@ -43,6 +43,9 @@
 					href="<?php echo enom_pro::INSTALL_URL; ?>" target="_blank"
 					class="btn btn-default">Order Install/Integration Service <span class="enom-pro-icon enom-pro-icon-secure"></span> </a>
 			</p>
+		<p>
+			<em>PS &mdash; You can dismiss these new messages permanently by clicking the <button class="btn btn-default disabled">&times;</button> in the top right.</em>
+		</p>
 	</div>
 <?php endif; ?>
 
