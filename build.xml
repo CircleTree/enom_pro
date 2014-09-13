@@ -316,7 +316,7 @@
 	<!-- BETA Release Prepares ZIP File-->
 
 	<target name="zip-beta">
-		<exec command="git rev-parse HEAD" returnProperty="git_version" outputProperty="git_version"/>
+		<exec command="git rev-parse --short=12 HEAD" returnProperty="git_version" outputProperty="git_version"/>
 		<echo>${git_version}</echo>
 		<phingcall target="replace">
 			<property name="version" value="${git_version}" />
