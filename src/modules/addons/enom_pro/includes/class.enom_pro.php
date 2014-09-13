@@ -874,6 +874,7 @@ class enom_pro {
 	 * @return array domain, status, expiration_date, desc
 	 */
 	public function getExpiringCerts() {
+		$this->setParams(array('SortBy' => 'Expiration'));
 		$this->runTransaction( 'CertGetCerts' );
 		$return = array();
 		$days = $this->get_addon_setting( 'ssl_days' );
