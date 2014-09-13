@@ -487,7 +487,9 @@ a[target='_blank'] {
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
-
+#enom_pro_pricing_import_page ul.dropdown-menu.clearDropdown {
+	left: -90px;
+}
 
 /**
 Icons
