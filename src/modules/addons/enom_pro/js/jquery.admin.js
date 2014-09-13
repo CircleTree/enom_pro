@@ -777,6 +777,17 @@ jQuery(function($) {
                });
         return false;
     });
+    $(".ep_sortable").sortable({
+        update: function(e, ui) {
+            var sorted = $(this).sortable('toArray');
+            $.ajax({
+                url: 'addonmodules.php?module=enom_pro',
+                data: {
+                    'action' : 'sort_domains',
+                    'order' : sorted
+                }
+            })
+        }});
 }); //end jQuery Ready
 } catch (err) {
 	alert('Enom PRO JS Error: ' + err);

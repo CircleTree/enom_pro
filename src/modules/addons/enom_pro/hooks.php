@@ -388,8 +388,9 @@ function enom_pro_admin_actions ()
         return;
     }
     //Include our class if needed
-    if (! class_exists('enom_pro') )
-        require_once ENOM_PRO_INCLUDES . 'class.enom_pro.php';
+    if (! class_exists('enom_pro') ) {
+			require_once 'enom_pro.php';
+		}
     try {
         $controller = new enom_pro_controller();
         $controller->route();
