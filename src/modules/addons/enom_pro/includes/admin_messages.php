@@ -51,19 +51,21 @@
 
 <?php //Auto-upgrade manual overwrite files  ?>
 <?php if ( isset( $_SESSION['manual_files'] ) ) : ?>
+	<?php $fileToolTip = 'Click to view full path'; ?>
 	<?php if ( !empty( $_SESSION['manual_files']['templates'] ) ): ?>
 		<div class="alert alert-info">
 			<p>
-				The following client area template files were already in place. You will only need to
-				manually update them if you are using the SRV Record Editor, Pending Transfers, and Namespinner on the Domain Checker Page.
-				If you are using the frontend features, the following files will need to be manually upgraded / merged:
+				The following client area template files were already in place. <br/>
+				<b><em>You will only need to update them if have manually modified any of the files.</em></b> <br/>
+				If they have been modified, you will need to be manually upgraded:
 			</p>
 			<ul>
 				<?php foreach ( $_SESSION['manual_files']['templates'] as
 												$filepath ): ?>
 					<li><a href="#"
-								 title="<?php echo $filepath ?>"
-								 class="ep_tt"><?php echo basename( $filepath ); ?></a>
+								 data-path="<?php echo $filepath ?>"
+								 title="<?php echo $fileToolTip ?>"
+								 class="ep_tt filePathToggle"><?php echo basename( $filepath ); ?></a>
 					</li>
 				<?php endforeach; ?>
 			</ul>
@@ -78,7 +80,7 @@
 				The following files were not writeable by the webserver, and will need to be manually upgraded, or
 				you can <input type="text"
 											 size="90"
-											 value="chmod -R 777 <?php echo ENOM_PRO_ROOT; ?>"/> and
+											 value="chmod -R 777 <?php echo ENOM_PRO_ROOT; ?>" onclick="this.select();return false;"/> and
 				<a class="btn btn-default"
 					 href="<?php echo enom_pro::MODULE_LINK ?>&action=do_upgrade">Try Again</a>
 			</div>
@@ -86,8 +88,9 @@
 				<?php foreach ( $_SESSION['manual_files']['core_files'] as
 												$filepath ): ?>
 					<li><a href="#"
-								 title="<?php echo $filepath ?>"
-								 class="ep_tt"><?php echo basename( $filepath ); ?></a>
+								 data-path="<?php echo $filepath ?>"
+								 title="<?php echo $fileToolTip ?>"
+								 class="ep_tt filePathToggle"><?php echo basename( $filepath ); ?></a>
 					</li>
 				<?php endforeach; ?>
 			</ul>
