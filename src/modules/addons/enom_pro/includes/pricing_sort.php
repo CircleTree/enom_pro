@@ -11,8 +11,51 @@ $result = mysql_query('SELECT * from `tbldomainpricing` ORDER BY `order` ASC'); 
 			New order saved!
 		</div>
 	<?php endif;?>
-	<form method="get" action="<?php echo enom_pro::MODULE_LINK ?>" class="well form-inline row">
-		<input type="hidden" name="action" value="sort_domains" />
+	<?php if ( !enom_pro_controller::isDismissed( 'pricing-sortable' ) ) : ?>
+		<div class="alert alert-success fade in">
+			<button type="button"
+							class="close"
+							data-dismiss="alert"
+							data-alert="pricing-sortable"
+							aria-hidden="true">&times;</button>
+					<p>
+						<b>Drag &amp; Drop TLD pricing Reordering!</b> <br/>
+						Simply drag the TLD's in the order you'd like to use. <br/>
+						<b>Bulk TLD Sorting</b> <br/>
+						You can <a href="#bulk-sort">bulk sort</a> pricing alphabetically.<br/>
+					</p>
+					<div class="alert alert-warning">
+						Please keep in mind that using the <a href="#bulk-sort">bulk sorter</a>
+					will overwrite any ordering changes made here.
+					</div>
+		</div>
+	<?php endif; ?>
+
+
+	<table class="table table-hover table-condensed">
+		<thead>
+			<tr class="sortLoader">
+				<th>
+					TLD
+					<div class="enom_pro_loader hidden"></div>
+				</th>
+			</tr>
+		</thead>
+		<tbody class="ep_sortable">
+			<?php while ($row = mysql_fetch_assoc($result)) : ?>
+				<tr id="tld_<?php echo $row['id'] ?>">
+					<td>
+						<span class="enom-pro-icon enom-pro-icon-sort"></span>
+						<?php echo $row['extension'] ?>
+					</td>
+				</tr>
+			<?php endwhile; ?>
+		</tbody>
+	</table>
+	<h3 id="bulk-sort">Bulk Re-Sort Pricing</h3>
+	<div class="well">
+		<form method="get" action="<?php echo enom_pro::MODULE_LINK ?>" class="form-inline row">
+			<input type="hidden" name="action" value="sort_domains" />
 			<div class="radio radio-inline col-xs-1">
 				<label>
 					<input type="radio" name="order" value="asc" checked/>
@@ -22,7 +65,7 @@ $result = mysql_query('SELECT * from `tbldomainpricing` ORDER BY `order` ASC'); 
 			<div class="radio radio-inline col-xs-1">
 				<label>
 					<input type="radio" name="order"  value="desc"/>
-						<span class="enom-pro-icon enom-pro-icon-sort-by-alpha-alt" title="Z-A"></span>
+					<span class="enom-pro-icon enom-pro-icon-sort-by-alpha-alt" title="Z-A"></span>
 				</label>
 			</div>
 
@@ -34,26 +77,10 @@ $result = mysql_query('SELECT * from `tbldomainpricing` ORDER BY `order` ASC'); 
 				<input type="checkbox" name="ignore[.net]" id="ignoreNET" checked/>
 				<label for="ignoreNET">.net</label>
 			</fieldset>
-		<input type="submit" class="btn btn-primary col-xs-2 col-xs-push-1" value="Save new order"/>
-	</form>
-	<h2>Current TLD Pricing Order</h2>
-	<table class="table table-hover table-condensed">
-		<thead>
-			<tr>
-				<th>TLD</th>
-				<th>Order <span class="enom-pro-icon enom-pro-icon-sort"></span></th>
-			</tr>
-		</thead>
-		<tbody class="ep_sortable">
-			<?php while ($row = mysql_fetch_assoc($result)) : ?>
-				<tr id="<?php echo $row['extension'] ?>_<?php echo $row['id'] ?>">
-					<td><?php echo $row['extension'] ?></td>
-					<td><?php echo $row['order'] ?></td>
-				</tr>
-			<?php endwhile; ?>
-		</tbody>
-	</table>
+			<input type="submit" class="btn btn-primary col-xs-2 col-xs-push-1" value="Save new order"/>
+		</form>
 
+	</div>
 <?php else: ?>
 	<h1>No pricing data found in WHMCS</h1>
 <?php endif;?>
