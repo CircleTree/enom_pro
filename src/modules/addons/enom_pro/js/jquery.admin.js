@@ -743,7 +743,6 @@ jQuery(function($) {
 		      	$news.empty();
 		      	var str = "";
 				$.each(data.responseData.feed.entries, function (k,entry) {
-					console.log('entry', entry);
 					str += "<h4><a target=\"_blank\" href=\""+entry.link+"\" title=\"View "+entry.title+" on our Website\">"
 					  + entry.title+"</a></h4><p>" + 
 					  entry.content + "<a class=\"button button-mini\" style=\"float:right;\" target=\"_blank\" href=\""+entry.link+"\">Read more...</a></p>";

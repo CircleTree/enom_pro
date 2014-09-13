@@ -105,6 +105,10 @@ function enom_pro_config() {
 				"Description" => "Enable debug messages on frontend. Used for troubleshooting the namespinner,
                              for example."
 			),
+			'beta' => array(
+				'FriendlyName' => "Beta Opt-In", "Type" => "yesno",
+				"Description" => "Help beta test the latest &amp; greatest " . ENOM_PRO . " features."
+			),
 			/****************************
 			 * Import (domains, pricing)
 			 ***************************/
@@ -444,7 +448,14 @@ function enom_pro_sidebar( $vars ) {
 					Online Help
 				</a>
 			</li>
+			<?php if (enom_pro_license::isBetaOptedIn()) :?>
+				<li>
+					<?php enom_pro::getBetaReportLink(); ?>
+				</li>
+			<?php endif;?>
 		</ul>
+
+
 		<span class="header"><?php echo ENOM_PRO; ?> Helpful Links</span>
 		<ul class="menu">
 			<li>
@@ -473,9 +484,6 @@ function enom_pro_sidebar( $vars ) {
 					 data-width="90%"
 					>eNom Registrar Settings</a>
 			</li>
-			<li>
-				<a href="configaddonmods.php#enom_pro"><?php echo ENOM_PRO; ?> Settings</a>
-			</li>
 		</ul>
 		<span class="header"><?php echo ENOM_PRO; ?> Meta</span>
 		<div class="row">
@@ -483,7 +491,11 @@ function enom_pro_sidebar( $vars ) {
 				Version
 			</div>
 			<div class="col-xs-6">
-				<?php echo ENOM_PRO_VERSION; ?>
+				<?php if (enom_pro_license::isBetaOptedIn()) :?>
+					<input type="text" name="betaVersion" value="<?php echo ENOM_PRO_VERSION; ?>" onclick="this.select(); return false;"/>
+				<?php else: ?>
+					<?php echo ENOM_PRO_VERSION; ?>
+				<?php endif;?>
 			</div>
 			<div class="col-xs-6">Checked for updates</div>
 			<div class="col-xs-6"><?php echo enom_pro_license::get_last_checked_time_ago(); ?></div>
@@ -498,12 +510,17 @@ function enom_pro_sidebar( $vars ) {
 				<a
 					href="http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43"
 					class="btn btn-default btn-xs btn-block"
-					target="_blank">View Changelog</a>
+					target="_blank">
+					View Changelog
+				</a>
 			</div>
 			<div class="col-xs-12">
 				<a href="<?php echo enom_pro::INSTALL_URL; ?>"
 					 target="_blank"
-					 class="btn btn-default btn-xs btn-block">Order Install Service</a>
+					 class="btn btn-default btn-xs btn-block">
+					Order Install Service
+					 <span class="enom-pro-icon enom-pro-icon-secure"></span>
+				</a>
 			</div>
 		</div>
 	</div>
@@ -543,7 +560,7 @@ function enom_pro_output( $vars ) {
 				$view = (string) $_GET['view'];
 				$method = "render_$view";
 				$enom->$method();
-
+				$enom->getBetaReportLink();
 				return;
 			} else {
 				//Run this to check login credentials and IP restrictions

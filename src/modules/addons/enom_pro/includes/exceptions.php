@@ -3,7 +3,7 @@
 /**
  * License Errors
  */
-class LicenseExeption extends Exception
+class LicenseException extends Exception
 {
 }
 /**
