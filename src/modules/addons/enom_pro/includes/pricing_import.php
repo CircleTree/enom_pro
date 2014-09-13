@@ -121,11 +121,9 @@ if ( $this->is_pricing_cached() ) :
 			</ul>
 			Once they are imported, you can
 			bulk edit all 3 pricing tiers, or you can fine tune pricing in directly in whmcs by
-			clicking the edit link:
-			<span class="badge">WHMCS</span>
-			<a href="#"
-				 class="btn btn-default btn-xs"
-				 onClick="alert('Click the pricing row you want to edit, silly!');return false;">Edit</a></p>
+			clicking the TLD drop-down menu button.
+			</p>
+			<img src="" height="" width="" alt="" />
 		</div>
 	<?php endif; ?>
 	<?php if ( !enom_pro_controller::isDismissed( 'order-types' ) ) : ?>
@@ -179,70 +177,82 @@ if ( $this->is_pricing_cached() ) :
 		</div>
 	<?php endif;//End default currency check ?>
 
-	<div class="well">
-		<button type="button"
-						class="close"
-						data-dismiss="alert"
-						aria-hidden="true">&uarr;</button>
-		<h3>Bulk Import</h3>
+	<div class="well row">
+			<button type="button"
+							class="close"
+							data-dismiss="alert"
+							aria-hidden="true">&uarr;</button>
 
-		<p>Import all TLDs on this page</p>
+		<div class="col-lg-6">
 
-		<form class="bulkImport form-inline"
-					role="form"
-					action="<?php echo enom_pro::MODULE_LINK ?>">
-			<div class="form-group">
-				<div class="input-group">
-					<label for="percentMarkup" class="input-group-addon">Markup</label>
-					<input type="number"
-								 min="0"
-								 max="500"
-								 name="markup"
-								 id="percentMarkup"
-								 class="form-control input-sm"/>
-					<span class="input-group-addon">%</span>
-				</div>
-				<div class="input-group">
-					<label for="roundTo" class="input-group-addon">Round up to $</label>
-					<select name="round" id="roundTo" class="form-control input-sm-2">
-						<option value="99">.99</option>
-						<option value="98">.98</option>
-						<option value="95">.95</option>
-						<option value="50">.50</option>
-						<option value="01">.01</option>
-						<option value="00">.00</option>
-					</select>
-				</div>
-			</div>
+			<h3>Bulk Import</h3>
 
-			<div class="form-group">
-				<div class="input-group checkbox">
-					<label for="overWriteWHMCS" class="input-group-addon">
-						<input type="checkbox" name="overwrite" id="overWriteWHMCS"/>
-						Overwrite Values Already in WHMCS
-					</label>
-				</div>
-			</div>
-			<div class="btn-group pull-right">
-				<button type="submit" class="btn btn-primary">Preview</button>
-				<button type="button" class="btn btn-success savePricing">Save</button>
+			<p>Import all TLDs on this page</p>
 
-				<div class="btn-group">
-					<button type="reset" class="btn btn-danger clear_all">Clear</button>
-					<button type="button"
-									class="btn btn-danger dropdown-toggle"
-									data-toggle="dropdown">
-						<span class="caret"></span>
-						&nbsp;
-						<span class="sr-only">Toggle Dropdown</span>
-					</button>
-					<ul class="dropdown-menu clearDropdown" role="menu">
-						<li><a href="#" class="deleteFromWHMCS">Delete all from WHMCS</a>
-						</li>
-					</ul>
+			<form class="bulkImport form-inline"
+						role="form"
+						action="<?php echo enom_pro::MODULE_LINK ?>">
+				<div class="form-group">
+					<div class="input-group">
+						<label for="percentMarkup" class="input-group-addon">Markup</label>
+						<input type="number"
+									 min="0"
+									 max="500"
+									 name="markup"
+									 id="percentMarkup"
+									 class="form-control input-sm"/>
+						<span class="input-group-addon">%</span>
+					</div>
+					<div class="input-group">
+						<label for="roundTo" class="input-group-addon">Round up to $</label>
+						<select name="round" id="roundTo" class="form-control input-sm-2">
+							<option value="99">.99</option>
+							<option value="98">.98</option>
+							<option value="95">.95</option>
+							<option value="50">.50</option>
+							<option value="01">.01</option>
+							<option value="00">.00</option>
+						</select>
+					</div>
 				</div>
-			</div>
-		</form>
+
+				<div class="form-group">
+					<div class="input-group checkbox">
+						<label for="overWriteWHMCS" class="input-group-addon">
+							<input type="checkbox" name="overwrite" id="overWriteWHMCS"/>
+							Overwrite Values Already in WHMCS
+						</label>
+					</div>
+				</div>
+				<div class="btn-group pull-right">
+					<button type="submit" class="btn btn-primary">Preview</button>
+					<button type="button" class="btn btn-success savePricing">Save</button>
+
+					<div class="btn-group">
+						<button type="reset" class="btn btn-danger clear_all">Clear</button>
+						<button type="button"
+										class="btn btn-danger dropdown-toggle"
+										data-toggle="dropdown">
+							<span class="caret"></span>
+							&nbsp;
+							<span class="sr-only">Toggle Dropdown</span>
+						</button>
+						<ul class="dropdown-menu clearDropdown" role="menu">
+							<li><a href="#" class="deleteFromWHMCS">Delete all from WHMCS</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="col-lg-6">
+			<h3>Domain Pricing Meta</h3>
+			Pricing for a total of <?php echo count( $this->getAllDomainsPricing() ) ?> TLDs.
+			<br/>
+			Pricing data last updated <?php echo $this->get_price_cache_date(); ?>
+			<a class="btn btn-default btn-info"
+				 href="<?php echo enom_pro::MODULE_LINK; ?>&action=clear_price_cache">Clear Cache</a>
+		</div>
 	</div>
 	<?php pager( $this ); ?>
 	<form method="POST"
@@ -371,14 +381,6 @@ if ( $this->is_pricing_cached() ) :
 		<input type="submit" value="Save" class="btn btn-block btn-success">
 	</form>
 	<?php pager( $this ); ?>
-	<div class="well">
-		<h3>Domain Pricing Meta</h3>
-		Pricing for a total of <?php echo count( $this->getAllDomainsPricing() ) ?> TLDs.
-		<br/>
-		Pricing data last updated <?php echo $this->get_price_cache_date(); ?>
-		<a class="btn btn-default btn-info"
-			 href="<?php echo enom_pro::MODULE_LINK; ?>&action=clear_price_cache">Clear Cache</a>
-	</div>
 	<script>
 		jQuery(function($) {
 			$(".pager a").on('click', function() {
