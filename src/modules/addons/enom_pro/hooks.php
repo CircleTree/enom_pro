@@ -174,89 +174,9 @@ function enom_pro_admin_expiring_domains ($vars)
     if (!class_exists('enom_pro'))
         require_once 'enom_pro.php';
     if (isset($_REQUEST['enom_pro_check_expiring_domains'])) {
-        $enom = new enom_pro();
         try {
-            $stats = $enom->getAccountStats();
-						$str = '';
-            $str .= '<div class="enom_pro_widget">';
-            $str .= '<table class="table-hover" ><tbody>
-                    <tr>
-                        <td class="enom_stat_button">
-                            <a class="btn btn-success '.($stats['registered'] > 0  ? '' : 'disabled' ).'"
-                                data-tab="registered" 
-                                href="'.enom_pro::MODULE_LINK.'&action=get_domains" title="View Domains">
-                                '.$stats['registered'].'
-                            </a>
-                            <div class="enom_pro_loader small hidden"></div>
-                        </td>
-                        <td class="enom_stat_label">Registered Domains</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div id="enom_pro_registered"></div>                
-                        </td>                    
-                    </tr>
-                    <tr>
-                        <td class="enom_stat_button">
-                            <a class="btn btn-warning '.($stats['expiring'] > 0  ? '' : 'disabled' ).'"
-                                data-tab="expiring" 
-                                href="'.enom_pro::MODULE_LINK.'&action=get_domains&tab=expiring">
-                                    '.$stats['expiring'].'
-                            </a>
-                            <div class="enom_pro_loader small hidden"></div>
-                        </td>
-                        <td class="enom_stat_label">Expiring Domains</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div id="enom_pro_expiring"></div>                
-                        </td>                    
-                    </tr>
-                    <tr>
-                        <td class="enom_stat_button">
-                            <a class="btn btn-danger '.($stats['expired'] > 0  ? '' : 'disabled' ).'"
-                                data-tab="expired" 
-                                href="'.enom_pro::MODULE_LINK.'&action=get_domains&tab=expired">
-                                    '.$stats['expired'].'
-                            </a>
-                            <div class="enom_pro_loader small hidden"></div>
-                        </td>
-                        <td class="enom_stat_label">Expired Domains</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div id="enom_pro_expired"></div>                
-                        </td>                    
-                    </tr>
-                    <tr>
-                        <td class="enom_stat_button">
-                            <a class="btn btn-info '.($stats['redemption'] > 0  ? '' : 'disabled' ).'" 
-                                data-tab="redemption" 
-                                href="'.enom_pro::MODULE_LINK.'&action=get_domains&tab=redemption">
-                                    '.$stats['redemption'].'
-                            </a>
-                            <div class="enom_pro_loader small hidden"></div>
-                        </td>
-                        <td class="enom_stat_label">Redemption Period</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div id="enom_pro_redemption"></div>                
-                        </td>                    
-                    </tr>
-                    <tr>
-                        <td class="enom_stat_button">
-                            <a class="btn btn-inverse '.($stats['ext_redemption'] > 0  ? '' : 'disabled' ).'"
-                                    href="http://www.enom.com/domains/Domain-Manager.aspx?tab=redemption"
-                                    target="_blank" >
-                                        '.$stats['ext_redemption'].'
-                            </a>
-                            <div class="enom_pro_loader small hidden"></div>
-                        </td>
-                        <td class="enom_stat_label">Extended Redemption Period</td>
-                    </tr>
-            </tbody></table>';
-            $content = $str;
+        $enom = new enom_pro();
+					$content = $enom->render_domains_widget();
         } catch (Exception $e) {
             $content = $e->getMessage();
         }
@@ -496,7 +416,8 @@ function enom_pro_admin_actions ()
 				'enom_pro_hide_ssl',
 				'sort_domains',
 				'dismiss_alert',
-				'getAdminJS'
+				'getAdminJS',
+				'clear_exchange_cache'
     );
     //Only load this hook if an ajax request is being run
     if (! (isset($_REQUEST['action']) && in_array($_REQUEST['action'], $enom_actions))) {
