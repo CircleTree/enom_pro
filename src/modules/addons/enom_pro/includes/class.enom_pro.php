@@ -108,7 +108,7 @@ class enom_pro {
 	 */
 	private $cache_file_exchange_rate;
 	private $parameters = array();
-
+	private $cache_file_verification_report;
 	/**
 	 * eNom API Class
 	 * Gets API login info from WHMCS and connects to verify the login information is correct
@@ -121,6 +121,7 @@ class enom_pro {
 		$this->cache_file_all_prices = ENOM_PRO_TEMP . 'all_prices.cache';
 		$this->cache_file_all_tlds = ENOM_PRO_TEMP . 'all_tlds.cache';
 		$this->cache_file_exchange_rate = ENOM_PRO_TEMP . 'exchange.cache';
+		$this->cache_file_verification_report = ENOM_PRO_TEMP . 'domain_verification.cache';
 		$this->remote_request_limit = self::get_addon_setting( 'api_request_limit' );
 		if ( php_sapi_name() == 'cli' ) {
 			self::$cli = true;
@@ -777,14 +778,36 @@ class enom_pro {
 		return $response;
 	}
 
+	/**
+	 * Gets domain verification stats
+	 * @return array 'pending_verification', 'pending_suspension', 'suspended, 'domains'
+	 */
 	public function getDomainVerificationStats ()
 	{
-		$this->setParams(array('ReportType' => 31));
+		if ($this->get_cache_data($this->cache_file_verification_report)) {
+			return $this->get_cache_data($this->cache_file_verification_report);
+		}
+		$this->setParams( array(
+			'ReportType' => 31, 'Version' => 1, 'Download' => 'False'
+		) );
 		$this->runTransaction('RPT_GETREPORT');
-		echo '<pre>';
-		print_r($this->xml->rpt);
-		echo '</pre>';
-		die;
+		$data = array();
+		$data['pending_verification'] = (int) $this->xml->rpt->results->PendingVerificationDomains;
+		$data['pending_suspension'] = (int) $this->xml->rpt->results->PendingSuspensionDomains;
+		$data['suspended'] = (int) $this->xml->rpt->results->SuspendedDomains;
+		$domains = array();
+		foreach ($this->xml->rpt->results->rptrawxml->{"report31-single"} as $report) {
+			/** @var SimpleXMLElement $report */
+			$this_domain_meta = array();
+			foreach ($report->attributes() as $key => $value) {
+				$this_domain_meta[$key] = (string) $value;
+			}
+			$domains[] = $this_domain_meta;
+			unset($this_domain_meta);
+		}
+		$data['domains'] = $domains;
+		$this->set_cached_data($this->cache_file_verification_report, $data);
+		return $data;
 	}
 
 	/**
@@ -1220,7 +1243,7 @@ class enom_pro {
 	private function get_domains_cache() {
 		return $this->get_cache_data( $this->cache_file_all_domains );
 	}
-
+	private $cache_key = '1 Nu`RvWf6hz(JFyqBD!`;TNg}e= b*z&l%[(|5pTL(16uuY-BOQC2Z+SHKu>NvW';
 	/**
 	 *
 	 * @param string $file_path
@@ -1239,14 +1262,17 @@ class enom_pro {
 			fclose( $handle );
 			$md5 = substr( $data, 0, 32 );
 			$serialized_data = substr( $data, 32 );
-			if ( $md5 == md5( $serialized_data ) ) {
+			if ( $md5 ==  $this->getSerializedHash($serialized_data) ) {
 				return unserialize( $serialized_data );
 			} else {
 				return false;
 			}
 		}
 	}
-
+	private function getSerializedHash ($serialized_data)
+	{
+		return md5( $this->cache_key . $serialized_data . str_rot13($this->cache_key) . strrev($this->cache_key));
+	}
 	private function set_cached_data( $file_path, array $data ) {
 		$handle = fopen( $file_path, 'w' );
 		if ( false === $handle ) {
@@ -1258,10 +1284,26 @@ class enom_pro {
 		}
 		if ( count( $data ) > 0 ) {
 			$serialized_data = serialize( $data );
-			$md5 = md5( $serialized_data );
+			$md5 = $this->getSerializedHash($serialized_data);
 			fwrite( $handle, $md5 . $serialized_data );
 		}
 		fclose( $handle );
+	}
+
+	/**
+	 * Check if a cache file is older than a threshold
+	 * @param $file_path
+	 * @param $date relative date (-1 day, -1 Week, etc.)
+	 */
+	public function cache_file_is_older_than ($file_path, $date)
+	{
+		$modified = stat($file_path);
+		$relative_date = strtotime($date);
+		if ($modified['mtime'] <= $relative_date) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public function clear_domains_cache() {

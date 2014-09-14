@@ -2,13 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="08c765d3-25f4-4648-aca3-dd0842f231cc" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/balance_widget.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pending_widget.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/css/admin.css" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/css/admin.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pending_widget.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pending_widget.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/test_enom_pro.php" afterPath="$PROJECT_DIR$/tests/test_enom_pro.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -26,6 +24,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/enom_pro$test_enom_pro_test_cache_is_older.coverage" NAME="test_enom_pro.test_cache_is_older Coverage Results" MODIFIED="1410664536290" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/enom_pro$test_enom_pro_test_open_ssl_ticket.coverage" NAME="test_enom_pro.test_open_ssl_ticket Coverage Results" MODIFIED="1394747705210" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/enom_pro$Domains.coverage" NAME="Domains Coverage Results" MODIFIED="1397586461486" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
@@ -41,108 +40,154 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="hooks.php" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="hooks.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="542" column="0" selection-start="20538" selection-end="20538" vertical-scroll-proportion="1.8726333" vertical-offset="0" max-vertical-offset="1771">
+            <state line="193" column="43" selection-start="5419" selection-end="5419" vertical-scroll-proportion="-31.307692" vertical-offset="495" max-vertical-offset="2684">
               <folding>
                 <element signature="e#6#178#0" expanded="false" />
                 <element signature="e#410#491#0" expanded="false" />
                 <element signature="n#__construct#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-                <element signature="e#701#769#0" expanded="false" />
-                <element signature="e#968#1304#0" expanded="false" />
-                <element signature="e#1010#1300#0" expanded="false" />
-                <element signature="e#1169#1300#0" expanded="false" />
-                <element signature="e#1180#1286#0" expanded="false" />
-                <element signature="e#1230#1286#0" expanded="false" />
-                <element signature="e#1310#1378#0" expanded="false" />
+                <element signature="e#722#790#0" expanded="false" />
+                <element signature="e#989#1325#0" expanded="false" />
+                <element signature="e#1031#1321#0" expanded="false" />
+                <element signature="e#1190#1321#0" expanded="false" />
+                <element signature="e#1201#1307#0" expanded="false" />
+                <element signature="e#1251#1307#0" expanded="false" />
+                <element signature="e#1331#1372#0" expanded="false" />
+                <element signature="n#setIcon#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
+                <element signature="e#1439#1507#0" expanded="false" />
                 <element signature="n#getBaseID#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
                 <element signature="n#getContentID#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-                <element signature="e#1508#1542#0" expanded="false" />
+                <element signature="e#1637#1671#0" expanded="false" />
                 <element signature="n#addjQuery#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
                 <element signature="n#getContent#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-                <element signature="e#1743#1800#0" expanded="false" />
+                <element signature="e#1872#1929#0" expanded="false" />
                 <element signature="n#toArray#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
+                <element signature="e#2002#2096#0" expanded="false" />
                 <element signature="n#getFormID#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
                 <element signature="n#getWidgetForm#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-                <element signature="e#2200#2281#0" expanded="false" />
-                <element signature="tag#form#0" expanded="false" />
-                <element signature="tag#button#0;tag#form#0" expanded="false" />
+                <element signature="e#2456#2537#0" expanded="false" />
                 <element signature="n#get_jQuery#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-                <element signature="n#enom_pro_admin_balance#0;n#!!top" expanded="false" />
-                <element signature="n#enom_pro_admin_ssl_certs#0;n#!!top" expanded="false" />
-                <element signature="e#4087#4288#0" expanded="false" />
-                <element signature="n#enom_pro_admin_expiring_domains#0;n#!!top" expanded="false" />
-                <element signature="e#4577#4619#0" expanded="false" />
-                <element signature="n#enom_pro_admin_pending_domain_verification#0;n#!!top" expanded="false" />
-                <element signature="e#4923#4978#0" expanded="false" />
+                <element signature="e#4395#4596#0" expanded="false" />
+                <element signature="e#4929#4971#0" expanded="false" />
+                <element signature="e#5318#5373#0" expanded="false" />
                 <element signature="n#enom_pro_admin_transfers#0;n#!!top" expanded="false" />
-                <element signature="e#5197#10442#0" expanded="false" />
-                <element signature="e#5297#10369#0" expanded="false" />
-                <element signature="e#5390#5648#0" expanded="false" />
-                <element signature="e#6005#10198#0" expanded="false" />
-                <element signature="e#6718#10100#0" expanded="false" />
-                <element signature="e#7221#9872#0" expanded="false" />
-                <element signature="e#7355#9189#0" expanded="false" />
-                <element signature="e#9957#10073#0" expanded="false" />
-                <element signature="e#10288#10369#0" expanded="false" />
-                <element signature="e#11904#12303#0" expanded="false" />
+                <element signature="e#5637#10882#0" expanded="false" />
+                <element signature="e#5737#10809#0" expanded="false" />
+                <element signature="e#5830#6088#0" expanded="false" />
+                <element signature="e#6445#10638#0" expanded="false" />
+                <element signature="e#7158#10540#0" expanded="false" />
+                <element signature="e#7661#10312#0" expanded="false" />
+                <element signature="e#7795#9629#0" expanded="false" />
+                <element signature="e#10397#10513#0" expanded="false" />
+                <element signature="e#10728#10809#0" expanded="false" />
+                <element signature="e#12344#12743#0" expanded="false" />
                 <element signature="n#get_enom_pro_widget_form#0;n#!!top" expanded="false" />
-                <element signature="e#12364#12450#0" expanded="false" />
-                <element signature="tag#form#1" expanded="false" />
-                <element signature="tag#button#0;tag#form#1" expanded="false" />
-                <element signature="e#12885#12910#0" expanded="false" />
+                <element signature="e#12804#12890#0" expanded="false" />
+                <element signature="e#13325#13350#0" expanded="false" />
                 <element signature="n#enom_pro_admin_css#0;n#!!top" expanded="false" />
-                <element signature="e#13101#13828#0" expanded="false" />
-                <element signature="e#13259#13357#0" expanded="false" />
-                <element signature="e#13797#13828#0" expanded="false" />
-                <element signature="e#13832#13861#0" expanded="false" />
+                <element signature="e#13541#14268#0" expanded="false" />
+                <element signature="e#13699#13797#0" expanded="false" />
+                <element signature="e#14237#14268#0" expanded="false" />
+                <element signature="e#14272#14301#0" expanded="false" />
                 <element signature="n#enom_pro_admin_actions#0;n#!!top" expanded="false" />
-                <element signature="e#13979#14564#0" expanded="false" />
-                <element signature="e#14628#14735#0" expanded="false" />
-                <element signature="e#14774#14844#0" expanded="false" />
-                <element signature="e#14849#15049#0" expanded="false" />
-                <element signature="e#14940#15049#0" expanded="false" />
-                <element signature="e#15064#15086#0" expanded="false" />
+                <element signature="e#14419#15004#0" expanded="false" />
+                <element signature="e#15068#15175#0" expanded="false" />
+                <element signature="e#15214#15284#0" expanded="false" />
+                <element signature="e#15289#15489#0" expanded="false" />
+                <element signature="e#15380#15489#0" expanded="false" />
+                <element signature="e#15504#15526#0" expanded="false" />
                 <element signature="n#enom_pro_namespinner#0;n#!!top" expanded="false" />
-                <element signature="e#15275#18350#0" expanded="false" />
-                <element signature="e#15708#15964#0" expanded="false" />
-                <element signature="e#15880#15964#0" expanded="false" />
-                <element signature="e#16063#18329#0" expanded="false" />
-                <element signature="e#16301#17634#0" expanded="false" />
-                <element signature="e#16360#17620#0" expanded="false" />
-                <element signature="e#17023#17384#0" expanded="false" />
-                <element signature="e#17128#17346#0" expanded="false" />
-                <element signature="e#17484#17620#0" expanded="false" />
-                <element signature="e#17648#18224#0" expanded="false" />
-                <element signature="e#18262#18329#0" expanded="false" />
-                <element signature="e#18378#18585#0" expanded="false" />
-                <element signature="e#18590#18915#0" expanded="false" />
-                <element signature="e#18653#18712#0" expanded="false" />
-                <element signature="e#18717#18778#0" expanded="false" />
-                <element signature="e#18783#18842#0" expanded="false" />
-                <element signature="e#18862#18909#0" expanded="false" />
-                <element signature="e#19020#19344#0" expanded="false" />
-                <element signature="e#19349#19754#0" expanded="false" />
-                <element signature="e#19530#19702#0" expanded="false" />
-                <element signature="e#19703#19754#0" expanded="false" />
+                <element signature="e#15715#18790#0" expanded="false" />
+                <element signature="e#16148#16404#0" expanded="false" />
+                <element signature="e#16320#16404#0" expanded="false" />
+                <element signature="e#16503#18769#0" expanded="false" />
+                <element signature="e#16741#18074#0" expanded="false" />
+                <element signature="e#16800#18060#0" expanded="false" />
+                <element signature="e#17463#17824#0" expanded="false" />
+                <element signature="e#17568#17786#0" expanded="false" />
+                <element signature="e#17924#18060#0" expanded="false" />
+                <element signature="e#18088#18664#0" expanded="false" />
+                <element signature="e#18702#18769#0" expanded="false" />
+                <element signature="e#18818#19025#0" expanded="false" />
+                <element signature="e#19030#19355#0" expanded="false" />
+                <element signature="e#19093#19152#0" expanded="false" />
+                <element signature="e#19157#19218#0" expanded="false" />
+                <element signature="e#19223#19282#0" expanded="false" />
+                <element signature="e#19302#19349#0" expanded="false" />
+                <element signature="e#19460#19784#0" expanded="false" />
+                <element signature="e#19789#20194#0" expanded="false" />
+                <element signature="e#19970#20142#0" expanded="false" />
+                <element signature="e#20143#20194#0" expanded="false" />
                 <element signature="n#enom_pro_clientarea_transfers#0;n#!!top" expanded="false" />
-                <element signature="e#22104#22237#0" expanded="false" />
-                <element signature="e#22180#22237#0" expanded="false" />
+                <element signature="e#21348#22746#0" expanded="false" />
+                <element signature="e#22038#22746#0" expanded="false" />
+                <element signature="e#22544#22677#0" expanded="false" />
+                <element signature="e#22620#22677#0" expanded="false" />
                 <element signature="n#enom_pro_srv_page#0;n#!!top" expanded="false" />
                 <element signature="n#enom_pro_cron#0;n#!!top" expanded="false" />
-                <element signature="e#23025#23745#0" expanded="false" />
-                <element signature="e#23626#23745#0" expanded="false" />
-                <marker date="1410658600000" expanded="false" signature="5831:5968" placeholder="..." />
-                <marker date="1410658600000" expanded="false" signature="6828:7068" placeholder="..." />
-                <marker date="1410658600000" expanded="false" signature="6857:7047" placeholder="..." />
-                <marker date="1410658600000" expanded="false" signature="6890:6937" placeholder="..." />
-                <marker date="1410658600000" expanded="false" signature="6941:6982" placeholder="..." />
-                <marker date="1410658600000" expanded="false" signature="7001:7042" placeholder="..." />
-                <marker date="1410658600000" expanded="false" signature="9263:9350" placeholder="..." />
-                <marker date="1410658600000" expanded="false" signature="9535:9553" placeholder="..." />
-                <marker date="1410658600000" expanded="false" signature="18980:18992" placeholder="..." />
+                <element signature="e#23465#24185#0" expanded="false" />
+                <element signature="e#24066#24185#0" expanded="false" />
+                <marker date="1410659138000" expanded="false" signature="2662:2897" placeholder="..." />
+                <marker date="1410659138000" expanded="false" signature="2792:2887" placeholder="..." />
+                <marker date="1410659138000" expanded="false" signature="6271:6408" placeholder="..." />
+                <marker date="1410659138000" expanded="false" signature="7268:7508" placeholder="..." />
+                <marker date="1410659138000" expanded="false" signature="7297:7487" placeholder="..." />
+                <marker date="1410659138000" expanded="false" signature="7330:7377" placeholder="..." />
+                <marker date="1410659138000" expanded="false" signature="7381:7422" placeholder="..." />
+                <marker date="1410659138000" expanded="false" signature="7441:7482" placeholder="..." />
+                <marker date="1410659138000" expanded="false" signature="9703:9790" placeholder="..." />
+                <marker date="1410659138000" expanded="false" signature="9975:9993" placeholder="..." />
+                <marker date="1410659138000" expanded="false" signature="13008:13236" placeholder="..." />
+                <marker date="1410659138000" expanded="false" signature="13137:13224" placeholder="..." />
+                <marker date="1410659138000" expanded="false" signature="19420:19432" placeholder="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="domain_widget.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="22" selection-start="133" selection-end="133" vertical-scroll-proportion="-3.2692308" vertical-offset="0" max-vertical-offset="2480">
+              <folding>
+                <marker date="1410659337000" expanded="true" signature="177:2688" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="206:2681" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="216:2671" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="223:653" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="256:590" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="348:527" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="660:738" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="680:730" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="746:1154" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="779:1093" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="869:1030" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="1161:1237" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="1181:1229" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="1245:1648" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="1278:1588" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="1367:1525" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="1655:1730" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="1675:1722" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="1737:2152" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="1770:2090" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="1860:2027" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="2159:2237" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="2179:2229" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="2244:2660" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="2277:2589" placeholder="..." />
+                <marker date="1410659337000" expanded="true" signature="2374:2526" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pending_widget.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pending_widget.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="7" column="34" selection-start="140" selection-end="140" vertical-scroll-proportion="-1.9615384" vertical-offset="0" max-vertical-offset="1273">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -150,18 +195,26 @@
       <file leaf-file-name="class.enom_pro.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="662" column="3" selection-start="17956" selection-end="17956" vertical-scroll-proportion="0.0" vertical-offset="11254" max-vertical-offset="38998">
+            <state line="1301" column="0" selection-start="36846" selection-end="36846" vertical-scroll-proportion="-6.1153846" vertical-offset="21958" max-vertical-offset="40139">
               <folding>
-                <marker date="1410657390000" expanded="true" signature="5454:5870" placeholder="..." />
-                <marker date="1410657390000" expanded="true" signature="5626:5660" placeholder="..." />
-                <marker date="1410657390000" expanded="true" signature="5815:5865" placeholder="..." />
-                <marker date="1410657390000" expanded="true" signature="19336:19473" placeholder="SELECT `id`,..." />
-                <marker date="1410657390000" expanded="true" signature="28373:28960" placeholder="SELECT tlds...." />
-                <marker date="1410657390000" expanded="true" signature="45983:46059" placeholder="SELECT `sett..." />
-                <marker date="1410657390000" expanded="true" signature="59785:60083" placeholder="INSERT INTO ..." />
-                <marker date="1410657390000" expanded="true" signature="60349:60422" placeholder="SELECT `id` ..." />
-                <marker date="1410657390000" expanded="true" signature="64348:64655" placeholder="..." />
+                <marker date="1410665426000" expanded="true" signature="5582:5998" placeholder="..." />
+                <marker date="1410665426000" expanded="true" signature="5754:5788" placeholder="..." />
+                <marker date="1410665426000" expanded="true" signature="5943:5993" placeholder="..." />
+                <marker date="1410665426000" expanded="true" signature="19464:19601" placeholder="SELECT `id`,..." />
+                <marker date="1410665426000" expanded="true" signature="29504:30091" placeholder="SELECT tlds...." />
+                <marker date="1410665426000" expanded="true" signature="47782:47858" placeholder="SELECT `sett..." />
+                <marker date="1410665426000" expanded="true" signature="61584:61882" placeholder="INSERT INTO ..." />
+                <marker date="1410665426000" expanded="true" signature="62148:62221" placeholder="SELECT `id` ..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_enom_pro.php" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/tests/test_enom_pro.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="104" column="71" selection-start="3279" selection-end="3279" vertical-scroll-proportion="0.8086304" vertical-offset="1337" max-vertical-offset="10665">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -169,7 +222,7 @@
       <file leaf-file-name="balance_widget.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/balance_widget.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="14" selection-start="1418" selection-end="1418" vertical-scroll-proportion="0.0" vertical-offset="629" max-vertical-offset="663">
+            <state line="37" column="13" selection-start="1417" selection-end="1417" vertical-scroll-proportion="-21.576923" vertical-offset="0" max-vertical-offset="1426">
               <folding />
             </state>
           </provider>
@@ -225,7 +278,6 @@
         <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/F9C3BCF7-93AB-4145-9A3B-60254D858FD0/hooks.php" />
         <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/32AF1940-D5CA-45B9-A02A-C1B097981AE7/loop-single.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/css/bootstrap-theme.min.css" />
-        <option value="$PROJECT_DIR$/tests/test_enom_pro.php" />
         <option value="$PROJECT_DIR$/tests/files/make_names.off" />
         <option value="$PROJECT_DIR$/icomoon/enom-pro (4)/style.css" />
         <option value="$PROJECT_DIR$/src/README.txt" />
@@ -250,7 +302,6 @@
         <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/9AB00044-32CA-4DBA-9770-C70101A3C54F/adddomain.tpl" />
         <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/435B3668-BEFC-4061-BC88-461E31F05533/clientareadomains.tpl" />
         <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/E5604320-5931-4B47-AB3F-90F494EDC9ED/clientareadomaindetails.tpl" />
-        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget_response.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/ssl_widget.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pricing_import.php" />
@@ -262,12 +313,14 @@
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php" />
-        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pending_widget.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/css/admin.css" />
-        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/balance_widget.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pending_widget.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" />
+        <option value="$PROJECT_DIR$/tests/test_enom_pro.php" />
       </list>
     </option>
   </component>
@@ -296,14 +349,27 @@
             <id />
           </State>
           <State>
-            <id>Phing</id>
+            <id>CoffeeScript</id>
+          </State>
+          <State>
+            <id>GeneralCoffeeScript</id>
+          </State>
+          <State>
+            <id>GeneralJavaScript</id>
+          </State>
+          <State>
+            <id>JavaScript</id>
+          </State>
+          <State>
+            <id>Probable bugsCoffeeScript</id>
+          </State>
+          <State>
+            <id>Probable bugsJavaScript</id>
+          </State>
+          <State>
+            <id>RELAX NG</id>
           </State>
         </expanded-state>
-        <selected-state>
-          <State>
-            <id>PhingDomInspection</id>
-          </State>
-        </selected-state>
       </profile-state>
     </entry>
   </component>
@@ -474,7 +540,7 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="settings" />
+    <property name="options.lastSelected" value="Errors" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/modules/addons/enom_pro/temp" />
     <property name="options.splitter.details.proportions" value="0.2" />
@@ -1554,23 +1620,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="PHPUnit.PHPUnit">
-    <configuration default="false" name="test_enom_pro.test_open_ssl_ticket" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="test_enom_pro" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/test_enom_pro.php" method="test_open_ssl_ticket" scope="Method" use_alternative_configuration_file="true" />
-      <RunnerSettings RunnerId="PhpRunner" />
-      <RunnerSettings RunnerId="PhpUnitCoverageRunner" />
-      <RunnerSettings RunnerId="PhpUnitDebugRunner" />
-      <ConfigurationWrapper RunnerId="PhpRunner" />
-      <ConfigurationWrapper RunnerId="PhpUnitCoverageRunner" />
-      <ConfigurationWrapper RunnerId="PhpUnitDebugRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="test_enom_pro.test_retail_andWholeSaleNotEqual" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="test_enom_pro" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/test_enom_pro.php" method="test_retail_andWholeSaleNotEqual" scope="Method" use_alternative_configuration_file="true" />
-      <RunnerSettings RunnerId="PhpUnitDebugRunner" />
-      <ConfigurationWrapper RunnerId="PhpUnitDebugRunner" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="PHPUnit.test_enom_pro.test_cache_is_older">
     <configuration default="false" name="test_enom_pro.test_get_imported_pagination" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
       <TestRunner class="test_enom_pro" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/test_enom_pro.php" method="test_get_imported_pagination" scope="Method" options="--group domains" use_alternative_configuration_file="true" />
       <RunnerSettings RunnerId="PhpRunner" />
@@ -1591,6 +1641,22 @@
       <TestRunner class="test_enom_pro" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/test_enom_pro.php" method="testHideSSL" scope="Method" use_alternative_configuration_file="true" />
       <RunnerSettings RunnerId="PhpRunner" />
       <ConfigurationWrapper RunnerId="PhpRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="test_enom_pro.test_getAllDomains" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="test_enom_pro" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/test_enom_pro.php" method="test_getAllDomains" scope="Method" use_alternative_configuration_file="true" />
+      <RunnerSettings RunnerId="PhpRunner" />
+      <ConfigurationWrapper RunnerId="PhpRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="test_enom_pro.test_cache_is_older" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="test_enom_pro" file="$PROJECT_DIR$/tests/test_enom_pro.php" method="test_cache_is_older" scope="Method" />
+      <RunnerSettings RunnerId="PhpRunner" />
+      <RunnerSettings RunnerId="PhpUnitCoverageRunner" />
+      <RunnerSettings RunnerId="PhpUnitDebugRunner" />
+      <ConfigurationWrapper RunnerId="PhpRunner" />
+      <ConfigurationWrapper RunnerId="PhpUnitCoverageRunner" />
+      <ConfigurationWrapper RunnerId="PhpUnitDebugRunner" />
       <method />
     </configuration>
     <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
@@ -1688,19 +1754,19 @@
       <item index="1" class="java.lang.String" itemvalue="PHPUnit.PHPUnit" />
       <item index="2" class="java.lang.String" itemvalue="PHPUnit.Domains" />
       <item index="3" class="java.lang.String" itemvalue="PHPUnit.WHMCS API" />
-      <item index="4" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_open_ssl_ticket" />
-      <item index="5" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_retail_andWholeSaleNotEqual" />
-      <item index="6" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_get_imported_pagination" />
-      <item index="7" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.testGetWhois" />
-      <item index="8" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.testHideSSL" />
+      <item index="4" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_get_imported_pagination" />
+      <item index="5" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.testGetWhois" />
+      <item index="6" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.testHideSSL" />
+      <item index="7" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_getAllDomains" />
+      <item index="8" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_cache_is_older" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.testHideSSL" />
-        <item index="1" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.testGetWhois" />
-        <item index="2" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_get_imported_pagination" />
-        <item index="3" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_retail_andWholeSaleNotEqual" />
-        <item index="4" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_open_ssl_ticket" />
+        <item index="0" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_cache_is_older" />
+        <item index="1" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_getAllDomains" />
+        <item index="2" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.testHideSSL" />
+        <item index="3" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.testGetWhois" />
+        <item index="4" class="java.lang.String" itemvalue="PHPUnit.test_enom_pro.test_get_imported_pagination" />
       </list>
     </recent_temporary>
   </component>
@@ -1823,7 +1889,11 @@
       <created>1410648298623</created>
       <updated>1410648298623</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="added pending verfication widget&#10;extracted widget logic to main class&#10;extracted widget: balance &amp; pending verification&#10;">
+      <created>1410658673337</created>
+      <updated>1410658673337</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TodoView" selected-index="6">
@@ -1850,27 +1920,27 @@
     <frame x="4" y="22" width="1676" height="1028" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Documentation" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17258263" sideWeight="0.4015748" order="2" side_tool="true" content_ui="tabs" x="104" y="122" width="1236" height="678" />
+      <window_info id="Documentation" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17258263" sideWeight="0.4020443" order="2" side_tool="true" content_ui="tabs" x="104" y="122" width="1236" height="678" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13693467" sideWeight="0.6695353" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42307693" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32302773" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32371795" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292683" sideWeight="0.67105263" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43176973" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32692307" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43162394" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37286323" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298153" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20405982" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24847001" sideWeight="0.34081197" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19951041" sideWeight="0.65918803" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17258263" sideWeight="0.5968504" order="1" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37286323" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17258263" sideWeight="0.59625214" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37286323" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20405982" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32942432" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24847001" sideWeight="0.34081197" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1940,23 +2010,29 @@
     <MESSAGE value="help message for dismissable prompts" />
     <MESSAGE value="added beta opt-in" />
     <MESSAGE value="changed git hash to 12 digits" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed git hash to 12 digits" />
+    <MESSAGE value="added pending verfication widget&#10;extracted widget logic to main class&#10;extracted widget: balance &amp; pending verification&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="added pending verfication widget&#10;extracted widget logic to main class&#10;extracted widget: balance &amp; pending verification&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/tests/test_enom_pro.php</url>
-          <line>454</line>
+          <line>487</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/tests/test_enom_pro.php</url>
-          <line>188</line>
+          <line>221</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php</url>
+          <line>1301</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="13" />
+      <option name="time" value="16" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -1967,99 +2043,100 @@
             <element signature="e#6#178#0" expanded="false" />
             <element signature="e#410#491#0" expanded="false" />
             <element signature="n#__construct#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-            <element signature="e#701#769#0" expanded="false" />
-            <element signature="e#968#1304#0" expanded="false" />
-            <element signature="e#1010#1300#0" expanded="false" />
-            <element signature="e#1169#1300#0" expanded="false" />
-            <element signature="e#1180#1286#0" expanded="false" />
-            <element signature="e#1230#1286#0" expanded="false" />
-            <element signature="e#1310#1378#0" expanded="false" />
+            <element signature="e#722#790#0" expanded="false" />
+            <element signature="e#989#1325#0" expanded="false" />
+            <element signature="e#1031#1321#0" expanded="false" />
+            <element signature="e#1190#1321#0" expanded="false" />
+            <element signature="e#1201#1307#0" expanded="false" />
+            <element signature="e#1251#1307#0" expanded="false" />
+            <element signature="e#1331#1372#0" expanded="false" />
+            <element signature="n#setIcon#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
+            <element signature="e#1439#1507#0" expanded="false" />
             <element signature="n#getBaseID#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
             <element signature="n#getContentID#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-            <element signature="e#1508#1542#0" expanded="false" />
+            <element signature="e#1637#1671#0" expanded="false" />
             <element signature="n#addjQuery#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
             <element signature="n#getContent#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-            <element signature="e#1743#1800#0" expanded="false" />
+            <element signature="e#1872#1929#0" expanded="false" />
             <element signature="n#toArray#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
+            <element signature="e#2002#2096#0" expanded="false" />
             <element signature="n#getFormID#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
             <element signature="n#getWidgetForm#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-            <element signature="e#2200#2281#0" expanded="false" />
-            <element signature="tag#form#0" expanded="false" />
-            <element signature="tag#button#0;tag#form#0" expanded="false" />
+            <element signature="e#2456#2537#0" expanded="false" />
             <element signature="n#get_jQuery#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-            <element signature="n#enom_pro_admin_balance#0;n#!!top" expanded="false" />
-            <element signature="n#enom_pro_admin_ssl_certs#0;n#!!top" expanded="false" />
-            <element signature="e#4087#4288#0" expanded="false" />
-            <element signature="n#enom_pro_admin_expiring_domains#0;n#!!top" expanded="false" />
-            <element signature="e#4577#4619#0" expanded="false" />
-            <element signature="n#enom_pro_admin_pending_domain_verification#0;n#!!top" expanded="false" />
-            <element signature="e#4923#4978#0" expanded="false" />
+            <element signature="e#4395#4596#0" expanded="false" />
+            <element signature="e#4929#4971#0" expanded="false" />
+            <element signature="e#5318#5373#0" expanded="false" />
             <element signature="n#enom_pro_admin_transfers#0;n#!!top" expanded="false" />
-            <element signature="e#5197#10442#0" expanded="false" />
-            <element signature="e#5297#10369#0" expanded="false" />
-            <element signature="e#5390#5648#0" expanded="false" />
-            <element signature="e#6005#10198#0" expanded="false" />
-            <element signature="e#6718#10100#0" expanded="false" />
-            <element signature="e#7221#9872#0" expanded="false" />
-            <element signature="e#7355#9189#0" expanded="false" />
-            <element signature="e#9957#10073#0" expanded="false" />
-            <element signature="e#10288#10369#0" expanded="false" />
-            <element signature="e#11904#12303#0" expanded="false" />
+            <element signature="e#5637#10882#0" expanded="false" />
+            <element signature="e#5737#10809#0" expanded="false" />
+            <element signature="e#5830#6088#0" expanded="false" />
+            <element signature="e#6445#10638#0" expanded="false" />
+            <element signature="e#7158#10540#0" expanded="false" />
+            <element signature="e#7661#10312#0" expanded="false" />
+            <element signature="e#7795#9629#0" expanded="false" />
+            <element signature="e#10397#10513#0" expanded="false" />
+            <element signature="e#10728#10809#0" expanded="false" />
+            <element signature="e#12344#12743#0" expanded="false" />
             <element signature="n#get_enom_pro_widget_form#0;n#!!top" expanded="false" />
-            <element signature="e#12364#12450#0" expanded="false" />
-            <element signature="tag#form#1" expanded="false" />
-            <element signature="tag#button#0;tag#form#1" expanded="false" />
-            <element signature="e#12885#12910#0" expanded="false" />
+            <element signature="e#12804#12890#0" expanded="false" />
+            <element signature="e#13325#13350#0" expanded="false" />
             <element signature="n#enom_pro_admin_css#0;n#!!top" expanded="false" />
-            <element signature="e#13101#13828#0" expanded="false" />
-            <element signature="e#13259#13357#0" expanded="false" />
-            <element signature="e#13797#13828#0" expanded="false" />
-            <element signature="e#13832#13861#0" expanded="false" />
+            <element signature="e#13541#14268#0" expanded="false" />
+            <element signature="e#13699#13797#0" expanded="false" />
+            <element signature="e#14237#14268#0" expanded="false" />
+            <element signature="e#14272#14301#0" expanded="false" />
             <element signature="n#enom_pro_admin_actions#0;n#!!top" expanded="false" />
-            <element signature="e#13979#14564#0" expanded="false" />
-            <element signature="e#14628#14735#0" expanded="false" />
-            <element signature="e#14774#14844#0" expanded="false" />
-            <element signature="e#14849#15049#0" expanded="false" />
-            <element signature="e#14940#15049#0" expanded="false" />
-            <element signature="e#15064#15086#0" expanded="false" />
+            <element signature="e#14419#15004#0" expanded="false" />
+            <element signature="e#15068#15175#0" expanded="false" />
+            <element signature="e#15214#15284#0" expanded="false" />
+            <element signature="e#15289#15489#0" expanded="false" />
+            <element signature="e#15380#15489#0" expanded="false" />
+            <element signature="e#15504#15526#0" expanded="false" />
             <element signature="n#enom_pro_namespinner#0;n#!!top" expanded="false" />
-            <element signature="e#15275#18350#0" expanded="false" />
-            <element signature="e#15708#15964#0" expanded="false" />
-            <element signature="e#15880#15964#0" expanded="false" />
-            <element signature="e#16063#18329#0" expanded="false" />
-            <element signature="e#16301#17634#0" expanded="false" />
-            <element signature="e#16360#17620#0" expanded="false" />
-            <element signature="e#17023#17384#0" expanded="false" />
-            <element signature="e#17128#17346#0" expanded="false" />
-            <element signature="e#17484#17620#0" expanded="false" />
-            <element signature="e#17648#18224#0" expanded="false" />
-            <element signature="e#18262#18329#0" expanded="false" />
-            <element signature="e#18378#18585#0" expanded="false" />
-            <element signature="e#18590#18915#0" expanded="false" />
-            <element signature="e#18653#18712#0" expanded="false" />
-            <element signature="e#18717#18778#0" expanded="false" />
-            <element signature="e#18783#18842#0" expanded="false" />
-            <element signature="e#18862#18909#0" expanded="false" />
-            <element signature="e#19020#19344#0" expanded="false" />
-            <element signature="e#19349#19754#0" expanded="false" />
-            <element signature="e#19530#19702#0" expanded="false" />
-            <element signature="e#19703#19754#0" expanded="false" />
+            <element signature="e#15715#18790#0" expanded="false" />
+            <element signature="e#16148#16404#0" expanded="false" />
+            <element signature="e#16320#16404#0" expanded="false" />
+            <element signature="e#16503#18769#0" expanded="false" />
+            <element signature="e#16741#18074#0" expanded="false" />
+            <element signature="e#16800#18060#0" expanded="false" />
+            <element signature="e#17463#17824#0" expanded="false" />
+            <element signature="e#17568#17786#0" expanded="false" />
+            <element signature="e#17924#18060#0" expanded="false" />
+            <element signature="e#18088#18664#0" expanded="false" />
+            <element signature="e#18702#18769#0" expanded="false" />
+            <element signature="e#18818#19025#0" expanded="false" />
+            <element signature="e#19030#19355#0" expanded="false" />
+            <element signature="e#19093#19152#0" expanded="false" />
+            <element signature="e#19157#19218#0" expanded="false" />
+            <element signature="e#19223#19282#0" expanded="false" />
+            <element signature="e#19302#19349#0" expanded="false" />
+            <element signature="e#19460#19784#0" expanded="false" />
+            <element signature="e#19789#20194#0" expanded="false" />
+            <element signature="e#19970#20142#0" expanded="false" />
+            <element signature="e#20143#20194#0" expanded="false" />
             <element signature="n#enom_pro_clientarea_transfers#0;n#!!top" expanded="false" />
-            <element signature="e#22104#22237#0" expanded="false" />
-            <element signature="e#22180#22237#0" expanded="false" />
+            <element signature="e#21348#22746#0" expanded="false" />
+            <element signature="e#22038#22746#0" expanded="false" />
+            <element signature="e#22544#22677#0" expanded="false" />
+            <element signature="e#22620#22677#0" expanded="false" />
             <element signature="n#enom_pro_srv_page#0;n#!!top" expanded="false" />
             <element signature="n#enom_pro_cron#0;n#!!top" expanded="false" />
-            <element signature="e#23025#23745#0" expanded="false" />
-            <element signature="e#23626#23745#0" expanded="false" />
-            <marker date="1410658600000" expanded="false" signature="5831:5968" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="6828:7068" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="6857:7047" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="6890:6937" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="6941:6982" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="7001:7042" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="9263:9350" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="9535:9553" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="18980:18992" placeholder="..." />
+            <element signature="e#23465#24185#0" expanded="false" />
+            <element signature="e#24066#24185#0" expanded="false" />
+            <marker date="1410659138000" expanded="false" signature="2662:2897" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="2792:2887" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="6271:6408" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="7268:7508" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="7297:7487" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="7330:7377" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="7381:7422" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="7441:7482" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="9703:9790" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="9975:9993" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="13008:13236" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="13137:13224" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="19420:19432" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -2068,15 +2145,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="662" column="3" selection-start="17956" selection-end="17956" vertical-scroll-proportion="0.0" vertical-offset="11254" max-vertical-offset="38998">
           <folding>
-            <marker date="1410657390000" expanded="true" signature="5454:5870" placeholder="..." />
-            <marker date="1410657390000" expanded="true" signature="5626:5660" placeholder="..." />
-            <marker date="1410657390000" expanded="true" signature="5815:5865" placeholder="..." />
-            <marker date="1410657390000" expanded="true" signature="19336:19473" placeholder="SELECT `id`,..." />
-            <marker date="1410657390000" expanded="true" signature="28373:28960" placeholder="SELECT tlds...." />
-            <marker date="1410657390000" expanded="true" signature="45983:46059" placeholder="SELECT `sett..." />
-            <marker date="1410657390000" expanded="true" signature="59785:60083" placeholder="INSERT INTO ..." />
-            <marker date="1410657390000" expanded="true" signature="60349:60422" placeholder="SELECT `id` ..." />
-            <marker date="1410657390000" expanded="true" signature="64348:64655" placeholder="..." />
+            <marker date="1410665426000" expanded="true" signature="5582:5998" placeholder="..." />
+            <marker date="1410665426000" expanded="true" signature="5754:5788" placeholder="..." />
+            <marker date="1410665426000" expanded="true" signature="5943:5993" placeholder="..." />
+            <marker date="1410665426000" expanded="true" signature="19464:19601" placeholder="SELECT `id`,..." />
+            <marker date="1410665426000" expanded="true" signature="29504:30091" placeholder="SELECT tlds...." />
+            <marker date="1410665426000" expanded="true" signature="47782:47858" placeholder="SELECT `sett..." />
+            <marker date="1410665426000" expanded="true" signature="61584:61882" placeholder="INSERT INTO ..." />
+            <marker date="1410665426000" expanded="true" signature="62148:62221" placeholder="SELECT `id` ..." />
           </folding>
         </state>
       </provider>
@@ -2097,14 +2173,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="36" selection-start="452" selection-end="452" vertical-scroll-proportion="0.0" vertical-offset="289" max-vertical-offset="12546">
           <folding>
-            <element signature="e#20349#20370#0" expanded="true" />
+            <element signature="e#20349#20370#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/css/bootstrap.min.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="37583" selection-start="37583" selection-end="37583" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="34" />
+        <state line="0" column="37583" selection-start="37583" selection-end="37583" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="34">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build.xml">
@@ -2126,99 +2204,100 @@
             <element signature="e#6#178#0" expanded="false" />
             <element signature="e#410#491#0" expanded="false" />
             <element signature="n#__construct#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-            <element signature="e#701#769#0" expanded="false" />
-            <element signature="e#968#1304#0" expanded="false" />
-            <element signature="e#1010#1300#0" expanded="false" />
-            <element signature="e#1169#1300#0" expanded="false" />
-            <element signature="e#1180#1286#0" expanded="false" />
-            <element signature="e#1230#1286#0" expanded="false" />
-            <element signature="e#1310#1378#0" expanded="false" />
+            <element signature="e#722#790#0" expanded="false" />
+            <element signature="e#989#1325#0" expanded="false" />
+            <element signature="e#1031#1321#0" expanded="false" />
+            <element signature="e#1190#1321#0" expanded="false" />
+            <element signature="e#1201#1307#0" expanded="false" />
+            <element signature="e#1251#1307#0" expanded="false" />
+            <element signature="e#1331#1372#0" expanded="false" />
+            <element signature="n#setIcon#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
+            <element signature="e#1439#1507#0" expanded="false" />
             <element signature="n#getBaseID#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
             <element signature="n#getContentID#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-            <element signature="e#1508#1542#0" expanded="false" />
+            <element signature="e#1637#1671#0" expanded="false" />
             <element signature="n#addjQuery#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
             <element signature="n#getContent#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-            <element signature="e#1743#1800#0" expanded="false" />
+            <element signature="e#1872#1929#0" expanded="false" />
             <element signature="n#toArray#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
+            <element signature="e#2002#2096#0" expanded="false" />
             <element signature="n#getFormID#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
             <element signature="n#getWidgetForm#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-            <element signature="e#2200#2281#0" expanded="false" />
-            <element signature="tag#form#0" expanded="false" />
-            <element signature="tag#button#0;tag#form#0" expanded="false" />
+            <element signature="e#2456#2537#0" expanded="false" />
             <element signature="n#get_jQuery#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-            <element signature="n#enom_pro_admin_balance#0;n#!!top" expanded="false" />
-            <element signature="n#enom_pro_admin_ssl_certs#0;n#!!top" expanded="false" />
-            <element signature="e#4087#4288#0" expanded="false" />
-            <element signature="n#enom_pro_admin_expiring_domains#0;n#!!top" expanded="false" />
-            <element signature="e#4577#4619#0" expanded="false" />
-            <element signature="n#enom_pro_admin_pending_domain_verification#0;n#!!top" expanded="false" />
-            <element signature="e#4923#4978#0" expanded="false" />
+            <element signature="e#4395#4596#0" expanded="false" />
+            <element signature="e#4929#4971#0" expanded="false" />
+            <element signature="e#5318#5373#0" expanded="false" />
             <element signature="n#enom_pro_admin_transfers#0;n#!!top" expanded="false" />
-            <element signature="e#5197#10442#0" expanded="false" />
-            <element signature="e#5297#10369#0" expanded="false" />
-            <element signature="e#5390#5648#0" expanded="false" />
-            <element signature="e#6005#10198#0" expanded="false" />
-            <element signature="e#6718#10100#0" expanded="false" />
-            <element signature="e#7221#9872#0" expanded="false" />
-            <element signature="e#7355#9189#0" expanded="false" />
-            <element signature="e#9957#10073#0" expanded="false" />
-            <element signature="e#10288#10369#0" expanded="false" />
-            <element signature="e#11904#12303#0" expanded="false" />
+            <element signature="e#5637#10882#0" expanded="false" />
+            <element signature="e#5737#10809#0" expanded="false" />
+            <element signature="e#5830#6088#0" expanded="false" />
+            <element signature="e#6445#10638#0" expanded="false" />
+            <element signature="e#7158#10540#0" expanded="false" />
+            <element signature="e#7661#10312#0" expanded="false" />
+            <element signature="e#7795#9629#0" expanded="false" />
+            <element signature="e#10397#10513#0" expanded="false" />
+            <element signature="e#10728#10809#0" expanded="false" />
+            <element signature="e#12344#12743#0" expanded="false" />
             <element signature="n#get_enom_pro_widget_form#0;n#!!top" expanded="false" />
-            <element signature="e#12364#12450#0" expanded="false" />
-            <element signature="tag#form#1" expanded="false" />
-            <element signature="tag#button#0;tag#form#1" expanded="false" />
-            <element signature="e#12885#12910#0" expanded="false" />
+            <element signature="e#12804#12890#0" expanded="false" />
+            <element signature="e#13325#13350#0" expanded="false" />
             <element signature="n#enom_pro_admin_css#0;n#!!top" expanded="false" />
-            <element signature="e#13101#13828#0" expanded="false" />
-            <element signature="e#13259#13357#0" expanded="false" />
-            <element signature="e#13797#13828#0" expanded="false" />
-            <element signature="e#13832#13861#0" expanded="false" />
+            <element signature="e#13541#14268#0" expanded="false" />
+            <element signature="e#13699#13797#0" expanded="false" />
+            <element signature="e#14237#14268#0" expanded="false" />
+            <element signature="e#14272#14301#0" expanded="false" />
             <element signature="n#enom_pro_admin_actions#0;n#!!top" expanded="false" />
-            <element signature="e#13979#14564#0" expanded="false" />
-            <element signature="e#14628#14735#0" expanded="false" />
-            <element signature="e#14774#14844#0" expanded="false" />
-            <element signature="e#14849#15049#0" expanded="false" />
-            <element signature="e#14940#15049#0" expanded="false" />
-            <element signature="e#15064#15086#0" expanded="false" />
+            <element signature="e#14419#15004#0" expanded="false" />
+            <element signature="e#15068#15175#0" expanded="false" />
+            <element signature="e#15214#15284#0" expanded="false" />
+            <element signature="e#15289#15489#0" expanded="false" />
+            <element signature="e#15380#15489#0" expanded="false" />
+            <element signature="e#15504#15526#0" expanded="false" />
             <element signature="n#enom_pro_namespinner#0;n#!!top" expanded="false" />
-            <element signature="e#15275#18350#0" expanded="false" />
-            <element signature="e#15708#15964#0" expanded="false" />
-            <element signature="e#15880#15964#0" expanded="false" />
-            <element signature="e#16063#18329#0" expanded="false" />
-            <element signature="e#16301#17634#0" expanded="false" />
-            <element signature="e#16360#17620#0" expanded="false" />
-            <element signature="e#17023#17384#0" expanded="false" />
-            <element signature="e#17128#17346#0" expanded="false" />
-            <element signature="e#17484#17620#0" expanded="false" />
-            <element signature="e#17648#18224#0" expanded="false" />
-            <element signature="e#18262#18329#0" expanded="false" />
-            <element signature="e#18378#18585#0" expanded="false" />
-            <element signature="e#18590#18915#0" expanded="false" />
-            <element signature="e#18653#18712#0" expanded="false" />
-            <element signature="e#18717#18778#0" expanded="false" />
-            <element signature="e#18783#18842#0" expanded="false" />
-            <element signature="e#18862#18909#0" expanded="false" />
-            <element signature="e#19020#19344#0" expanded="false" />
-            <element signature="e#19349#19754#0" expanded="false" />
-            <element signature="e#19530#19702#0" expanded="false" />
-            <element signature="e#19703#19754#0" expanded="false" />
+            <element signature="e#15715#18790#0" expanded="false" />
+            <element signature="e#16148#16404#0" expanded="false" />
+            <element signature="e#16320#16404#0" expanded="false" />
+            <element signature="e#16503#18769#0" expanded="false" />
+            <element signature="e#16741#18074#0" expanded="false" />
+            <element signature="e#16800#18060#0" expanded="false" />
+            <element signature="e#17463#17824#0" expanded="false" />
+            <element signature="e#17568#17786#0" expanded="false" />
+            <element signature="e#17924#18060#0" expanded="false" />
+            <element signature="e#18088#18664#0" expanded="false" />
+            <element signature="e#18702#18769#0" expanded="false" />
+            <element signature="e#18818#19025#0" expanded="false" />
+            <element signature="e#19030#19355#0" expanded="false" />
+            <element signature="e#19093#19152#0" expanded="false" />
+            <element signature="e#19157#19218#0" expanded="false" />
+            <element signature="e#19223#19282#0" expanded="false" />
+            <element signature="e#19302#19349#0" expanded="false" />
+            <element signature="e#19460#19784#0" expanded="false" />
+            <element signature="e#19789#20194#0" expanded="false" />
+            <element signature="e#19970#20142#0" expanded="false" />
+            <element signature="e#20143#20194#0" expanded="false" />
             <element signature="n#enom_pro_clientarea_transfers#0;n#!!top" expanded="false" />
-            <element signature="e#22104#22237#0" expanded="false" />
-            <element signature="e#22180#22237#0" expanded="false" />
+            <element signature="e#21348#22746#0" expanded="false" />
+            <element signature="e#22038#22746#0" expanded="false" />
+            <element signature="e#22544#22677#0" expanded="false" />
+            <element signature="e#22620#22677#0" expanded="false" />
             <element signature="n#enom_pro_srv_page#0;n#!!top" expanded="false" />
             <element signature="n#enom_pro_cron#0;n#!!top" expanded="false" />
-            <element signature="e#23025#23745#0" expanded="false" />
-            <element signature="e#23626#23745#0" expanded="false" />
-            <marker date="1410658600000" expanded="false" signature="5831:5968" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="6828:7068" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="6857:7047" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="6890:6937" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="6941:6982" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="7001:7042" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="9263:9350" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="9535:9553" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="18980:18992" placeholder="..." />
+            <element signature="e#23465#24185#0" expanded="false" />
+            <element signature="e#24066#24185#0" expanded="false" />
+            <marker date="1410659138000" expanded="false" signature="2662:2897" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="2792:2887" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="6271:6408" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="7268:7508" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="7297:7487" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="7330:7377" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="7381:7422" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="7441:7482" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="9703:9790" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="9975:9993" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="13008:13236" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="13137:13224" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="19420:19432" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -2227,7 +2306,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="36" selection-start="452" selection-end="452" vertical-scroll-proportion="0.0" vertical-offset="289" max-vertical-offset="12546">
           <folding>
-            <element signature="e#20349#20370#0" expanded="true" />
+            <element signature="e#20349#20370#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2536,13 +2615,6 @@
         <state line="39" column="46" selection-start="1156" selection-end="1168" vertical-scroll-proportion="-5.3125" vertical-offset="238" max-vertical-offset="3018" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/test_enom_pro.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="533" column="20" selection-start="15989" selection-end="15989" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="9622">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Sites/whmcs/templates/orderforms/verticalsteps/configureproductdomain.tpl">
       <provider selected="true" editor-type-id="text-editor">
         <state line="99" column="16" selection-start="5842" selection-end="5842" vertical-scroll-proportion="0.0" vertical-offset="1683" max-vertical-offset="1802" />
@@ -2603,14 +2675,11 @@
         <state line="13" column="19" selection-start="484" selection-end="484" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1304" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget_response.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="43" selection-start="1436" selection-end="1436" vertical-scroll-proportion="0.0" vertical-offset="697" max-vertical-offset="1683" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/css/bootstrap.min.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="51022" selection-start="51014" selection-end="51022" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="34" />
+        <state line="0" column="51022" selection-start="51014" selection-end="51022" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="34">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pricing_import.php">
@@ -2625,7 +2694,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/exceptions.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="15" selection-start="49" selection-end="49" vertical-scroll-proportion="0.09895227" vertical-offset="0" max-vertical-offset="1318" />
+        <state line="5" column="15" selection-start="49" selection-end="49" vertical-scroll-proportion="0.09895227" vertical-offset="0" max-vertical-offset="1318">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro.php">
@@ -2654,21 +2725,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="218" column="25" selection-start="6656" selection-end="6656" vertical-scroll-proportion="0.32426304" vertical-offset="3420" max-vertical-offset="7291" />
+        <state line="218" column="25" selection-start="6656" selection-end="6656" vertical-scroll-proportion="0.32426304" vertical-offset="3420" max-vertical-offset="7291">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="577" column="90" selection-start="21217" selection-end="21217" vertical-scroll-proportion="0.5084541" vertical-offset="9439" max-vertical-offset="12082">
           <folding>
-            <element signature="e#20349#20370#0" expanded="true" />
+            <element signature="e#20349#20370#0" expanded="false" />
           </folding>
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pending_widget.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="20" selection-start="101" selection-end="101" vertical-scroll-proportion="0.13853317" vertical-offset="0" max-vertical-offset="961" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/ssl_widget.php">
@@ -2676,14 +2744,11 @@
         <state line="51" column="54" selection-start="1655" selection-end="1655" vertical-scroll-proportion="0.5343422" vertical-offset="340" max-vertical-offset="1777" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="53" selection-start="1600" selection-end="1600" vertical-scroll-proportion="0.5343422" vertical-offset="476" max-vertical-offset="2763" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/css/admin.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="509" column="13" selection-start="9396" selection-end="9396" vertical-scroll-proportion="0.62485874" vertical-offset="8100" max-vertical-offset="11867" />
+        <state line="509" column="13" selection-start="9396" selection-end="9396" vertical-scroll-proportion="0.62485874" vertical-offset="8100" max-vertical-offset="11867">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php">
@@ -2691,131 +2756,186 @@
         <state line="29" column="41" selection-start="666" selection-end="666" vertical-scroll-proportion="0.3628118" vertical-offset="173" max-vertical-offset="10691" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="662" column="3" selection-start="17956" selection-end="17956" vertical-scroll-proportion="0.0" vertical-offset="11254" max-vertical-offset="38998">
-          <folding>
-            <marker date="1410657390000" expanded="true" signature="5454:5870" placeholder="..." />
-            <marker date="1410657390000" expanded="true" signature="5626:5660" placeholder="..." />
-            <marker date="1410657390000" expanded="true" signature="5815:5865" placeholder="..." />
-            <marker date="1410657390000" expanded="true" signature="19336:19473" placeholder="SELECT `id`,..." />
-            <marker date="1410657390000" expanded="true" signature="28373:28960" placeholder="SELECT tlds...." />
-            <marker date="1410657390000" expanded="true" signature="45983:46059" placeholder="SELECT `sett..." />
-            <marker date="1410657390000" expanded="true" signature="59785:60083" placeholder="INSERT INTO ..." />
-            <marker date="1410657390000" expanded="true" signature="60349:60422" placeholder="SELECT `id` ..." />
-            <marker date="1410657390000" expanded="true" signature="64348:64655" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/balance_widget.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="14" selection-start="1418" selection-end="1418" vertical-scroll-proportion="0.0" vertical-offset="629" max-vertical-offset="663">
+        <state line="37" column="13" selection-start="1417" selection-end="1417" vertical-scroll-proportion="-21.576923" vertical-offset="0" max-vertical-offset="1426">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="542" column="0" selection-start="20538" selection-end="20538" vertical-scroll-proportion="1.8726333" vertical-offset="0" max-vertical-offset="1771">
+        <state line="193" column="43" selection-start="5419" selection-end="5419" vertical-scroll-proportion="-31.307692" vertical-offset="495" max-vertical-offset="2684">
           <folding>
             <element signature="e#6#178#0" expanded="false" />
             <element signature="e#410#491#0" expanded="false" />
             <element signature="n#__construct#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-            <element signature="e#701#769#0" expanded="false" />
-            <element signature="e#968#1304#0" expanded="false" />
-            <element signature="e#1010#1300#0" expanded="false" />
-            <element signature="e#1169#1300#0" expanded="false" />
-            <element signature="e#1180#1286#0" expanded="false" />
-            <element signature="e#1230#1286#0" expanded="false" />
-            <element signature="e#1310#1378#0" expanded="false" />
+            <element signature="e#722#790#0" expanded="false" />
+            <element signature="e#989#1325#0" expanded="false" />
+            <element signature="e#1031#1321#0" expanded="false" />
+            <element signature="e#1190#1321#0" expanded="false" />
+            <element signature="e#1201#1307#0" expanded="false" />
+            <element signature="e#1251#1307#0" expanded="false" />
+            <element signature="e#1331#1372#0" expanded="false" />
+            <element signature="n#setIcon#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
+            <element signature="e#1439#1507#0" expanded="false" />
             <element signature="n#getBaseID#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
             <element signature="n#getContentID#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-            <element signature="e#1508#1542#0" expanded="false" />
+            <element signature="e#1637#1671#0" expanded="false" />
             <element signature="n#addjQuery#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
             <element signature="n#getContent#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-            <element signature="e#1743#1800#0" expanded="false" />
+            <element signature="e#1872#1929#0" expanded="false" />
             <element signature="n#toArray#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
+            <element signature="e#2002#2096#0" expanded="false" />
             <element signature="n#getFormID#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
             <element signature="n#getWidgetForm#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-            <element signature="e#2200#2281#0" expanded="false" />
-            <element signature="tag#form#0" expanded="false" />
-            <element signature="tag#button#0;tag#form#0" expanded="false" />
+            <element signature="e#2456#2537#0" expanded="false" />
             <element signature="n#get_jQuery#0;n#enom_pro_widget#0;n#!!top" expanded="false" />
-            <element signature="n#enom_pro_admin_balance#0;n#!!top" expanded="false" />
-            <element signature="n#enom_pro_admin_ssl_certs#0;n#!!top" expanded="false" />
-            <element signature="e#4087#4288#0" expanded="false" />
-            <element signature="n#enom_pro_admin_expiring_domains#0;n#!!top" expanded="false" />
-            <element signature="e#4577#4619#0" expanded="false" />
-            <element signature="n#enom_pro_admin_pending_domain_verification#0;n#!!top" expanded="false" />
-            <element signature="e#4923#4978#0" expanded="false" />
+            <element signature="e#4395#4596#0" expanded="false" />
+            <element signature="e#4929#4971#0" expanded="false" />
+            <element signature="e#5318#5373#0" expanded="false" />
             <element signature="n#enom_pro_admin_transfers#0;n#!!top" expanded="false" />
-            <element signature="e#5197#10442#0" expanded="false" />
-            <element signature="e#5297#10369#0" expanded="false" />
-            <element signature="e#5390#5648#0" expanded="false" />
-            <element signature="e#6005#10198#0" expanded="false" />
-            <element signature="e#6718#10100#0" expanded="false" />
-            <element signature="e#7221#9872#0" expanded="false" />
-            <element signature="e#7355#9189#0" expanded="false" />
-            <element signature="e#9957#10073#0" expanded="false" />
-            <element signature="e#10288#10369#0" expanded="false" />
-            <element signature="e#11904#12303#0" expanded="false" />
+            <element signature="e#5637#10882#0" expanded="false" />
+            <element signature="e#5737#10809#0" expanded="false" />
+            <element signature="e#5830#6088#0" expanded="false" />
+            <element signature="e#6445#10638#0" expanded="false" />
+            <element signature="e#7158#10540#0" expanded="false" />
+            <element signature="e#7661#10312#0" expanded="false" />
+            <element signature="e#7795#9629#0" expanded="false" />
+            <element signature="e#10397#10513#0" expanded="false" />
+            <element signature="e#10728#10809#0" expanded="false" />
+            <element signature="e#12344#12743#0" expanded="false" />
             <element signature="n#get_enom_pro_widget_form#0;n#!!top" expanded="false" />
-            <element signature="e#12364#12450#0" expanded="false" />
-            <element signature="tag#form#1" expanded="false" />
-            <element signature="tag#button#0;tag#form#1" expanded="false" />
-            <element signature="e#12885#12910#0" expanded="false" />
+            <element signature="e#12804#12890#0" expanded="false" />
+            <element signature="e#13325#13350#0" expanded="false" />
             <element signature="n#enom_pro_admin_css#0;n#!!top" expanded="false" />
-            <element signature="e#13101#13828#0" expanded="false" />
-            <element signature="e#13259#13357#0" expanded="false" />
-            <element signature="e#13797#13828#0" expanded="false" />
-            <element signature="e#13832#13861#0" expanded="false" />
+            <element signature="e#13541#14268#0" expanded="false" />
+            <element signature="e#13699#13797#0" expanded="false" />
+            <element signature="e#14237#14268#0" expanded="false" />
+            <element signature="e#14272#14301#0" expanded="false" />
             <element signature="n#enom_pro_admin_actions#0;n#!!top" expanded="false" />
-            <element signature="e#13979#14564#0" expanded="false" />
-            <element signature="e#14628#14735#0" expanded="false" />
-            <element signature="e#14774#14844#0" expanded="false" />
-            <element signature="e#14849#15049#0" expanded="false" />
-            <element signature="e#14940#15049#0" expanded="false" />
-            <element signature="e#15064#15086#0" expanded="false" />
+            <element signature="e#14419#15004#0" expanded="false" />
+            <element signature="e#15068#15175#0" expanded="false" />
+            <element signature="e#15214#15284#0" expanded="false" />
+            <element signature="e#15289#15489#0" expanded="false" />
+            <element signature="e#15380#15489#0" expanded="false" />
+            <element signature="e#15504#15526#0" expanded="false" />
             <element signature="n#enom_pro_namespinner#0;n#!!top" expanded="false" />
-            <element signature="e#15275#18350#0" expanded="false" />
-            <element signature="e#15708#15964#0" expanded="false" />
-            <element signature="e#15880#15964#0" expanded="false" />
-            <element signature="e#16063#18329#0" expanded="false" />
-            <element signature="e#16301#17634#0" expanded="false" />
-            <element signature="e#16360#17620#0" expanded="false" />
-            <element signature="e#17023#17384#0" expanded="false" />
-            <element signature="e#17128#17346#0" expanded="false" />
-            <element signature="e#17484#17620#0" expanded="false" />
-            <element signature="e#17648#18224#0" expanded="false" />
-            <element signature="e#18262#18329#0" expanded="false" />
-            <element signature="e#18378#18585#0" expanded="false" />
-            <element signature="e#18590#18915#0" expanded="false" />
-            <element signature="e#18653#18712#0" expanded="false" />
-            <element signature="e#18717#18778#0" expanded="false" />
-            <element signature="e#18783#18842#0" expanded="false" />
-            <element signature="e#18862#18909#0" expanded="false" />
-            <element signature="e#19020#19344#0" expanded="false" />
-            <element signature="e#19349#19754#0" expanded="false" />
-            <element signature="e#19530#19702#0" expanded="false" />
-            <element signature="e#19703#19754#0" expanded="false" />
+            <element signature="e#15715#18790#0" expanded="false" />
+            <element signature="e#16148#16404#0" expanded="false" />
+            <element signature="e#16320#16404#0" expanded="false" />
+            <element signature="e#16503#18769#0" expanded="false" />
+            <element signature="e#16741#18074#0" expanded="false" />
+            <element signature="e#16800#18060#0" expanded="false" />
+            <element signature="e#17463#17824#0" expanded="false" />
+            <element signature="e#17568#17786#0" expanded="false" />
+            <element signature="e#17924#18060#0" expanded="false" />
+            <element signature="e#18088#18664#0" expanded="false" />
+            <element signature="e#18702#18769#0" expanded="false" />
+            <element signature="e#18818#19025#0" expanded="false" />
+            <element signature="e#19030#19355#0" expanded="false" />
+            <element signature="e#19093#19152#0" expanded="false" />
+            <element signature="e#19157#19218#0" expanded="false" />
+            <element signature="e#19223#19282#0" expanded="false" />
+            <element signature="e#19302#19349#0" expanded="false" />
+            <element signature="e#19460#19784#0" expanded="false" />
+            <element signature="e#19789#20194#0" expanded="false" />
+            <element signature="e#19970#20142#0" expanded="false" />
+            <element signature="e#20143#20194#0" expanded="false" />
             <element signature="n#enom_pro_clientarea_transfers#0;n#!!top" expanded="false" />
-            <element signature="e#22104#22237#0" expanded="false" />
-            <element signature="e#22180#22237#0" expanded="false" />
+            <element signature="e#21348#22746#0" expanded="false" />
+            <element signature="e#22038#22746#0" expanded="false" />
+            <element signature="e#22544#22677#0" expanded="false" />
+            <element signature="e#22620#22677#0" expanded="false" />
             <element signature="n#enom_pro_srv_page#0;n#!!top" expanded="false" />
             <element signature="n#enom_pro_cron#0;n#!!top" expanded="false" />
-            <element signature="e#23025#23745#0" expanded="false" />
-            <element signature="e#23626#23745#0" expanded="false" />
-            <marker date="1410658600000" expanded="false" signature="5831:5968" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="6828:7068" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="6857:7047" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="6890:6937" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="6941:6982" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="7001:7042" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="9263:9350" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="9535:9553" placeholder="..." />
-            <marker date="1410658600000" expanded="false" signature="18980:18992" placeholder="..." />
+            <element signature="e#23465#24185#0" expanded="false" />
+            <element signature="e#24066#24185#0" expanded="false" />
+            <marker date="1410659138000" expanded="false" signature="2662:2897" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="2792:2887" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="6271:6408" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="7268:7508" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="7297:7487" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="7330:7377" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="7381:7422" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="7441:7482" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="9703:9790" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="9975:9993" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="13008:13236" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="13137:13224" placeholder="..." />
+            <marker date="1410659138000" expanded="false" signature="19420:19432" placeholder="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget_response.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="43" selection-start="1436" selection-end="1436" vertical-scroll-proportion="0.7902494" vertical-offset="0" max-vertical-offset="2514">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="22" selection-start="133" selection-end="133" vertical-scroll-proportion="-3.2692308" vertical-offset="0" max-vertical-offset="2480">
+          <folding>
+            <marker date="1410659337000" expanded="true" signature="177:2688" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="206:2681" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="216:2671" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="223:653" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="256:590" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="348:527" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="660:738" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="680:730" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="746:1154" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="779:1093" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="869:1030" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="1161:1237" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="1181:1229" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="1245:1648" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="1278:1588" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="1367:1525" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="1655:1730" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="1675:1722" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="1737:2152" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="1770:2090" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="1860:2027" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="2159:2237" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="2179:2229" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="2244:2660" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="2277:2589" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="2374:2526" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pending_widget.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="34" selection-start="140" selection-end="140" vertical-scroll-proportion="-1.9615384" vertical-offset="0" max-vertical-offset="1273">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1301" column="0" selection-start="36846" selection-end="36846" vertical-scroll-proportion="-6.1153846" vertical-offset="21958" max-vertical-offset="40139">
+          <folding>
+            <marker date="1410665426000" expanded="true" signature="5582:5998" placeholder="..." />
+            <marker date="1410665426000" expanded="true" signature="5754:5788" placeholder="..." />
+            <marker date="1410665426000" expanded="true" signature="5943:5993" placeholder="..." />
+            <marker date="1410665426000" expanded="true" signature="19464:19601" placeholder="SELECT `id`,..." />
+            <marker date="1410665426000" expanded="true" signature="29504:30091" placeholder="SELECT tlds...." />
+            <marker date="1410665426000" expanded="true" signature="47782:47858" placeholder="SELECT `sett..." />
+            <marker date="1410665426000" expanded="true" signature="61584:61882" placeholder="INSERT INTO ..." />
+            <marker date="1410665426000" expanded="true" signature="62148:62221" placeholder="SELECT `id` ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_enom_pro.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="104" column="71" selection-start="3279" selection-end="3279" vertical-scroll-proportion="0.8086304" vertical-offset="1337" max-vertical-offset="10665">
+          <folding />
         </state>
       </provider>
     </entry>

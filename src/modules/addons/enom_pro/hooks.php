@@ -20,6 +20,7 @@ class enom_pro_widget {
 	private $jQuery = '';
 	private $action = '';
 	private $content_id = '';
+	private $icon = '';
 	function __construct($title, $base_id, $callback) {
 		if (!class_exists('enom_pro')) {
 			require_once 'enom_pro.php';
@@ -41,6 +42,14 @@ class enom_pro_widget {
 				die;
 			}
 		}
+	}
+
+	/**
+	 * Icomoon full class name only
+	 */
+	public function setIcon ($class)
+	{
+		$this->icon = $class;
 	}
 
 	/**
@@ -74,7 +83,11 @@ class enom_pro_widget {
 	public function toArray ()
 	{
 		$return = array();
-		$return['title'] = '<a href="'.enom_pro::MODULE_LINK.'">'.ENOM_PRO.'</a> ' . $this->title . $this->getWidgetForm();
+		$iconSpan = '';
+		if ( $this->icon ) {
+			$iconSpan = '<span class="enom-pro-icon '.$this->icon.'"></span>';
+		}
+		$return['title'] = '<a href="'.enom_pro::MODULE_LINK.'">'.ENOM_PRO.'</a> ' . $this->title . $iconSpan . $this->getWidgetForm();
 		$return['content'] = $this->getContent();
 		$return['jquerycode'] = $this->get_jQuery() . $this->jQuery;
 		return $return;
@@ -92,7 +105,7 @@ class enom_pro_widget {
 		<form id="<?php echo $this->base_id; ?>" class="refreshbutton" action="<?php echo $_SERVER['PHP_SELF'];?>">
 			<input type="hidden" name="<?php echo $this->action; ?>" value="1" />
 			<button type="submit" class="btn btn-default btn-xs">
-				Refresh <span class="enom-pro-icon enom-pro-icon-refresh-alt"></span>
+				Refresh <span class="enom-pro-icon enom-pro-icon-refresh-alt fa-spin"></span>
 			</button>
 		</form>
 		<?php
@@ -135,6 +148,7 @@ function enom_pro_admin_balance ($vars)
 	unset($vars);
 	$enom = new enom_pro();
 	$widget = new enom_pro_widget('Account Balance', 'enom_balance', array($enom, 'render_balance_widget'));
+	$widget->setIcon('enom-pro-icon-balance');
 	return $widget->toArray();
 }
 
@@ -154,6 +168,7 @@ $("#$contentID").on("click", ".show_hidden_ssl", function  (){
 		});
 EOL;
 	$widget->addjQuery($jquery);
+	$widget->setIcon('enom-pro-icon-secure');
 	return $widget->toArray();
 }
 
@@ -161,10 +176,11 @@ add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_expiring_domains" );
 function enom_pro_admin_expiring_domains( $vars ) {
 	unset($vars);
 	$enom = new enom_pro();
+
 	$widget = new enom_pro_widget( 'Domain Stats', 'domain_stats', array(
 		$enom, 'render_domains_widget'
 	) );
-
+	$widget->setIcon('enom-pro-icon-domains');
 	return $widget->toArray();
 }
 
@@ -175,7 +191,7 @@ function enom_pro_admin_pending_domain_verification( $vars ) {
 	$widget = new enom_pro_widget( 'Pending Domain Verifications', 'pending_verification', array(
 		$enom, 'render_pending_verification_widget'
 	) );
-
+	$widget->setIcon('enom-pro-icon-mail-send');
 	return $widget->toArray();
 }
 
