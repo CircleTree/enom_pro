@@ -487,18 +487,22 @@ function enom_pro_sidebar( $vars ) {
 		</ul>
 		<span class="header"><?php echo ENOM_PRO; ?> Meta</span>
 		<div class="row">
-			<div class="col-xs-6">
-				Version
+			<div class="col-xs-4">
+				<b>Version</b>
 			</div>
-			<div class="col-xs-6">
+			<div class="col-xs-8">
 				<?php if (enom_pro_license::isBetaOptedIn()) :?>
-					<span class="badge"><?php echo ENOM_PRO_VERSION; ?></span>
+					<span class="betaVersion">
+						<?php echo ENOM_PRO_VERSION; ?>
+					</span>
 				<?php else: ?>
 					<?php echo ENOM_PRO_VERSION; ?>
 				<?php endif;?>
 			</div>
-			<div class="col-xs-6">Checked for updates</div>
-			<div class="col-xs-6"><?php echo enom_pro_license::get_last_checked_time_ago(); ?></div>
+			<div class="col-xs-4">
+				<b>Checked</b>
+			</div>
+			<div class="col-xs-8"><?php echo enom_pro_license::get_last_checked_time_ago(); ?></div>
 			<div class="col-xs-12">
 				<a class="btn btn-default btn-xs btn-block"
 					 href="<?php echo enom_pro::MODULE_LINK ?>&action=do_upgrade_check">
@@ -571,6 +575,7 @@ function enom_pro_output( $vars ) {
 				<div class="col-xs-6">
 					<?php enom_pro::render_admin_widget( 'enom_pro_admin_balance' ); ?>
 					<?php enom_pro::render_admin_widget( 'enom_pro_admin_expiring_domains' ); ?>
+					<?php enom_pro::render_admin_widget( 'enom_pro_admin_pending_domain_verification' ); ?>
 				</div>
 				<div class="col-xs-6">
 					<?php enom_pro::render_admin_widget( 'enom_pro_admin_transfers' ); ?>
