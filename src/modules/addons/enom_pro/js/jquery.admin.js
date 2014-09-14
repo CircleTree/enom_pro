@@ -805,6 +805,9 @@ jQuery(function($) {
         $this.after('<input type="text" name="file[]" onclick="this.select();" size="'+size+'" value="'+filepath+'" />');
         return false;
     });
+    $(".verification").on('click', function  (){
+        return false;
+    });
 }); //end jQuery Ready
 } catch (err) {
 	alert('Enom PRO JS Error: ' + err);
