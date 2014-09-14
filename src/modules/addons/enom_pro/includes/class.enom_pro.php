@@ -780,14 +780,21 @@ class enom_pro {
 	private function isValidationCacheStale () {
 		return $this->cache_file_is_older_than($this->cache_file_verification_report, '-5 Minutes');
 	}
+	private function clearDomainVerificationCache() {
+		unlink($this->cache_file_verification_report);
+	}
+
 	/**
 	 * Gets domain verification stats
-	 * @return array 'pending_verification', 'pending_suspension', 'suspended, 'domains'
+	 * @return array $data = array ( 'pending_verification', 'pending_suspension', 'suspended, 'domains' )
 	 */
 	public function getDomainVerificationStats ()
 	{
-		if (isset($_REQUEST['flush_cache']) && $this->isValidationCacheStale() ) {
-			unlink($this->cache_file_verification_report);
+		if (isset($_REQUEST['flush_cache']) && $this->isValidationCacheStale()) {
+			$this->clearDomainVerificationCache();
+		}
+		if ($this->cache_file_is_older_than($this->cache_file_verification_report, '-12 Hours')) {
+			$this->clearDomainVerificationCache();
 		}
 		if ($this->get_cache_data($this->cache_file_verification_report)) {
 			return $this->get_cache_data($this->cache_file_verification_report);
@@ -1299,9 +1306,9 @@ class enom_pro {
 	 * Check if a cache file is older than a threshold
 	 *
 	 * @param $file_path
-	 * @param $date relative date (-1 day, -1 Week, etc.)
+	 * @param $date string relative date (-1 day, -1 Week, etc.)
 	 *
-	 * @return bool
+	 * @return bool true if the cache file is older than the $date, false if it is newer
 	 */
 	public function cache_file_is_older_than ($file_path, $date)
 	{
@@ -1372,9 +1379,9 @@ class enom_pro {
 
 	/**
 	 *
-	 * @param int    $timestamp
-	 * @param number $granularity
-	 * @param string $format fallback
+	 * @param int        $timestamp
+	 * @param int|number $granularity
+	 * @param string     $format fallback
 	 *
 	 * @return string
 	 */
@@ -1382,7 +1389,7 @@ class enom_pro {
 		$granularity = 1,
 		$format = 'Y-m-d H:i:s' ) {
 		$difference = time() - $timestamp;
-		if ( $difference < 5 ) {
+		if ( $difference <= 2 ) {
 			return 'just now';
 		} elseif ( $difference < ( 31556926 * 5 ) ) { //5 years
 			$periods = array(
@@ -2307,23 +2314,7 @@ class enom_pro {
 <?php
 	}
 	public static function getSupportMessage() {
-		$raw_text = <<<EOL
-eNom PRO Version: %VERSION%
-PHP Version: %PHPVERSION%
-WHMCS Version: %WHMCSVERSION%
-Current Page: %CURRPAGE%
-
-Please list the steps to reproduce the issue:
-1 -
-2 -
-3 -
-
-Bug Behavior / Additional Info
-
-
-Thank you for your help!
-EOL;
-
+		$raw_text = require_once ENOM_PRO_INCLUDES . 'betaSupportMessageText.php';
 		return urlencode(
 			str_replace(
 				array(
