@@ -31,6 +31,7 @@ require_once ENOM_PRO_INCLUDES . 'exceptions.php';
 require_once ENOM_PRO_INCLUDES . 'class.enom_pro.php';
 require_once ENOM_PRO_INCLUDES . 'class.enom_pro_controller.php';
 require_once ENOM_PRO_INCLUDES . 'class.enom_pro_license.php';
+require_once ENOM_PRO_INCLUDES . 'class.enom_pro_widget.php';
 
 /**
  * @return multitype:string multitype:multitype:string  multitype:string number
