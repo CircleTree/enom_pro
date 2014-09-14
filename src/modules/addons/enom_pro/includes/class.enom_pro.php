@@ -777,13 +777,18 @@ class enom_pro {
 		);
 		return $response;
 	}
-
+	private function isValidationCacheStale () {
+		return $this->cache_file_is_older_than($this->cache_file_verification_report, '-5 Minutes');
+	}
 	/**
 	 * Gets domain verification stats
 	 * @return array 'pending_verification', 'pending_suspension', 'suspended, 'domains'
 	 */
 	public function getDomainVerificationStats ()
 	{
+		if (isset($_REQUEST['flush_cache']) && $this->isValidationCacheStale() ) {
+			unlink($this->cache_file_verification_report);
+		}
 		if ($this->get_cache_data($this->cache_file_verification_report)) {
 			return $this->get_cache_data($this->cache_file_verification_report);
 		}
@@ -1328,7 +1333,10 @@ class enom_pro {
 	public function get_domain_cache_date() {
 		return $this->get_cache_file_time( $this->cache_file_all_domains );
 	}
-
+	public function  get_validation_cache_date ()
+	{
+		return $this->get_cache_file_time( $this->cache_file_verification_report );
+	}
 	public function get_price_cache_date() {
 		return $this->get_cache_file_time( $this->cache_file_all_prices );
 	}

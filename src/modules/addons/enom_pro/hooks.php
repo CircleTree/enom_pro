@@ -191,6 +191,16 @@ function enom_pro_admin_pending_domain_verification( $vars ) {
 	$widget = new enom_pro_widget( 'Pending Domain Verifications', 'pending_verification', array(
 		$enom, 'render_pending_verification_widget'
 	) );
+	$contentID = $widget->getContentID();
+	$formID = $widget->getFormID();
+//	.flushValidateCache
+	$jquery = <<<EOL
+$("#$contentID").on("click", ".flushValidateCache", function  (){
+			$("#$formID").append("<input type=\"hidden\" name=\"flush_cache\" value=\"true\" />").trigger("submit");
+			return false;
+		});
+EOL;
+	$widget->addjQuery($jquery);
 	$widget->setIcon('enom-pro-icon-mail-send');
 	return $widget->toArray();
 }
