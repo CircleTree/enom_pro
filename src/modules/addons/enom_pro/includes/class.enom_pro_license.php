@@ -222,7 +222,7 @@ class enom_pro_license {
 			self::get_latest_version();
 		}
 
-		return enom_pro::time_ago( filemtime( $version_file ) );
+		return enom_pro::time_ago( filemtime( $version_file ), 1);
 	}
 
 	/**

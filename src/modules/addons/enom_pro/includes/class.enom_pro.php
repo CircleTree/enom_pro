@@ -657,6 +657,16 @@ class enom_pro {
 
 	}
 
+	public function render_balance_widget ()
+	{
+		require_once ENOM_PRO_INCLUDES . 'balance_widget.php';
+	}
+
+	public function render_pending_verification_widget ()
+	{
+		require_once ENOM_PRO_INCLUDES . 'pending_widget.php';
+	}
+
 	/**
 	 * Check for upgrader compatibility against known missing core PHP components
 	 * @return boolean

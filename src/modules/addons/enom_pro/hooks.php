@@ -5,173 +5,181 @@
 * Copyright 2012 Orion IP Ventures, LLC.
 * Licenses Resold by Circle Tree, LLC. Under Reseller Licensing Agreement
 */
+defined('WHMCS') or die('UNAUTHORIZED ACCESS');
 
 defined('ENOM_PRO_ROOT') or define('ENOM_PRO_ROOT', ROOTDIR . '/modules/addons/enom_pro/');
 defined('ENOM_PRO_INCLUDES') or define('ENOM_PRO_INCLUDES', ENOM_PRO_ROOT . 'includes/');
-function enom_pro_admin_balance ($vars)
-{
-    if (!class_exists('enom_pro'))
-        require_once 'enom_pro.php';
-    if (isset($_REQUEST['enom_pro_get_enom_balance'])) {
-        try {
-            $enom = new enom_pro();
-            $warning_level = $enom->get_addon_setting('balance_warning');
-            $available = (float) preg_replace("/([^0-9.])/i", "", $enom->getAvailableBalance());
-            $warning = $available <= $warning_level ? true : false;
-            if ('off' == strtolower($warning_level))
-                $warning = false;
-            $class = $warning ? 'alert-danger' : 'alert-success';
-						$str = '';
-            $str .= '<div id="enom_balance_message" class="alert enom_pro_widget '.$class.'">';
-            $str .= '&nbsp;Enom Credit Balance: '.$enom->getBalance()." Available: <b>".$enom->getAvailableBalance().'</b>
-            <a class="btn btn-default btn-xs" href="https://www.enom.com/myaccount/RefillAccount.asp" target="_blank">Refill Account</a>';
-            $str .= "</div>";
-            if ($warning) {
-                $str .= '
-<script>
-jQuery(function($) {
-    var $message = $("#enom_balance_message");
-    setInterval(function  () {
-        if ($message.hasClass("inset")) {
-              $message.removeClass("inset");
-        } else {
-              $message.addClass("inset");
-        }
-    },500)
-});
-</script>
-';
-            }
-            $content = $str;
-            if (
-                $enom->license->is_update_available() && 
-                ! (basename($_SERVER['SCRIPT_NAME']) == 'addonmodules.php')
-            ) {
-                $content .= '<div class="alert alert-warning aligncenter">Update available: ';
-                $content .=     $enom->license->get_latest_version() . '<br/>';
-                $content .= '<a class="btn btn-default" href="'.enom_pro_license::DO_UPGRADE_URL.'">Upgrade automatically</a>';
-                $content .= '</div>';
-            }
-        } catch (Exception $e) {
-            $content = $e->getMessage();
-        }
-        echo enom_pro::minify($content);
-        exit;
-    }
-    $content = '<div id="enombalance"><span class="enom_pro_loader"></span></div>';
-    $jquerycode = '
-    var $refresh_form = jQuery("#refreshEnomBalance");
-    $refresh_form.live("submit", function  () {
-        var $elem = jQuery("#enombalance");
-        $elem.html(\'<span class="enom_pro_loader"></span>\');
-        jQuery.post("index.php", $(this).serialize(),
-                function(data){
-                  $elem.html(data);
-            });
-
-            return false;
-        });
-        if ($refresh_form.is(":visible")) {
-            $refresh_form.trigger("submit");
-        }';
-
-    return array(
-            'title'=>'<a href="'.enom_pro::MODULE_LINK.'">@NAME@</a>' . 
-                ' - Reseller Balance <span class="enom-pro-icon enom-pro-icon-balance"></span>' .
-                get_enom_pro_widget_form('enom_pro_get_enom_balance', 'refreshEnomBalance'),
-            'content'=>$content,
-            'jquerycode'=>enom_pro::minify($jquerycode),
-        );
+if (! class_exists('enom_pro')) {
+	require_once ENOM_PRO_ROOT . 'enom_pro.php';
 }
-add_hook("AdminHomeWidgets",1,"enom_pro_admin_balance");
 
-function enom_pro_admin_ssl_certs ($vars)
-{
-	if ( !class_exists( 'enom_pro' ) ) {
-		require_once 'enom_pro.php';
-	}
-    if (isset($_REQUEST['enom_pro_get_ssl_certs'])) {
-        try {
-        $enom = new enom_pro();
-            $content = $enom->render_ssl_widget();
-        } catch (Exception $e) {
-            $content = $e->getMessage();
-        }
-        echo enom_pro::minify($content);
-        exit;
-    }
-    $content = '<div id="enomSSL"><span class="enom_pro_loader"></span></div>';
-    $jquerycode = '
-    var $refresh_ssl = jQuery("#refreshEnomSSL");
-    $refresh_ssl.on("submit", function  () {
-    	var $elem = jQuery("#enomSSL");
-    	$elem.html(\'<span class="enom_pro_loader"></span>\');
-        jQuery.post("index.php", $(this).serialize(),
-            function(data){
-                $elem.html(data);
-        });
-        return false;
-    });
-		if($refresh_ssl.is(":visible")) {
-				$refresh_ssl.trigger("submit");
+class enom_pro_widget {
+	private $base_id;
+	private $callback;
+	private $title;
+	private $jQuery = '';
+	private $action = '';
+	private $content_id = '';
+	function __construct($title, $base_id, $callback) {
+		if (!class_exists('enom_pro')) {
+			require_once 'enom_pro.php';
 		}
-		$("#enomSSL").on("click", ".show_hidden_ssl", function  (){
-			$refresh_ssl.append("<input type=\"hidden\" name=\"show_all\" value=\"true\" />");
-			$refresh_ssl.trigger("submit");
+		$this->title = $title;
+		$this->base_id = 'enom_pro_' . $base_id;
+		$this->action = 'refresh_' . $this->base_id;
+		$this->content_id = 'content_'. $this->base_id;
+		$this->callback = $callback;
+		if (isset($_REQUEST[$this->action])) {
+			if (! method_exists($this->callback[0], $this->callback[1])) {
+				die('Unknown callback: ' . get_class($this->callback[0]) . '::' . $this->callback[1]);
+			} else {
+				try {
+					call_user_func($this->callback);
+				} catch (Exception $e) {
+					echo $e->getMessage();
+				}
+				die;
+			}
+		}
+	}
+
+	/**
+	 * Gets true base ID of widget
+	 * @return string $base_id
+	 */
+	public function getBaseID ()
+	{
+		return $this->base_id;
+	}
+	public function getContentID ()
+	{
+		return $this->content_id;
+	}
+	/**
+	 * @param string $script
+	 */
+	public function addjQuery ($script)
+	{
+		$this->jQuery = $script;
+	}
+	public function getContent ()
+	{
+		return '<div id="'. $this->content_id . '"><span class="enom_pro_loader"></span></div>';
+	}
+
+	/**
+	 * Gets WHMCS formatted array
+	 * @return array
+	 */
+	public function toArray ()
+	{
+		$return = array();
+		$return['title'] = '<a href="'.enom_pro::MODULE_LINK.'">'.ENOM_PRO.'</a> ' . $this->title . $this->getWidgetForm();
+		$return['content'] = $this->getContent();
+		$return['jquerycode'] = $this->get_jQuery() . $this->jQuery;
+		return $return;
+	}
+	public function getFormID ()
+	{
+		return $this->base_id;
+	}
+	private function getWidgetForm ()
+	{
+		if ('configadminroles.php' == basename($_SERVER['PHP_SELF'])) {
+			return '';
+		}
+		ob_start();?>
+		<form id="<?php echo $this->base_id; ?>" class="refreshbutton" action="<?php echo $_SERVER['PHP_SELF'];?>">
+			<input type="hidden" name="<?php echo $this->action; ?>" value="1" />
+			<button type="submit" class="btn btn-default btn-xs">
+				Refresh <span class="enom-pro-icon enom-pro-icon-refresh-alt"></span>
+			</button>
+		</form>
+		<?php
+		$return = ob_get_contents();
+		ob_end_clean();
+
+		return $return;
+	}
+	private function get_jQuery ()
+	{
+		ob_start();
+		?>
+		var $refreshForm = jQuery("#<?php echo $this->base_id; ?>"),
+		$refreshButton = $refreshForm.find('.enom-pro-icon-refresh-alt');
+		$refreshForm.on("submit", function() {
+			var $content = jQuery("#<?php echo $this->content_id; ?>");
+			$content.html('<span class="enom_pro_loader"></span>');
+			$refreshButton.addClass('fa-spin');
+			jQuery.post("index.php", $(this).serialize(), function(data) {
+				$refreshButton.removeClass('fa-spin');
+				$content.html(data);
+			});
 			return false;
 		});
-';
-    return array(
-            'title'=>'<a href="'.enom_pro::MODULE_LINK.'">@NAME@</a> - SSL Certificates '.
-                    '<span class="enom-pro-icon enom-pro-icon-secure"></span>' .
-                    get_enom_pro_widget_form('enom_pro_get_ssl_certs', 'refreshEnomSSL'),
-            'content'=>$content,
-            'jquerycode'=>enom_pro::minify($jquerycode),
-        );
+		if ($refreshForm.is(":visible")) {
+			$refreshForm.trigger("submit");
+		}
+		<?php
+		$jquery = ob_get_contents();
+		ob_end_clean();
+		return enom_pro::minify($jquery);
+	}
+
+}
+
+
+add_hook("AdminHomeWidgets",1,"enom_pro_admin_balance");
+function enom_pro_admin_balance ($vars)
+{
+	unset($vars);
+	$enom = new enom_pro();
+	$widget = new enom_pro_widget('Account Balance', 'enom_balance', array($enom, 'render_balance_widget'));
+	return $widget->toArray();
 }
 
 add_hook("AdminHomeWidgets",1,"enom_pro_admin_ssl_certs");
-
-function enom_pro_admin_expiring_domains ($vars)
+function enom_pro_admin_ssl_certs ($vars)
 {
-    if (!class_exists('enom_pro'))
-        require_once 'enom_pro.php';
-    if (isset($_REQUEST['enom_pro_check_expiring_domains'])) {
-        try {
-        $enom = new enom_pro();
-					$content = $enom->render_domains_widget();
-        } catch (Exception $e) {
-            $content = $e->getMessage();
-        }
-        echo enom_pro::minify($content);
-        exit;
-    }
-    $content = '<div id="enomExpiring"><span class="enom_pro_loader"></span></div>';
-    $jquerycode = '
-            var $refresh_expiring = jQuery("#refreshExpiring");
-    $refresh_expiring.on("submit", function  () {
-        var $elem = jQuery("#enomExpiring");
-        $elem.html(\'<span class="enom_pro_loader"></span>\');
-        jQuery.post("index.php", $(this).serialize(),
-            function(data){
-            $elem.html(data);
-        });
-        return false;
-    });
-    if($refresh_expiring.is(":visible")) {
-        $refresh_expiring.trigger("submit");
-    }';
-
-    return array(
-            'title'	=>	'<a href="'.enom_pro::MODULE_LINK.'">@NAME@</a>' . 
-                ' - Domain Stats <span class="enom-pro-icon enom-pro-icon-domains"></span>' .
-                get_enom_pro_widget_form('enom_pro_check_expiring_domains', 'refreshExpiring'),
-            'content'=>$content,
-            'jquerycode'=>enom_pro::minify($jquerycode),
-        );
+	unset($vars);
+	$enom = new enom_pro();
+	$widget = new enom_pro_widget('SSL Certificates', 'ssl_certs', array($enom, 'render_ssl_widget'));
+	$contentID = $widget->getContentID();
+	$formID = $widget->getFormID();
+	//Add-on jQuery for the "show all button"
+	$jquery = <<<EOL
+$("#$contentID").on("click", ".show_hidden_ssl", function  (){
+			$("#$formID").append("<input type=\"hidden\" name=\"show_all\" value=\"true\" />").trigger("submit");
+			return false;
+		});
+EOL;
+	$widget->addjQuery($jquery);
+	return $widget->toArray();
 }
-add_hook("AdminHomeWidgets",1,"enom_pro_admin_expiring_domains");
 
+add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_expiring_domains" );
+function enom_pro_admin_expiring_domains( $vars ) {
+	unset($vars);
+	$enom = new enom_pro();
+	$widget = new enom_pro_widget( 'Domain Stats', 'domain_stats', array(
+		$enom, 'render_domains_widget'
+	) );
+
+	return $widget->toArray();
+}
+
+add_hook("AdminHomeWidgets",1,"enom_pro_admin_pending_domain_verification");
+function enom_pro_admin_pending_domain_verification( $vars ) {
+	unset($vars);
+	$enom = new enom_pro();
+	$widget = new enom_pro_widget( 'Pending Domain Verifications', 'pending_verification', array(
+		$enom, 'render_pending_verification_widget'
+	) );
+
+	return $widget->toArray();
+}
+
+add_hook("AdminHomeWidgets",1,"enom_pro_admin_transfers");
 function enom_pro_admin_transfers ($vars)
 {
     if (!class_exists('enom_pro'))
@@ -311,7 +319,7 @@ function enom_pro_admin_transfers ($vars)
                 'jquerycode'=>enom_pro::minify($jquerycode),
             );
 }
-add_hook("AdminHomeWidgets",1,"enom_pro_admin_transfers");
+
 
 function get_enom_pro_widget_form ($action, $id)
 {
@@ -333,7 +341,7 @@ function get_enom_pro_widget_form ($action, $id)
 }
 
 /**
- * Admin Page Action API Hooks
+ * Admin Page CSS
  */
 add_hook("AdminAreaHeadOutput", -89512, "enom_pro_admin_css");
 function enom_pro_admin_css ()
@@ -359,6 +367,11 @@ function enom_pro_admin_css ()
         return '';
     }
 }
+
+/**
+ * Admin page Actions
+ */
+add_hook("AdminAreaPage",-284917,"enom_pro_admin_actions");
 function enom_pro_admin_actions ()
 {
     $enom_actions = array(
@@ -400,10 +413,11 @@ function enom_pro_admin_actions ()
     }
     die();
 }
-add_hook("AdminAreaPage",-284917,"enom_pro_admin_actions");
+
 /**
- * Makes the namespinner markup
+ * Namespinner
  */
+add_hook("ClientAreaPage",-10101,"enom_pro_namespinner");
 function enom_pro_namespinner ()
 {
     if (!class_exists('enom_pro'))
@@ -525,14 +539,9 @@ function enom_pro_namespinner ()
     return array('namespinner' => $spinnercode);
 }
 
-
-add_hook("ClientAreaPage",-10101,"enom_pro_namespinner");
-
+add_hook("ClientAreaPage",20291,"enom_pro_clientarea_transfers");
 function enom_pro_clientarea_transfers ($vars)
 {
-    global $enom_pro_transfers;
-    if (! class_exists('enom_pro') )
-        require_once 'enom_pro.php';
     //Prep the userid of currently logged in account
     $uid = isset($_SESSION['uid']) ? (int) $_SESSION['uid'] : 0; //Set this to 0 for security to return no results if the WHMCS uid is not set in the session
     //This is where the magic happens
@@ -567,8 +576,8 @@ function enom_pro_clientarea_transfers ($vars)
         return array('enom_transfers' => $there_are_results);
     }
 }
-add_hook("ClientAreaPage",20291,"enom_pro_clientarea_transfers");
 
+add_hook("ClientAreaPage",-30101,"enom_pro_srv_page");
 function enom_pro_srv_page ($vars)
 {
     if (! ('clientarea.php' == basename($_SERVER['SCRIPT_NAME']) && isset($_GET['action']) && 'domaindetails' == $_GET['action']))
@@ -580,10 +589,10 @@ function enom_pro_srv_page ($vars)
 
     return $vars;
 }
-add_hook("ClientAreaPage",-30101,"enom_pro_srv_page");
 
+add_hook("DailyCronJob", 10101, "enom_pro_cron");
 function enom_pro_cron() {
-	$salt = 'lJsif3n1F9GKeStIdM9VAeJrrPC1grpBpSZLtWMb';
+	$salt = 'lJsif3n1F9GKeSIdM9VAeJrrPC1grpBpSZLtWMb';
 	require_once 'enom_pro.php';
 	$enom = new enom_pro();
 	$lock = $enom->get_addon_setting( 'cron_lock' );
@@ -602,4 +611,3 @@ function enom_pro_cron() {
 		enom_pro::log_activity( $msg );
 	}
 }
-add_hook("DailyCronJob", 10101, "enom_pro_cron");
