@@ -1292,8 +1292,11 @@ class enom_pro {
 
 	/**
 	 * Check if a cache file is older than a threshold
+	 *
 	 * @param $file_path
 	 * @param $date relative date (-1 day, -1 Week, etc.)
+	 *
+	 * @return bool
 	 */
 	public function cache_file_is_older_than ($file_path, $date)
 	{
