@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="08c765d3-25f4-4648-aca3-dd0842f231cc" name="Default" comment="pending verification list complete">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_widget.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_widget.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pending_widget.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pending_widget.php" />
+    <list default="true" id="08c765d3-25f4-4648-aca3-dd0842f231cc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="enom_pro.iws" />
@@ -183,6 +181,8 @@
             <state line="114" column="2" selection-start="2701" selection-end="2701" vertical-scroll-proportion="-8.5" vertical-offset="1717" max-vertical-offset="3137">
               <folding>
                 <element signature="e#6#79#0" expanded="true" />
+                <marker date="1410715016000" expanded="true" signature="2250:2485" placeholder="..." />
+                <marker date="1410715016000" expanded="true" signature="2380:2475" placeholder="..." />
                 <marker date="1410715016000" expanded="true" signature="2698:2739" placeholder="{...}" />
                 <marker date="1410715016000" expanded="true" signature="2698:3217" placeholder="{...}" />
                 <marker date="1410715016000" expanded="true" signature="2843:3141" placeholder="{...}" />
@@ -197,7 +197,7 @@
       <file leaf-file-name="domain_widget_response.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget_response.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="35" selection-start="123" selection-end="123" vertical-scroll-proportion="0.09895227" vertical-offset="0" max-vertical-offset="2406">
+            <state line="8" column="3" selection-start="155" selection-end="155" vertical-scroll-proportion="0.15832363" vertical-offset="0" max-vertical-offset="2406">
               <folding>
                 <element signature="e#210#617#0" expanded="false" />
               </folding>
@@ -1909,7 +1909,15 @@
       <created>1410804069560</created>
       <updated>1410804069560</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Added Pending verification widget cache data &#10;changed widget jQuery to IDE &quot;code intention aware&quot; HEREDOC">
+      <created>1410804134024</created>
+      <updated>1410804134024</updated>
+    </task>
+    <task id="LOCAL-00032" summary="update workspace">
+      <created>1410804499787</created>
+      <updated>1410804499787</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -2002,8 +2010,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="added local files" />
-    <MESSAGE value="added icons&#10;remove pragma header&#10;domain import UX improvements&#10;added unencoded compat. checker" />
     <MESSAGE value="extracted domain widget" />
     <MESSAGE value="refactored pricing import" />
     <MESSAGE value="added icon fonts" />
@@ -2027,7 +2033,9 @@
     <MESSAGE value="Added 12 hour auto-cache invalidation for pending verification report&#10;extract beta message to file&#10;refactored &quot;just now&quot; to be less than 2 seconds instead of 5" />
     <MESSAGE value="extract class enom_pro_widget" />
     <MESSAGE value="domains widget tab uses meta list values to show/hide the &quot;Load more&quot; button to prevent API limit timeouts&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="domains widget tab uses meta list values to show/hide the &quot;Load more&quot; button to prevent API limit timeouts&#10;" />
+    <MESSAGE value="Added Pending verification widget cache data &#10;changed widget jQuery to IDE &quot;code intention aware&quot; HEREDOC" />
+    <MESSAGE value="update workspace" />
+    <option name="LAST_COMMIT_MESSAGE" value="update workspace" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2681,6 +2689,8 @@
         <state line="114" column="2" selection-start="2701" selection-end="2701" vertical-scroll-proportion="-8.5" vertical-offset="1717" max-vertical-offset="3137">
           <folding>
             <element signature="e#6#79#0" expanded="true" />
+            <marker date="1410715016000" expanded="true" signature="2250:2485" placeholder="..." />
+            <marker date="1410715016000" expanded="true" signature="2380:2475" placeholder="..." />
             <marker date="1410715016000" expanded="true" signature="2698:2739" placeholder="{...}" />
             <marker date="1410715016000" expanded="true" signature="2698:3217" placeholder="{...}" />
             <marker date="1410715016000" expanded="true" signature="2843:3141" placeholder="{...}" />
@@ -2718,7 +2728,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget_response.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="35" selection-start="123" selection-end="123" vertical-scroll-proportion="0.09895227" vertical-offset="0" max-vertical-offset="2406">
+        <state line="8" column="3" selection-start="155" selection-end="155" vertical-scroll-proportion="0.15832363" vertical-offset="0" max-vertical-offset="2406">
           <folding>
             <element signature="e#210#617#0" expanded="false" />
           </folding>
