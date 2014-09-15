@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="08c765d3-25f4-4648-aca3-dd0842f231cc" name="Default" comment="pending verification list complete">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_widget.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_widget.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget_response.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget_response.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pending_widget.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pending_widget.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -1908,7 +1905,11 @@
       <created>1410713808745</created>
       <updated>1410713808745</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="domains widget tab uses meta list values to show/hide the &quot;Load more&quot; button to prevent API limit timeouts&#10;">
+      <created>1410804069560</created>
+      <updated>1410804069560</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -2001,7 +2002,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="added custom BS build" />
     <MESSAGE value="added local files" />
     <MESSAGE value="added icons&#10;remove pragma header&#10;domain import UX improvements&#10;added unencoded compat. checker" />
     <MESSAGE value="extracted domain widget" />
@@ -2026,7 +2026,8 @@
     <MESSAGE value="added verification cache flush" />
     <MESSAGE value="Added 12 hour auto-cache invalidation for pending verification report&#10;extract beta message to file&#10;refactored &quot;just now&quot; to be less than 2 seconds instead of 5" />
     <MESSAGE value="extract class enom_pro_widget" />
-    <option name="LAST_COMMIT_MESSAGE" value="extract class enom_pro_widget" />
+    <MESSAGE value="domains widget tab uses meta list values to show/hide the &quot;Load more&quot; button to prevent API limit timeouts&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="domains widget tab uses meta list values to show/hide the &quot;Load more&quot; button to prevent API limit timeouts&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

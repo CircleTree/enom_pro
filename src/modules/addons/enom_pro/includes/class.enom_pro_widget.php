@@ -108,27 +108,28 @@ class enom_pro_widget {
 	}
 	private function get_jQuery ()
 	{
-		ob_start();
-		?>
-		var $refreshForm = jQuery("#<?php echo $this->base_id; ?>"),
-		$refreshButton = $refreshForm.find('.enom-pro-icon-refresh-alt');
-		$refreshForm.on("submit", function() {
-		var $content = jQuery("#<?php echo $this->content_id; ?>");
-		$content.html('<span class="enom_pro_loader"></span>');
-		$refreshButton.addClass('fa-spin');
-		jQuery.post("index.php", $(this).serialize(), function(data) {
-		$refreshButton.removeClass('fa-spin');
-		$content.html(data);
-		});
-		return false;
-		});
-		if ($refreshForm.is(":visible")) {
-		$refreshForm.trigger("submit");
-		}
-		<?php
-		$jquery = ob_get_contents();
-		ob_end_clean();
-		return enom_pro::minify($jquery);
+		$baseID = $this->base_id;
+		$contentID = $this->content_id;
+$jSCode = <<<JS
+jQuery(function($) {
+	var refreshForm = jQuery("#$baseID"),
+			refreshButton = refreshForm.find('.enom-pro-icon-refresh-alt');
+	refreshForm.on("submit", function() {
+			var content = jQuery("#$contentID");
+			content.html('<span class="enom_pro_loader"></span>');
+			refreshButton.addClass('fa-spin');
+			jQuery.post("index.php", $(this).serialize(), function(data) {
+					refreshButton.removeClass('fa-spin');
+					content.html(data);
+			});
+			return false;
+	});
+	if (refreshForm.is(":visible")) {
+			refreshForm.trigger("submit");
+	}
+});
+JS;
+		return enom_pro::minify($jSCode);
 	}
 
 }

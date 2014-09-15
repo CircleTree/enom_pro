@@ -35,6 +35,16 @@ $stats = $this->getDomainVerificationStats();
 		</td>
 		<td class="enom_stat_label">Suspended</td>
 	</tr>
+	<tr>
+		<td colspan="2">
+			<div class="well well-sm">
+				<p class="text-muted">Report Data From <?php echo $this->get_validation_cache_date(); ?>
+					<?php if ($this->isValidationCacheStale()) :?>
+						<a href="#" class="btn btn-xs btn-info flushValidateCache">Flush Cache</a></p>
+					<?php endif;?>
+			</div>
+		</td>
+	</tr>
 </table>
 	<div class="well hidden verificationDomains">
 		<table class="table table-bordered">
@@ -62,7 +72,7 @@ $stats = $this->getDomainVerificationStats();
 						</span>
 					</td>
 					<td>
-
+						<?php //TODO write RAA_ResendNotifications function ?>
 						<a href="#"
 							 data-domain="<?php echo $domain['domainname'] ?>"
 							 data-toggle="popover"
@@ -70,7 +80,7 @@ $stats = $this->getDomainVerificationStats();
 							 data-placement="left"
 							 title="Authorization Email: <?php echo $domain['newemailaddress'] ?>"
 							 data-content="Last Emailed: <?php echo $domain['lastemailsenttime']; ?>. Click to resend."
-							 class="btn btn-primary btn-xs pop">Resend</a>
+							 class="btn btn-default btn-xs pop">Resend</a>
 					</td>
 				</tr>
 
@@ -85,7 +95,7 @@ $stats = $this->getDomainVerificationStats();
 			content: 'Click to see a full list of domains pending verification',
 			trigger: 'hover',
 			placement: 'top'
-		})
+		});
 		$(".verification").on('click', function  (){
 			$(".verificationDomains").removeClass('hidden');
 			return false;
