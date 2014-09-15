@@ -503,7 +503,18 @@ function enom_pro_sidebar( $vars ) {
 			<div class="col-xs-4">
 				<b>Checked</b>
 			</div>
-			<div class="col-xs-8"><?php echo enom_pro_license::get_last_checked_time_ago(); ?></div>
+			<div class="col-xs-8">
+				<?php echo enom_pro_license::get_last_checked_time_ago(); ?>
+			</div>
+			<div class="col-xs-12 upgradeAlertHidden">
+				<a href="<?php echo enom_pro::MODULE_LINK; ?>&action=do_upgrade" class="btn btn-block btn-success">Upgrade Now</a>
+			</div>
+			<div class="col-xs-12 upgradeAlertHidden">
+				<div class="alert alert-info">
+					Version <?php echo enom_pro_license::get_latest_version() ?> <br/>
+					<a href="#" onclick="enom_pro.showUpgradeAlert(); return false;">View Change-Log</a>
+				</div>
+			</div>
 			<div class="col-xs-12">
 				<a class="btn btn-default btn-xs btn-block"
 					 href="<?php echo enom_pro::MODULE_LINK ?>&action=do_upgrade_check">

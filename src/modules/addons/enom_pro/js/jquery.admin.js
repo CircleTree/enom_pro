@@ -203,7 +203,7 @@ function abort_whois_xhrs ()
 function precise_round(num,decimals){
 	return Math.round(num*Math.pow(10,decimals))/Math.pow(10,decimals);
 }
-var sortTldXHR = null;
+var sortTldXHR = null, enom_pro;
 jQuery(function($) {
     $("#generateinvoice").bind('click', function() {
         var $invoice_email = $("#invoice_email");
@@ -805,6 +805,60 @@ jQuery(function($) {
         $this.after('<input type="text" name="file[]" onclick="this.select();" size="'+size+'" value="'+filepath+'" />');
         return false;
     });
+    enom_pro = {
+        upgradeSessionKey: 'dismissEnomProUpgrade',
+        $upgradeAlert : jQuery('#upgradeAlert'),
+        $upgradeAlertSidebar: $(".upgradeAlertHidden"),
+        init : function  (){
+            if (this.isUpgradeAlertHidden()) {
+                this.hide(this.$upgradeAlert);
+            } else {
+                this.hide(this.$upgradeAlertSidebar);
+            }
+            this.$upgradeAlert.on('closed.bs.alert', function () {
+              enom_pro.hideUpgradeAlert();
+            })
+        },
+        showUpgradeAlert: function  (){
+            this.deleteHideAlert();
+            this.show(this.$upgradeAlert);
+            this.hide(this.$upgradeAlertSidebar);
+        },
+        hideUpgradeAlert: function  (){
+            if (this.support.localStorage()) {
+                window.sessionStorage.setItem(this.upgradeSessionKey, true);
+            }
+            this.show(this.$upgradeAlertSidebar);
+            this.hide(this.$upgradeAlert);
+        },
+        deleteHideAlert: function  (){
+            if (this.support.localStorage()) {
+                window.sessionStorage.removeItem(this.upgradeSessionKey);
+            }
+        },
+        isUpgradeAlertHidden: function  (){
+            if (! this.support.localStorage()) {
+                return false;
+            }
+            return window.sessionStorage.getItem(this.upgradeSessionKey);
+        },
+        show: function  ($item){
+            $item.removeClass('hidden').show();
+        },
+        hide: function  ($item){
+            $item.addClass('hidden').hide();
+        },
+        support: {
+            localStorage: function () {
+                try {
+                    return 'localStorage' in window && window['localStorage'] !== null;
+                } catch(e){
+                    return false;
+                }
+            }
+        }
+    };
+    enom_pro.init();
 }); //end jQuery Ready
 } catch (err) {
 	alert('Enom PRO JS Error: ' + err);
