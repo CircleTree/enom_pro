@@ -473,6 +473,10 @@ class enom_pro_controller {
 		self::sendGzipped( $result );
 	}
 
+	protected function resend_raa_email () {
+		echo $this->enom->resendRAAEmail($_REQUEST['domain']);
+	}
+
 	public static function caching_headers( $file ) {
 		$timestamp = filemtime( $file );
 		$gmt_mtime = gmdate( 'r', $timestamp );

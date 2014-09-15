@@ -104,6 +104,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		touch($filepath, $mod_time, $mod_time); //2 Weeks ago
 		$this->assertFalse($this->e->cache_file_is_older_than($filepath, '-1 Day'));
 	}
+
 	/**
 	 * @group domains
 	 */

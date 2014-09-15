@@ -291,7 +291,8 @@ function enom_pro_admin_actions ()
 				'sort_domains',
 				'dismiss_alert',
 				'getAdminJS',
-				'clear_exchange_cache'
+				'clear_exchange_cache',
+				'resend_raa_email'
     );
     //Only load this hook if an ajax request is being run
     if (! (isset($_REQUEST['action']) && in_array($_REQUEST['action'], $enom_actions))) {

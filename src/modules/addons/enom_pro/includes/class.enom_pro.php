@@ -84,7 +84,8 @@ class enom_pro {
 		'GetTLDList',
 		'PE_GetProductPrice',
 		'PE_GetRetailPrice',
-		'RPT_GetReport'
+		'RPT_GetReport',
+		'RAA_ResendNotification'
 	);
 	/**
 	 * All domains cache file path
@@ -820,6 +821,21 @@ class enom_pro {
 		$data['domains'] = $domains;
 		$this->set_cached_data($this->cache_file_verification_report, $data);
 		return $data;
+	}
+
+	/**
+	 * Re-sends the RAA domain contact verification email
+	 * @throws EnomException
+	 *
+	 * @param $domain
+	 *
+	 * @return string
+	 */
+	public function resendRAAEmail ($domain)
+	{
+		$this->setParams(array('DomainName' => $domain));
+		$this->runTransaction('RAA_ResendNotification');
+		return 'sent';
 	}
 
 	/**
