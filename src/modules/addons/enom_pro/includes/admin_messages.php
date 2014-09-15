@@ -149,7 +149,12 @@
 					Current PHP Version: <code><?php echo PHP_VERSION?></code> Recommended: ><code>5.3.6</code></h3>
 			</div>
 		<?php else: //Compatible?>
-			<div class="alert alert-success">
+			<div class="alert alert-success" id="upgradeAlert">
+				<button type="button"
+								class="close ep_tt"
+								title="Hide for this session"
+								data-dismiss="alert"
+								aria-hidden="true">&uarr;</button>
 				<h2>Upgrade available!</h2>
 				<span class="badge" >Update using our 1-click upgrade system.</span>
 				<a id="doUpgrade" class="btn btn-lg btn-success" href="<?php echo enom_pro_license::DO_UPGRADE_URL;?>">
