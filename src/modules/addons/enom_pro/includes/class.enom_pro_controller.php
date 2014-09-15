@@ -4,7 +4,7 @@ class enom_pro_controller {
 	/**
 	 * @var enom_pro
 	 */
-	private $enom;
+	protected  $enom;
 
 	public function __construct() {
 	}
