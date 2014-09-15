@@ -2,6 +2,8 @@
 if (empty($domains)) {
     return false;
 }
+/** @var enom_pro_controller $this */
+$meta = $this->enom->getListMeta();
 /**
  * @var $domains array 
  */
@@ -64,7 +66,7 @@ if ($first_page):
                     <?php endif;?>
                 </td>
             </tr>
-            <?php if ($key == (count($domains) - 1)) : ?>
+            <?php if (($key == (count($domains) - 1)) && $meta['total_domains'] > $meta['next_start'] ) : ?>
             <tr>
                 <td colspan="7">
                     <a class="btn btn-block btn-default btn-xs load_more"
@@ -81,18 +83,25 @@ if ($first_page):
 <?php endif;?>
 <script>
 jQuery(function($) {
-    $(".load_more").on('click', function  () {
-        var $button = $(this),
-        $row = $button.closest('tr'),
-					$loader = $button.closest('td').find('.enom_pro_loader');
-			$loader.removeClass('hidden');
-        $.get($(this).attr('href'), function  (data) {
-            $(".domain-widget-response tbody").append(data);
-            $button.add($row).hide(); 
-            $(".ep_tt").tooltip();
-					$loader.remove();
-        });
-        return false;
-    });
+	$(".load_more").on('click', function() {
+		var $button = $(this), $row = $button.closest('tr'), $loader = $button.closest('td').find('.enom_pro_loader');
+		$loader.removeClass('hidden');
+		var ajaxUrl = $(this).attr('href');
+		$.ajax({
+			url    : ajaxUrl,
+			success: function(data) {
+				$(".domain-widget-response tbody").append(data);
+				$button.add($row).hide();
+				$(".ep_tt").tooltip();
+				$loader.remove();
+			},
+			error  : function(xhr) {
+				var errString = '<tr><td colspan="7">' + '<div class="alert alert-danger">' + xhr.responseText + '</div>' + '</td>'
+				$(".domain-widget-response tbody").append(errString);
+				$loader.remove();
+			}
+		});
+		return false;
+	});
 });
 </script>

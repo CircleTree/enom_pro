@@ -1601,7 +1601,7 @@ class enom_pro {
 	 * @param int|number $limit
 	 * @param int|number $start
 	 *
-	 * @return Ambigous <multitype:multitype:number, multitype:, boolean, mixed>
+	 * @return array $domains
 	 */
 	public function getDomainsTab( $tab, $limit = 25, $start = 1 ) {
 		$this->setParams( array( 'Tab' => $tab ) );
