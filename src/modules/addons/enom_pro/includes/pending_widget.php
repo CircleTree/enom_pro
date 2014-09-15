@@ -53,7 +53,7 @@ $stats = $this->getDomainVerificationStats();
 					<th>Domain</th>
 					<th>Status</th>
 					<th>Suspension Date</th>
-					<th>Resend</th>
+					<th>Authorization Email</th>
 				</tr>
 			</thead>
 			<?php foreach ($stats['domains'] as $domain) : ?>
@@ -72,15 +72,17 @@ $stats = $this->getDomainVerificationStats();
 						</span>
 					</td>
 					<td>
-						<?php //TODO write RAA_ResendNotifications function ?>
-						<a href="#"
+						<a href="<?php echo enom_pro::MODULE_LINK ?>&action=resend_raa_email"
 							 data-domain="<?php echo $domain['domainname'] ?>"
 							 data-toggle="popover"
 							 data-trigger="hover"
 							 data-placement="left"
 							 title="Authorization Email: <?php echo $domain['newemailaddress'] ?>"
 							 data-content="Last Emailed: <?php echo $domain['lastemailsenttime']; ?>. Click to resend."
-							 class="btn btn-default btn-xs pop">Resend</a>
+							 class="btn btn-default btn-xs pop resendAuth">
+							Resend
+							<span class="enom_pro_loader small hidden"></span>
+						</a>
 					</td>
 				</tr>
 
@@ -95,6 +97,24 @@ $stats = $this->getDomainVerificationStats();
 			content: 'Click to see a full list of domains pending verification',
 			trigger: 'hover',
 			placement: 'top'
+		});
+		$(".resendAuth").on('click', function  (){
+			var $this = $(this),
+				$loader = $this.find('.enom_pro_loader');
+			$loader.removeClass('hidden');
+			$this.addClass('disabled').attr('disabled', true);
+			$.ajax({
+				url: $this.attr('href'),
+				data: {'domain' : $this.data('domain')},
+				success: function  (data){
+					$loader.addClass('hidden');
+					$this.text('Re-Sent');
+				},
+				error: function  (xhr){
+					alert(xhr.responseText);
+				}
+			});
+			return false;
 		});
 		$(".verification").on('click', function  (){
 			$(".verificationDomains").removeClass('hidden');
