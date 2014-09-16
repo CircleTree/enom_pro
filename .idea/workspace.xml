@@ -2,20 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="08c765d3-25f4-4648-aca3-dd0842f231cc" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/icomoon/eNom PRO.json" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/css/enom-pro.ttf" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/css/enom-pro.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/css/enom-pro.woff" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/css/enom-pro.woff" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/css/admin.css" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/css/admin.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/balance_widget.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/balance_widget.php" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/balance_widget.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/widget_credit_balance.php" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/widget_domain_stats.php" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget_response.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/widget_domain_stats_ajax.php" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pending_widget.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/widget_pending_verification.php" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/ssl_widget.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/widget_expiring_ssl.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_widget.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_widget.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/css/enom-pro.eot" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/css/enom-pro.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/css/enom-pro.svg" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/css/enom-pro.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pricing_import.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pricing_import.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="enom_pro.iws" />
@@ -91,8 +84,8 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="domain_widget.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget.php">
+      <file leaf-file-name="widget_domain_stats.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/widget_domain_stats.php">
           <provider selected="true" editor-type-id="text-editor">
             <state line="9" column="22" selection-start="133" selection-end="133" vertical-scroll-proportion="-0.65384614" vertical-offset="136" max-vertical-offset="2073">
               <folding>
@@ -127,8 +120,8 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pending_widget.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pending_widget.php">
+      <file leaf-file-name="widget_pending_verification.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/widget_pending_verification.php">
           <provider selected="true" editor-type-id="text-editor">
             <state line="92" column="26" selection-start="2839" selection-end="2839" vertical-scroll-proportion="-22.115385" vertical-offset="921" max-vertical-offset="2865">
               <folding>
@@ -245,16 +238,16 @@
       <file leaf-file-name="class.enom_pro.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1823" column="0" selection-start="52102" selection-end="52102" vertical-scroll-proportion="-17.538462" vertical-offset="30535" max-vertical-offset="40826">
+            <state line="1823" column="0" selection-start="52137" selection-end="52137" vertical-scroll-proportion="-17.538462" vertical-offset="30535" max-vertical-offset="40826">
               <folding>
-                <marker date="1410839035000" expanded="true" signature="5610:6026" placeholder="..." />
-                <marker date="1410839035000" expanded="true" signature="5782:5816" placeholder="..." />
-                <marker date="1410839035000" expanded="true" signature="5971:6021" placeholder="..." />
-                <marker date="1410839035000" expanded="true" signature="19492:19629" placeholder="SELECT `id`,..." />
-                <marker date="1410839035000" expanded="true" signature="30364:30951" placeholder="SELECT tlds...." />
-                <marker date="1410839035000" expanded="true" signature="48835:48911" placeholder="SELECT `sett..." />
-                <marker date="1410839035000" expanded="true" signature="62637:62935" placeholder="INSERT INTO ..." />
-                <marker date="1410839035000" expanded="true" signature="63201:63274" placeholder="SELECT `id` ..." />
+                <marker date="1410841554000" expanded="true" signature="5610:6026" placeholder="..." />
+                <marker date="1410841554000" expanded="true" signature="5782:5816" placeholder="..." />
+                <marker date="1410841554000" expanded="true" signature="5971:6021" placeholder="..." />
+                <marker date="1410841554000" expanded="true" signature="19527:19664" placeholder="SELECT `id`,..." />
+                <marker date="1410841554000" expanded="true" signature="30399:30986" placeholder="SELECT tlds...." />
+                <marker date="1410841554000" expanded="true" signature="48870:48946" placeholder="SELECT `sett..." />
+                <marker date="1410841554000" expanded="true" signature="62672:62970" placeholder="INSERT INTO ..." />
+                <marker date="1410841554000" expanded="true" signature="63236:63309" placeholder="SELECT `id` ..." />
               </folding>
             </state>
           </provider>
@@ -269,10 +262,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="balance_widget.php" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/balance_widget.php">
+      <file leaf-file-name="widget_credit_balance.php" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/widget_credit_balance.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="10" selection-start="1155" selection-end="1155" vertical-scroll-proportion="0.5739232" vertical-offset="0" max-vertical-offset="1539">
+            <state line="29" column="3" selection-start="1159" selection-end="1159" vertical-scroll-proportion="0.59371364" vertical-offset="0" max-vertical-offset="1539">
               <folding>
                 <element signature="e#6#79#0" expanded="true" />
                 <element signature="e#586#609#0" expanded="true" />
@@ -409,9 +402,9 @@
       <file leaf-file-name="class.enom_pro_controller.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="147" column="40" selection-start="4099" selection-end="4099" vertical-scroll-proportion="-12.307693" vertical-offset="2179" max-vertical-offset="10736">
+            <state line="147" column="40" selection-start="4101" selection-end="4101" vertical-scroll-proportion="-12.307693" vertical-offset="2179" max-vertical-offset="10736">
               <folding>
-                <marker date="1410805853000" expanded="true" signature="11993:12041" placeholder="SELECT `id`,..." />
+                <marker date="1410841533000" expanded="true" signature="11995:12043" placeholder="SELECT `id`,..." />
               </folding>
             </state>
           </provider>
@@ -2180,7 +2173,11 @@
       <created>1410838848510</created>
       <updated>1410838848510</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="widget title UX fixes&#10;added icons: acct. refill, currency, eq, log, module log, bugs, verify">
+      <created>1410841396506</created>
+      <updated>1410841396506</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -2205,7 +2202,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="4" y="22" width="1676" height="1028" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13693467" sideWeight="0.6695353" order="1" side_tool="false" content_ui="tabs" />
@@ -2219,7 +2216,7 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20405982" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19951041" sideWeight="0.65918803" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17625459" sideWeight="0.5972222" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17625459" sideWeight="0.5972222" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37179488" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17625459" sideWeight="0.4017094" order="2" side_tool="true" content_ui="tabs" x="104" y="122" width="1236" height="678" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -2273,7 +2270,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="added jquery-ui sortable for TLDs" />
     <MESSAGE value="CS fixes" />
     <MESSAGE value="pricing sortable UX fixes&#10;pricing docs" />
     <MESSAGE value="extract admin messages from main file" />
@@ -2298,7 +2294,8 @@
     <MESSAGE value="added session dismiss option for update option&#10;added sidebar update reminder when main update/changelog is hidden&#10;new: enom_pro global JavaScript object" />
     <MESSAGE value="updated icons" />
     <MESSAGE value="pricing import language fixes&#10;added dismissible multiple currency alert" />
-    <option name="LAST_COMMIT_MESSAGE" value="pricing import language fixes&#10;added dismissible multiple currency alert" />
+    <MESSAGE value="widget title UX fixes&#10;added icons: acct. refill, currency, eq, log, module log, bugs, verify" />
+    <option name="LAST_COMMIT_MESSAGE" value="widget title UX fixes&#10;added icons: acct. refill, currency, eq, log, module log, bugs, verify" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2956,12 +2953,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/ssl_widget.php">
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/widget_expiring_ssl.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="51" column="54" selection-start="1655" selection-end="1655" vertical-scroll-proportion="0.5343422" vertical-offset="340" max-vertical-offset="1777" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget.php">
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/widget_domain_stats.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="9" column="22" selection-start="133" selection-end="133" vertical-scroll-proportion="-0.65384614" vertical-offset="136" max-vertical-offset="2073">
           <folding>
@@ -3009,7 +3006,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget_response.php">
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/widget_domain_stats_ajax.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="8" column="3" selection-start="155" selection-end="155" vertical-scroll-proportion="-0.45518044" vertical-offset="527" max-vertical-offset="2406">
           <folding>
@@ -3025,7 +3022,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pending_widget.php">
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/widget_pending_verification.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="92" column="26" selection-start="2839" selection-end="2839" vertical-scroll-proportion="-22.115385" vertical-offset="921" max-vertical-offset="2865">
           <folding>
@@ -3071,9 +3068,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="147" column="40" selection-start="4099" selection-end="4099" vertical-scroll-proportion="-12.307693" vertical-offset="2179" max-vertical-offset="10736">
+        <state line="147" column="40" selection-start="4101" selection-end="4101" vertical-scroll-proportion="-12.307693" vertical-offset="2179" max-vertical-offset="10736">
           <folding>
-            <marker date="1410805853000" expanded="true" signature="11993:12041" placeholder="SELECT `id`,..." />
+            <marker date="1410841533000" expanded="true" signature="11995:12043" placeholder="SELECT `id`,..." />
           </folding>
         </state>
       </provider>
@@ -3301,16 +3298,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1823" column="0" selection-start="52102" selection-end="52102" vertical-scroll-proportion="-17.538462" vertical-offset="30535" max-vertical-offset="40826">
+        <state line="1823" column="0" selection-start="52137" selection-end="52137" vertical-scroll-proportion="-17.538462" vertical-offset="30535" max-vertical-offset="40826">
           <folding>
-            <marker date="1410839035000" expanded="true" signature="5610:6026" placeholder="..." />
-            <marker date="1410839035000" expanded="true" signature="5782:5816" placeholder="..." />
-            <marker date="1410839035000" expanded="true" signature="5971:6021" placeholder="..." />
-            <marker date="1410839035000" expanded="true" signature="19492:19629" placeholder="SELECT `id`,..." />
-            <marker date="1410839035000" expanded="true" signature="30364:30951" placeholder="SELECT tlds...." />
-            <marker date="1410839035000" expanded="true" signature="48835:48911" placeholder="SELECT `sett..." />
-            <marker date="1410839035000" expanded="true" signature="62637:62935" placeholder="INSERT INTO ..." />
-            <marker date="1410839035000" expanded="true" signature="63201:63274" placeholder="SELECT `id` ..." />
+            <marker date="1410841554000" expanded="true" signature="5610:6026" placeholder="..." />
+            <marker date="1410841554000" expanded="true" signature="5782:5816" placeholder="..." />
+            <marker date="1410841554000" expanded="true" signature="5971:6021" placeholder="..." />
+            <marker date="1410841554000" expanded="true" signature="19527:19664" placeholder="SELECT `id`,..." />
+            <marker date="1410841554000" expanded="true" signature="30399:30986" placeholder="SELECT tlds...." />
+            <marker date="1410841554000" expanded="true" signature="48870:48946" placeholder="SELECT `sett..." />
+            <marker date="1410841554000" expanded="true" signature="62672:62970" placeholder="INSERT INTO ..." />
+            <marker date="1410841554000" expanded="true" signature="63236:63309" placeholder="SELECT `id` ..." />
           </folding>
         </state>
       </provider>
@@ -3322,9 +3319,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/balance_widget.php">
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/widget_credit_balance.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="10" selection-start="1155" selection-end="1155" vertical-scroll-proportion="0.5739232" vertical-offset="0" max-vertical-offset="1539">
+        <state line="29" column="3" selection-start="1159" selection-end="1159" vertical-scroll-proportion="0.59371364" vertical-offset="0" max-vertical-offset="1539">
           <folding>
             <element signature="e#6#79#0" expanded="true" />
             <element signature="e#586#609#0" expanded="true" />

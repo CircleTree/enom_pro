@@ -651,22 +651,22 @@ class enom_pro {
 
 	}
 	public function render_domains_widget () {
-		require_once ENOM_PRO_INCLUDES . 'domain_widget.php';
+		require_once ENOM_PRO_INCLUDES . 'widget_domain_stats.php';
 	}
 
 	public function render_ssl_widget() {
-		require_once ENOM_PRO_INCLUDES . 'ssl_widget.php';
+		require_once ENOM_PRO_INCLUDES . 'widget_expiring_ssl.php';
 
 	}
 
 	public function render_balance_widget ()
 	{
-		require_once ENOM_PRO_INCLUDES . 'balance_widget.php';
+		require_once ENOM_PRO_INCLUDES . 'widget_credit_balance.php';
 	}
 
 	public function render_pending_verification_widget ()
 	{
-		require_once ENOM_PRO_INCLUDES . 'pending_widget.php';
+		require_once ENOM_PRO_INCLUDES . 'widget_pending_verification.php';
 	}
 
 	/**
