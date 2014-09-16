@@ -42,6 +42,11 @@
 	</fileset>
 	<target name="clean" description="Cleans up the build directory">
 		<delete dir="${build_temp_dir}"/>
+
+		<mkdir dir="${encoded}"/>
+		<mkdir dir="${encoded_prep}"/>
+	</target>
+	<target name="clean-ci" depends="clean">
 		<mkdir dir="${build_temp_dir}/api"/>
 		<mkdir dir="${build_temp_dir}/code-browser"/>
 		<mkdir dir="${build_temp_dir}/coverage"/>
@@ -168,8 +173,9 @@
         	nodoccomments="true"
         	targetoption="replace"
         	fromdir="${encoded_prep}"
-        	copy="index.php"
+        	copy="index.php enom_pro_compatible.php"
         	ignore="*.DS_Store *.cache"
+
         	todir="${encoded}">
     			<comment>*************************************************************************</comment>
 				<comment>* enom PRO Addon for WHMCS                                              *</comment>
