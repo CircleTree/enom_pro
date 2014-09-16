@@ -639,15 +639,15 @@ class enom_pro {
 	}
 
 	public function render_domain_import() {
-		require_once ENOM_PRO_INCLUDES . 'domain_import.php';
+		require_once ENOM_PRO_INCLUDES . 'page_domain_import.php';
 	}
 
 	public function render_pricing_import() {
-		require_once ENOM_PRO_INCLUDES . 'pricing_import.php';
+		require_once ENOM_PRO_INCLUDES . 'page_import_tld_pricing.php';
 	}
 
 	public function  render_pricing_sort() {
-		require_once ENOM_PRO_INCLUDES . 'pricing_sort.php';
+		require_once ENOM_PRO_INCLUDES . 'page_sort_tld_pricing.php';
 
 	}
 	public function render_domains_widget () {
