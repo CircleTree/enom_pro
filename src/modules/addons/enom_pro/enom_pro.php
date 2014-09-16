@@ -2,12 +2,15 @@
 /**
  * eNom Pro WHMCS Addon
  * @version @VERSION@
- * Copyright 2013 Orion IP Ventures, LLC. All Rights Reserved.
+ * Copyright @YEAR@ Orion IP Ventures, LLC. All Rights Reserved.
  * Licenses Resold by Circle Tree, LLC. Under Reseller Licensing Agreement
  * @codeCoverageIgnore
  */
 defined( "WHMCS" ) or die( "This file cannot be accessed directly" );
 
+/**
+ * eNom PRO Requirements Checker
+ */
 $requirements = array(
 	array(
 		'label' => 'PHP',
@@ -37,6 +40,9 @@ $requirements = array(
 		'version' => '5.3.0'
 	)
 );
+/**
+ * Check Requirements
+ */
 $requirements_link = '<a target="_blank" href="http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=54">View Help</a>';
 foreach ( $requirements as $requirement ) {
 	if ( isset( $requirement['function'] ) ) {
@@ -88,11 +94,13 @@ foreach ( $requirements as $requirement ) {
 }
 unset( $requirements_link, $requirements, $requirement );
 
-// eNom PRO passed requirements check!
 
+// eNom PRO passed requirements check!
 /**
  * @var string full path to enom pro addon dir
  */
 define( 'ENOM_PRO_ROOT', ROOTDIR . '/modules/addons/enom_pro/' );
-
+/**
+ * Load File
+ */
 require_once ENOM_PRO_ROOT . '/enom_pro_compatible.php';

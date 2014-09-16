@@ -688,6 +688,7 @@ jQuery(function($) {
     }).closest('.alert').on('close.bs.alert', function() {
         var $alert = $(this).find('[data-alert]');
         var alertID = $alert.data('alert');
+        $alert.tooltip('hide');
         var alertData = {
             action: 'dismiss_alert',
             alert: alertID
@@ -696,7 +697,7 @@ jQuery(function($) {
             url: 'addonmodules.php?module=enom_pro',
             data: alertData,
             success: function  (){
-                $alert.tooltip('hide');
+
             }
        });
     });

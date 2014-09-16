@@ -151,8 +151,7 @@
 		<?php else: //Compatible?>
 			<div class="alert alert-success" id="upgradeAlert">
 				<button type="button"
-								class="close ep_tt"
-								title="Hide for this session"
+								class="close"
 								data-dismiss="alert"
 								aria-hidden="true">&uarr;</button>
 				<h2>Upgrade available!</h2>
