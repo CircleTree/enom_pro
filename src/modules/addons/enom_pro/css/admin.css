@@ -510,6 +510,27 @@ a.btn {
 	left: 35px;
 }
 
+.enom-pro-widget-icon
+{
+	font-size: 13pt;
+	vertical-align: text-bottom;
+	width: 15pt;
+	display: inline-block;
+}
+.enom_pro_widget_title
+{
+	position: relative;
+}
+.enom_pro_widget_title .refreshbutton
+{
+	vertical-align: bottom;
+	/*+placement:anchor-top-right 0px -2px;*/
+	position: absolute;
+	right: 0px;
+	top: -2px;
+}
+
+
 .fa-spin {
 	-webkit-animation: fa-spin 2s infinite linear;
 	animation: fa-spin 2s infinite linear;
@@ -538,14 +559,13 @@ a.btn {
 /**
 Icons
 */
-
 @font-face {
 	font-family: 'enom-pro';
-	src:url('enom-pro.eot?k6t3bh');
-	src:url('enom-pro.eot?#iefixk6t3bh') format('embedded-opentype'),
-	url('enom-pro.woff?k6t3bh') format('woff'),
-	url('enom-pro.ttf?k6t3bh') format('truetype'),
-	url('enom-pro.svg?k6t3bh#enom-pro') format('svg');
+	src:url('enom-pro.eot?fi7ffs');
+	src:url('enom-pro.eot?#iefixfi7ffs') format('embedded-opentype'),
+	url('enom-pro.woff?fi7ffs') format('woff'),
+	url('enom-pro.ttf?fi7ffs') format('truetype'),
+	url('enom-pro.svg?fi7ffs#enom-pro') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -585,6 +605,9 @@ Icons
 .enom-pro-icon-tag:before {
 	content: "\e0bc";
 }
+.enom-pro-icon-refill-account:before {
+	content: "\e0d3";
+}
 .enom-pro-icon-currency:before {
 	content: "\e0d4";
 }
@@ -617,6 +640,9 @@ Icons
 }
 .enom-pro-icon-secure-alt:before {
 	content: "\e1d5";
+}
+.enom-pro-icon-equalizer:before {
+	content: "\e1de";
 }
 .enom-pro-icon-cog:before {
 	content: "\e1df";
@@ -674,6 +700,9 @@ Icons
 }
 
 
+/****
+* END Icons
+*****/
 
 .enom-pro-icon-secure {
 	color: #b09605;

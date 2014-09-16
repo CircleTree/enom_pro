@@ -13,8 +13,8 @@ if ('off' == strtolower($warning_level)) {
 }
 $class = $warning ? 'alert-danger' : 'alert-success'; ?>
 <div id="enom_balance_message" class="alert enom_pro_widget <?php echo $class ?>">
-Enom Credit Balance: <?php echo $this->getBalance(); ?> Available: <b><?php echo $this->getAvailableBalance() ?></b>
-<a class="btn btn-default btn-xs" href="https://www.enom.com/myaccount/RefillAccount.asp" target="_blank">Refill Account</a>
+Enom Credit Balance: $<?php echo $this->getBalance(); ?> Available: <b style="color: #000000;">$<?php echo $this->getAvailableBalance() ?></b>
+<a class="btn btn-default btn-xs" href="https://www.enom.com/myaccount/RefillAccount.asp" target="_blank">Refill Account <span class="enom-pro-icon enom-pro-icon-refill-account"></span></a>
 </div>
 <?php if ($warning) :  ?>
 <script>
@@ -31,8 +31,11 @@ jQuery(function($) {
 </script>
 <?php endif;?>
 <?php if ($this->license->is_update_available()) :?>
-	<div class="alert alert-warning aligncenter"><b>Update available:</b>
-		<?php echo $this->license->get_latest_version() ?><br/>
-		<a class="btn btn-primary btn-block" href="<?php echo enom_pro_license::DO_UPGRADE_URL; ?>">Upgrade automatically</a>
+	<div class="alert alert-info text-center"><b>Update available!</b>
+		<span class="text-muted">Version: <?php echo $this->license->get_latest_version() ?></span><br/>
+		<a class="btn btn-success btn-block" href="<?php echo enom_pro_license::DO_UPGRADE_URL; ?>">
+			Upgrade automatically
+			<span class="enom-pro-icon enom-pro-icon-update"></span>
+		</a>
 	</div>
 <?php endif;?>

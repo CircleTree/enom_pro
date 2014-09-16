@@ -158,6 +158,7 @@
 				<h2>Upgrade available!</h2>
 				<span class="badge" >Update using our 1-click upgrade system.</span>
 				<a id="doUpgrade" class="btn btn-lg btn-success" href="<?php echo enom_pro_license::DO_UPGRADE_URL;?>">
+					<span class="enom-pro-icon enom-pro-icon-update"></span>
 					Upgrade to Version <?php echo enom_pro_license::get_latest_version();?> now!
 				</a> -or- <a href="<?php echo $enom->get_upgrade_zip_url()?>">Download Now</a>
 				<div id="enom_pro_changelog"></div>
