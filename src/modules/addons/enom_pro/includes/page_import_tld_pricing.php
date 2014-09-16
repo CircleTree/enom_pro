@@ -123,7 +123,7 @@ if ( $this->is_pricing_cached() ) :
 			bulk edit all 3 pricing tiers, or you can fine tune pricing in directly in whmcs by
 			clicking the TLD drop-down menu button.
 			</p>
-			<img src="" height="" width="" alt="" />
+			<img src="../modules/addons/enom_pro/images/pricing-drop-down-help.jpg" height="209" width="238" alt="" />
 		</div>
 	<?php endif; ?>
 	<?php if ( !enom_pro_controller::isDismissed( 'order-types' ) ) : ?>
