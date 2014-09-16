@@ -42,7 +42,6 @@
 	</fileset>
 	<target name="clean" description="Cleans up the build directory">
 		<delete dir="${build_temp_dir}"/>
-
 		<mkdir dir="${encoded}"/>
 		<mkdir dir="${encoded_prep}"/>
 	</target>
@@ -156,16 +155,19 @@
 		<delete
 				file="${encoded_prep}/modules/addons/enom_pro/enom_pro_compatible.php"/>
 		<delete file="${encoded_prep}/modules/addons/enom_pro/hooks.php"/>
-		<copy todir="${encoded_prep}">
+		<tstamp>
+			<format property="YEAR" pattern="%Y"/>
+		</tstamp>
+		<copy todir="${encoded_prep}" overwrite="true">
 			<filterchain>
 				<replacetokens>
 					<token key="VERSION" value="${version}"/>
 					<token key="NAME" value="${name}"/>
+					<token key="YEAR" value="${YEAR}"/>
 				</replacetokens>
 			</filterchain>
 			<fileset refid="open_files"/>
 		</copy>
-
         <ioncubeencoder
         	phpversion="5"
         	optimize="max"
@@ -173,14 +175,14 @@
         	nodoccomments="true"
         	targetoption="replace"
         	fromdir="${encoded_prep}"
-        	copy="index.php enom_pro_compatible.php"
-        	ignore="*.DS_Store *.cache"
-
-        	todir="${encoded}">
+        	todir="${encoded}"
+        	copy="index.php enom_pro.php"
+        	ignore="*.DS_Store *.cache enom_pro_version*.xml"
+						>
     			<comment>*************************************************************************</comment>
 				<comment>* enom PRO Addon for WHMCS                                              *</comment>
 				<comment>* Version ${version} </comment>
-				<comment>* Copyright (c) 2001-2014 Orion IP Ventures, LLC. All Rights Reserved   *</comment>
+				<comment>* Copyright (c) 2001-${YEAR} Orion IP Ventures, LLC. All Rights Reserved   *</comment>
 				<comment>*************************************************************************</comment>
 				<comment>* Licenses Resold and Supported by Circle Tree, LLC                     *</comment>
 				<comment>* For More Information on Becoming an Orion IP Authorized Reseller      *</comment>
@@ -213,9 +215,11 @@
 		 ================================= -->
 	<target name="local" depends="replace" description="Dev Build">
 		<echo msg="Copying encoded files to local WHMCS install"/>
+		<!--
 		<copy todir="${deploy}">
 			<fileset refid="encoded"/>
 		</copy>
+		-->
 	</target>
 	<target name="bootstrap">
 		<echo message="ReBuilding bootstrap theme"/>
@@ -250,20 +254,7 @@
 		<copy file="${bs-dir}js/bootstrap.min.js"
 					tofile="${bs-copy-dir}js/bootstrap.min.js"
 					overwrite="true"/>
-		<!--
-		<copy file="${bs-dir}fonts/glyphicons-halflings-regular.eot"
-					tofile="${bs-copy-dir}css/glyphicons-halflings-regular.eot"
-					overwrite="true"/>
-		<copy file="${bs-dir}fonts/glyphicons-halflings-regular.svg"
-					tofile="${bs-copy-dir}css/glyphicons-halflings-regular.svg"
-					overwrite="true"/>
-		<copy file="${bs-dir}fonts/glyphicons-halflings-regular.ttf"
-					tofile="${bs-copy-dir}css/glyphicons-halflings-regular.ttf"
-					overwrite="true"/>
-		<copy file="${bs-dir}fonts/glyphicons-halflings-regular.woff"
-					tofile="${bs-copy-dir}css/glyphicons-halflings-regular.woff"
-					overwrite="true"/>
-		-->
+
 	</target>
 	<!-- Replaces version.xml -->
 	<target name="replace-version">
@@ -327,6 +318,7 @@
 	<exec command="git push origin master" logoutput="true"/>
 </target>
 	<!-- BETA Release Prepares ZIP File-->
+
 
 	<target name="zip-beta">
 		<exec command="git rev-parse --short=12 HEAD" outputProperty="git_version"/>
