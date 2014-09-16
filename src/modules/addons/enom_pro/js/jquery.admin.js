@@ -361,7 +361,7 @@ jQuery(function($) {
         }
         
         $("#local_storage").on('refresh', function  () {
-            $(this).html('<a class="btn btn-info btn-xs" href="#">' + getLabel()+ '</a>');
+            $(this).html('<a class="btn btn-info btn-xs" href="#">' + getLabel()+ '<span class="enom-pro-icon enom-pro-icon-trash"></span></a>');
         }).on('click', '.btn', function  () {
             localStorage.clear();
             $(this).find('a').html(getLabel());

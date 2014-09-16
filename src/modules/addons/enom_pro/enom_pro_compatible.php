@@ -460,24 +460,31 @@ function enom_pro_sidebar( $vars ) {
 		<span class="header"><?php echo ENOM_PRO; ?> Helpful Links</span>
 		<ul class="menu">
 			<li>
+				<span class="enom-pro-icon enom-pro-icon-module-log"></span>
 				<a target="_blank"
 					 href="systemmodulelog.php"
 					 class="ep_tt ep_lightbox"
 					 data-title="WHMCS Module Log"
 					 data-width="90%"
 					 data-no-refresh="true"
-					 title="Useful for checking API Activity">Module Log</a>
+					 title="Useful for checking API Activity">
+					Module Log
+				</a>
 			</li>
 			<li>
+				<span class="enom-pro-icon enom-pro-icon-log"></span>
 				<a target="_blank"
 					 href="systemactivitylog.php"
 					 class="ep_tt ep_lightbox"
 					 data-title="WHMCS Activity Log"
 					 data-width="90%"
 					 data-no-refresh="true"
-					 title="Useful for viewing CRON Job Activity">Activity Log</a>
+					 title="Useful for viewing CRON Job Activity">
+					Activity Log
+				</a>
 			</li>
 			<li>
+				<span class="enom-pro-icon enom-pro-icon-earth"></span>
 				<a href="configregistrars.php#enom"
 					 class="ep_lightbox"
 					 id="edit_registrar"
@@ -507,7 +514,9 @@ function enom_pro_sidebar( $vars ) {
 				<?php echo enom_pro_license::get_last_checked_time_ago(); ?>
 			</div>
 			<div class="col-xs-12 upgradeAlertHidden">
-				<a href="<?php echo enom_pro::MODULE_LINK; ?>&action=do_upgrade" class="btn btn-block btn-success">Upgrade Now</a>
+				<a href="<?php echo enom_pro::MODULE_LINK; ?>&action=do_upgrade" class="btn btn-block btn-success">Upgrade Now
+					<span class="enom-pro-icon enom-pro-icon-update"></span>
+				</a>
 			</div>
 			<div class="col-xs-12 upgradeAlertHidden">
 				<div class="alert alert-info">

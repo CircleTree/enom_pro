@@ -142,7 +142,7 @@ if ( $this->is_pricing_cached() ) :
 	<?php endif; ?>
 
 	<?php $currencies = enom_pro::whmcs_api('getcurrencies', array()); ?>
-	<?php $defaultCurrencyPrefix= $currencies['currencies']['currency'][0]['prefix']; ?>
+	<?php $defaultCurrencyPrefix = $currencies['currencies']['currency'][0]['prefix']; ?>
 	<?php $defaultCurrencyCode = $this->getDefaultCurrencyCode();
 	if ( $defaultCurrencyCode != 'USD') :?>
 		<div class="well">
@@ -150,7 +150,7 @@ if ( $this->is_pricing_cached() ) :
 							class="close"
 							data-dismiss="alert"
 							aria-hidden="true">&uarr;</button>
-			<h3>Beta — Currency Conversion</h3>
+			<h3>Beta — Currency Conversion <span class="enom-pro-icon enom-pro-icon-currency"></span></h3>
 			<?php $exchangeRate = $this->get_exchange_rate_from_USD_to($defaultCurrencyCode);?>
 			<div class="row">
 				<div class="col-lg-6">

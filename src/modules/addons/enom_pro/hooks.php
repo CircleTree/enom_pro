@@ -72,7 +72,7 @@ $("#$contentID").on("click", ".flushValidateCache", function  (){
 		});
 EOL;
 	$widget->addjQuery($jquery);
-	$widget->setIcon('enom-pro-icon-mail-send');
+	$widget->setIcon('enom-pro-icon-verify');
 	return $widget->toArray();
 }
 
