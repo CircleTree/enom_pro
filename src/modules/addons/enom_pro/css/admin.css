@@ -538,13 +538,14 @@ a.btn {
 /**
 Icons
 */
+
 @font-face {
 	font-family: 'enom-pro';
-	src:url('enom-pro.eot?-75fx0c');
-	src:url('enom-pro.eot?#iefix-75fx0c') format('embedded-opentype'),
-	url('enom-pro.woff?-75fx0c') format('woff'),
-	url('enom-pro.ttf?-75fx0c') format('truetype'),
-	url('enom-pro.svg?-75fx0c#enom-pro') format('svg');
+	src:url('enom-pro.eot?k6t3bh');
+	src:url('enom-pro.eot?#iefixk6t3bh') format('embedded-opentype'),
+	url('enom-pro.woff?k6t3bh') format('woff'),
+	url('enom-pro.ttf?k6t3bh') format('truetype'),
+	url('enom-pro.svg?k6t3bh#enom-pro') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -563,11 +564,29 @@ Icons
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.enom-pro-icon-code-fork:before {
+	content: "\f126";
+}
+.enom-pro-icon-transfer:before {
+	content: "\e602";
+}
+.enom-pro-icon-sort-by-alpha:before {
+	content: "\e604";
+}
+.enom-pro-icon-sort-by-alpha-alt:before {
+	content: "\e605";
+}
 .enom-pro-icon-home:before {
 	content: "\e009";
 }
+.enom-pro-icon-log:before {
+	content: "\e077";
+}
 .enom-pro-icon-tag:before {
 	content: "\e0bc";
+}
+.enom-pro-icon-currency:before {
+	content: "\e0d4";
 }
 .enom-pro-icon-support:before {
 	content: "\e0d9";
@@ -577,6 +596,18 @@ Icons
 }
 .enom-pro-icon-clock:before {
 	content: "\e108";
+}
+.enom-pro-icon-localstorage:before {
+	content: "\e138";
+}
+.enom-pro-icon-verify:before {
+	content: "\e16f";
+}
+.enom-pro-icon-verify-alt:before {
+	content: "\e18c";
+}
+.enom-pro-icon-spinner:before {
+	content: "\e1a8";
 }
 .enom-pro-icon-refresh:before {
 	content: "\e1b2";
@@ -590,8 +621,17 @@ Icons
 .enom-pro-icon-cog:before {
 	content: "\e1df";
 }
+.enom-pro-icon-bug:before {
+	content: "\e1f1";
+}
+.enom-pro-icon-bug2:before {
+	content: "\e1f2";
+}
 .enom-pro-icon-balance:before {
 	content: "\e23c";
+}
+.enom-pro-icon-trash:before {
+	content: "\e255";
 }
 .enom-pro-icon-cloud-download:before {
 	content: "\e2b6";
@@ -601,6 +641,9 @@ Icons
 }
 .enom-pro-icon-earth:before {
 	content: "\e2c7";
+}
+.enom-pro-icon-module-log:before {
+	content: "\e2c8";
 }
 .enom-pro-icon-question:before {
 	content: "\e35b";
@@ -629,15 +672,7 @@ Icons
 .enom-pro-icon-domains:before {
 	content: "\e603";
 }
-.enom-pro-icon-transfer:before {
-	content: "\e602";
-}
-.enom-pro-icon-sort-by-alpha:before {
-	content: "\e604";
-}
-.enom-pro-icon-sort-by-alpha-alt:before {
-	content: "\e605";
-}
+
 
 
 .enom-pro-icon-secure {
