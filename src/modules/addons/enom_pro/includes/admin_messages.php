@@ -165,3 +165,9 @@
 		<?php endif; //End upgrader compat. check?>
 	<?php endif;//End Support & updates expired?>
 <?php endif;//End Update is Available?>
+
+<?php if (isset($_GET['saved-exchange'])) :?>
+	<div class="alert alert-success slideup fixed">
+		<p>Custom Exchange Rate Saved</p>
+	</div>
+<?php endif;?>
