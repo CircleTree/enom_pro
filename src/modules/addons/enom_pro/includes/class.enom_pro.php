@@ -558,6 +558,26 @@ class enom_pro {
 	}
 
 	/**
+	 * Is a custom exchange rate set?
+	 * Lazy interface for dealing with WHMCS settings api
+	 * @return bool
+	 */
+	public function isCustomExchangeRate ()
+	{
+		$custom_rate = $this->get_addon_setting('custom-exchange-rate');
+		if (0.00 === $custom_rate || null === $custom_rate || "" === trim($custom_rate)) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public function getCustomExchangeRate ()
+	{
+		return $this->get_addon_setting('custom-exchange-rate');
+	}
+
+	/**
 	 * Cached interface for all pricing data
 	 *
 	 * @param bool|string $retail
@@ -571,7 +591,11 @@ class enom_pro {
 			//without having to fetch pricing again from eNom
 
 			$cache_data = $this->get_cache_data( $this->cache_file_all_prices );
-			$rate = $this->get_exchange_rate_from_USD_to( $this->getDefaultCurrencyCode() );
+			if ($this->isCustomExchangeRate()) {
+				$rate = $this->getCustomExchangeRate();
+			} else {
+				$rate = $this->get_exchange_rate_from_USD_to( $this->getDefaultCurrencyCode() );
+			}
 
 			$domainsCached = $cache_data['data'];
 			foreach ( $domainsCached as $tld => $cachedDomainData ) {
@@ -1368,28 +1392,39 @@ class enom_pro {
 		return $this->get_cache_file_time( $this->cache_file_exchange_rate, 1 );
 	}
 
+	public function isUsingExchangeRateAPIKey ()
+	{
+		return null === $this->get_addon_setting('exchange-rate-api-key') ? false : true;
+	}
 	/**
 	 * Gets exchange rate from USD to
 	 *
 	 * @param string $currency_code
 	 *
-	 * @return double $rate
+	 * @return double|null $rate rate or null on failure
 	 */
 	public function get_exchange_rate_from_USD_to( $currency_code ) {
+		$currency_code = strtoupper($currency_code);
 		$cached = $this->get_cache_data( $this->cache_file_exchange_rate );
 		if ( $cached && $cached['to'] == $currency_code ) {
 			return $cached['rate'];
 		}
 
 		try {
-		//TODO add API key option
-			$rate_resp = enom_pro::curl_get_json( 'http://rate-exchange.appspot.com/currency',
-				array( 'from' => 'USD', 'to' => $currency_code ) );
+			$api_key = $this->get_addon_setting('exchange-rate-api-key');
+			if ($api_key) {
+				$url = "http://currency-api.appspot.com/api/USD/$currency_code.json";
+				$rate_resp = enom_pro::curl_get_json( $url,
+					array( 'key' => $api_key ) );
+			} else {
+				$rate_resp = enom_pro::curl_get_json( 'http://rate-exchange.appspot.com/currency',
+					array( 'from' => 'USD', 'to' => $currency_code ) );
+			}
+
 			$data = array( 'to' => $currency_code, 'rate' => $rate_resp['rate'] );
 			$this->set_cached_data( $this->cache_file_exchange_rate, $data );
 		} catch (Exception $e) {
-			//TODO add INPUT option
-			$data['rate'] = 1.00;
+			$data['rate'] = null;
 		}
 		return $data['rate'];
 	}

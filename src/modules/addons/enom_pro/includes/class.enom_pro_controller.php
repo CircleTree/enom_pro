@@ -126,21 +126,18 @@ class enom_pro_controller {
 
 	protected function clear_cache() {
 		$this->enom->clear_domains_cache();
-		header( 'Location: addonmodules.php?module=enom_pro&view=domain_import&cleared' );
-		die;
+		$this->redirect('domain_import', 'cleared');
 	}
 
 	protected function clear_price_cache() {
 		$this->enom->clear_price_cache();
-		header( 'Location: addonmodules.php?module=enom_pro&view=pricing_import&cleared' );
-		die;
+		$this->redirect('pricing_import', 'cleared');
 	}
 
 	protected function clear_exchange_cache() {
 		$this->enom->clear_exchange_rate_cache();
 		$this->enom->get_exchange_rate_from_USD_to( $this->enom->getDefaultCurrencyCode() );
-		header( 'Location: addonmodules.php?module=enom_pro&view=pricing_import&exchange' );
-		die;
+		$this->redirect('pricing_import', 'exchange');
 	}
 
 	protected function get_pricing_data() {
@@ -559,8 +556,7 @@ class enom_pro_controller {
 			$query = "UPDATE `tbldomainpricing` SET `order` = '{$new_order}}' WHERE `id` = '{$id}}';";
 			mysql_query( $query );
 		}
-
-		header( "Location: " . enom_pro::MODULE_LINK . '&view=pricing_sort&sorted' );
+		$this->redirect('pricing_sort', 'sorted');
 	}
 
 	/**
@@ -578,5 +574,26 @@ class enom_pro_controller {
 			mysql_query( $query );
 		}
 		echo 'sorted';
+	}
+
+	/**
+	 * @param      $view string view query param
+	 * @param null $message optional message flag to set
+	 */
+	private function redirect ($view, $message = null) {
+		$location = "Location: " . enom_pro::MODULE_LINK;
+		$location .= "&view=$view";
+		if (null !== $message) {
+			$location.= "&$message";
+		}
+		header( $location );
+	}
+	protected function save_custom_exchange_rate () {
+		if (-1 == $_REQUEST['custom-exchange-rate']) {
+			$this->enom->set_addon_setting('custom-exchange-rate', null);
+		} else {
+			$this->enom->set_addon_setting('custom-exchange-rate', $_REQUEST['custom-exchange-rate']);
+		}
+		$this->redirect('pricing_import', 'saved-exchange');
 	}
 }
