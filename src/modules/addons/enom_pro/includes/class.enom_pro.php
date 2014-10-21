@@ -1381,11 +1381,16 @@ class enom_pro {
 			return $cached['rate'];
 		}
 
-		$rate_resp = enom_pro::curl_get_json( 'http://rate-exchange.appspot.com/currency',
-			array( 'from' => 'USD', 'to' => $currency_code ) );
-		$data = array( 'to' => $currency_code, 'rate' => $rate_resp['rate'] );
-		$this->set_cached_data( $this->cache_file_exchange_rate, $data );
-
+		try {
+		//TODO add API key option
+			$rate_resp = enom_pro::curl_get_json( 'http://rate-exchange.appspot.com/currency',
+				array( 'from' => 'USD', 'to' => $currency_code ) );
+			$data = array( 'to' => $currency_code, 'rate' => $rate_resp['rate'] );
+			$this->set_cached_data( $this->cache_file_exchange_rate, $data );
+		} catch (Exception $e) {
+			//TODO add INPUT option
+			$data['rate'] = 1.00;
+		}
 		return $data['rate'];
 	}
 
@@ -1685,14 +1690,18 @@ class enom_pro {
 	 * @param array $get
 	 * @param array $options
 	 *
+	 * @throws RemoteException
 	 * @return mixed
 	 */
 	public static function curl_get_json( $url,
 		array $get = null,
 		array $options = array() ) {
 		$result = self::curl_get( $url, $get, $options );
-
-		return json_decode( $result, true );
+		$json_decode = json_decode( $result, true );
+		if (null === $json_decode) {
+			throw new RemoteException('Error Parsing JSON Response');
+		}
+		return $json_decode;
 	}
 
 	/**
