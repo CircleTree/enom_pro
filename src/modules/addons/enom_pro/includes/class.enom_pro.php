@@ -1394,7 +1394,7 @@ class enom_pro {
 
 	public function isUsingExchangeRateAPIKey ()
 	{
-		return null === $this->get_addon_setting('exchange-rate-api-key') ? false : true;
+		return null == $this->get_addon_setting('exchange-rate-api-key') ? false : true;
 	}
 	/**
 	 * Gets exchange rate from USD to
