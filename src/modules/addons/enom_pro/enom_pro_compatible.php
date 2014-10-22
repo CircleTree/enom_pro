@@ -472,7 +472,6 @@ function enom_pro_sidebar( $vars ) {
 		<span class="header"><?php echo ENOM_PRO; ?> Helpful Links</span>
 		<ul class="menu">
 			<li>
-				<span class="enom-pro-icon enom-pro-icon-module-log"></span>
 				<a target="_blank"
 					 href="systemmodulelog.php"
 					 class="ep_tt ep_lightbox"
@@ -480,11 +479,11 @@ function enom_pro_sidebar( $vars ) {
 					 data-width="90%"
 					 data-no-refresh="true"
 					 title="Useful for checking API Activity">
+					<span class="enom-pro-icon enom-pro-icon-module-log"></span>
 					Module Log
 				</a>
 			</li>
 			<li>
-				<span class="enom-pro-icon enom-pro-icon-log"></span>
 				<a target="_blank"
 					 href="systemactivitylog.php"
 					 class="ep_tt ep_lightbox"
@@ -492,17 +491,19 @@ function enom_pro_sidebar( $vars ) {
 					 data-width="90%"
 					 data-no-refresh="true"
 					 title="Useful for viewing CRON Job Activity">
+					<span class="enom-pro-icon enom-pro-icon-log"></span>
 					Activity Log
 				</a>
 			</li>
 			<li>
-				<span class="enom-pro-icon enom-pro-icon-earth"></span>
 				<a href="configregistrars.php#enom"
 					 class="ep_lightbox"
 					 id="edit_registrar"
 					 title="Edit eNom Registrar Settings"
-					 data-width="90%"
-					>eNom Registrar Settings</a>
+					 data-width="90%">
+					<span class="enom-pro-icon enom-pro-icon-earth"></span>
+					eNom Registrar Settings
+				</a>
 			</li>
 		</ul>
 		<span class="header"><?php echo ENOM_PRO; ?> Meta</span>
