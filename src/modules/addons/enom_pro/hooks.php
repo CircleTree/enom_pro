@@ -293,7 +293,8 @@ function enom_pro_admin_actions ()
 				'getAdminJS',
 				'clear_exchange_cache',
 				'resend_raa_email',
-				'save_custom_exchange_rate'
+				'save_custom_exchange_rate',
+				'get_beta_log'
     );
     //Only load this hook if an ajax request is being run
     if (! (isset($_REQUEST['action']) && in_array($_REQUEST['action'], $enom_actions))) {
