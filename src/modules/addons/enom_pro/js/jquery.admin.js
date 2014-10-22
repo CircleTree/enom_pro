@@ -203,7 +203,7 @@ function abort_whois_xhrs ()
 function precise_round(num,decimals){
 	return Math.round(num*Math.pow(10,decimals))/Math.pow(10,decimals);
 }
-var sortTldXHR = null, enom_pro;
+var sortTldXHR = null;
 jQuery(function($) {
     $("#generateinvoice").bind('click', function() {
         var $invoice_email = $("#invoice_email");
@@ -756,10 +756,21 @@ jQuery(function($) {
  	}
     var $betaLog = $("#enom_pro_beta_changelog");
     if ($betaLog.length > 0) {
+        var $betaLogUL = $("<ul></ul>");
+        $betaLogUL.appendTo($betaLog);
         $.ajax({
             data: {action: 'get_beta_log'},
+            dataType: 'json',
             success: function  (data){
-                console.log('data', data);
+                $.each(data, function  (k, value){
+                    //Value has properties: date_iso, date (timestamp), sha, subject
+                    var badge = 'badge';
+                    if (enom_pro.version.search(value.sha) > -1) {
+                        badge += ' current-version';
+                    }
+                    var revString = '<span class="'+badge+'">'+value.sha+':</span>' + value.subject;
+                    $betaLogUL.append('<li data-hash="'+value.sha+'">'+revString+'</li>')
+                });
             }
         });
     }
@@ -816,7 +827,7 @@ jQuery(function($) {
         $this.after('<input type="text" name="file[]" onclick="this.select();" size="'+size+'" value="'+filepath+'" />');
         return false;
     });
-    enom_pro = {
+    enom_pro = $.extend(enom_pro, {
         upgradeSessionKey: 'dismissEnomProUpgrade',
         $upgradeAlert : jQuery('#upgradeAlert'),
         $upgradeAlertSidebar: $(".upgradeAlertHidden"),
@@ -868,7 +879,7 @@ jQuery(function($) {
                 }
             }
         }
-    };
+    });
     enom_pro.init();
 }); //end jQuery Ready
 } catch (err) {
