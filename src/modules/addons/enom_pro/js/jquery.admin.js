@@ -754,6 +754,16 @@ jQuery(function($) {
 		    }
 		});
  	}
+    var $betaLog = $("#enom_pro_beta_changelog");
+    if ($betaLog.length > 0) {
+        $.ajax({
+            data: {action: 'get_beta_log'},
+            success: function  (data){
+                console.log('data', data);
+            }
+        });
+    }
+
     $("body").on("click", ".enom_stat_button .btn", function  () {
         if ($(this).hasClass("disabled")) {
             return false;

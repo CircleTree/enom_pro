@@ -382,7 +382,6 @@
 		<delete file="${build_dir}/${beta_log_filename}" quiet="true"/>
 		<echo>Writing updated beta log</echo>
 		<exec command="./gitjson log -n 15 --json=hds" output="${build_dir}/${beta_log_filename}"/>
-		<!--<exec command="python write_beta_log.py" output="${build_dir}/${beta_log_filename}"/>-->
 		<echo>Deploying to remote...</echo>
 		<ftpdeploy
 				host="mycircletree.com"

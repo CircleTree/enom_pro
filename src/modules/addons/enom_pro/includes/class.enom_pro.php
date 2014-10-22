@@ -2394,4 +2394,12 @@ class enom_pro {
 		);
 	}
 
+	/**
+	 * Accessibility function to check license for beta opt-in
+	 * @return bool
+	 */
+	public static function isBeta ()
+	{
+		return enom_pro_license::isBetaOptedIn();
+	}
 }

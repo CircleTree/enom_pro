@@ -596,4 +596,7 @@ class enom_pro_controller {
 		}
 		$this->redirect('pricing_import', 'saved-exchange');
 	}
+	protected function get_beta_log () {
+		echo json_encode(enom_pro::curl_get_json('https://mycircletree.com/versions/enom_pro_beta_log.json'));
+	}
 }

@@ -158,7 +158,7 @@ function enom_pro_config() {
 				'FriendlyName' => "Exchange Rate API Key", "Type" => "text",
 				"Default" => NULL,
 				"Description" => 'API key for <a href="http://currency-api.appspot.com/dashboard" target="_blank" >Currency API. Sign up for free here.</a>',
-				'Size' => 60
+				'Size' => 0
 			),
 			/****************************
 			 * SSL
