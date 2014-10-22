@@ -366,6 +366,7 @@
 			</fileset>
 		</ftpdeploy>
 		<phingcall target="git-push"/>
+		<phingcall target="beta-log" />
 	</target>
 
 	<target name="verify">

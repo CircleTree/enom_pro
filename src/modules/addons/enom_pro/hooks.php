@@ -244,8 +244,9 @@ add_hook("AdminAreaHeadOutput", -89512, "enom_pro_admin_css");
 function enom_pro_admin_css ()
 {
     //	Only load on applicable pages
-    $pages = array('index.php', 'addonmodules.php');
-    if (in_array(basename($_SERVER['SCRIPT_NAME']), $pages) || ( isset($_GET['module']) && 'enom_pro' == $_GET['module']) ) {
+    $pages = array('index.php', 'addonmodules.php', 'configadminroles.php');
+	$scriptName = basename( $_SERVER['SCRIPT_NAME'] );
+	if (in_array( $scriptName, $pages) || ( isset($_GET['module']) && 'enom_pro' == $_GET['module']) ) {
 			//Include our class if needed
 			if (! class_exists('enom_pro') ) {
 				require_once ENOM_PRO_INCLUDES . 'class.enom_pro.php';
@@ -258,9 +259,12 @@ function enom_pro_admin_css ()
 				};
 			</script>
 			<link rel="stylesheet" href="../modules/addons/enom_pro/css/admin.min.css" />
+		<?php if ($scriptName !== 'configadminroles.php') :?>
+			<?php //Don't include these on the admin roles page to prevent unintended conflicts / regressions ?>
 			<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap.min.css" />
 			<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap-theme.min.css" />
-			<script src="<?php echo enom_pro::MODULE_LINK ?>&action=getAdminJS"></script>
+			<script src="<?php echo enom_pro::MODULE_LINK ?>&action=getAdminJS&version=<?php echo urlencode(ENOM_PRO_VERSION) ?>"></script>
+		<?php endif;?>
 <?php
 
 			$return = ob_get_contents();
