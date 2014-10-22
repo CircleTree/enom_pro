@@ -556,6 +556,21 @@ a.btn {
 	}
 }
 
+.badge.current-version
+{
+	background-color: #F8AC01;
+	overflow: visible;
+	position: relative;
+}
+.badge.current-version:before
+{
+	content: '\25BA';
+	position: absolute;
+	left: -16px;
+	overflow: visible;
+	color: #E09A47;
+}
+
 
 /**
 Icons

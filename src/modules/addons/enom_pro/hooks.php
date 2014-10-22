@@ -251,6 +251,12 @@ function enom_pro_admin_css ()
 				require_once ENOM_PRO_INCLUDES . 'class.enom_pro.php';
 			}
 			ob_start(); ?>
+			<script>
+				var enom_pro = {
+					isBeta: <?php echo enom_pro::isBeta() ? true: false; ?>,
+					version: "<?php echo ENOM_PRO_VERSION ?>"
+				};
+			</script>
 			<link rel="stylesheet" href="../modules/addons/enom_pro/css/admin.min.css" />
 			<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap.min.css" />
 			<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap-theme.min.css" />
