@@ -79,7 +79,7 @@ class enom_pro_widget {
 		if ( $this->icon ) {
 			$iconSpan = '<span class="enom-pro-icon enom-pro-widget-icon '.$this->icon.'"></span>';
 		}
-		$return['title'] = '<div class="enom_pro_widget_title">'.$iconSpan.'<a href="'.enom_pro::MODULE_LINK.'">'.ENOM_PRO.'</a> &mdash; ' . $this->title . $this->getWidgetForm() .  '</div>';
+		$return['title'] = '<span class="enom_pro_widget_title">'.$iconSpan.'<a href="'.enom_pro::MODULE_LINK.'">'.ENOM_PRO.'</a> &mdash; ' . $this->title . $this->getWidgetForm() .  '</span>';
 		$return['content'] = $this->getContent();
 		$return['jquerycode'] = $this->get_jQuery() . $this->jQuery;
 		return $return;
