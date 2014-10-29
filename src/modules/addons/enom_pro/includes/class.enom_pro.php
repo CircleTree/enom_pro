@@ -200,6 +200,7 @@ class enom_pro {
 	 *
 	 * @param  array $errors
 	 *
+	 * @throws InvalidArgumentException
 	 * @return string of html formatted errors
 	 * @TODO refactor to use enomException as param, instead of array.
 	 */
@@ -224,6 +225,9 @@ class enom_pro {
                     For the Live API, you'll need to open a 
                     <a target=\"_blank\" href=\"http://www.enom.com/help/default.aspx\">support ticket with enom.
                     </a></li>";
+				if (isset($_SERVER['SERVER_ADDR'])) {
+					$string .= '<pre>Current IP Address reported by PHP: '.$_SERVER['SERVER_ADDR'].'</pre>';
+				}
 			}
 			if ( strstr( $error_msg, "Bad" ) ) {
 				//The most common error message is for a non-whitelisted API IP

@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="08c765d3-25f4-4648-aca3-dd0842f231cc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_widget.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_widget.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/robertgregor.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/robertgregor.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/enom_pro.iml" afterPath="$PROJECT_DIR$/.idea/enom_pro.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="enom_pro.iws" />
@@ -41,7 +39,7 @@
       <file leaf-file-name="hooks.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="241" column="3" selection-start="10479" selection-end="10479" vertical-scroll-proportion="-5.8461537" vertical-offset="3945" max-vertical-offset="9738">
+            <state line="241" column="3" selection-start="10479" selection-end="10479" vertical-scroll-proportion="-5.8461537" vertical-offset="3945" max-vertical-offset="9687">
               <folding>
                 <marker date="1414011613000" expanded="true" signature="3400:3537" placeholder="..." />
                 <marker date="1414011613000" expanded="true" signature="4397:4637" placeholder="..." />
@@ -49,7 +47,23 @@
                 <marker date="1414011613000" expanded="true" signature="4459:4506" placeholder="..." />
                 <marker date="1414011613000" expanded="true" signature="4510:4551" placeholder="..." />
                 <marker date="1414011613000" expanded="true" signature="4570:4611" placeholder="..." />
+                <marker date="1414011613000" expanded="true" signature="10573:11840" placeholder="{...}" />
+                <marker date="1414011613000" expanded="true" signature="11845:11869" placeholder=" Admin page Actions ..." />
+                <marker date="1414011613000" expanded="true" signature="11966:13149" placeholder="{...}" />
+                <marker date="1414011613000" expanded="true" signature="11995:12650" placeholder="..." />
+                <marker date="1414011613000" expanded="true" signature="13154:13171" placeholder=" Namespinner ..." />
+                <marker date="1414011613000" expanded="true" signature="13264:18557" placeholder="{...}" />
+                <marker date="1414011613000" expanded="true" signature="14430:15720" placeholder="..." />
+                <marker date="1414011613000" expanded="true" signature="15174:15470" placeholder="..." />
+                <marker date="1414011613000" expanded="true" signature="16736:17001" placeholder="..." />
+                <marker date="1414011613000" expanded="true" signature="16752:16799" placeholder="..." />
+                <marker date="1414011613000" expanded="true" signature="16818:16865" placeholder="..." />
+                <marker date="1414011613000" expanded="true" signature="16882:16929" placeholder="..." />
+                <marker date="1414011613000" expanded="true" signature="16957:16996" placeholder="..." />
                 <marker date="1414011613000" expanded="false" signature="17067:17079" placeholder="..." />
+                <marker date="1414011613000" expanded="true" signature="18671:20395" placeholder="{...}" />
+                <marker date="1414011613000" expanded="true" signature="20486:20875" placeholder="{...}" />
+                <marker date="1414011613000" expanded="true" signature="20953:21833" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -324,20 +338,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="class.enom_pro.php" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="class.enom_pro.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2402" column="36" selection-start="69464" selection-end="69464" vertical-scroll-proportion="-12.0" vertical-offset="40522" max-vertical-offset="41687">
+            <state line="203" column="44" selection-start="4902" selection-end="4902" vertical-scroll-proportion="0.30886075" vertical-offset="3207" max-vertical-offset="41726">
               <folding>
-                <marker date="1413988292000" expanded="true" signature="5610:6026" placeholder="..." />
-                <marker date="1413988292000" expanded="true" signature="5782:5816" placeholder="..." />
-                <marker date="1413988292000" expanded="true" signature="5971:6021" placeholder="..." />
-                <marker date="1413988292000" expanded="true" signature="20125:20262" placeholder="SELECT `id`,..." />
-                <marker date="1413988292000" expanded="true" signature="30997:31584" placeholder="SELECT tlds...." />
-                <marker date="1413988292000" expanded="true" signature="50161:50237" placeholder="SELECT `sett..." />
-                <marker date="1413988292000" expanded="true" signature="63963:64261" placeholder="INSERT INTO ..." />
-                <marker date="1413988292000" expanded="true" signature="64527:64600" placeholder="SELECT `id` ..." />
-                <marker date="1413988292000" expanded="true" signature="68526:68886" placeholder="..." />
+                <marker date="1414596795000" expanded="true" signature="5647:6063" placeholder="..." />
+                <marker date="1414596795000" expanded="true" signature="5819:5853" placeholder="..." />
+                <marker date="1414596795000" expanded="true" signature="6008:6058" placeholder="..." />
+                <marker date="1414596795000" expanded="true" signature="6341:6409" placeholder="..." />
+                <marker date="1414596795000" expanded="true" signature="20304:20441" placeholder="SELECT `id`,..." />
+                <marker date="1414596795000" expanded="true" signature="31176:31763" placeholder="SELECT tlds...." />
+                <marker date="1414596795000" expanded="true" signature="50340:50416" placeholder="SELECT `sett..." />
+                <marker date="1414596795000" expanded="true" signature="64142:64440" placeholder="INSERT INTO ..." />
+                <marker date="1414596795000" expanded="true" signature="64706:64779" placeholder="SELECT `id` ..." />
               </folding>
             </state>
           </provider>
@@ -398,7 +412,7 @@
       <file leaf-file-name="enom_pro_compatible.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="523" column="22" selection-start="19825" selection-end="19825" vertical-scroll-proportion="-21.692308" vertical-offset="8327" max-vertical-offset="12645">
+            <state line="682" column="36" selection-start="24256" selection-end="24256" vertical-scroll-proportion="-23.538462" vertical-offset="10982" max-vertical-offset="12668">
               <folding>
                 <marker date="1414010863000" expanded="true" signature="1250:1354" placeholder="..." />
                 <marker date="1414010863000" expanded="true" signature="14033:14183" placeholder="..." />
@@ -413,6 +427,15 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="domainchecker.tpl" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/8F8819E7-F363-41C2-A912-EB5AB1E4F339/domainchecker.tpl">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="57" column="14" selection-start="2766" selection-end="2766" vertical-scroll-proportion="-1.9615384" vertical-offset="918" max-vertical-offset="3182">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="admin.css" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/css/admin.css">
           <provider selected="true" editor-type-id="text-editor">
@@ -422,11 +445,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="class.enom_pro_widget.php" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="class.enom_pro_widget.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_widget.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="81" column="186" selection-start="1890" selection-end="1890" vertical-scroll-proportion="0.041820418" vertical-offset="1292" max-vertical-offset="3040">
+            <state line="94" column="5" selection-start="2204" selection-end="2204" vertical-scroll-proportion="-9.153846" vertical-offset="1292" max-vertical-offset="2645">
               <folding>
+                <marker date="1414011782000" expanded="true" signature="2329:2564" placeholder="..." />
+                <marker date="1414011782000" expanded="true" signature="2459:2554" placeholder="..." />
                 <marker date="1414011782000" expanded="true" signature="2777:2818" placeholder="{...}" />
                 <marker date="1414011782000" expanded="true" signature="2777:3296" placeholder="{...}" />
                 <marker date="1414011782000" expanded="true" signature="2922:3220" placeholder="{...}" />
@@ -560,7 +585,6 @@
         <option value="$PROJECT_DIR$/src/README.txt" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/page_import_tld_pricing.php" />
-        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php" />
         <option value="$PROJECT_DIR$/write_beta_log.py" />
@@ -568,10 +592,12 @@
         <option value="$PROJECT_DIR$/gitjson" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/css/admin.css" />
-        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php" />
         <option value="$PROJECT_DIR$/build.xml" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_widget.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/8F8819E7-F363-41C2-A912-EB5AB1E4F339/domainchecker.tpl" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" />
       </list>
     </option>
   </component>
@@ -668,6 +694,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="art assetts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scope">
@@ -707,9 +747,9 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="project.scopes" />
+    <property name="options.lastSelected" value="preferences.fileTypes" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/modules/addons/enom_pro/temp" />
+    <property name="last_opened_file_path" value="/Applications/Adobe Photoshop CC 2014/Adobe Photoshop CC 2014.app" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
     <property name="FullScreen" value="false" />
@@ -2182,7 +2222,11 @@
       <created>1414010872802</created>
       <updated>1414010872802</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="fixed admin roles icons">
+      <created>1414011807819</created>
+      <updated>1414011807819</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -2211,7 +2255,7 @@
     <layout>
       <window_info id="Documentation" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17625459" sideWeight="0.40384614" order="2" side_tool="true" content_ui="tabs" x="104" y="122" width="1236" height="678" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13693467" sideWeight="0.6695353" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1364749" sideWeight="0.6695353" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42200854" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32264957" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292683" sideWeight="0.67105263" order="2" side_tool="false" content_ui="tabs" />
@@ -2276,7 +2320,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="pending verification list complete" />
     <MESSAGE value="added verification cache flush" />
     <MESSAGE value="Added 12 hour auto-cache invalidation for pending verification report&#10;extract beta message to file&#10;refactored &quot;just now&quot; to be less than 2 seconds instead of 5" />
     <MESSAGE value="extract class enom_pro_widget" />
@@ -2301,7 +2344,8 @@
     <MESSAGE value="working gitjson implementation for beta releases" />
     <MESSAGE value="added beta version changelog &amp; css to show current beta version in log" />
     <MESSAGE value="fix source order of sidebar helpful links" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix source order of sidebar helpful links" />
+    <MESSAGE value="fixed admin roles icons" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed admin roles icons" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2816,11 +2860,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/art assetts/pricing drop-down help.psd">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/images/pricing-drop-down-help.jpg">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -2970,23 +3009,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2402" column="36" selection-start="69464" selection-end="69464" vertical-scroll-proportion="-12.0" vertical-offset="40522" max-vertical-offset="41687">
-          <folding>
-            <marker date="1413988292000" expanded="true" signature="5610:6026" placeholder="..." />
-            <marker date="1413988292000" expanded="true" signature="5782:5816" placeholder="..." />
-            <marker date="1413988292000" expanded="true" signature="5971:6021" placeholder="..." />
-            <marker date="1413988292000" expanded="true" signature="20125:20262" placeholder="SELECT `id`,..." />
-            <marker date="1413988292000" expanded="true" signature="30997:31584" placeholder="SELECT tlds...." />
-            <marker date="1413988292000" expanded="true" signature="50161:50237" placeholder="SELECT `sett..." />
-            <marker date="1413988292000" expanded="true" signature="63963:64261" placeholder="INSERT INTO ..." />
-            <marker date="1413988292000" expanded="true" signature="64527:64600" placeholder="SELECT `id` ..." />
-            <marker date="1413988292000" expanded="true" signature="68526:68886" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="167" column="37" selection-start="6838" selection-end="6838" vertical-scroll-proportion="-20.26923" vertical-offset="2312" max-vertical-offset="3913">
@@ -3089,9 +3111,73 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="241" column="3" selection-start="10479" selection-end="10479" vertical-scroll-proportion="-5.8461537" vertical-offset="3945" max-vertical-offset="9738">
+          <folding>
+            <marker date="1414011613000" expanded="true" signature="3400:3537" placeholder="..." />
+            <marker date="1414011613000" expanded="true" signature="4397:4637" placeholder="..." />
+            <marker date="1414011613000" expanded="true" signature="4426:4616" placeholder="..." />
+            <marker date="1414011613000" expanded="true" signature="4459:4506" placeholder="..." />
+            <marker date="1414011613000" expanded="true" signature="4510:4551" placeholder="..." />
+            <marker date="1414011613000" expanded="true" signature="4570:4611" placeholder="..." />
+            <marker date="1414011613000" expanded="true" signature="10573:11840" placeholder="{...}" />
+            <marker date="1414011613000" expanded="true" signature="11845:11869" placeholder=" Admin page Actions ..." />
+            <marker date="1414011613000" expanded="true" signature="11966:13149" placeholder="{...}" />
+            <marker date="1414011613000" expanded="true" signature="11995:12650" placeholder="..." />
+            <marker date="1414011613000" expanded="true" signature="13154:13171" placeholder=" Namespinner ..." />
+            <marker date="1414011613000" expanded="true" signature="13264:18557" placeholder="{...}" />
+            <marker date="1414011613000" expanded="true" signature="14430:15720" placeholder="..." />
+            <marker date="1414011613000" expanded="true" signature="15174:15470" placeholder="..." />
+            <marker date="1414011613000" expanded="true" signature="16736:17001" placeholder="..." />
+            <marker date="1414011613000" expanded="true" signature="16752:16799" placeholder="..." />
+            <marker date="1414011613000" expanded="true" signature="16818:16865" placeholder="..." />
+            <marker date="1414011613000" expanded="true" signature="16882:16929" placeholder="..." />
+            <marker date="1414011613000" expanded="true" signature="16957:16996" placeholder="..." />
+            <marker date="1414011613000" expanded="false" signature="17067:17079" placeholder="..." />
+            <marker date="1414011613000" expanded="true" signature="18671:20395" placeholder="{...}" />
+            <marker date="1414011613000" expanded="true" signature="20486:20875" placeholder="{...}" />
+            <marker date="1414011613000" expanded="true" signature="20953:21833" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_widget.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="94" column="5" selection-start="2204" selection-end="2204" vertical-scroll-proportion="-9.153846" vertical-offset="1292" max-vertical-offset="2645">
+          <folding>
+            <marker date="1414011782000" expanded="true" signature="2329:2564" placeholder="..." />
+            <marker date="1414011782000" expanded="true" signature="2459:2554" placeholder="..." />
+            <marker date="1414011782000" expanded="true" signature="2777:2818" placeholder="{...}" />
+            <marker date="1414011782000" expanded="true" signature="2777:3296" placeholder="{...}" />
+            <marker date="1414011782000" expanded="true" signature="2922:3220" placeholder="{...}" />
+            <marker date="1414011782000" expanded="true" signature="3124:3198" placeholder="{...}" />
+            <marker date="1414011782000" expanded="true" signature="3256:3294" placeholder="{...}" />
+            <marker date="1414011782000" expanded="true" signature="3303:3344" placeholder="&lt;xml/&gt;" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/art assetts/pricing drop-down help.psd">
+      <provider editor-type-id="images">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="33" selection-start="2070" selection-end="2070" vertical-scroll-proportion="0.5916473" vertical-offset="0" max-vertical-offset="170811">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/8F8819E7-F363-41C2-A912-EB5AB1E4F339/domainchecker.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="57" column="14" selection-start="2766" selection-end="2766" vertical-scroll-proportion="-1.9615384" vertical-offset="918" max-vertical-offset="3182">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="523" column="22" selection-start="19825" selection-end="19825" vertical-scroll-proportion="-21.692308" vertical-offset="8327" max-vertical-offset="12645">
+        <state line="682" column="36" selection-start="24256" selection-end="24256" vertical-scroll-proportion="-23.538462" vertical-offset="10982" max-vertical-offset="12668">
           <folding>
             <marker date="1414010863000" expanded="true" signature="1250:1354" placeholder="..." />
             <marker date="1414010863000" expanded="true" signature="14033:14183" placeholder="..." />
@@ -3105,31 +3191,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php">
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="241" column="3" selection-start="10479" selection-end="10479" vertical-scroll-proportion="-5.8461537" vertical-offset="3945" max-vertical-offset="9738">
+        <state line="203" column="44" selection-start="4902" selection-end="4902" vertical-scroll-proportion="0.30886075" vertical-offset="3207" max-vertical-offset="41726">
           <folding>
-            <marker date="1414011613000" expanded="true" signature="3400:3537" placeholder="..." />
-            <marker date="1414011613000" expanded="true" signature="4397:4637" placeholder="..." />
-            <marker date="1414011613000" expanded="true" signature="4426:4616" placeholder="..." />
-            <marker date="1414011613000" expanded="true" signature="4459:4506" placeholder="..." />
-            <marker date="1414011613000" expanded="true" signature="4510:4551" placeholder="..." />
-            <marker date="1414011613000" expanded="true" signature="4570:4611" placeholder="..." />
-            <marker date="1414011613000" expanded="false" signature="17067:17079" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_widget.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="81" column="186" selection-start="1890" selection-end="1890" vertical-scroll-proportion="0.041820418" vertical-offset="1292" max-vertical-offset="3040">
-          <folding>
-            <marker date="1414011782000" expanded="true" signature="2777:2818" placeholder="{...}" />
-            <marker date="1414011782000" expanded="true" signature="2777:3296" placeholder="{...}" />
-            <marker date="1414011782000" expanded="true" signature="2922:3220" placeholder="{...}" />
-            <marker date="1414011782000" expanded="true" signature="3124:3198" placeholder="{...}" />
-            <marker date="1414011782000" expanded="true" signature="3256:3294" placeholder="{...}" />
-            <marker date="1414011782000" expanded="true" signature="3303:3344" placeholder="&lt;xml/&gt;" />
+            <marker date="1414596795000" expanded="true" signature="5647:6063" placeholder="..." />
+            <marker date="1414596795000" expanded="true" signature="5819:5853" placeholder="..." />
+            <marker date="1414596795000" expanded="true" signature="6008:6058" placeholder="..." />
+            <marker date="1414596795000" expanded="true" signature="6341:6409" placeholder="..." />
+            <marker date="1414596795000" expanded="true" signature="20304:20441" placeholder="SELECT `id`,..." />
+            <marker date="1414596795000" expanded="true" signature="31176:31763" placeholder="SELECT tlds...." />
+            <marker date="1414596795000" expanded="true" signature="50340:50416" placeholder="SELECT `sett..." />
+            <marker date="1414596795000" expanded="true" signature="64142:64440" placeholder="INSERT INTO ..." />
+            <marker date="1414596795000" expanded="true" signature="64706:64779" placeholder="SELECT `id` ..." />
           </folding>
         </state>
       </provider>
