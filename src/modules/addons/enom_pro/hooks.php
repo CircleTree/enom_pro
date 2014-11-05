@@ -254,7 +254,7 @@ function enom_pro_admin_css ()
 			ob_start(); ?>
 			<script>
 				var enom_pro = {
-					isBeta: <?php echo enom_pro::isBeta() ? true: false; ?>,
+					isBeta: <?php echo enom_pro::isBeta() ? 'true': 'false'; ?>,
 					version: "<?php echo ENOM_PRO_VERSION ?>"
 				};
 			</script>
