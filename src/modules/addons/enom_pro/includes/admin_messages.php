@@ -167,6 +167,7 @@
 				</a> -or- <a href="<?php echo $enom->get_upgrade_zip_url()?>">Download Now</a>
 			<?php //TODO make this more DRY ?>
 				<?php if (enom_pro::isBeta()) :?>
+					<?php //TODO add ajax loader state ?>
 					<div id="enom_pro_beta_changelog"></div>
 				<?php else: ?>
 					<div id="enom_pro_changelog"></div>
