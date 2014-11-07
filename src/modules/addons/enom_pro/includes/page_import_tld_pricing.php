@@ -141,10 +141,9 @@ if ( $this->is_pricing_cached() ) :
 		</div>
 	<?php endif; ?>
 
-	<?php $currencies = enom_pro::whmcs_api('getcurrencies', array()); ?>
-	<?php $defaultCurrencyPrefix = $currencies['currencies']['currency'][0]['prefix']; ?>
-	<?php $defaultCurrencyCode = $this->getDefaultCurrencyCode();
-	if ( $defaultCurrencyCode != 'USD') :?>
+
+	<?php $defaultCurrencyPrefix = $this->getDefaultCurrencyPrefix(); ?>
+	<?php if ( $this->isNonUSDinWHMCS() ) :?>
 		<div class="well">
 			<button type="button"
 							class="close"
@@ -246,6 +245,7 @@ if ( $this->is_pricing_cached() ) :
 			<form class="bulkImport form-inline"
 						role="form"
 						action="<?php echo enom_pro::MODULE_LINK ?>">
+				<h4>Profit Settings</h4>
 				<div class="form-group">
 					<div class="input-group">
 						<label for="percentMarkup" class="input-group-addon">Markup</label>
@@ -258,6 +258,21 @@ if ( $this->is_pricing_cached() ) :
 						<span class="input-group-addon">%</span>
 					</div>
 					<div class="input-group">
+						<label>+</label>
+					</div>
+					<div class="input-group">
+						<label for="wholeMarkup" class="input-group-addon">$</label>
+						<input type="number"
+									 min="0.00"
+									 max="500"
+									 step="0.05"
+									 name="markup2"
+									 id="wholeMarkup"
+									 placeholder="0.00"
+									 class="form-control input-sm"/>
+					</div>
+
+					<div class="input-group">
 						<label for="roundTo" class="input-group-addon">Round up to $</label>
 						<select name="round" id="roundTo" class="form-control input-sm-2">
 							<option value="99">.99</option>
@@ -266,6 +281,7 @@ if ( $this->is_pricing_cached() ) :
 							<option value="50">.50</option>
 							<option value="01">.01</option>
 							<option value="00">.00</option>
+							<option value="-1">Disabled</option>
 						</select>
 					</div>
 				</div>

@@ -549,6 +549,9 @@ jQuery(function($) {
         } else if (e.type == 'recalculate') {
             var markup = $("#percentMarkup").val(),
                 round = $("#roundTo").val();
+            if (round == -1) {
+                round = false;
+            }
             if ($('#overWriteWHMCS').prop('checked')) {
                 var $elems = jQuery('[data-price]');
             } else {
@@ -558,17 +561,15 @@ jQuery(function($) {
                 var $elem = $(this);
                 var newPrice = $elem.data('price') * ( 1 + (markup / 100));
                 var newPriceDouble = newPrice.toFixed(2);
-                //Check if the decimal value is gt our rounding amount
+                //Check if the decimal value is gte our rounding amount
                 var thisDollarAmount = newPriceDouble.split(".")[1];
-                if (thisDollarAmount >= round) {
+                if (round && thisDollarAmount >= round) {
                     //Need to bump the dollar amount to the next one
                     //IE round to .95 amount 3.98 -> 4.95
                     var Dollar = parseInt(newPriceDouble) + 1;
+                    newPriceDouble = Dollar + '.' + round;
                     console.log('rounding up to $', Dollar);
-                } else {
-                    var Dollar = parseInt(newPriceDouble);
                 }
-                newPriceDouble = Dollar + '.' + round;
                 $elem.val(newPriceDouble);
                 if ($elem.data('year') == 1 ) {
                     $elem.trigger('keyup');
