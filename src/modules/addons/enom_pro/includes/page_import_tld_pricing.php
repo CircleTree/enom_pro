@@ -31,6 +31,11 @@ function pager( $enom_pro ) {
 /**
  * @var $this enom_pro
  */
+/*
+ ***********************
+ * TLD Cache Check
+ ***********************
+ */
 if ( $this->is_pricing_cached() ) :
 	?>
 	<div id="enom_pro_pricing_import_page">
@@ -246,11 +251,13 @@ if ( $this->is_pricing_cached() ) :
 						role="form"
 						action="<?php echo enom_pro::MODULE_LINK ?>">
 				<h4>Profit Settings</h4>
-				<div class="form-group">
+				<div class="form-group col-xs-12">
+					<h5 class="ep_pop" title="Minimum Profit" data-placement="auto top" data-content="Enter the minimum acceptable profit. Use this to cover credit card processing fees, for example.">Minimum Profit</h5>
 					<div class="input-group">
 						<label for="percentMarkup" class="input-group-addon">Markup</label>
 						<input type="number"
 									 min="0"
+									 step="0.01"
 									 max="500"
 									 name="markup"
 									 id="percentMarkup"
@@ -271,7 +278,40 @@ if ( $this->is_pricing_cached() ) :
 									 placeholder="0.00"
 									 class="form-control input-sm"/>
 					</div>
+				</div>
+				<div class="form-group col-xs-12">
+					<div class="alert alert-danger"><h3>BETA: Mock-up only</h3><p>Non functional at this point</p></div>
+					<h5 class="ep_pop" title="Preferred Profit" data-placement="auto top" data-content="The profit you'd like to make, while still being protected from under-selling.">Preferred Profit</h5>
+					<div class="input-group">
+						<label for="percentMarkup" class="input-group-addon">Markup</label>
+						<input type="number"
+									 min="0"
+									 max="500"
+									 step="0.01"
+									 name="markup"
+									 id="percentMarkup"
+									 class="form-control input-sm"/>
+						<span class="input-group-addon">%</span>
+					</div>
+					<div class="input-group">
+						<label>+</label>
+					</div>
+					<div class="input-group">
+						<label for="wholeMarkup" class="input-group-addon">$</label>
+						<input type="number"
+									 min="0.00"
+									 max="500"
+									 step="0.05"
+									 name="markup2"
+									 id="wholeMarkup"
+									 placeholder="0.00"
+									 class="form-control input-sm"/>
+					</div>
+				</div>
 
+
+				<div class="form-group col-xs-12">
+					<h5>Price Options</h5>
 					<div class="input-group">
 						<label for="roundTo" class="input-group-addon">Round up to $</label>
 						<select name="round" id="roundTo" class="form-control input-sm-2">
@@ -284,9 +324,6 @@ if ( $this->is_pricing_cached() ) :
 							<option value="-1">Disabled</option>
 						</select>
 					</div>
-				</div>
-
-				<div class="form-group">
 					<div class="input-group checkbox">
 						<label for="overWriteWHMCS" class="input-group-addon">
 							<input type="checkbox" name="overwrite" id="overWriteWHMCS"/>
@@ -294,8 +331,9 @@ if ( $this->is_pricing_cached() ) :
 						</label>
 					</div>
 				</div>
+
 				<div class="btn-group pull-right">
-					<button type="submit" class="btn btn-primary">Preview</button>
+					<button type="submit" class="btn btn-primary ep_pop" data-content="Press ENTER in the form above for rapid previewing" title="Helpful Hint" data-placement="auto top" data-container="body">Preview</button>
 					<button type="button" class="btn btn-success savePricing">Save</button>
 
 					<div class="btn-group">
@@ -480,19 +518,31 @@ if ( $this->is_pricing_cached() ) :
 	</div>
 	<?php //End <div id="enom_pro_pricing_import_page">?>
 
-	<?php //TLD pricing uncached ?>
+<?php
+	/**
+	 **************************
+	 * TLD pricing un-cached
+	 **************************
+   */
+	?>
+
 <?php else: ?>
 	<div class="alert alert-warning" id="loading_pricing">
 		<h3>Loading <?php echo enom_pro::is_retail_pricing() ? 'retail' : 'wholesale'; ?> pricing for <?php echo count( $this->getTLDs() ) ?> top level domains.</h3>
 		<p class="text-center"></p>
 		<div class="enom_pro_loader"></div>
-		<button class="btn btn-danger stopPriceBatch">Cancel</button>
+		<div class="progress">
+			<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+			</div>
+		</div>
+		<button class="btn btn-danger btn-block stopPriceBatch">Cancel</button>
 	</div>
 	<script>
 		var bulkPricingAJAX, aborted = false;
 		jQuery(function($) {
 			var $cancelButton = $(".stopPriceBatch"),
-				$title = $(".alert h3");
+				$title = $(".alert h3"),
+				$loader = $(".enom_pro_loader");
 			function doPriceBatch() {
 				if (aborted) {
 					return false;
@@ -501,13 +551,18 @@ if ( $this->is_pricing_cached() ) :
 						 url    : '<?php echo enom_pro::MODULE_LINK; ?>&action=get_pricing_data',
 						 success: function(data) {
 							 if (data == 'success') {
-								 $title.html('Import Complete. Reloading...').removeClass('alert-warning').addClass('alert-success');
+								 $title.html('Import Complete. Reloading...');
+							 		$title.closest('.alert').removeClass('alert-warning').addClass('alert-success');
+								 $(".progress, .stopPriceBatch").hide();
 								 setTimeout(function  (){
 									 window.location.reload();
-								 },1000);
+								 }, 1000);
 							 } else {
 								 doPriceBatch();
-								 $(".alert p").html('Loading pricing for: ' + data);
+								 var percent = Math.round( (data.loaded / data.total) * 100 );
+								 $loader.hide();
+								 $(".progress-bar").css('width', percent + '%').html(percent + "% Complete").attr('aria-valuenow', percent);
+								 $(".alert p").html('Loaded pricing for: ' + data.tld);
 							 }
 						 },
 						 error  : function(xhr) {
@@ -521,7 +576,7 @@ if ( $this->is_pricing_cached() ) :
 								 window.location.reload();
 								 return false;
 							 }).appendTo($title);
-							 $(".enom_pro_loader").hide();
+							 $loader.hide();
 						 }
 					 });
 			}

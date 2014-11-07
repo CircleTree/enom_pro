@@ -233,7 +233,9 @@ jQuery(function($) {
         container: 'body',
         placement: 'auto top'
     });
-
+    $(".ep_pop").popover({
+        trigger: 'hover'
+    });
     $(".ep_lightbox").on('click', function  () {
     	var $this = $(this), title = "", $dialog = $("#enom_pro_dialog");
     	if ($this.data('title')) {
@@ -548,7 +550,8 @@ jQuery(function($) {
             return false;
         } else if (e.type == 'recalculate') {
             var markup = $("#percentMarkup").val(),
-                round = $("#roundTo").val();
+                round = $("#roundTo").val(),
+                wholeMarkup = $("#wholeMarkup").val();
             if (round == -1) {
                 round = false;
             }
@@ -559,8 +562,12 @@ jQuery(function($) {
             }
             $elems.each(function  (){
                 var $elem = $(this);
+                if (wholeMarkup == "") {
+                    wholeMarkup = 0.00; //Make sure we don't have NaN
+                }
                 var newPrice = $elem.data('price') * ( 1 + (markup / 100));
-                var newPriceDouble = newPrice.toFixed(2);
+                var new2 = parseFloat(newPrice) + parseFloat(wholeMarkup);
+                var newPriceDouble = new2.toFixed(2);
                 //Check if the decimal value is gte our rounding amount
                 var thisDollarAmount = newPriceDouble.split(".")[1];
                 if (round && thisDollarAmount >= round) {
@@ -569,6 +576,9 @@ jQuery(function($) {
                     var Dollar = parseInt(newPriceDouble) + 1;
                     newPriceDouble = Dollar + '.' + round;
                     console.log('rounding up to $', Dollar);
+                } else if (round) {
+                    //Rounding up enabled
+                    newPriceDouble = thisDollarAmount + '.' + round;
                 }
                 $elem.val(newPriceDouble);
                 if ($elem.data('year') == 1 ) {
@@ -733,7 +743,7 @@ jQuery(function($) {
         });
         return false;
     });
-    $("#enom_pro_pricing_table").tableHover({colClass: "hover", ignoreCols: [1,2,3]});
+    $("#enom_pro_pricing_table").tableHover({colClass: "hover", ignoreCols: [1]});
 	var $news = $("#enom_pro_changelog"),
 	loadingString = "<h3>Loading Changelog</h3><div class=\"enom_pro_loader\"></div>";
  	if ($news.length > 0) {

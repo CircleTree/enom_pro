@@ -143,8 +143,8 @@ class enom_pro_controller {
 	protected function get_pricing_data() {
 		$retail = enom_pro::is_retail_pricing();
 		$response = $this->enom->getAllDomainsPricing( $retail );
-		if ( is_string( $response ) ) {
-			echo $response;
+		if (isset($response['tld']) ) {
+			$this->send_json($response);
 		} else {
 			echo 'success';
 		}
