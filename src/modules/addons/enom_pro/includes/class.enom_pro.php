@@ -123,7 +123,7 @@ class enom_pro {
 		$this->cache_file_all_tlds = ENOM_PRO_TEMP . 'all_tlds.cache';
 		$this->cache_file_exchange_rate = ENOM_PRO_TEMP . 'exchange.cache';
 		$this->cache_file_verification_report = ENOM_PRO_TEMP . 'domain_verification.cache';
-		$this->remote_request_limit = self::get_addon_setting( 'api_request_limit' );
+		$this->api_request_limit = self::get_addon_setting( 'api_request_limit' );
 		if ( php_sapi_name() == 'cli' ) {
 			self::$cli = true;
 		} else {
@@ -138,9 +138,19 @@ class enom_pro {
 	 * Override api limit for specific request types
 	 *
 	 * @param int $number
+	 *
 	 */
 	public function override_request_limit( $number ) {
-		$this->remote_request_limit = $number;
+		$this->api_request_limit = $number;
+	}
+
+	/**
+	 * Gets currently configured remote API request limit
+	 * @return int|string
+	 */
+	public function get_API_request_limit ()
+	{
+		return $this->api_request_limit;
 	}
 
 	/**
@@ -378,9 +388,9 @@ class enom_pro {
 		) {
 			throw new InvalidArgumentException( 'API Method ' . $command . ' not implemented', 400 );
 		}
-		if ( $this->remote_run_number >= $this->remote_request_limit ) {
+		if ( $this->remote_run_number >= $this->api_request_limit ) {
 			throw new EnomException(
-				'Too many remote API requests. Limit: ' . $this->remote_request_limit
+				'Too many remote API requests. Limit: ' . $this->api_request_limit
 			);
 		}
 		$this->setParams( array( 'command' => $command ) );
@@ -546,7 +556,11 @@ class enom_pro {
 				'min_period' => (int) $this->xml->productprice->minimumregistration
 			);
 		} catch ( Exception $e ) {
-			return array( 'price' => 0.00 );
+			return array(
+				'price' => 0.00,
+				'enabled' => false,
+				'error' => $e->getMessage()
+			);
 		}
 	}
 
@@ -617,7 +631,7 @@ class enom_pro {
 	 *
 	 * @param bool|string $retail
 	 *
-	 * @return array|string tld => pricing, or next TLD of batch
+	 * @return array tld => pricing, or batch meta
 	 */
 	public function getAllDomainsPricing( $retail = false ) {
 		if ( $this->is_pricing_cached() ) {
@@ -683,11 +697,19 @@ class enom_pro {
 			$this->set_cached_data( $this->cache_file_all_prices, $cached );
 		}
 
-		return $nextTLD;
+		return array(
+			'tld' => $tld,
+			'loaded' => $thisTLDIndex,
+			'total' => count($allTLDs)
+		);
 	}
 
 	const DOMAIN_CACHE_VERSION = 2;
 
+	/**
+	 * Checks cache file version & data integrity for TLD pricing import page
+	 * @return bool
+	 */
 	public function is_pricing_cached() {
 		$cache_data = $this->get_cache_data( $this->cache_file_all_prices );
 		if ( $cache_data === false ) {
@@ -744,6 +766,12 @@ class enom_pro {
 		return method_exists( 'DirectoryIterator', 'getExtension' );
 	}
 
+	/**
+	 * Checks if a domain is already in WHMCS
+	 * @param $domain
+	 *
+	 * @return bool
+	 */
 	public static function is_domain_in_whmcs( $domain ) {
 		$result = self::whmcs_api( 'getclientsdomains',
 			array( 'domain' => $domain ) );
@@ -756,7 +784,7 @@ class enom_pro {
 	}
 
 	/**
-	 * XML Override check
+	 * XML Override check. Used for unit tests.
 	 * @var boolean
 	 */
 	private $xml_override = false;
@@ -1196,7 +1224,7 @@ class enom_pro {
 	 * Request number limit for remote API transactions
 	 * @var int
 	 */
-	private $remote_request_limit;
+	private $api_request_limit;
 	/**
 	 * Current remote API transaction number
 	 * @var number $remote_run_number
@@ -2439,6 +2467,9 @@ class enom_pro {
 
 	/**
 	 * Accessibility function to check license for beta opt-in
+	 *
+	 * @uses enom_pro_license::isBetaOptedIn()
+	 *
 	 * @return bool
 	 */
 	public static function isBeta ()

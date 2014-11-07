@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="08c765d3-25f4-4648-aca3-dd0842f231cc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/page_import_tld_pricing.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/page_import_tld_pricing.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="enom_pro.iws" />
@@ -36,10 +39,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="hooks.php" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="hooks.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="256" column="65" selection-start="11090" selection-end="11090" vertical-scroll-proportion="0.55822784" vertical-offset="4013" max-vertical-offset="9817">
+            <state line="256" column="65" selection-start="11090" selection-end="11090" vertical-scroll-proportion="-13.038462" vertical-offset="4013" max-vertical-offset="9626">
               <folding>
                 <marker date="1415223459000" expanded="true" signature="3400:3537" placeholder="..." />
                 <marker date="1415223459000" expanded="true" signature="4397:4637" placeholder="..." />
@@ -48,42 +51,6 @@
                 <marker date="1415223459000" expanded="true" signature="4510:4551" placeholder="..." />
                 <marker date="1415223459000" expanded="true" signature="4570:4611" placeholder="..." />
                 <marker date="1415223459000" expanded="false" signature="17071:17083" placeholder="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="widget_domain_stats.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/widget_domain_stats.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="22" selection-start="133" selection-end="133" vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="1717">
-              <folding>
-                <marker date="1410659337000" expanded="true" signature="177:2688" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="206:2681" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="216:2671" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="223:653" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="256:590" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="348:527" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="660:738" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="680:730" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="746:1154" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="779:1093" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="869:1030" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="1161:1237" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="1181:1229" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="1245:1648" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="1278:1588" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="1367:1525" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="1655:1730" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="1675:1722" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="1737:2152" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="1770:2090" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="1860:2027" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="2159:2237" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="2179:2229" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="2244:2660" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="2277:2589" placeholder="..." />
-                <marker date="1410659337000" expanded="true" signature="2374:2526" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -144,127 +111,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="page_import_tld_pricing.php" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="page_import_tld_pricing.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/page_import_tld_pricing.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="206" column="45" selection-start="7756" selection-end="7756" vertical-scroll-proportion="-20.884615" vertical-offset="2925" max-vertical-offset="9778">
+            <state line="282" column="90" selection-start="10783" selection-end="10783" vertical-scroll-proportion="0.8656126" vertical-offset="4256" max-vertical-offset="11010">
               <folding>
-                <marker date="1413924629000" expanded="true" signature="148:1004" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="172:550" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="368:523" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="570:997" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="815:970" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="1134:17348" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="1384:3140" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="1458:1552" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="1705:1919" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="1733:1830" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="2022:2236" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="2050:2147" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="2338:2554" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="2366:2463" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="2657:2840" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="2685:2782" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="2941:3112" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="2969:3066" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="3279:3990" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="3305:3428" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="3435:3488" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="3512:3698" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="3521:3572" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="3581:3632" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="3641:3689" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="4121:4626" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="4147:4270" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="4282:4617" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="4464:4602" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="4496:4582" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="4927:8349" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="4953:5043" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="5394:8340" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="5421:6173" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="5457:5559" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="5642:5960" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="5653:5947" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="6019:6142" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="6200:8330" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="6232:8319" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="6354:7335" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="6587:6953" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="6685:6866" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="7056:7298" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="7346:7606" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="7616:7831" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="7861:8307" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="8464:9304" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="8491:8626" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="8879:9294" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="9392:11882" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="9418:9508" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="9534:11511" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="9641:11502" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="9739:10515" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="9770:10063" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="9872:10004" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="10094:10504" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="10242:10492" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="10545:10794" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="10585:10783" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="10646:10771" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="10833:11491" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="11008:11480" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="11112:11311" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="11370:11468" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="11382:11456" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="11536:11874" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="11776:11865" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="11930:16643" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="12139:12241" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="12299:16563" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="12341:12632" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="12520:12598" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="13126:16528" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="13136:14442" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="13177:14431" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="13285:13451" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="13497:14418" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="13548:13900" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="13598:13885" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="13914:14047" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="13926:14042" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="14119:14260" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="14141:14246" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="14273:14405" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="14285:14400" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="15294:16492" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="15363:16480" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="15433:15572" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="15588:16230" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="16332:16442" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="16679:17340" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="16702:17328" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="16744:17322" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="16826:17163" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="16877:17157" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="16954:17034" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="17069:17150" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="17183:17317" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="17508:17808" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="17818:19421" placeholder="..." />
-                <marker date="1413924629000" expanded="true" signature="17881:19410" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="17984:19048" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="18003:18029" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="18059:19041" placeholder="{&quot;url&quot;: '&lt;?php echo enom_pro::MODULE_LINK; ?&gt;&amp;action=get_pricing_data'...}" />
-                <marker date="1413924629000" expanded="true" signature="18172:18526" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="18205:18414" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="18349:18397" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="18420:18517" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="18558:19033" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="18644:18724" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="18730:18818" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="18898:18967" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="19117:19404" placeholder="{...}" />
-                <marker date="1413924629000" expanded="true" signature="19341:19399" placeholder="{...}" />
+                <element signature="e#19852#19870#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -273,9 +125,9 @@
       <file leaf-file-name="jquery.admin.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="803" column="38" selection-start="31087" selection-end="31095" vertical-scroll-proportion="-175.98148" vertical-offset="4148" max-vertical-offset="15943">
+            <state line="562" column="36" selection-start="22047" selection-end="22047" vertical-scroll-proportion="-6.7222223" vertical-offset="9191" max-vertical-offset="16153">
               <folding>
-                <marker date="1413999803000" expanded="false" signature="28987:28999" placeholder="..." />
+                <marker date="1415398050000" expanded="false" signature="29450:29462" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -284,18 +136,18 @@
       <file leaf-file-name="class.enom_pro.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="203" column="44" selection-start="4902" selection-end="4902" vertical-scroll-proportion="-9.384615" vertical-offset="3207" max-vertical-offset="41726">
+            <state line="700" column="15" selection-start="18886" selection-end="18886" vertical-scroll-proportion="-25.461538" vertical-offset="11238" max-vertical-offset="42939">
               <folding>
-                <marker date="1414596795000" expanded="true" signature="5647:6063" placeholder="..." />
-                <marker date="1414596795000" expanded="true" signature="5819:5853" placeholder="..." />
-                <marker date="1414596795000" expanded="true" signature="6008:6058" placeholder="..." />
-                <marker date="1414596795000" expanded="true" signature="6341:6409" placeholder="..." />
-                <marker date="1414596795000" expanded="true" signature="20304:20441" placeholder="SELECT `id`,..." />
-                <marker date="1414596795000" expanded="true" signature="31176:31763" placeholder="SELECT tlds...." />
-                <marker date="1414596795000" expanded="true" signature="50340:50416" placeholder="SELECT `sett..." />
-                <marker date="1414596795000" expanded="true" signature="64142:64440" placeholder="INSERT INTO ..." />
-                <marker date="1414596795000" expanded="true" signature="64706:64779" placeholder="SELECT `id` ..." />
-                <marker date="1414596795000" expanded="true" signature="68705:69065" placeholder="..." />
+                <marker date="1415391516000" expanded="true" signature="5817:6233" placeholder="..." />
+                <marker date="1415391516000" expanded="true" signature="5989:6023" placeholder="..." />
+                <marker date="1415391516000" expanded="true" signature="6178:6228" placeholder="..." />
+                <marker date="1415391516000" expanded="true" signature="6511:6579" placeholder="..." />
+                <marker date="1415391516000" expanded="true" signature="21927:22064" placeholder="SELECT `id`,..." />
+                <marker date="1415391516000" expanded="true" signature="32799:33386" placeholder="SELECT tlds...." />
+                <marker date="1415391516000" expanded="true" signature="51960:52036" placeholder="SELECT `sett..." />
+                <marker date="1415391516000" expanded="true" signature="65762:66060" placeholder="INSERT INTO ..." />
+                <marker date="1415391516000" expanded="true" signature="66326:66399" placeholder="SELECT `id` ..." />
+                <marker date="1415391516000" expanded="true" signature="70325:70685" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -304,22 +156,13 @@
       <file leaf-file-name="class.enom_pro_license.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="160" column="25" selection-start="5035" selection-end="5035" vertical-scroll-proportion="-10.423077" vertical-offset="2449" max-vertical-offset="7222">
+            <state line="88" column="5" selection-start="2963" selection-end="2963" vertical-scroll-proportion="-12.115385" vertical-offset="1181" max-vertical-offset="7341">
               <folding>
-                <marker date="1410652174000" expanded="true" signature="552:702" placeholder="..." />
-                <marker date="1410652174000" expanded="true" signature="724:884" placeholder="..." />
-                <marker date="1410652174000" expanded="true" signature="800:879" placeholder="..." />
-                <marker date="1410652174000" expanded="true" signature="3579:3626" placeholder="SELECT `loca..." />
+                <marker date="1415385602000" expanded="true" signature="552:702" placeholder="..." />
+                <marker date="1415385602000" expanded="true" signature="724:884" placeholder="..." />
+                <marker date="1415385602000" expanded="true" signature="800:879" placeholder="..." />
+                <marker date="1415385602000" expanded="true" signature="3663:3710" placeholder="SELECT `loca..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="betaSupportMessageText.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/betaSupportMessageText.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="0" selection-start="126" selection-end="126" vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="442">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -340,15 +183,6 @@
               <folding>
                 <marker date="1410639514000" expanded="true" signature="103:156" placeholder="SELECT * fro..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="enom_pro.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="28" selection-start="665" selection-end="665" vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="1819">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -410,12 +244,9 @@
       <file leaf-file-name="class.enom_pro_controller.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="599" column="102" selection-start="17702" selection-end="17758" vertical-scroll-proportion="-24.192308" vertical-offset="9554" max-vertical-offset="11053">
+            <state line="147" column="12" selection-start="4074" selection-end="4074" vertical-scroll-proportion="-8.5" vertical-offset="2278" max-vertical-offset="11030">
               <folding>
-                <marker date="1413988745000" expanded="true" signature="11870:11918" placeholder="SELECT `id`,..." />
-                <marker date="1413988745000" expanded="true" signature="17387:17455" placeholder="..." />
-                <marker date="1413988745000" expanded="true" signature="17463:17560" placeholder="..." />
-                <marker date="1413988745000" expanded="true" signature="17657:17764" placeholder="..." />
+                <marker date="1415386100000" expanded="true" signature="11883:11931" placeholder="SELECT `id`,..." />
               </folding>
             </state>
           </provider>
@@ -515,7 +346,6 @@
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/ssl_widget.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/pricing_sort.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/exceptions.php" />
-        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/domain_widget.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/betaSupportMessageText.php" />
         <option value="/JavaScript Fragment (class.enom_pro_widget.php:2668).js" />
@@ -528,20 +358,26 @@
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/balance_widget.php" />
         <option value="$PROJECT_DIR$/src/README.txt" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro.php" />
-        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/page_import_tld_pricing.php" />
-        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php" />
         <option value="$PROJECT_DIR$/write_beta_log.py" />
         <option value="$PROJECT_DIR$/write_beta_log.sh" />
         <option value="$PROJECT_DIR$/gitjson" />
-        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/css/admin.css" />
         <option value="$PROJECT_DIR$/build.xml" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_widget.php" />
         <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/8F8819E7-F363-41C2-A912-EB5AB1E4F339/domainchecker.tpl" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php" />
-        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/27F7FB6E-2F44-408B-837A-3022C0FB7E2B/style.css" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/923FBED9-4C97-4EF8-BA8A-93408A080B3C/head.js" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/8560C27C-69F5-440B-9720-3ED18100C434/sidebar.tpl" />
+        <option value="$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/AF38EE99-040F-4935-A732-FBD013727680/viewticket.tpl" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/js/bootstrap.min.js" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/page_import_tld_pricing.php" />
       </list>
     </option>
   </component>
@@ -635,6 +471,106 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="addons" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="addons" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="addons" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enom_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="includes" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2174,7 +2110,15 @@
       <created>1414596870668</created>
       <updated>1414596870668</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="fixed javascript global variable enom_pro beta mode flag">
+      <created>1415223627432</created>
+      <updated>1415223627432</updated>
+    </task>
+    <task id="LOCAL-00054" summary="refactor batch TLD pricing import process">
+      <created>1415384910540</created>
+      <updated>1415384910540</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -2268,8 +2212,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="Added 12 hour auto-cache invalidation for pending verification report&#10;extract beta message to file&#10;refactored &quot;just now&quot; to be less than 2 seconds instead of 5" />
-    <MESSAGE value="extract class enom_pro_widget" />
     <MESSAGE value="domains widget tab uses meta list values to show/hide the &quot;Load more&quot; button to prevent API limit timeouts&#10;" />
     <MESSAGE value="Added Pending verification widget cache data &#10;changed widget jQuery to IDE &quot;code intention aware&quot; HEREDOC" />
     <MESSAGE value="update workspace" />
@@ -2293,7 +2235,9 @@
     <MESSAGE value="fix source order of sidebar helpful links" />
     <MESSAGE value="fixed admin roles icons" />
     <MESSAGE value="added reporting of PHP's server IP for debugging" />
-    <option name="LAST_COMMIT_MESSAGE" value="added reporting of PHP's server IP for debugging" />
+    <MESSAGE value="fixed javascript global variable enom_pro beta mode flag" />
+    <MESSAGE value="refactor batch TLD pricing import process" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor batch TLD pricing import process" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2313,28 +2257,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="0" selection-start="2172" selection-end="2235" vertical-scroll-proportion="0.0" vertical-offset="1309" max-vertical-offset="1377">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="86" column="39" selection-start="2685" selection-end="2685" vertical-scroll-proportion="0.0" vertical-offset="1462" max-vertical-offset="8857" />
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Sites/whmcs/templates/orderforms/verticalsteps/configureproductdomain.tpl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="99" column="16" selection-start="5842" selection-end="5842" vertical-scroll-proportion="0.0" vertical-offset="1683" max-vertical-offset="1802" />
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Sites/whmcs/templates/orderforms/verticalsteps/adddomain.tpl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="85" column="6" selection-start="3318" selection-end="3318" vertical-scroll-proportion="0.0" vertical-offset="1445" max-vertical-offset="1513" />
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Sites/whmcs/templates/default/domainchecker.tpl">
       <provider selected="true" editor-type-id="text-editor">
         <state line="105" column="45" selection-start="4142" selection-end="4142" vertical-scroll-proportion="0.0" vertical-offset="1785" max-vertical-offset="3162" />
@@ -2684,32 +2606,32 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="9" column="22" selection-start="133" selection-end="133" vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="1717">
           <folding>
-            <marker date="1410659337000" expanded="true" signature="177:2688" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="206:2681" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="216:2671" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="223:653" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="256:590" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="348:527" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="660:738" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="680:730" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="746:1154" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="779:1093" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="869:1030" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="1161:1237" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="1181:1229" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="1245:1648" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="1278:1588" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="1367:1525" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="1655:1730" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="1675:1722" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="1737:2152" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="1770:2090" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="1860:2027" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="2159:2237" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="2179:2229" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="2244:2660" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="2277:2589" placeholder="..." />
-            <marker date="1410659337000" expanded="true" signature="2374:2526" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410659337000" expanded="true" signature="-1:-1" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -2833,154 +2755,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/page_import_tld_pricing.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="206" column="45" selection-start="7756" selection-end="7756" vertical-scroll-proportion="-20.884615" vertical-offset="2925" max-vertical-offset="9778">
-          <folding>
-            <marker date="1413924629000" expanded="true" signature="148:1004" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="172:550" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="368:523" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="570:997" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="815:970" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="1134:17348" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="1384:3140" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="1458:1552" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="1705:1919" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="1733:1830" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="2022:2236" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="2050:2147" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="2338:2554" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="2366:2463" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="2657:2840" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="2685:2782" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="2941:3112" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="2969:3066" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="3279:3990" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="3305:3428" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="3435:3488" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="3512:3698" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="3521:3572" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="3581:3632" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="3641:3689" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="4121:4626" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="4147:4270" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="4282:4617" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="4464:4602" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="4496:4582" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="4927:8349" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="4953:5043" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="5394:8340" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="5421:6173" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="5457:5559" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="5642:5960" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="5653:5947" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="6019:6142" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="6200:8330" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="6232:8319" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="6354:7335" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="6587:6953" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="6685:6866" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="7056:7298" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="7346:7606" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="7616:7831" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="7861:8307" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="8464:9304" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="8491:8626" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="8879:9294" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="9392:11882" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="9418:9508" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="9534:11511" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="9641:11502" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="9739:10515" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="9770:10063" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="9872:10004" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="10094:10504" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="10242:10492" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="10545:10794" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="10585:10783" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="10646:10771" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="10833:11491" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="11008:11480" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="11112:11311" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="11370:11468" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="11382:11456" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="11536:11874" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="11776:11865" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="11930:16643" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="12139:12241" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="12299:16563" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="12341:12632" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="12520:12598" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="13126:16528" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="13136:14442" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="13177:14431" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="13285:13451" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="13497:14418" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="13548:13900" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="13598:13885" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="13914:14047" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="13926:14042" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="14119:14260" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="14141:14246" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="14273:14405" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="14285:14400" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="15294:16492" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="15363:16480" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="15433:15572" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="15588:16230" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="16332:16442" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="16679:17340" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="16702:17328" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="16744:17322" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="16826:17163" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="16877:17157" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="16954:17034" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="17069:17150" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="17183:17317" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="17508:17808" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="17818:19421" placeholder="..." />
-            <marker date="1413924629000" expanded="true" signature="17881:19410" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="17984:19048" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="18003:18029" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="18059:19041" placeholder="{&quot;url&quot;: '&lt;?php echo enom_pro::MODULE_LINK; ?&gt;&amp;action=get_pricing_data'...}" />
-            <marker date="1413924629000" expanded="true" signature="18172:18526" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="18205:18414" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="18349:18397" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="18420:18517" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="18558:19033" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="18644:18724" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="18730:18818" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="18898:18967" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="19117:19404" placeholder="{...}" />
-            <marker date="1413924629000" expanded="true" signature="19341:19399" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="599" column="102" selection-start="17702" selection-end="17758" vertical-scroll-proportion="-24.192308" vertical-offset="9554" max-vertical-offset="11053">
-          <folding>
-            <marker date="1413988745000" expanded="true" signature="11870:11918" placeholder="SELECT `id`,..." />
-            <marker date="1413988745000" expanded="true" signature="17387:17455" placeholder="..." />
-            <marker date="1413988745000" expanded="true" signature="17463:17560" placeholder="..." />
-            <marker date="1413988745000" expanded="true" signature="17657:17764" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="160" column="25" selection-start="5035" selection-end="5035" vertical-scroll-proportion="-10.423077" vertical-offset="2449" max-vertical-offset="7222">
-          <folding>
-            <marker date="1410652174000" expanded="true" signature="552:702" placeholder="..." />
-            <marker date="1410652174000" expanded="true" signature="724:884" placeholder="..." />
-            <marker date="1410652174000" expanded="true" signature="800:879" placeholder="..." />
-            <marker date="1410652174000" expanded="true" signature="3579:3626" placeholder="SELECT `loca..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gitjson">
       <provider selected="true" editor-type-id="text-editor">
         <state line="25" column="24" selection-start="579" selection-end="579" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4766">
@@ -3035,24 +2809,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="203" column="44" selection-start="4902" selection-end="4902" vertical-scroll-proportion="-9.384615" vertical-offset="3207" max-vertical-offset="41726">
-          <folding>
-            <marker date="1414596795000" expanded="true" signature="5647:6063" placeholder="..." />
-            <marker date="1414596795000" expanded="true" signature="5819:5853" placeholder="..." />
-            <marker date="1414596795000" expanded="true" signature="6008:6058" placeholder="..." />
-            <marker date="1414596795000" expanded="true" signature="6341:6409" placeholder="..." />
-            <marker date="1414596795000" expanded="true" signature="20304:20441" placeholder="SELECT `id`,..." />
-            <marker date="1414596795000" expanded="true" signature="31176:31763" placeholder="SELECT tlds...." />
-            <marker date="1414596795000" expanded="true" signature="50340:50416" placeholder="SELECT `sett..." />
-            <marker date="1414596795000" expanded="true" signature="64142:64440" placeholder="INSERT INTO ..." />
-            <marker date="1414596795000" expanded="true" signature="64706:64779" placeholder="SELECT `id` ..." />
-            <marker date="1414596795000" expanded="true" signature="68705:69065" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="158" column="23" selection-start="6285" selection-end="6285" vertical-scroll-proportion="-13.076923" vertical-offset="2346" max-vertical-offset="3918">
@@ -3076,18 +2832,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="803" column="38" selection-start="31087" selection-end="31095" vertical-scroll-proportion="-175.98148" vertical-offset="4148" max-vertical-offset="15943">
-          <folding>
-            <marker date="1413999803000" expanded="false" signature="28987:28999" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/hooks.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="256" column="65" selection-start="11090" selection-end="11090" vertical-scroll-proportion="0.55822784" vertical-offset="4013" max-vertical-offset="9817">
+        <state line="256" column="65" selection-start="11090" selection-end="11090" vertical-scroll-proportion="-13.038462" vertical-offset="4013" max-vertical-offset="9626">
           <folding>
             <marker date="1415223459000" expanded="true" signature="3400:3537" placeholder="..." />
             <marker date="1415223459000" expanded="true" signature="4397:4637" placeholder="..." />
@@ -3096,6 +2843,117 @@
             <marker date="1415223459000" expanded="true" signature="4510:4551" placeholder="..." />
             <marker date="1415223459000" expanded="true" signature="4570:4611" placeholder="..." />
             <marker date="1415223459000" expanded="false" signature="17071:17083" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/AF38EE99-040F-4935-A732-FBD013727680/viewticket.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="330" column="19" selection-start="13869" selection-end="13875" vertical-scroll-proportion="-0.9209486" vertical-offset="6615" max-vertical-offset="7797">
+          <folding>
+            <element signature="n#style#0;n#select#0;n#h2#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#option#0;n#select#0;n#h2#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#2;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#3;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#textarea#0;n#form#0;n#div#0;n#div#5;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#td#1;n#tr#0;n#table#0;n#form#0;n#div#0;n#div#5;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#td#1;n#tr#0;n#table#0;n#form#0;n#div#0;n#div#5;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#textarea#0;n#form#0;n#div#0;n#div#6;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#td#1;n#tr#1;n#table#0;n#form#0;n#div#0;n#div#10;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#option#0;n#select#0;n#td#1;n#tr#2;n#table#0;n#form#0;n#div#0;n#div#10;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#14;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#0;n#form#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#small#0;n#div#1;n#div#2;n#div#1;n#div#0;n#div#0;n#form#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#small#0;n#div#2;n#div#1;n#div#0;n#div#0;n#form#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#p#0;n#form#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/8560C27C-69F5-440B-9720-3ED18100C434/sidebar.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="119" column="52" selection-start="6597" selection-end="6619" vertical-scroll-proportion="0.33333334" vertical-offset="1821" max-vertical-offset="7423">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/27F7FB6E-2F44-408B-837A-3022C0FB7E2B/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1128" column="0" selection-start="18671" selection-end="18671" vertical-scroll-proportion="0.9583333" vertical-offset="18394" max-vertical-offset="19975">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="88" column="5" selection-start="2963" selection-end="2963" vertical-scroll-proportion="-12.115385" vertical-offset="1181" max-vertical-offset="7341">
+          <folding>
+            <marker date="1415385602000" expanded="true" signature="552:702" placeholder="..." />
+            <marker date="1415385602000" expanded="true" signature="724:884" placeholder="..." />
+            <marker date="1415385602000" expanded="true" signature="800:879" placeholder="..." />
+            <marker date="1415385602000" expanded="true" signature="3663:3710" placeholder="SELECT `loca..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/Cleanup At Startup/Transmit/923FBED9-4C97-4EF8-BA8A-93408A080B3C/head.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="41" selection-start="1379" selection-end="1379" vertical-scroll-proportion="0.6722289" vertical-offset="65" max-vertical-offset="3015">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_controller.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="147" column="12" selection-start="4074" selection-end="4074" vertical-scroll-proportion="-8.5" vertical-offset="2278" max-vertical-offset="11030">
+          <folding>
+            <marker date="1415386100000" expanded="true" signature="11883:11931" placeholder="SELECT `id`,..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="700" column="15" selection-start="18886" selection-end="18886" vertical-scroll-proportion="-25.461538" vertical-offset="11238" max-vertical-offset="42939">
+          <folding>
+            <marker date="1415391516000" expanded="true" signature="5817:6233" placeholder="..." />
+            <marker date="1415391516000" expanded="true" signature="5989:6023" placeholder="..." />
+            <marker date="1415391516000" expanded="true" signature="6178:6228" placeholder="..." />
+            <marker date="1415391516000" expanded="true" signature="6511:6579" placeholder="..." />
+            <marker date="1415391516000" expanded="true" signature="21927:22064" placeholder="SELECT `id`,..." />
+            <marker date="1415391516000" expanded="true" signature="32799:33386" placeholder="SELECT tlds...." />
+            <marker date="1415391516000" expanded="true" signature="51960:52036" placeholder="SELECT `sett..." />
+            <marker date="1415391516000" expanded="true" signature="65762:66060" placeholder="INSERT INTO ..." />
+            <marker date="1415391516000" expanded="true" signature="66326:66399" placeholder="SELECT `id` ..." />
+            <marker date="1415391516000" expanded="true" signature="70325:70685" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/js/bootstrap.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4647">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="562" column="36" selection-start="22047" selection-end="22047" vertical-scroll-proportion="-6.7222223" vertical-offset="9191" max-vertical-offset="16153">
+          <folding>
+            <marker date="1415398050000" expanded="false" signature="29450:29462" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/page_import_tld_pricing.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="282" column="90" selection-start="10783" selection-end="10783" vertical-scroll-proportion="0.8656126" vertical-offset="4256" max-vertical-offset="11010">
+          <folding>
+            <element signature="e#19852#19870#0" expanded="true" />
           </folding>
         </state>
       </provider>

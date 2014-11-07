@@ -83,6 +83,13 @@ class enom_pro_license {
 			}
 		}
 	}
+
+	/**
+	 *
+	 * Checks to see if we're running in beta mode
+	 *
+	 * @return bool
+	 */
 	public static function isBetaOptedIn ()
 	{
 		return enom_pro::get_addon_setting('beta') == 'on' ? true : false;
