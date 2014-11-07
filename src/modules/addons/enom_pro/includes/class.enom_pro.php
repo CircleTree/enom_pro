@@ -555,12 +555,43 @@ class enom_pro {
 	 * @return string
 	 */
 	public function getDefaultCurrencyCode() {
-		$currencies = self::whmcs_api( 'getcurrencies', array() );
+		self::getWHMCSCurrencyData();
+		$currencies = self::$whmcsCurrencyData;
 		$currency_array = $currencies['currencies']['currency'];
 
 		return strtoupper( trim( $currency_array[0]['code'] ) );
 	}
 
+	/**
+	 * Checks if the current WHMCS base currency is USD or not
+	 *
+	 * @return bool
+	 */
+	public function isNonUSDinWHMCS ()
+	{
+		$defaultCurrencyCode = $this->getDefaultCurrencyCode();
+		if ($defaultCurrencyCode != 'USD') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	public static function getDefaultCurrencyPrefix ()
+	{
+		self::getWHMCSCurrencyData();
+		$defaultCurrencyPrefix = self::$whmcsCurrencyData['currencies']['currency'][0]['prefix'];
+		return $defaultCurrencyPrefix;
+	}
+
+	/**
+	 * In-Memory cache of WHMCS API response to limit API requests
+	 */
+	private static function getWHMCSCurrencyData () {
+		if (false === self::$whmcsCurrencyData) {
+			self::$whmcsCurrencyData = self::whmcs_api('getcurrencies', array());
+		}
+	}
+	private static $whmcsCurrencyData = false;
 	/**
 	 * Is a custom exchange rate set?
 	 * Lazy interface for dealing with WHMCS settings api
@@ -600,32 +631,40 @@ class enom_pro {
 			} else {
 				$rate = $this->get_exchange_rate_from_USD_to( $this->getDefaultCurrencyCode() );
 			}
-
 			$domainsCached = $cache_data['data'];
-			foreach ( $domainsCached as $tld => $cachedDomainData ) {
-				$convertedPrice = $domainsCached[$tld]['price'] * $rate;
-				$domainsCached[$tld]['price'] = $convertedPrice;
+
+			if ($this->isNonUSDinWHMCS()) {
+				foreach ( $domainsCached as $tld => $cachedDomainData ) {
+					$convertedPrice = $domainsCached[$tld]['price'] * $rate;
+					$domainsCached[$tld]['price'] = $convertedPrice;
+				}
 			}
 
 			return $domainsCached;
 		}
 		$allTLDs = $this->getTLDs();
 		if ( false !== ( $cache_data = $this->get_cache_data( $this->cache_file_all_prices ) ) ) {
+			//Cached, but not complete.
 			$tld = $cache_data['next_tld'];
 			$thisTLD = $cache_data['data'];
 		} else {
+			//Nothing cached, start with first TLD
 			$thisTLD = array();
 			$tld = reset( $allTLDs );
 		}
-		$pricingData = $this->getDomainPricing( $tld, $retail );
-		$thisTLD[$tld] = array(
-			'enabled' => $pricingData['enabled'],
-			'price' => $pricingData['price'],
-			'min_period' => $pricingData['min_period']
-		);
-		$nextTLD = false;
+		$tldsPerStep = 50;
 		$thisTLDIndex = array_search( $tld, $allTLDs );
-		$nextTLDIndex = $thisTLDIndex + 1;
+		$nextTLDIndex = $thisTLDIndex + $tldsPerStep;
+		$thisBatch = array_slice($allTLDs, $thisTLDIndex, $nextTLDIndex);
+		foreach ($thisBatch as $index => $thisBatchTLD) {
+			$pricingData = $this->getDomainPricing( $thisBatchTLD, $retail );
+			$thisTLD[$thisBatchTLD] = array(
+				'enabled' => $pricingData['enabled'] ? true : false,
+				'price' => $pricingData['price'],
+				'min_period' => $pricingData['min_period']
+			);
+		}
+		$nextTLD = false;
 		if ( isset( $allTLDs[$nextTLDIndex] ) ) {
 			$nextTLD = $allTLDs[$nextTLDIndex];
 		}
