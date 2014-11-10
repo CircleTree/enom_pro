@@ -155,6 +155,7 @@ if ( $this->is_pricing_cached() ) :
 							data-dismiss="alert"
 							aria-hidden="true">&uarr;</button>
 			<h3>Beta — Currency Conversion <span class="enom-pro-icon enom-pro-icon-currency"></span></h3>
+			<?php $defaultCurrencyCode = $this->getDefaultCurrencyCode(); ?>
 			<?php if ($this->isCustomExchangeRate()) :?>
 				<?php $exchangeRate = $this->getCustomExchangeRate();?>
 			<?php else: ?>
@@ -250,9 +251,9 @@ if ( $this->is_pricing_cached() ) :
 			<form class="bulkImport form-inline"
 						role="form"
 						action="<?php echo enom_pro::MODULE_LINK ?>">
-				<h4>Profit Settings</h4>
+				<h4>Pricing Markup Settings</h4>
 				<div class="form-group col-xs-12">
-					<h5 class="ep_pop" title="Minimum Profit" data-placement="auto top" data-content="Enter the minimum acceptable profit. Use this to cover credit card processing fees, for example.">Minimum Profit</h5>
+					<h5 class="ep_pop" title="Minimum Markup" data-placement="auto top" data-content="Enter the minimum acceptable markup. Use this to cover credit card processing fees, for example.">Minimum Markup</h5>
 					<div class="input-group">
 						<label for="percentMarkup" class="input-group-addon">Markup</label>
 						<input type="number"
@@ -280,8 +281,8 @@ if ( $this->is_pricing_cached() ) :
 					</div>
 				</div>
 				<div class="form-group col-xs-12">
-					<div class="alert alert-danger"><h3>BETA: Mock-up only</h3><p>Non functional at this point</p></div>
-					<h5 class="ep_pop" title="Preferred Profit" data-placement="auto top" data-content="The profit you'd like to make, while still being protected from under-selling.">Preferred Profit</h5>
+					<div class="alert alert-danger"><h5>BETA: Mock-up only</h5><p>Preferred is non-functional at this point</p></div>
+					<h5 class="ep_pop" title="Preferred Markup" data-placement="auto top" data-content="The Markup you'd like to make, while still being protected from under-selling.">Preferred Markup</h5>
 					<div class="input-group">
 						<label for="percentMarkup" class="input-group-addon">Markup</label>
 						<input type="number"
