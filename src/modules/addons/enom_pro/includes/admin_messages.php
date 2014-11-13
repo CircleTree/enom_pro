@@ -172,6 +172,26 @@
 	<?php endif;//End Support & updates expired?>
 <?php endif;//End Update is Available?>
 
+<?php if (
+					enom_pro_license::is_downgrade_available() &&
+					! enom_pro_controller::isDismissed( 'beta-downgrade' ))  :
+	?>
+		<div class="alert alert-danger fade in">
+			<button type="button"
+							class="close"
+							data-dismiss="alert"
+							data-alert="beta-downgrade"
+							aria-hidden="true">&times;</button>
+			<h3>Beta Downgrade</h3>
+			<p>Warning - this may have unexpected results. Please have a backup before proceeding with any major operations.</p>
+			<a id="doUpgrade" class="btn btn-lg btn-warning" href="<?php echo enom_pro_license::DO_UPGRADE_URL;?>">
+				<span class="enom-pro-icon enom-pro-icon-update"></span>
+				Downgrade to Version <?php echo enom_pro_license::get_latest_version();?>.
+			</a>
+	</div>
+<?php endif; ?>
+
+
 <?php if (isset($_GET['saved-exchange'])) :?>
 	<div class="alert alert-success slideup fixed">
 		<p>Custom Exchange Rate Saved</p>
@@ -190,4 +210,4 @@ function enom_pro_changelog_dom() { ?>
 	<?php else: ?>
 		<div id="enom_pro_changelog"></div>
 	<?php endif;?>
-<?php } ?>
+<?php }

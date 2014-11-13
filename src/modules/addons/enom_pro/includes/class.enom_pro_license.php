@@ -210,6 +210,16 @@ class enom_pro_license {
 		}
 	}
 
+	public static function  is_downgrade_available()
+	{
+		if (strlen(ENOM_PRO_VERSION) >= 10 && ! strstr(ENOM_PRO_VERSION, '.')) {
+			//Check for SHA1 hash (gte 10 length, and no periods)
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 
 	private static function _get_latest_version() {
 		$version_file = self::getVersionCacheFile();

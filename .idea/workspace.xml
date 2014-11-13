@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="08c765d3-25f4-4648-aca3-dd0842f231cc" name="Default" comment="better handling of multiple product addons">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" />
+    <list default="true" id="08c765d3-25f4-4648-aca3-dd0842f231cc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/php.xml" afterPath="$PROJECT_DIR$/.idea/php.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="enom_pro.iws" />
@@ -78,13 +75,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="admin_messages.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="admin_messages.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.3846154" vertical-offset="1993" max-vertical-offset="3855">
-              <caret line="127" column="21" selection-start-line="127" selection-start-column="21" selection-end-line="127" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.3961165" vertical-offset="3094" max-vertical-offset="4255">
+              <caret line="185" column="118" selection-start-line="185" selection-start-column="118" selection-end-line="185" selection-end-column="118" />
               <folding>
-                <marker date="1415916556000" expanded="true" signature="5232:5644" placeholder="..." />
+                <marker date="1415917467000" expanded="true" signature="5232:5644" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -125,11 +122,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="class.enom_pro.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="class.enom_pro.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.65677965" vertical-offset="34863" max-vertical-offset="42734">
-              <caret line="2064" column="29" selection-start-line="2064" selection-start-column="29" selection-end-line="2064" selection-end-column="29" />
+            <state vertical-scroll-proportion="-8.653846" vertical-offset="34863" max-vertical-offset="42734">
+              <caret line="2064" column="52" selection-start-line="2064" selection-start-column="52" selection-end-line="2064" selection-end-column="52" />
               <folding>
                 <marker date="1415916826000" expanded="true" signature="5817:6233" placeholder="..." />
                 <marker date="1415916826000" expanded="true" signature="5989:6023" placeholder="..." />
@@ -164,17 +161,17 @@
       <file leaf-file-name="class.enom_pro_license.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.5" vertical-offset="1972" max-vertical-offset="7442">
-              <caret line="129" column="0" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
+            <state vertical-scroll-proportion="-15.884615" vertical-offset="3276" max-vertical-offset="7655">
+              <caret line="217" column="12" selection-start-line="217" selection-start-column="12" selection-end-line="217" selection-end-column="12" />
               <folding>
-                <marker date="1415916593000" expanded="true" signature="580:730" placeholder="..." />
-                <marker date="1415916593000" expanded="true" signature="752:912" placeholder="..." />
-                <marker date="1415916593000" expanded="true" signature="828:907" placeholder="..." />
-                <marker date="1415916593000" expanded="true" signature="1611:1729" placeholder="..." />
-                <marker date="1415916593000" expanded="true" signature="1678:1724" placeholder="..." />
-                <marker date="1415916593000" expanded="true" signature="4386:4433" placeholder="SELECT `loca..." />
-                <marker date="1415916593000" expanded="true" signature="5124:5194" placeholder="UPDATE `mod_..." />
-                <marker date="1415916593000" expanded="true" signature="5648:5707" placeholder="UPDATE `mod_..." />
+                <marker date="1415917261000" expanded="true" signature="580:730" placeholder="..." />
+                <marker date="1415917261000" expanded="true" signature="752:912" placeholder="..." />
+                <marker date="1415917261000" expanded="true" signature="828:907" placeholder="..." />
+                <marker date="1415917261000" expanded="true" signature="1611:1729" placeholder="..." />
+                <marker date="1415917261000" expanded="true" signature="1678:1724" placeholder="..." />
+                <marker date="1415917261000" expanded="true" signature="4386:4433" placeholder="SELECT `loca..." />
+                <marker date="1415917261000" expanded="true" signature="5124:5194" placeholder="UPDATE `mod_..." />
+                <marker date="1415917261000" expanded="true" signature="5648:5707" placeholder="UPDATE `mod_..." />
               </folding>
             </state>
           </provider>
@@ -406,9 +403,9 @@
         <option value="$PROJECT_DIR$/get_enom_pro.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php" />
-        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php" />
-        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php" />
         <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php" />
+        <option value="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php" />
       </list>
     </option>
   </component>
@@ -2952,7 +2949,13 @@
       <option name="project" value="LOCAL" />
       <updated>1415915560462</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="purge temp folder on upgrade">
+      <created>1415916842247</created>
+      <option name="number" value="00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1415916842247</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -2982,14 +2985,14 @@
       <window_info id="Documentation" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21449067" sideWeight="0.4052533" order="2" side_tool="true" content_ui="tabs" x="104" y="122" width="1236" height="678" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15997131" sideWeight="0.6695353" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18829517" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18829517" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32188296" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292683" sideWeight="0.67105263" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43162394" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37277353" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24300255" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24300255" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19942611" sideWeight="0.65918803" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -3051,7 +3054,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="pricing import language fixes&#10;added dismissible multiple currency alert" />
     <MESSAGE value="widget title UX fixes&#10;added icons: acct. refill, currency, eq, log, module log, bugs, verify" />
     <MESSAGE value="widget file name cleanup" />
     <MESSAGE value="page file name cleanup" />
@@ -3076,7 +3078,8 @@
     <MESSAGE value="added account-wide check for support &amp; updates&#10;" />
     <MESSAGE value="added support &amp; updates check for beta and multiple addons" />
     <MESSAGE value="better handling of multiple product addons" />
-    <option name="LAST_COMMIT_MESSAGE" value="better handling of multiple product addons" />
+    <MESSAGE value="purge temp folder on upgrade" />
+    <option name="LAST_COMMIT_MESSAGE" value="purge temp folder on upgrade" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3818,16 +3821,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.3846154" vertical-offset="1993" max-vertical-offset="3855">
-          <caret line="127" column="21" selection-start-line="127" selection-start-column="21" selection-end-line="127" selection-end-column="21" />
-          <folding>
-            <marker date="1415916556000" expanded="true" signature="5232:5644" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="7.1538463" vertical-offset="10165" max-vertical-offset="12508">
@@ -3851,27 +3844,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.5" vertical-offset="1972" max-vertical-offset="7442">
-          <caret line="129" column="0" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
-          <folding>
-            <marker date="1415916593000" expanded="true" signature="580:730" placeholder="..." />
-            <marker date="1415916593000" expanded="true" signature="752:912" placeholder="..." />
-            <marker date="1415916593000" expanded="true" signature="828:907" placeholder="..." />
-            <marker date="1415916593000" expanded="true" signature="1611:1729" placeholder="..." />
-            <marker date="1415916593000" expanded="true" signature="1678:1724" placeholder="..." />
-            <marker date="1415916593000" expanded="true" signature="4386:4433" placeholder="SELECT `loca..." />
-            <marker date="1415916593000" expanded="true" signature="5124:5194" placeholder="UPDATE `mod_..." />
-            <marker date="1415916593000" expanded="true" signature="5648:5707" placeholder="UPDATE `mod_..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.65677965" vertical-offset="34863" max-vertical-offset="42734">
-          <caret line="2064" column="29" selection-start-line="2064" selection-start-column="29" selection-end-line="2064" selection-end-column="29" />
+        <state vertical-scroll-proportion="-8.653846" vertical-offset="34863" max-vertical-offset="42734">
+          <caret line="2064" column="52" selection-start-line="2064" selection-start-column="52" selection-end-line="2064" selection-end-column="52" />
           <folding>
             <marker date="1415916826000" expanded="true" signature="5817:6233" placeholder="..." />
             <marker date="1415916826000" expanded="true" signature="5989:6023" placeholder="..." />
@@ -3888,6 +3864,33 @@
             <marker date="1415916826000" expanded="true" signature="66300:66373" placeholder="SELECT `id` ..." />
             <marker date="1415916826000" expanded="true" signature="67352:67398" placeholder="SELECT `role..." />
             <marker date="1415916826000" expanded="true" signature="67480:67531" placeholder="SELECT `widg..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-15.884615" vertical-offset="3276" max-vertical-offset="7655">
+          <caret line="217" column="12" selection-start-line="217" selection-start-column="12" selection-end-line="217" selection-end-column="12" />
+          <folding>
+            <marker date="1415917261000" expanded="true" signature="580:730" placeholder="..." />
+            <marker date="1415917261000" expanded="true" signature="752:912" placeholder="..." />
+            <marker date="1415917261000" expanded="true" signature="828:907" placeholder="..." />
+            <marker date="1415917261000" expanded="true" signature="1611:1729" placeholder="..." />
+            <marker date="1415917261000" expanded="true" signature="1678:1724" placeholder="..." />
+            <marker date="1415917261000" expanded="true" signature="4386:4433" placeholder="SELECT `loca..." />
+            <marker date="1415917261000" expanded="true" signature="5124:5194" placeholder="UPDATE `mod_..." />
+            <marker date="1415917261000" expanded="true" signature="5648:5707" placeholder="UPDATE `mod_..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3961165" vertical-offset="3094" max-vertical-offset="4255">
+          <caret line="185" column="118" selection-start-line="185" selection-start-column="118" selection-end-line="185" selection-end-column="118" />
+          <folding>
+            <marker date="1415917467000" expanded="true" signature="5232:5644" placeholder="..." />
           </folding>
         </state>
       </provider>
