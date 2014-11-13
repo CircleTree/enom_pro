@@ -581,13 +581,15 @@ jQuery(function($) {
                     newMinPriceDouble = newPreferredPriceDouble;
                 }
                 //Check if the decimal value is gte our rounding amount
-                var thisDollarAmount = newMinPriceDouble.split(".")[1];
-                if (round && thisDollarAmount >= round) {
+                var priceArray = newMinPriceDouble.split("."),
+                    thisDollarAmount = priceArray[0],
+                    thisCentAmount = priceArray[1];
+                if (round && thisCentAmount >= round) {
                     //Need to bump the dollar amount to the next one
                     //IE round to .95 amount 3.98 -> 4.95
-                    var Dollar = parseInt(newMinPriceDouble) + 1;
+                    var Dollar = parseInt(thisDollarAmount) + 1;
                     newMinPriceDouble = Dollar + '.' + round;
-                    console.log('rounding up to $', Dollar);
+                    //console.log('rounding up to $', Dollar);
                 } else if (round) {
                     //Rounding up enabled
                     newMinPriceDouble = thisDollarAmount + '.' + round;
