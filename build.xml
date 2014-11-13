@@ -398,6 +398,7 @@
 				<include name="${beta_log_filename}" />
 			</fileset>
 		</ftpdeploy>
+		<echo>Done. Pushed hash: ${git_version}</echo>
 	</target>
 	<target name="install" description="Installs to real test dev environment" depends="zip">
 		<sync sourcedir="build/encoded/"
