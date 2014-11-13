@@ -770,11 +770,12 @@ jQuery(function($) {
     var $betaLog = $("#enom_pro_beta_changelog");
     if ($betaLog.length > 0) {
         var $betaLogUL = $("<ul></ul>");
-        $betaLogUL.appendTo($betaLog);
         $.ajax({
             data: {action: 'get_beta_log'},
             dataType: 'json',
             success: function  (data){
+                $betaLog.empty();
+                $betaLogUL.appendTo($betaLog);
                 $.each(data, function  (k, value){
                     //Value has properties: date_iso, date (timestamp), sha, subject
                     var badge = 'badge';

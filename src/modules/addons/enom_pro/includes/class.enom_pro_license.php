@@ -67,23 +67,41 @@ class enom_pro_license {
 	 * @return array 'status', duedate
 	 */
 	public function get_supportandUpdates() {
+		$return = array();
 		if ( !isset( $this->license['addons'] ) && strstr($this->key, 'dev')) {
-			return array( 'status' => 'beta');
+			$return['status'] = 'beta';
 		}
 		$addons = $this->license['addons'];
 		$addons = str_ireplace( '&amp;', '&', $addons );
 		$addons_array = explode( '|', $addons );
+		$expired_addons = $active_addons = array();
 		foreach ( $addons_array as $addon_string ) {
 			$addon_array = explode( ';', $addon_string );
 			$statusText = strtolower( substr( $addon_array[2], 7 ) );
-			if ( "name={$this->updates_addon_name}" == $addon_array[0] && $statusText == 'active') {
-				return array(
-					'status' => $statusText,
-					'duedate' => substr( $addon_array[1], 12 )
-				);
-				break;
+			if ( "name={$this->updates_addon_name}" == $addon_array[0]) {
+				$dueDate = substr( $addon_array[1], 12);
+				if ($statusText == 'active') {
+					$active_addons[] = $dueDate;
+				} else {
+					$expired_addons[] = array(
+						'duedate' => $dueDate,
+						'status' => $statusText,
+					);
+				}
 			}
 		}
+		if (count($active_addons) >= 1) {
+			$return['status'] = 'active';
+			sort($active_addons);
+			$return['duedate'] = end($active_addons);
+		} elseif (count($expired_addons) >= 1) {
+			//Sort by most recent expiry
+			array_multisort($expired_addons);
+			$most_recent = end($expired_addons);
+			$return['status'] = $most_recent['status'];
+			$return['duedate'] = $most_recent['duedate'];
+		}
+		return $return;
 	}
 
 	/**
