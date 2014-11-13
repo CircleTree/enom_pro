@@ -11,6 +11,7 @@ class enom_pro_license {
 	 */
 	private $license;
 	private static $latest_version = false;
+	private $key;
 	private $updates_addon_name = "Support & Updates - eNom PRO";
 	const DO_UPGRADE_URL = 'addonmodules.php?module=enom_pro&action=do_upgrade';
 
@@ -20,7 +21,7 @@ class enom_pro_license {
 	 * @throws LicenseException
 	 */
 	public function  __construct() {
-		$license = enom_pro::get_addon_setting( 'license' );
+		$this->key = $license = enom_pro::get_addon_setting( 'license' );
 		//Prep return string
 		$return = "";
 		if ( $license == "" ) {
@@ -66,7 +67,7 @@ class enom_pro_license {
 	 * @return array 'status', duedate
 	 */
 	public function get_supportandUpdates() {
-		if ( !isset( $this->license['addons'] ) ) {
+		if ( !isset( $this->license['addons'] ) && strstr($this->key, 'dev')) {
 			return array( 'status' => 'beta');
 		}
 		$addons = $this->license['addons'];
@@ -74,9 +75,10 @@ class enom_pro_license {
 		$addons_array = explode( '|', $addons );
 		foreach ( $addons_array as $addon_string ) {
 			$addon_array = explode( ';', $addon_string );
-			if ( "name={$this->updates_addon_name}" == $addon_array[0] ) {
+			$statusText = strtolower( substr( $addon_array[2], 7 ) );
+			if ( "name={$this->updates_addon_name}" == $addon_array[0] && $statusText == 'active') {
 				return array(
-					'status' => strtolower( substr( $addon_array[2], 7 ) ),
+					'status' => $statusText,
 					'duedate' => substr( $addon_array[1], 12 )
 				);
 				break;
