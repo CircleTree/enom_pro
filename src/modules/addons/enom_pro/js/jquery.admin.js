@@ -553,36 +553,46 @@ jQuery(function($) {
         } else if (e.type == 'recalculate') {
             var markup = $("#percentMarkup").val(),
                 round = $("#roundTo").val(),
+                preferredMarkup = $("#preferredPercentMarkup").val(),
+                preferredWholeMarkup = $("#preferredWholeMarkup").val(),
                 wholeMarkup = $("#wholeMarkup").val();
             if (round == -1) {
                 round = false;
             }
+            if (wholeMarkup == "") {
+                wholeMarkup = 0.00; //Make sure we don't have NaN
+            }
+            var preferredWholeMarkup2 = preferredWholeMarkup || 0.00;
             if ($('#overWriteWHMCS').prop('checked')) {
                 var $elems = jQuery('[data-price]');
             } else {
                 var $elems = jQuery('[data-price]').not('[data-whmcs]');
             }
             $elems.each(function  (){
+                //If min. is lt preferred, use preferred, else use minimum
                 var $elem = $(this);
-                if (wholeMarkup == "") {
-                    wholeMarkup = 0.00; //Make sure we don't have NaN
+                var newMinPrice = $elem.data('price') * ( 1 + (markup / 100));
+                var newMinPrice2 = parseFloat(newMinPrice) + parseFloat(wholeMarkup);
+                var newMinPriceDouble = newMinPrice2.toFixed(2);
+                var newPreferredPrice = $elem.data('price') * ( 1 + (preferredMarkup / 100));
+                var newPreferredPrice2 = parseFloat(newPreferredPrice) + parseFloat(preferredWholeMarkup2);
+                var newPreferredPriceDouble = newPreferredPrice2.toFixed(2);
+                if (newMinPriceDouble < newPreferredPriceDouble) {
+                    newMinPriceDouble = newPreferredPriceDouble;
                 }
-                var newPrice = $elem.data('price') * ( 1 + (markup / 100));
-                var new2 = parseFloat(newPrice) + parseFloat(wholeMarkup);
-                var newPriceDouble = new2.toFixed(2);
                 //Check if the decimal value is gte our rounding amount
-                var thisDollarAmount = newPriceDouble.split(".")[1];
+                var thisDollarAmount = newMinPriceDouble.split(".")[1];
                 if (round && thisDollarAmount >= round) {
                     //Need to bump the dollar amount to the next one
                     //IE round to .95 amount 3.98 -> 4.95
-                    var Dollar = parseInt(newPriceDouble) + 1;
-                    newPriceDouble = Dollar + '.' + round;
+                    var Dollar = parseInt(newMinPriceDouble) + 1;
+                    newMinPriceDouble = Dollar + '.' + round;
                     console.log('rounding up to $', Dollar);
                 } else if (round) {
                     //Rounding up enabled
-                    newPriceDouble = thisDollarAmount + '.' + round;
+                    newMinPriceDouble = thisDollarAmount + '.' + round;
                 }
-                $elem.val(newPriceDouble);
+                $elem.val(newMinPriceDouble);
                 if ($elem.data('year') == 1 ) {
                     $elem.trigger('keyup');
                 }

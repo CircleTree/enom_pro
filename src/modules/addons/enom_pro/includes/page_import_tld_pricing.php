@@ -281,16 +281,15 @@ if ( $this->is_pricing_cached() ) :
 					</div>
 				</div>
 				<div class="form-group col-xs-12">
-					<div class="alert alert-danger"><h5>BETA: Mock-up only</h5><p>Preferred is non-functional at this point</p></div>
 					<h5 class="ep_pop" title="Preferred Markup" data-placement="auto top" data-content="The Markup you'd like to make, while still being protected from under-selling.">Preferred Markup</h5>
 					<div class="input-group">
-						<label for="percentMarkup" class="input-group-addon">Markup</label>
+						<label for="preferredPercentMarkup" class="input-group-addon">Markup</label>
 						<input type="number"
 									 min="0"
 									 max="500"
 									 step="0.01"
 									 name="markup"
-									 id="percentMarkup"
+									 id="preferredPercentMarkup"
 									 class="form-control input-sm"/>
 						<span class="input-group-addon">%</span>
 					</div>
@@ -298,13 +297,13 @@ if ( $this->is_pricing_cached() ) :
 						<label>+</label>
 					</div>
 					<div class="input-group">
-						<label for="wholeMarkup" class="input-group-addon">$</label>
+						<label for="preferredWholeMarkup" class="input-group-addon">$</label>
 						<input type="number"
 									 min="0.00"
 									 max="500"
 									 step="0.05"
 									 name="markup2"
-									 id="wholeMarkup"
+									 id="preferredWholeMarkup"
 									 placeholder="0.00"
 									 class="form-control input-sm"/>
 					</div>
@@ -316,13 +315,13 @@ if ( $this->is_pricing_cached() ) :
 					<div class="input-group">
 						<label for="roundTo" class="input-group-addon">Round up to $</label>
 						<select name="round" id="roundTo" class="form-control input-sm-2">
+							<option value="-1">Disabled</option>
 							<option value="99">.99</option>
 							<option value="98">.98</option>
 							<option value="95">.95</option>
 							<option value="50">.50</option>
 							<option value="01">.01</option>
 							<option value="00">.00</option>
-							<option value="-1">Disabled</option>
 						</select>
 					</div>
 					<div class="input-group checkbox">
