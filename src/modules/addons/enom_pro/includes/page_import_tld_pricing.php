@@ -562,7 +562,7 @@ if ( $this->is_pricing_cached() ) :
 								 var percent = Math.round( (data.loaded / data.total) * 100 );
 								 $loader.hide();
 								 $(".progress-bar").css('width', percent + '%').html(percent + "% Complete").attr('aria-valuenow', percent);
-								 $(".alert p").html('Loaded pricing for: ' + data.tld);
+								 $("#loading_pricing p").html('Loaded pricing for: ' + data.tld);
 							 }
 						 },
 						 error  : function(xhr) {
