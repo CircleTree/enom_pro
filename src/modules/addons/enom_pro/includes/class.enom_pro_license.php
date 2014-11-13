@@ -67,7 +67,7 @@ class enom_pro_license {
 	 */
 	public function get_supportandUpdates() {
 		if ( !isset( $this->license['addons'] ) ) {
-			return false;
+			return array( 'status' => 'beta');
 		}
 		$addons = $this->license['addons'];
 		$addons = str_ireplace( '&amp;', '&', $addons );
