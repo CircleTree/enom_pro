@@ -132,7 +132,7 @@
 	<?php if (! in_array($status['status'], array('active', 'beta')) ) :?>
 		<?php //Support & updates expired ?>
 		<div class="alert alert-danger">
-			<div class="floatright">
+			<div class="text-right">
 				<a class="btn btn-warning btn-lg" href="<?php echo enom_pro::MODULE_LINK?>&action=do_upgrade_check">
 					Already renewed? Click here to refresh.
 				</a>
@@ -146,12 +146,8 @@
 				<?php endif;?>
 			<h1><a target="_blank" href="https://mycircletree.com/client-area/cart.php?gid=addons" class="btn btn-inverse" >Renew Now</a>
 				to enjoy these great new features:</h1>
-			<?php //TODO make this more DRY ?>
-			<?php if (enom_pro::isBeta()) :?>
-				<div id="enom_pro_beta_changelog"></div>
-			<?php else: ?>
-				<div id="enom_pro_changelog"></div>
-			<?php endif;?>
+			<?php enom_pro_changelog_dom(); ?>
+
 		</div>
 	<?php else://active & update available?>
 		<?php if (! enom_pro::is_upgrader_compatible()):?>
@@ -171,13 +167,7 @@
 					<span class="enom-pro-icon enom-pro-icon-update"></span>
 					Upgrade to Version <?php echo enom_pro_license::get_latest_version();?> now!
 				</a> -or- <a href="<?php echo $enom->get_upgrade_zip_url()?>">Download Now</a>
-			<?php //TODO make this more DRY ?>
-				<?php if (enom_pro::isBeta()) :?>
-					<?php //TODO add ajax loader state ?>
-					<div id="enom_pro_beta_changelog"></div>
-				<?php else: ?>
-					<div id="enom_pro_changelog"></div>
-				<?php endif;?>
+				<?php enom_pro_changelog_dom(); ?>
 			</div>
 		<?php endif; //End upgrader compat. check?>
 	<?php endif;//End Support & updates expired?>
@@ -188,3 +178,17 @@
 		<p>Custom Exchange Rate Saved</p>
 	</div>
 <?php endif;?>
+
+<?php
+/**
+ * Outputs Changelog html
+ */
+function enom_pro_changelog_dom() { ?>
+	<?php if (enom_pro::isBeta()) :?>
+		<div id="enom_pro_beta_changelog">
+			<div class="enom_pro_loader"></div>
+		</div>
+	<?php else: ?>
+		<div id="enom_pro_changelog"></div>
+	<?php endif;?>
+<?php } ?>

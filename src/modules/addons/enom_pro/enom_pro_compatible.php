@@ -544,14 +544,16 @@ function enom_pro_sidebar( $vars ) {
 					<span class="enom-pro-icon enom-pro-icon-update"></span>
 				</a>
 			</div>
-			<div class="col-xs-12">
-				<a
-					href="http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43"
-					class="btn btn-default btn-xs btn-block"
-					target="_blank">
-					View Changelog
-				</a>
-			</div>
+			<?php if (! enom_pro::isBeta()) :?>
+				<div class="col-xs-12">
+					<a
+						href="http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43"
+						class="btn btn-default btn-xs btn-block"
+						target="_blank">
+						View Changelog
+					</a>
+				</div>
+			<?php endif;?>
 			<div class="col-xs-12">
 				<a href="<?php echo enom_pro::INSTALL_URL; ?>"
 					 target="_blank"
