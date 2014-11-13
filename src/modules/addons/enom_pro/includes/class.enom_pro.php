@@ -1994,7 +1994,7 @@ class enom_pro {
 			die();
 		}
 		if ( !is_writeable( ENOM_PRO_TEMP ) ) {
-			throw new Exception( 'Enom Pro Temp dir is unwriteable (' . ENOM_PRO_TEMP . '.).' );
+			throw new Exception( 'Enom Pro Temp dir is un-writable (' . ENOM_PRO_TEMP . '.).' );
 		}
 		$filename = ENOM_PRO_TEMP . 'upgrade.zip';
 		//Open handle to write zip contents
@@ -2090,8 +2090,7 @@ class enom_pro {
 		$this->migrate220();
 
 		//Cleanup temp dir
-		$this->rmdir( $upgrade_dir );
-		rmdir( $upgrade_dir );
+		$this->rmdir(ENOM_PRO_TEMP);
 		$return = array();
 		if ( !empty( $manual_template_files ) ) {
 			$return['templates'] = $manual_template_files;
