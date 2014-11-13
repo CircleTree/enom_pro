@@ -233,9 +233,11 @@ jQuery(function($) {
         container: 'body',
         placement: 'auto top'
     });
-    $(".ep_pop").popover({
-        trigger: 'hover'
-    });
+    if (typeof(jQuery.fn.popover) == "function") {
+        $(".ep_pop").popover({
+            trigger: 'hover'
+        });
+    }
     $(".ep_lightbox").on('click', function  () {
     	var $this = $(this), title = "", $dialog = $("#enom_pro_dialog");
     	if ($this.data('title')) {
