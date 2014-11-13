@@ -11,6 +11,7 @@
 	<property name="version_xml" value="enom_pro_version.xml"/>
 	<property name="beta_version_xml" value="enom_pro_version_beta.xml"/>
 	<property name="deploy" value="/Users/robertgregor/Sites/whmcs"/>
+	<property name="deploy2" value="/Users/robertgregor/Sites/whmcs2"/>
 	<!-- Location to save the encoded version -->
 	<property name="encoded" value="${build_dir}/encoded"/>
 	<property name="encoded_prep" value="${build_dir}/encoded_prep"/>
@@ -397,5 +398,13 @@
 				<include name="${beta_log_filename}" />
 			</fileset>
 		</ftpdeploy>
+	</target>
+	<target name="install" description="Installs to real test dev environment" depends="zip">
+		<sync sourcedir="build/encoded/"
+					destinationdir="${deploy2}"
+
+					itemizechanges="true"
+					verbose="true"
+					checksum="true"/>
 	</target>
 </project>

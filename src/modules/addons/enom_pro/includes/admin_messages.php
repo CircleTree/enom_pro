@@ -129,7 +129,7 @@
 <?php //Update Available  ?>
 <?php if (enom_pro_license::is_update_available()) :?>
 	<?php $status = $enom->license->get_supportandUpdates();?>
-	<?php if ($status['status'] != 'active') :?>
+	<?php if (! in_array($status['status'], array('active', 'beta')) ) :?>
 		<?php //Support & updates expired ?>
 		<div class="alert alert-danger">
 			<div class="floatright">
