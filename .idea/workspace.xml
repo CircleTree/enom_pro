@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="08c765d3-25f4-4648-aca3-dd0842f231cc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php" afterPath="$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="enom_pro.iws" />
@@ -78,11 +77,9 @@
       <file leaf-file-name="admin_messages.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3961165" vertical-offset="3094" max-vertical-offset="4255">
-              <caret line="185" column="118" selection-start-line="185" selection-start-column="118" selection-end-line="185" selection-end-column="118" />
-              <folding>
-                <marker date="1415917467000" expanded="true" signature="5232:5644" placeholder="..." />
-              </folding>
+            <state vertical-scroll-proportion="0.5879699" vertical-offset="3179" max-vertical-offset="4286">
+              <caret line="208" column="11" selection-start-line="208" selection-start-column="11" selection-end-line="208" selection-end-column="11" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -100,7 +97,7 @@
       <file leaf-file-name="page_import_tld_pricing.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/page_import_tld_pricing.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0" vertical-offset="2618" max-vertical-offset="11186">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2618" max-vertical-offset="10115">
               <caret line="156" column="73" selection-start-line="156" selection-start-column="73" selection-end-line="156" selection-end-column="73" />
               <folding />
             </state>
@@ -110,14 +107,9 @@
       <file leaf-file-name="jquery.admin.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.3888888" vertical-offset="13134" max-vertical-offset="16224">
+            <state vertical-scroll-proportion="0.0" vertical-offset="13209" max-vertical-offset="15351">
               <caret line="777" column="16" selection-start-line="777" selection-start-column="16" selection-end-line="777" selection-end-column="16" />
-              <folding>
-                <marker date="1415913956000" expanded="true" signature="4:34502" placeholder="{...}" />
-                <marker date="1415913956000" expanded="true" signature="8390:34479" placeholder="{...}" />
-                <marker date="1415913956000" expanded="false" signature="29519:29531" placeholder="..." />
-                <marker date="1415913956000" expanded="true" signature="29912:30727" placeholder="{...}" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -125,25 +117,9 @@
       <file leaf-file-name="class.enom_pro.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.653846" vertical-offset="34863" max-vertical-offset="42734">
+            <state vertical-scroll-proportion="0.0" vertical-offset="35088" max-vertical-offset="42143">
               <caret line="2064" column="52" selection-start-line="2064" selection-start-column="52" selection-end-line="2064" selection-end-column="52" />
-              <folding>
-                <marker date="1415916826000" expanded="true" signature="5817:6233" placeholder="..." />
-                <marker date="1415916826000" expanded="true" signature="5989:6023" placeholder="..." />
-                <marker date="1415916826000" expanded="true" signature="6178:6228" placeholder="..." />
-                <marker date="1415916826000" expanded="true" signature="6511:6579" placeholder="..." />
-                <marker date="1415916826000" expanded="true" signature="21927:22064" placeholder="SELECT `id`,..." />
-                <marker date="1415916826000" expanded="true" signature="32799:33377" placeholder="SELECT tlds...." />
-                <marker date="1415916826000" expanded="true" signature="32799:33386" placeholder="SELECT tlds...." />
-                <marker date="1415916826000" expanded="true" signature="51960:52036" placeholder="SELECT `sett..." />
-                <marker date="1415916826000" expanded="true" signature="52854:52932" placeholder="SELECT * fro..tbladdonmodules..." />
-                <marker date="1415916826000" expanded="true" signature="53071:53281" placeholder="UPDATE `tbla..." />
-                <marker date="1415916826000" expanded="true" signature="53328:53620" placeholder="INSERT INTO ..." />
-                <marker date="1415916826000" expanded="true" signature="65736:66034" placeholder="INSERT INTO ..." />
-                <marker date="1415916826000" expanded="true" signature="66300:66373" placeholder="SELECT `id` ..." />
-                <marker date="1415916826000" expanded="true" signature="67352:67398" placeholder="SELECT `role..." />
-                <marker date="1415916826000" expanded="true" signature="67480:67531" placeholder="SELECT `widg..." />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -161,18 +137,9 @@
       <file leaf-file-name="class.enom_pro_license.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-15.884615" vertical-offset="3276" max-vertical-offset="7655">
+            <state vertical-scroll-proportion="0.0" vertical-offset="3689" max-vertical-offset="7140">
               <caret line="217" column="12" selection-start-line="217" selection-start-column="12" selection-end-line="217" selection-end-column="12" />
-              <folding>
-                <marker date="1415917261000" expanded="true" signature="580:730" placeholder="..." />
-                <marker date="1415917261000" expanded="true" signature="752:912" placeholder="..." />
-                <marker date="1415917261000" expanded="true" signature="828:907" placeholder="..." />
-                <marker date="1415917261000" expanded="true" signature="1611:1729" placeholder="..." />
-                <marker date="1415917261000" expanded="true" signature="1678:1724" placeholder="..." />
-                <marker date="1415917261000" expanded="true" signature="4386:4433" placeholder="SELECT `loca..." />
-                <marker date="1415917261000" expanded="true" signature="5124:5194" placeholder="UPDATE `mod_..." />
-                <marker date="1415917261000" expanded="true" signature="5648:5707" placeholder="UPDATE `mod_..." />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -202,24 +169,9 @@
       <file leaf-file-name="enom_pro_compatible.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="7.1538463" vertical-offset="10165" max-vertical-offset="12508">
+            <state vertical-scroll-proportion="0.0" vertical-offset="9979" max-vertical-offset="11866">
               <caret line="587" column="4" selection-start-line="587" selection-start-column="4" selection-end-line="587" selection-end-column="4" />
-              <folding>
-                <marker date="1415914288000" expanded="true" signature="1250:1324" placeholder="..." />
-                <marker date="1415914288000" expanded="true" signature="1250:1354" placeholder="..." />
-                <marker date="1415914288000" expanded="false" signature="2830:2855" placeholder="..." />
-                <marker date="1415914288000" expanded="false" signature="4452:4477" placeholder="..." />
-                <marker date="1415914288000" expanded="false" signature="6700:6725" placeholder="..." />
-                <marker date="1415914288000" expanded="false" signature="9898:9923" placeholder="..." />
-                <marker date="1415914288000" expanded="true" signature="14033:14183" placeholder="..." />
-                <marker date="1415914288000" expanded="true" signature="14788:14966" placeholder="CREATE TABLE..mod_enom_pro..." />
-                <marker date="1415914288000" expanded="true" signature="15005:15045" placeholder="INSERT INTO ..." />
-                <marker date="1415914288000" expanded="true" signature="15155:15212" placeholder="DELETE FROM ..." />
-                <marker date="1415914288000" expanded="true" signature="15341:15410" placeholder="INSERT INTO ..." />
-                <marker date="1415914288000" expanded="true" signature="15462:15531" placeholder="INSERT INTO ..." />
-                <marker date="1415914288000" expanded="true" signature="15583:15652" placeholder="INSERT INTO ..." />
-                <marker date="1415914288000" expanded="true" signature="15704:15778" placeholder="INSERT INTO ..." />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -278,7 +230,7 @@
       <file leaf-file-name="build.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="6656" max-vertical-offset="7647">
+            <state vertical-scroll-proportion="0.0" vertical-offset="6715" max-vertical-offset="7004">
               <caret line="395" column="20" selection-start-line="395" selection-start-column="20" selection-end-line="395" selection-end-column="20" />
               <folding />
             </state>
@@ -2955,7 +2907,13 @@
       <option name="project" value="LOCAL" />
       <updated>1415916842247</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="added beta downgrade option">
+      <created>1415917484063</created>
+      <option name="number" value="00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1415917484063</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -2982,30 +2940,30 @@
     <frame x="4" y="22" width="1436" height="878" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Documentation" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21449067" sideWeight="0.4052533" order="2" side_tool="true" content_ui="tabs" x="104" y="122" width="1236" height="678" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15997131" sideWeight="0.6695353" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18829517" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32188296" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18829517" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292683" sideWeight="0.67105263" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43162394" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37277353" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24300255" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19942611" sideWeight="0.65918803" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21449067" sideWeight="0.5947467" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37055838" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Documentation" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21449067" sideWeight="0.4052533" order="2" side_tool="true" content_ui="tabs" x="104" y="122" width="1236" height="678" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24847001" sideWeight="0.34081197" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32824427" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="combo" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32951653" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32188296" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24300255" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Command Line Tools Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
@@ -3026,15 +2984,15 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298153" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20405982" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24847001" sideWeight="0.34081197" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32942432" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24847001" sideWeight="0.34081197" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19951041" sideWeight="0.65918803" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17135863" sideWeight="0.59808105" order="1" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37313432" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37313432" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -3054,7 +3012,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="widget title UX fixes&#10;added icons: acct. refill, currency, eq, log, module log, bugs, verify" />
     <MESSAGE value="widget file name cleanup" />
     <MESSAGE value="page file name cleanup" />
     <MESSAGE value="added blank indexes to prevent apache directoryIndex" />
@@ -3079,7 +3036,8 @@
     <MESSAGE value="added support &amp; updates check for beta and multiple addons" />
     <MESSAGE value="better handling of multiple product addons" />
     <MESSAGE value="purge temp folder on upgrade" />
-    <option name="LAST_COMMIT_MESSAGE" value="purge temp folder on upgrade" />
+    <MESSAGE value="added beta downgrade option" />
+    <option name="LAST_COMMIT_MESSAGE" value="added beta downgrade option" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3758,9 +3716,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4647">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3794,14 +3749,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.3888888" vertical-offset="13134" max-vertical-offset="16224">
+        <state vertical-scroll-proportion="0.0" vertical-offset="13209" max-vertical-offset="15351">
           <caret line="777" column="16" selection-start-line="777" selection-start-column="16" selection-end-line="777" selection-end-column="16" />
-          <folding>
-            <marker date="1415913956000" expanded="true" signature="4:34502" placeholder="{...}" />
-            <marker date="1415913956000" expanded="true" signature="8390:34479" placeholder="{...}" />
-            <marker date="1415913956000" expanded="false" signature="29519:29531" placeholder="..." />
-            <marker date="1415913956000" expanded="true" signature="29912:30727" placeholder="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -3823,75 +3773,33 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/enom_pro_compatible.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="7.1538463" vertical-offset="10165" max-vertical-offset="12508">
+        <state vertical-scroll-proportion="0.0" vertical-offset="9979" max-vertical-offset="11866">
           <caret line="587" column="4" selection-start-line="587" selection-start-column="4" selection-end-line="587" selection-end-column="4" />
-          <folding>
-            <marker date="1415914288000" expanded="true" signature="1250:1324" placeholder="..." />
-            <marker date="1415914288000" expanded="true" signature="1250:1354" placeholder="..." />
-            <marker date="1415914288000" expanded="false" signature="2830:2855" placeholder="..." />
-            <marker date="1415914288000" expanded="false" signature="4452:4477" placeholder="..." />
-            <marker date="1415914288000" expanded="false" signature="6700:6725" placeholder="..." />
-            <marker date="1415914288000" expanded="false" signature="9898:9923" placeholder="..." />
-            <marker date="1415914288000" expanded="true" signature="14033:14183" placeholder="..." />
-            <marker date="1415914288000" expanded="true" signature="14788:14966" placeholder="CREATE TABLE..mod_enom_pro..." />
-            <marker date="1415914288000" expanded="true" signature="15005:15045" placeholder="INSERT INTO ..." />
-            <marker date="1415914288000" expanded="true" signature="15155:15212" placeholder="DELETE FROM ..." />
-            <marker date="1415914288000" expanded="true" signature="15341:15410" placeholder="INSERT INTO ..." />
-            <marker date="1415914288000" expanded="true" signature="15462:15531" placeholder="INSERT INTO ..." />
-            <marker date="1415914288000" expanded="true" signature="15583:15652" placeholder="INSERT INTO ..." />
-            <marker date="1415914288000" expanded="true" signature="15704:15778" placeholder="INSERT INTO ..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.653846" vertical-offset="34863" max-vertical-offset="42734">
+        <state vertical-scroll-proportion="0.0" vertical-offset="35088" max-vertical-offset="42143">
           <caret line="2064" column="52" selection-start-line="2064" selection-start-column="52" selection-end-line="2064" selection-end-column="52" />
-          <folding>
-            <marker date="1415916826000" expanded="true" signature="5817:6233" placeholder="..." />
-            <marker date="1415916826000" expanded="true" signature="5989:6023" placeholder="..." />
-            <marker date="1415916826000" expanded="true" signature="6178:6228" placeholder="..." />
-            <marker date="1415916826000" expanded="true" signature="6511:6579" placeholder="..." />
-            <marker date="1415916826000" expanded="true" signature="21927:22064" placeholder="SELECT `id`,..." />
-            <marker date="1415916826000" expanded="true" signature="32799:33377" placeholder="SELECT tlds...." />
-            <marker date="1415916826000" expanded="true" signature="32799:33386" placeholder="SELECT tlds...." />
-            <marker date="1415916826000" expanded="true" signature="51960:52036" placeholder="SELECT `sett..." />
-            <marker date="1415916826000" expanded="true" signature="52854:52932" placeholder="SELECT * fro..tbladdonmodules..." />
-            <marker date="1415916826000" expanded="true" signature="53071:53281" placeholder="UPDATE `tbla..." />
-            <marker date="1415916826000" expanded="true" signature="53328:53620" placeholder="INSERT INTO ..." />
-            <marker date="1415916826000" expanded="true" signature="65736:66034" placeholder="INSERT INTO ..." />
-            <marker date="1415916826000" expanded="true" signature="66300:66373" placeholder="SELECT `id` ..." />
-            <marker date="1415916826000" expanded="true" signature="67352:67398" placeholder="SELECT `role..." />
-            <marker date="1415916826000" expanded="true" signature="67480:67531" placeholder="SELECT `widg..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/class.enom_pro_license.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.884615" vertical-offset="3276" max-vertical-offset="7655">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3689" max-vertical-offset="7140">
           <caret line="217" column="12" selection-start-line="217" selection-start-column="12" selection-end-line="217" selection-end-column="12" />
-          <folding>
-            <marker date="1415917261000" expanded="true" signature="580:730" placeholder="..." />
-            <marker date="1415917261000" expanded="true" signature="752:912" placeholder="..." />
-            <marker date="1415917261000" expanded="true" signature="828:907" placeholder="..." />
-            <marker date="1415917261000" expanded="true" signature="1611:1729" placeholder="..." />
-            <marker date="1415917261000" expanded="true" signature="1678:1724" placeholder="..." />
-            <marker date="1415917261000" expanded="true" signature="4386:4433" placeholder="SELECT `loca..." />
-            <marker date="1415917261000" expanded="true" signature="5124:5194" placeholder="UPDATE `mod_..." />
-            <marker date="1415917261000" expanded="true" signature="5648:5707" placeholder="UPDATE `mod_..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/modules/addons/enom_pro/includes/admin_messages.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3961165" vertical-offset="3094" max-vertical-offset="4255">
-          <caret line="185" column="118" selection-start-line="185" selection-start-column="118" selection-end-line="185" selection-end-column="118" />
-          <folding>
-            <marker date="1415917467000" expanded="true" signature="5232:5644" placeholder="..." />
-          </folding>
+        <state vertical-scroll-proportion="0.5879699" vertical-offset="3179" max-vertical-offset="4286">
+          <caret line="208" column="11" selection-start-line="208" selection-start-column="11" selection-end-line="208" selection-end-column="11" />
+          <folding />
         </state>
       </provider>
     </entry>
