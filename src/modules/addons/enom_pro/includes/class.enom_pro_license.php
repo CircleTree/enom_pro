@@ -115,6 +115,9 @@ class enom_pro_license {
 		return enom_pro::get_addon_setting('beta') == 'on' ? true : false;
 	}
 
+	/**
+	 * @return string
+	 */
 	private static function getVersionCacheFile() {
 		if (self::isBetaOptedIn()) {
 			$filename = 'beta_version';

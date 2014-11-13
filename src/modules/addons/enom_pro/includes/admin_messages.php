@@ -125,7 +125,6 @@
 		<?php endif;?>
 	</div>
 <?php endif;?>
-
 <?php //Update Available  ?>
 <?php if (enom_pro_license::is_update_available()) :?>
 	<?php $status = $enom->license->get_supportandUpdates();?>
