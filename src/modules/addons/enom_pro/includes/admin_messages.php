@@ -137,7 +137,13 @@
 					Already renewed? Click here to refresh.
 				</a>
 			</div>
-			<p>Update Subscription Expired. Expired on <?php echo $status['duedate'];?></p>
+			<p>Update Subscription Expired.
+				<?php if (isset($status['duedate'])) : ?>
+				Expired on <?php echo $status['duedate'];?></p>
+				<?php else: ?>
+				No support &amp; updates addon found
+
+				<?php endif;?>
 			<h1><a target="_blank" href="https://mycircletree.com/client-area/cart.php?gid=addons" class="btn btn-inverse" >Renew Now</a>
 				to enjoy these great new features:</h1>
 			<?php //TODO make this more DRY ?>
