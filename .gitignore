@@ -1,0 +1,12 @@
+/build/
+
+/enom_pro.zip
+/enom_pro_BETA.zip
+/enom_pro_open.zip
+
+/icomoon/eNom PRO.json
+
+*.DS_Store
+
+/.idea/dataSources.local.xml
+/.idea/workspace.xml
