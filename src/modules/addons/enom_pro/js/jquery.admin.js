@@ -863,15 +863,23 @@ jQuery(function($) {
             } else {
                 this.hide(this.$upgradeAlertSidebar);
             }
-            this.$upgradeAlert.on('closed.bs.alert', function () {
-              enom_pro.hideUpgradeAlert();
+            this.$upgradeAlert.on('close.bs.alert', function (e) {
+                //Stop Bootstrap from removing it from the DOM
+                e.preventDefault();
+                enom_pro.hideUpgradeAlert();
             })
         },
+        /**
+         * Shows changelog & hides sidebar notification
+         */
         showUpgradeAlert: function  (){
             this.deleteHideAlert();
             this.show(this.$upgradeAlert);
             this.hide(this.$upgradeAlertSidebar);
         },
+        /**
+         * Hides the changelog and restores the sidebar notification
+         */
         hideUpgradeAlert: function  (){
             if (this.support.localStorage()) {
                 window.sessionStorage.setItem(this.upgradeSessionKey, true);
