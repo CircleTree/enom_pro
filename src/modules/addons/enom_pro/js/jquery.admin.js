@@ -781,23 +781,25 @@ jQuery(function($) {
  	}
     var $betaLog = $("#enom_pro_beta_changelog");
     if ($betaLog.length > 0) {
-        var $betaLogUL = $("<ul></ul>");
-        $.ajax({
-            data: {action: 'get_beta_log'},
-            dataType: 'json',
-            success: function  (data){
-                $betaLog.empty();
-                $betaLogUL.appendTo($betaLog);
-                $.each(data, function  (k, value){
-                    //Value has properties: date_iso, date (timestamp), sha, subject
-                    var badge = 'badge';
-                    if (enom_pro.version.search(value.sha) > -1) {
-                        badge += ' current-version';
-                    }
-                    var revString = '<span class="'+badge+'">'+value.sha+':</span>' + value.subject;
-                    $betaLogUL.append('<li data-hash="'+value.sha+'">'+revString+'</li>')
-                });
-            }
+        $betaLog.on('ep.load', function  (){
+            var $betaLogUL = $("<ul></ul>");
+            $.ajax({
+                data: {action: 'get_beta_log'},
+                dataType: 'json',
+                success: function  (data){
+                    $betaLog.empty();
+                    $betaLogUL.appendTo($betaLog);
+                    $.each(data, function  (k, value){
+                        //Value has properties: date_iso, date (timestamp), sha, subject
+                        var badge = 'badge';
+                        if (enom_pro.version.search(value.sha) > -1) {
+                            badge += ' current-version';
+                        }
+                        var revString = '<span class="'+badge+'">'+value.sha+':</span>' + value.subject;
+                        $betaLogUL.append('<li data-hash="'+value.sha+'">'+revString+'</li>')
+                    });
+                }
+            });
         });
     }
 
@@ -855,13 +857,16 @@ jQuery(function($) {
     });
     enom_pro = $.extend(enom_pro, {
         upgradeSessionKey: 'dismissEnomProUpgrade',
+        $betaLog: jQuery("#enom_pro_beta_changelog"),
         $upgradeAlert : jQuery('#upgradeAlert'),
         $upgradeAlertSidebar: $(".upgradeAlertHidden"),
         init : function  (){
             if (this.isUpgradeAlertHidden()) {
-                this.hide(this.$upgradeAlert);
+                this.hideUpgradeAlert();
+                //this.hide(this.$upgradeAlert);
             } else {
-                this.hide(this.$upgradeAlertSidebar);
+                this.showUpgradeAlert();
+                //this.hide(this.$upgradeAlertSidebar);
             }
             this.$upgradeAlert.on('close.bs.alert', function (e) {
                 //Stop Bootstrap from removing it from the DOM
@@ -875,6 +880,7 @@ jQuery(function($) {
         showUpgradeAlert: function  (){
             this.deleteHideAlert();
             this.show(this.$upgradeAlert);
+            this.$betaLog.trigger('ep.load');
             this.hide(this.$upgradeAlertSidebar);
         },
         /**
