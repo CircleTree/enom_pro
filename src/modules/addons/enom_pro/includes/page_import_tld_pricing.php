@@ -36,8 +36,7 @@ function pager( $enom_pro ) {
  * TLD Cache Check
  ***********************
  */
-if ( $this->is_pricing_cached() ) :
-	?>
+if ( $this->is_pricing_cached() ) : ?>
 	<div id="enom_pro_pricing_import_page">
 	<?php if (
 		isset( $_GET['cleared'] ) ||
