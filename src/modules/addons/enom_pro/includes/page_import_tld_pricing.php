@@ -175,7 +175,24 @@ if ( $this->is_pricing_cached() ) :
 			</tr>
 			<?php
 			$offset = isset( $_GET['start'] ) ? (int) $_GET['start'] : 0;
-			$domains = array_slice( $this->getAllDomainsPricing(),
+			$search = isset( $_GET['s']) ? strip_tags($_GET['s']) : false;
+			$allDomainsPricing = $this->getAllDomainsPricing();
+			$allDomainsSearched = array();
+			if ($search) {
+				foreach ($allDomainsPricing as $tld => $domainPriceData) {
+					if (strstr($tld, $search)) {
+						$allDomainsSearched[$tld] = $domainPriceData;
+					} elseif (strstr($domainPriceData['price'], $search)) {
+						$allDomainsSearched[$tld] = $domainPriceData;
+					}
+				}
+				unset($tld, $domainPriceData); //Just for good measure
+				if (! empty($allDomainsSearched)) {
+					//Search successful, overwrite our default array
+					$allDomainsPricing = $allDomainsSearched;
+				}
+			}
+			$domains = array_slice( $allDomainsPricing,
 				$offset,
 				$per_page );
 			foreach ( $domains as $tld => $domainPriceData ):
@@ -187,8 +204,28 @@ if ( $this->is_pricing_cached() ) :
 			<?php endif; ?>
 				<tr>
 					<td>
-						<div class="btn-group tldActions">
-							<div class="btn tldAction <?php echo $isInWHMCS ? 'btn-success' : 'btn-default' ?> dropdown-toggle"
+						<?php
+						$btn_classes = array();
+						$thisTLDError = false;
+						if (isset($domainPriceData['error'])) {
+							$thisTLDError = $domainPriceData['error'];
+							$btn_classes[] = 'btn-warning';
+							$btn_classes[] = 'disabled';
+						} else {
+							$btn_classes[] = $isInWHMCS ? 'btn-success' : 'btn-default';
+
+						}
+						?>
+						<div class="btn-group tldActions
+							<?php if ($thisTLDError) : ?>
+							ep_pop"
+								title="Error from eNom API"
+								data-content="<?php echo $thisTLDError ?>"
+							<?php else: ?>
+								"
+							<?php endif;?>
+							>
+							<div class="btn tldAction <?php echo implode(" ", $btn_classes) ?> dropdown-toggle"
 									 data-toggle="dropdown"
 									 data-tld="<?php echo $tld ?>"
 									 <?php if ($isInWHMCS) : ?>data-whmcs="true"<?php endif ?>><?php echo $tld; ?></div>
@@ -325,6 +362,14 @@ if ( $this->is_pricing_cached() ) :
 			<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
 			</div>
 		</div>
+		<?php if ($this->isModuleDebugEnabled()) :?>
+			<div class="alert alert-danger">
+				<h3>Module Logging is Enabled.</h3>
+				<p>For best performance, please only enable module logging when instructed to by support.
+				<a href="systemmodulelog.php" class="btn btn-link" target="_blank" >Visit this page to disable logging</a>
+				</p>
+			</div>
+		<?php endif;?>
 		<button class="btn btn-danger btn-block stopPriceBatch">Cancel</button>
 	</div>
 	<script>
