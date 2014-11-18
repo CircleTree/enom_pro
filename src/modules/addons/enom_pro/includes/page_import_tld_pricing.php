@@ -147,221 +147,11 @@ if ( $this->is_pricing_cached() ) :
 	<?php endif; ?>
 
 
-	<?php $defaultCurrencyPrefix = $this->getDefaultCurrencyPrefix(); ?>
-	<?php if ( $this->isNonUSDinWHMCS() ) :?>
-		<div class="well">
-			<button type="button"
-							class="close"
-							data-dismiss="alert"
-							aria-hidden="true">&uarr;</button>
-			<h3>Beta — Currency Conversion <span class="enom-pro-icon enom-pro-icon-currency"></span></h3>
-			<?php $defaultCurrencyCode = $this->getDefaultCurrencyCode(); ?>
-			<?php if ($this->isCustomExchangeRate()) :?>
-				<?php $exchangeRate = $this->getCustomExchangeRate();?>
-			<?php else: ?>
-				<?php $exchangeRate = $this->get_exchange_rate_from_USD_to($defaultCurrencyCode);?>
-			<?php endif;?>
-			<div class="row">
-				<div class="col-lg-6">
-					<div class="alert alert-info">
-						We have detected that your WHMCS configuration is not using USD as a base currency.
-					</div>
-					<?php if (null !== $exchangeRate) :?>
-						<div class="alert alert-warning">
-							<p>
-									Exchange rate <span class="badge"><?php echo $exchangeRate; ?></span>
-							used to convert eNom's <span class="badge">USD</span> pricing into your <span class="label label-info">WHMCS</span> Default currency: <span class="badge"><?php echo $defaultCurrencyCode ?></span>
-							</p>
-						</div>
-					<?php else: ?>
-						<div class="alert alert-danger">
-							<p>No exchange rate found. Please enter one manually, or enter an API key for updating currencies.</p>
-						</div>
-					<?php endif;?>
-				</div>
-				<div class="col-sm-6">
-					<div class="well well-sm">
-							<div class="alert <?php if ($this->isCustomExchangeRate()):?>alert-danger<?php else: ?>alert-info<?php endif; ?>">
-								<?php if ($this->isCustomExchangeRate()):?>
-									Using Custom Exchange Rate. <br/>
-								<?php else: ?>
-									Enter Custom Exchange Rate. <br/>
-								<?php endif;?>
-								<form method="post" class="form-inline">
-									<input type="hidden" name="action" value="save_custom_exchange_rate" />
-									<label>
-										Use Exchange Rate:
-										<input type="text" name="custom-exchange-rate" value="<?php echo enom_pro::get_addon_setting('custom-exchange-rate'); ?>"/>
-									</label>
-									<input type="submit" value="Update" class="btn btn-primary"/>
-								</form>
-								<?php if ($this->isCustomExchangeRate()) :?>
-									<form method="post" class="form-inline">
-										<input type="hidden" name="action" value="save_custom_exchange_rate" />
-										<input type="hidden" name="custom-exchange-rate" value="-1" />
-										<input type="submit" value="Clear" class="btn btn-danger"/>
-									</form>
-								<?php endif;?>
-							</div>
-						<h3>
-							<span class="badge">USD</span>
-							&rarr;
-							<span class="badge"><?php echo $defaultCurrencyCode ?></span> = <span class="badge">1</span> &rarr; <span class="badge"><?php echo $exchangeRate !== null ? $exchangeRate : '???'; ?></span>
-						</h3>
-						<p>Exchange rate updated <span class="badge"><?php echo $this->get_exchange_rate_cache_date() ?></span>
-							<?php if ($this->isUsingExchangeRateAPIKey()) :?><span class="badge">Using API key</span><?php endif;?></p>
-						<div class="btn-group">
-							<a class="btn btn-default btn-link" href="<?php echo enom_pro::MODULE_LINK . '&action=clear_exchange_cache' ?>"><span class="enom-pro-icon enom-pro-icon-refresh-alt"></span>Update Exchange Rate</a>
-							<a target="_blank" href="configcurrencies.php" class="ep_tt ep_lightbox btn btn-default" data-title="WHMCS Currencies" data-width="90%" title="" data-original-title="Configure currencies in WHMCS">Edit WHMCS Currency</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<?php if ( !enom_pro_controller::isDismissed( 'multiple_currencies' ) ) : ?>
-			<div class="alert alert-danger">
-				<button type="button"
-								class="close"
-								data-dismiss="alert"
-								data-alert="multiple_currencies"
-								aria-hidden="true">&times;</button>
-				<h4>More than 1 currency in WHMCS?</h4>
-				<p>Once you have imported the pricing from eNom into WHMCS, you can use <b>WHMCS built-in product pricing currency update</b> function to convert the rest of your currencies.</p>
-				<ol class="numbered">
-					<li>Click "Edit WHMCS Currency" Above</li>
-					<li>Click "Update Product Prices" on the WHMCS Currency Configuration Page</li>
-					<li>Additionally, you can have WHMCS automatically update product pricing on the CRON run. See the WHMCS docs for more information. <a href="http://docs.whmcs.com/Automation_Settings#Currency_Auto_Update_Settings" target="_blank" >WHMCS Currency Auto Update</a></li>
-				</ol>
-			</div>
-		<?php endif; ?>
-	<?php endif;//End default currency check ?>
 
-	<div class="well row">
-			<button type="button"
-							class="close"
-							data-dismiss="alert"
-							aria-hidden="true">&uarr;</button>
+	<?php require_once ENOM_PRO_INCLUDES . 'page_import_tld_pricing_currency_conversion.php'; ?>
 
-		<div class="col-lg-6">
+	<?php require_once ENOM_PRO_INCLUDES . 'page_import_tld_pricing_bulk_process.php'; ?>
 
-			<h3>Bulk Import</h3>
-
-			<p>Import all TLDs on this page</p>
-
-			<form class="bulkImport form-inline"
-						role="form"
-						action="<?php echo enom_pro::MODULE_LINK ?>">
-				<h4>Pricing Markup Settings</h4>
-				<div class="form-group col-xs-12">
-					<h5 class="ep_pop" title="Minimum Markup" data-placement="auto top" data-content="Enter the minimum acceptable markup. Use this to cover credit card processing fees, for example.">Minimum Markup</h5>
-					<div class="input-group">
-						<label for="percentMarkup" class="input-group-addon">Markup</label>
-						<input type="number"
-									 min="0"
-									 step="0.01"
-									 max="500"
-									 name="markup"
-									 id="percentMarkup"
-									 class="form-control input-sm"/>
-						<span class="input-group-addon">%</span>
-					</div>
-					<div class="input-group">
-						<label>+</label>
-					</div>
-					<div class="input-group">
-						<label for="wholeMarkup" class="input-group-addon">$</label>
-						<input type="number"
-									 min="0.00"
-									 max="500"
-									 step="0.05"
-									 name="markup2"
-									 id="wholeMarkup"
-									 placeholder="0.00"
-									 class="form-control input-sm"/>
-					</div>
-				</div>
-				<div class="form-group col-xs-12">
-					<h5 class="ep_pop" title="Preferred Markup" data-placement="auto top" data-content="The Markup you'd like to make, while still being protected from under-selling.">Preferred Markup</h5>
-					<div class="input-group">
-						<label for="preferredPercentMarkup" class="input-group-addon">Markup</label>
-						<input type="number"
-									 min="0"
-									 max="500"
-									 step="0.01"
-									 name="markup"
-									 id="preferredPercentMarkup"
-									 class="form-control input-sm"/>
-						<span class="input-group-addon">%</span>
-					</div>
-					<div class="input-group">
-						<label>+</label>
-					</div>
-					<div class="input-group">
-						<label for="preferredWholeMarkup" class="input-group-addon">$</label>
-						<input type="number"
-									 min="0.00"
-									 max="500"
-									 step="0.05"
-									 name="markup2"
-									 id="preferredWholeMarkup"
-									 placeholder="0.00"
-									 class="form-control input-sm"/>
-					</div>
-				</div>
-
-
-				<div class="form-group col-xs-12">
-					<h5>Price Options</h5>
-					<div class="input-group">
-						<label for="roundTo" class="input-group-addon">Round up to $</label>
-						<select name="round" id="roundTo" class="form-control input-sm-2">
-							<option value="-1">Disabled</option>
-							<option value="99">.99</option>
-							<option value="98">.98</option>
-							<option value="95">.95</option>
-							<option value="50">.50</option>
-							<option value="01">.01</option>
-							<option value="00">.00</option>
-						</select>
-					</div>
-					<div class="input-group checkbox">
-						<label for="overWriteWHMCS" class="input-group-addon">
-							<input type="checkbox" name="overwrite" id="overWriteWHMCS"/>
-							Overwrite Values Already in WHMCS
-						</label>
-					</div>
-				</div>
-
-				<div class="btn-group pull-right">
-					<button type="submit" class="btn btn-primary ep_pop" data-content="Press ENTER in the form above for rapid previewing" title="Helpful Hint" data-placement="auto top" data-container="body">Preview</button>
-					<button type="button" class="btn btn-success savePricing">Save</button>
-
-					<div class="btn-group">
-						<button type="reset" class="btn btn-danger clear_all">Clear</button>
-						<button type="button"
-										class="btn btn-danger dropdown-toggle"
-										data-toggle="dropdown">
-							<span class="caret"></span>
-							&nbsp;
-							<span class="sr-only">Toggle Dropdown</span>
-						</button>
-						<ul class="dropdown-menu clearDropdown" role="menu">
-							<li><a href="#" class="deleteFromWHMCS">Delete all from WHMCS</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</form>
-		</div>
-		<div class="col-lg-6">
-			<h3>Domain Pricing Meta</h3>
-			Pricing for a total of <?php echo count( $this->getAllDomainsPricing() ) ?> TLDs.
-			<br/>
-			Pricing data last updated <?php echo $this->get_price_cache_date(); ?>
-			<a class="btn btn-default btn-info"
-				 href="<?php echo enom_pro::MODULE_LINK; ?>&action=clear_price_cache">Clear Cache</a>
-		</div>
-	</div>
 	<?php pager( $this ); ?>
 	<form method="POST"
 				action="<?php echo $_SERVER['PHP_SELF']; ?>?module=enom_pro&view=pricing_import"
@@ -529,7 +319,7 @@ if ( $this->is_pricing_cached() ) :
 <?php else: ?>
 	<div class="alert alert-warning" id="loading_pricing">
 		<h3>Loading <?php echo enom_pro::is_retail_pricing() ? 'retail' : 'wholesale'; ?> pricing for <?php echo count( $this->getTLDs() ) ?> top level domains.</h3>
-		<p class="text-center"></p>
+		<p class="text-center loadedTLD"></p>
 		<div class="enom_pro_loader"></div>
 		<div class="progress">
 			<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
@@ -553,7 +343,7 @@ if ( $this->is_pricing_cached() ) :
 							 if (data == 'success') {
 								 $title.html('Import Complete. Reloading...');
 							 		$title.closest('.alert').removeClass('alert-warning').addClass('alert-success');
-								 $(".progress, .stopPriceBatch").hide();
+								 $(".progress, .stopPriceBatch, .loadedTLD").hide();
 								 setTimeout(function  (){
 									 window.location.reload();
 								 }, 1000);
