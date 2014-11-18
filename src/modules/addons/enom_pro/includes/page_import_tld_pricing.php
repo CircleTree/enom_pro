@@ -363,9 +363,9 @@ if ( $this->is_pricing_cached() ) : ?>
 		</div>
 		<?php if ($this->isModuleDebugEnabled()) :?>
 			<div class="alert alert-danger">
-				<h3>Module Logging is Enabled.</h3>
-				<p>For best performance, please only enable module logging when instructed to by support.
-				<a href="systemmodulelog.php" class="btn btn-link" target="_blank" >Visit this page to disable logging</a>
+				<h4>Module Logging is Enabled.</h4>
+				<p class="text-center">For best performance, please only enable module logging when instructed to by support.
+				<a href="systemmodulelog.php" class="btn btn-default" target="_blank" >Visit this page to disable logging</a>
 				</p>
 			</div>
 		<?php endif;?>
@@ -375,7 +375,7 @@ if ( $this->is_pricing_cached() ) : ?>
 		var bulkPricingAJAX, aborted = false;
 		jQuery(function($) {
 			var $cancelButton = $(".stopPriceBatch"),
-				$title = $(".alert h3"),
+				$title = $("#loading_pricing h3"),
 				$loader = $(".enom_pro_loader");
 			function doPriceBatch() {
 				if (aborted) {
@@ -387,7 +387,7 @@ if ( $this->is_pricing_cached() ) : ?>
 							 if (data == 'success') {
 								 $title.html('Import Complete. Reloading...');
 							 		$title.closest('.alert').removeClass('alert-warning').addClass('alert-success');
-								 $(".progress, .stopPriceBatch, .loadedTLD").hide();
+								 $(".progress, .stopPriceBatch, .loadedTLD, .alert-danger").hide();
 								 setTimeout(function  (){
 									 window.location.reload();
 								 }, 1000);
@@ -396,7 +396,7 @@ if ( $this->is_pricing_cached() ) : ?>
 								 var percent = Math.round( (data.loaded / data.total) * 100 );
 								 $loader.hide();
 								 $(".progress-bar").css('width', percent + '%').html(percent + "% Complete").attr('aria-valuenow', percent);
-								 $("#loading_pricing p").html('Loaded pricing for: ' + data.tld);
+								 $("#loading_pricing .loadedTLD").html('Loaded pricing for: ' + data.tld);
 							 }
 						 },
 						 error  : function(xhr) {
