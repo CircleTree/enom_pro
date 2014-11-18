@@ -334,9 +334,12 @@ if ( $this->is_pricing_cached() ) : ?>
 					}
 				});
 				if (unsaved) {
-					$("input[name=start]").val($link.data('start'));
-					$("#enom_pro_pricing_import").trigger('submit');
-					return false;
+					var ans = confirm('You have unsaved changes. \n\n Save them before going to the next page?')
+					if (ans) {
+						$("input[name=start]").val($link.data('start'));
+						$("#enom_pro_pricing_import").trigger('submit');
+					}
+					return false; //Submit event takes care of next page load
 				}
 			});
 		});
