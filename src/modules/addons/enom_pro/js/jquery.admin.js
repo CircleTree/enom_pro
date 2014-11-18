@@ -187,7 +187,8 @@ try {
             })
         }
     })(jQuery);
-    var whois_xhrs = [];
+    var whois_xhrs = [],
+    whois_incomplete = false;
 function abort_whois_xhrs ()
 {
 	if (whois_xhrs.length > 0) {
@@ -354,8 +355,7 @@ jQuery(function($) {
                 }
             }))
             if (incomplete > 0) {
-                return 'Getting WHOIS results are still in progress.';
-    	        abort_whois_xhrs();
+                abort_whois_xhrs();
             }
         }
     };
