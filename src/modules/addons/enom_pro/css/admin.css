@@ -396,14 +396,20 @@ a.btn-primary, a.btn-danger, a.btn-info, a.btn-inverse, a.btn-warning {
     text-align: center;
     font-size: 18pt;
     font-style: italic;
+		line-height: 20pt;
+		margin-bottom: 30px;
 }
-
-#loading_pricing .a_minute {
-    text-align: center;
-    line-height: 3;
-    font-size: inherit;
+#loading_pricing .progress {
+	margin-bottom: 50px;
 }
-
+#loading_pricing .loadedTLD {
+	background-color: #DDDDDD;
+	margin: 15px auto;
+	width: 240px;
+}
+#loading_pricing .stopPriceBatch {
+	margin-bottom: 20px;
+}
 #loading_pricing .enom_pro_loader {
     background-color: #FFFFFF;
     padding: 10px 20px;
