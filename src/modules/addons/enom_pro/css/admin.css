@@ -526,6 +526,8 @@ a.btn {
 .enom_pro_widget_title
 {
 	position: relative;
+	width: 100%;
+	display: inline-block;
 }
 .enom_pro_widget_title .refreshbutton
 {
