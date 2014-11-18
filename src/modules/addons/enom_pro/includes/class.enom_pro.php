@@ -666,7 +666,7 @@ class enom_pro {
 			$thisTLD = array();
 			$tld = reset( $allTLDs );
 		}
-		$tldsPerStep = 50;
+		$tldsPerStep = 5;
 		$thisTLDIndex = array_search( $tld, $allTLDs );
 		$nextTLDIndex = $thisTLDIndex + $tldsPerStep;
 		$thisBatch = array_slice($allTLDs, $thisTLDIndex, $nextTLDIndex);
@@ -1482,6 +1482,8 @@ class enom_pro {
 		}
 
 		try {
+			//@TODO write multiple exchange rate provider option
+			//http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml
 			$api_key = $this->get_addon_setting('exchange-rate-api-key');
 			if ($api_key) {
 				$url = "http://currency-api.appspot.com/api/USD/$currency_code.json";
