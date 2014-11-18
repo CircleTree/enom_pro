@@ -672,11 +672,7 @@ class enom_pro {
 		$thisBatch = array_slice($allTLDs, $thisTLDIndex, $nextTLDIndex);
 		foreach ($thisBatch as $index => $thisBatchTLD) {
 			$pricingData = $this->getDomainPricing( $thisBatchTLD, $retail );
-			$thisTLD[$thisBatchTLD] = array(
-				'enabled' => $pricingData['enabled'] ? true : false,
-				'price' => $pricingData['price'],
-				'min_period' => $pricingData['min_period']
-			);
+			$thisTLD[$thisBatchTLD] = $pricingData;
 		}
 		$nextTLD = false;
 		if ( isset( $allTLDs[$nextTLDIndex] ) ) {
@@ -2476,5 +2472,20 @@ class enom_pro {
 	public static function isBeta ()
 	{
 		return enom_pro_license::isBetaOptedIn();
+	}
+
+	/**
+	 * Checks if WHMCS Module debug is enabled
+	 *
+	 * @return bool
+	 */
+	public static function isModuleDebugEnabled ()
+	{
+		$result = select_query('tblconfiguration', 'value', array('setting' => 'ModuleDebugMode', 'value' => 'on'));
+		if (mysql_num_rows($result) > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
