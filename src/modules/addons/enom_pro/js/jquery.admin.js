@@ -551,18 +551,14 @@ jQuery(function($) {
             $(this).trigger('recalculate');
             return false;
         } else if (e.type == 'recalculate') {
-            var markup = $("#percentMarkup").val(),
-                round = $("#roundTo").val(),
-                preferredMarkup = $("#preferredPercentMarkup").val(),
-                preferredWholeMarkup = $("#preferredWholeMarkup").val(),
-                wholeMarkup = $("#wholeMarkup").val();
+            var markup = parseFloat($("#percentMarkup").val()) || 0,
+                wholeMarkup = parseFloat($("#wholeMarkup").val()) || 0,
+                round = parseFloat($("#roundTo").val()) || false,
+                preferredMarkup = parseFloat($("#preferredPercentMarkup").val()) || 0,
+                preferredWholeMarkup = parseFloat($("#preferredWholeMarkup").val()) || 0;
             if (round == -1) {
                 round = false;
             }
-            if (wholeMarkup == "") {
-                wholeMarkup = 0.00; //Make sure we don't have NaN
-            }
-            var preferredWholeMarkup2 = preferredWholeMarkup || 0.00;
             if ($('#overWriteWHMCS').prop('checked')) {
                 var $elems = jQuery('[data-price]');
             } else {
@@ -570,20 +566,18 @@ jQuery(function($) {
             }
             $elems.each(function  (){
                 //If min. is lt preferred, use preferred, else use minimum
-                var $elem = $(this);
-                var newMinPrice = $elem.data('price') * ( 1 + (markup / 100));
+                var $elem = $(this),
+                    price = parseFloat($elem.data('price'));
+                var newMinPrice = price * ( 1 + (markup / 100));
                 var newMinPrice2 = parseFloat(newMinPrice) + parseFloat(wholeMarkup);
-                var newMinPriceDouble = newMinPrice2.toFixed(2);
-                var newPreferredPrice = $elem.data('price') * ( 1 + (preferredMarkup / 100));
-                var newPreferredPrice2 = parseFloat(newPreferredPrice) + parseFloat(preferredWholeMarkup2);
-                var newPreferredPriceDouble = newPreferredPrice2.toFixed(2);
-                if (newMinPriceDouble < newPreferredPriceDouble) {
-                    newMinPriceDouble = newPreferredPriceDouble;
-                }
-                //Check if the decimal value is gte our rounding amount
-                var priceArray = newMinPriceDouble.split("."),
+                var newPreferredPrice = price * ( 1 + (preferredMarkup / 100));
+                var newPreferredPrice2 = parseFloat(newPreferredPrice) + parseFloat(preferredWholeMarkup);
+                var newMinPriceDouble = (newMinPrice2 < newPreferredPrice2) ? newPreferredPrice2 : newMinPrice2;
+                var newPriceString = newMinPriceDouble.toFixed(2);
+                var priceArray = newPriceString.split("."),
                     thisDollarAmount = priceArray[0],
                     thisCentAmount = priceArray[1];
+                //Check if the decimal value is gte our rounding amount
                 if (round && thisCentAmount >= round) {
                     //Need to bump the dollar amount to the next one
                     //IE round to .95 amount 3.98 -> 4.95
