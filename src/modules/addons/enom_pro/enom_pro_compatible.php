@@ -52,6 +52,9 @@ function enom_pro_config() {
 			case 'pricing_sort':
 				$view = ' - Sort TLD Pricing';
 				break;
+			case 'whois_checker':
+				$view = ' - WHOIS Checker';
+				break;
 		}
 	}
 	$button = '<a class="btn btn-inverse btn-sm" ' .
@@ -600,7 +603,6 @@ function enom_pro_output( $vars ) {
 				$view = (string) $_GET['view'];
 				$method = "render_$view";
 				$enom->$method();
-				$enom->getBetaReportLink();
 				return;
 			} else {
 				//Run this to check login credentials and IP restrictions

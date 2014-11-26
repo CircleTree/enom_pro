@@ -731,6 +731,12 @@ class enom_pro {
 		require_once ENOM_PRO_INCLUDES . 'page_import_tld_pricing.php';
 	}
 
+	public function render_whois_checker ()
+	{
+		require_once ENOM_PRO_INCLUDES . 'page_whois_checker.php';
+
+	}
+
 	public function  render_pricing_sort() {
 		require_once ENOM_PRO_INCLUDES . 'page_sort_tld_pricing.php';
 
