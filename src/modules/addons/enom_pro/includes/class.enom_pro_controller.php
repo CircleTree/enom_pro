@@ -453,7 +453,7 @@ class enom_pro_controller {
 	}
 
 	public static function getAdminJS() {
-		$filepath = ENOM_PRO_ROOT . 'js/jquery.admin.min.js';
+		$filepath = ENOM_PRO_ROOT . 'js/jquery.admin.'.(! enom_pro::isBeta() ? 'min.' : '').'js';
 		$result = ioncube_read_file( $filepath );
 		if ( is_int( $result ) ) {
 			if ( 3 == $result ) {
