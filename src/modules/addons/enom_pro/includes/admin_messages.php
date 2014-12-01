@@ -198,6 +198,14 @@
 	</div>
 <?php endif;?>
 
+
+<?php if (isset($_COOKIE) && isset($_COOKIE['WHMCSMinSidebar']) && true == $_COOKIE['WHMCSMinSidebar']) :?>
+	<div class="alert alert-info">
+		<h3>Where are the <?php echo ENOM_PRO; ?> links?</h3>
+		<p>eNom PRO Uses the WHMCS Sidebar <span class="enom-pro-icon enom-pro-icon-log"></span> for links. <a href="#" class="btn btn-primary" onclick="sidebarOpen();jQuery(this).closest('.alert').slideUp();return false;">Open Sidebar</a></p>
+	</div>
+<?php endif;?>
+
 <?php
 /**
  * Outputs Changelog html
