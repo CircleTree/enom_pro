@@ -164,7 +164,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	    $wholesale = $this->e->getDomainPricing();
 	    $this->assertNotEquals($retail, $wholesale);
 	}
-	function  test_load_mock()
+	function  test_load_ssl_mock()
 	{
 	    $file = 'tests/files/expiring_ssl.xml';
 	    $this->e->_load_xml($file);
@@ -596,4 +596,23 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$this->assertContains($_REQUEST['certid'], enom_pro::get_addon_setting('ssl_hidden'));
 	}
 
+	/**
+	 * @group ssl
+	 */
+	public function testGetClientByProduct ()
+	{
+		$this->test_load_ssl_mock();
+		$id = $this->e->getClientIdByDomain('mycircletree.com');
+		$this->assertNotEmpty($id);
+	}
+
+	/**
+	 * @group ssl
+	 */
+	public function testGetClientByDomain ()
+	{
+		$this->test_load_ssl_mock();
+		$id = $this->e->getClientIdByDomain('testing-domain.com');
+		$this->assertNotEmpty($id);
+	}
 }
