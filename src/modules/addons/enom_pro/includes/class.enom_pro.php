@@ -2221,22 +2221,38 @@ class enom_pro {
 		return $reminder_count;
 	}
 
-	private function getClientIdByDomain( $domain ) {
-		$search = self::whmcs_api( 'getclientsdomains',
+	public function getClientIdByDomain( $domain ) {
+		/**
+		 * First, Try Searching by Product
+		 * (Correct enomssl configuration)
+		 */
+		$products = self::whmcs_api( 'getclientsproducts',
 			array( 'domain' => $domain ) );
-		//Search by Domains
-		if ( empty( $search['domains'] ) ) {
-			self::log_activity( ENOM_PRO . ': No Client Domain Found for ' . $domain . ' to send reminder email' );
-		} else {
-			return (int) $search['domains']['domain'][0]['clientid'];
+		$clientIDFromProduct = $clientIDFromDomain = false;
+		if ( ! empty( $products['products'] ) ) {
+			$clientIDFromProduct = (int) $products['products']['product'][0]['clientid'];
 		}
-		//Try Searching by Product
-		$search2 = self::whmcs_api( 'getclientsproducts',
+		unset($products);
+
+		/*
+		 * Search by Domains
+		 */
+		$domains = self::whmcs_api( 'getclientsdomains',
 			array( 'domain' => $domain ) );
-		if ( empty( $search2['products'] ) ) {
-			self::log_activity( ENOM_PRO . ': No Client Product Found for ' . $domain . ' to send reminder email' );
+		if (! empty( $domains['domains'] ) ) {
+			$clientIDFromDomain = (int) $domains['domains']['domain'][0]['userid'];
+		}
+		unset($domains);
+
+		if (false === $clientIDFromDomain && false === $clientIDFromProduct) {
+			self::log_activity( ENOM_PRO . ': No Client Domain or Product Found for ' . $domain . ' to send SSL reminder email' );
 		} else {
-			return (int) $search['products']['product'][0]['clientid'];
+			if (true == $clientIDFromProduct) {
+				return $clientIDFromProduct;
+			}
+			if (true == $clientIDFromDomain) {
+				return $clientIDFromDomain;
+			}
 		}
 
 		return false;
@@ -2248,7 +2264,11 @@ class enom_pro {
 	 * @param string $msg
 	 */
 	public static function log_activity( $msg ) {
-		logActivity( $msg );
+		if (defined('UNIT_TESTS') && UNIT_TESTS) {
+			self::whmcs_api('logactivity', array('description' => $msg));
+		} else {
+			logActivity( $msg );
+		}
 	}
 
 	/**
