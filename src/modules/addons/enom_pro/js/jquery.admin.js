@@ -555,10 +555,9 @@ jQuery(function($) {
                 wholeMarkup = parseFloat($("#wholeMarkup").val()) || 0,
                 round = parseFloat($("#roundTo").val()) || false,
                 preferredMarkup = parseFloat($("#preferredPercentMarkup").val()) || 0,
-                preferredWholeMarkup = parseFloat($("#preferredWholeMarkup").val()) || 0;
-            if (round == -1) {
-                round = false;
-            }
+                preferredWholeMarkup = parseFloat($("#preferredWholeMarkup").val()) || 0,
+								doRound = (round == -1) ? false : true, //Kept ternary operator for readability
+								newPriceDouble = 0.00;
             if ($('#overWriteWHMCS').prop('checked')) {
                 var $elems = jQuery('[data-price]');
             } else {
@@ -568,27 +567,27 @@ jQuery(function($) {
                 //If min. is lt preferred, use preferred, else use minimum
                 var $elem = $(this),
                     price = parseFloat($elem.data('price'));
-                var newMinPrice = price * ( 1 + (markup / 100));
-                var newMinPrice2 = parseFloat(newMinPrice) + parseFloat(wholeMarkup);
-                var newPreferredPrice = price * ( 1 + (preferredMarkup / 100));
-                var newPreferredPrice2 = parseFloat(newPreferredPrice) + parseFloat(preferredWholeMarkup);
-                var newMinPriceDouble = (newMinPrice2 < newPreferredPrice2) ? newPreferredPrice2 : newMinPrice2;
+                var newMinPrice = price * ( 1 + (markup / 100)) + wholeMarkup;
+                var newPreferredPrice = price * ( 1 + (preferredMarkup / 100)) + preferredWholeMarkup;
+                var newMinPriceDouble = (newMinPrice < newPreferredPrice) ? newPreferredPrice : newMinPrice;
+                newMinPriceDouble = Math.ceil(newMinPriceDouble * 100) / 100;
                 var newPriceString = newMinPriceDouble.toFixed(2);
                 var priceArray = newPriceString.split("."),
-                    thisDollarAmount = priceArray[0],
-                    thisCentAmount = priceArray[1];
+                    thisDollarAmount = parseFloat(priceArray[0]),
+                    thisCentAmount = parseFloat(priceArray[1]);
+							//Is Rounding enabled?
+							if (doRound) {
+								if (thisCentAmount >= round) {
                 //Check if the decimal value is gte our rounding amount
-                if (round && thisCentAmount >= round) {
-                    //Need to bump the dollar amount to the next one
-                    //IE round to .95 amount 3.98 -> 4.95
-                    var Dollar = parseInt(thisDollarAmount) + 1;
-                    newMinPriceDouble = Dollar + '.' + round;
-                    //console.log('rounding up to $', Dollar);
-                } else if (round) {
-                    //Rounding up enabled
-                    newMinPriceDouble = thisDollarAmount + '.' + round;
-                }
-                $elem.val(newMinPriceDouble);
+									newPriceDouble = (thisDollarAmount + 1) + (round / 100);
+								} else {
+									newPriceDouble = thisDollarAmount + (round / 100);
+								}
+							} else {
+							//No rounding.
+								newPriceDouble = newMinPriceDouble;
+							}
+                $elem.val(newPriceDouble);
                 if ($elem.data('year') == 1 ) {
                     $elem.trigger('keyup');
                 }
