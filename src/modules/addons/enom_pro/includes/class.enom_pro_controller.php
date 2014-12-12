@@ -469,7 +469,24 @@ class enom_pro_controller {
 		self::caching_headers( $filepath );
 		self::sendGzipped( $result );
 	}
-
+	public function preview_ssl_email ()
+	{
+		$expiring_certs = $this->enom->getExpiringCerts();
+		if (! isset($expiring_certs[$_REQUEST['index']])) {
+			throw new Exception('Certificate not found.');
+		}
+		$cert = $expiring_certs[$_REQUEST['index']];
+		$merge = $this->enom->parse_SSL_Cert_meta_array_to_Smarty($cert);
+		$email_id = $this->enom->is_ssl_email_installed();
+		if ( is_int($email_id)) {
+			$email_message = mysql_fetch_assoc(mysql_query('SELECT `message`, `subject` FROM `tblemailtemplates` WHERE id='. $email_id));
+			$merged = str_replace(array( '{$expiry_date}', '{$domain_name}', '{$product}' ), $merge, $email_message['message']);
+		} else {
+			throw new Exception('SSL Reminder Template Not found. Please install from eNom PRO home first');
+		}
+		$subject = $email_message['subject'];
+		require_once ENOM_PRO_INCLUDES . 'fragment_ssl_email_preview.php';
+	}
 	protected function resend_raa_email () {
 		echo $this->enom->resendRAAEmail($_REQUEST['domain']);
 	}

@@ -20,7 +20,7 @@ $requirements = array(
 	array(
 		'label' => 'IonCube',
 		'function' => 'ioncube_loader_version',
-		'version' => '4.4'
+		'version' => '4.4.0'
 	),
 	array(
 		'label' => 'cURL',

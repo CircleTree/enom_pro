@@ -40,7 +40,6 @@
                         url:$(this).attr('action'), 
                         data: data, 
                         success: function  (json) {
-                            console.log(json);
                             $target.empty();
                             //Loop through each domain pending transfer 
                             $.each(json, function  (k,domain) {

@@ -429,20 +429,18 @@ function enom_pro_sidebar( $vars ) {
 					<span class="label label-primary">NEW!</span>
 				</a>
 			</li>
-
 			<li>
-				<a class="btn btn-block btn-default ep_lightbox"
-					 data-width="90%"
-					 title="<?php echo ENOM_PRO; ?> Settings"
-					 href="configaddonmods.php#enom_pro">
-					<span class="enom-pro-icon enom-pro-icon-cog"></span>
-					Settings
+				<a class="btn btn-block btn-default"
+				   href="<?php echo enom_pro::MODULE_LINK; ?>&view=whois_checker">
+					<span class="enom-pro-icon enom-pro-icon-sort"></span>
+					WHOIS Checker
+					<span class="label label-primary">NEW!</span>
 				</a>
 			</li>
 			<li>
 				<?php $id = enom_pro::is_ssl_email_installed(); ?>
 				<?php if ( $id > 0 ) : ?>
-					<a class="btn btn-block btn-default ep_lightbox"
+					<a class="btn btn-default btn-block ep_lightbox"
 						 id="edit_ssl_sidebar"
 						 title="Edit SSL Reminder Email"
 						 data-width="90%"
@@ -450,6 +448,10 @@ function enom_pro_sidebar( $vars ) {
 						 href="configemailtemplates.php?action=edit&id=<?php echo $id ?>">
 						<span class="enom-pro-icon enom-pro-icon-mail-send"></span>
 						Edit SSL Email</a>
+					<a class="btn btn-default btn-block" href="<?php echo enom_pro::MODULE_LINK ?>&view=send_ssl_test">
+						Preview SSL Emails
+						<span class="label label-primary">NEW!</span>
+					</a>
 				<?php else: ?>
 					<a class="btn btn-block btn-default"
 						 href="<?php echo enom_pro::MODULE_LINK ?>&action=install_ssl_template">Install SSL Email</a>
@@ -469,6 +471,15 @@ function enom_pro_sidebar( $vars ) {
 					<?php enom_pro::getBetaReportLink(); ?>
 				</li>
 			<?php endif;?>
+			<li>
+				<a class="btn btn-block btn-default ep_lightbox"
+				   data-width="90%"
+				   title="<?php echo ENOM_PRO; ?> Settings"
+				   href="configaddonmods.php#enom_pro">
+					<span class="enom-pro-icon enom-pro-icon-cog"></span>
+					Settings
+				</a>
+			</li>
 		</ul>
 
 

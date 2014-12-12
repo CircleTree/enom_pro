@@ -731,6 +731,11 @@ class enom_pro {
 		require_once ENOM_PRO_INCLUDES . 'page_import_tld_pricing.php';
 	}
 
+	public function render_send_ssl_test ()
+	{
+		require_once ENOM_PRO_INCLUDES . 'page_send_ssl_test.php';
+	}
+
 	public function render_whois_checker ()
 	{
 		require_once ENOM_PRO_INCLUDES . 'page_whois_checker.php';
@@ -2113,12 +2118,28 @@ class enom_pro {
 		}
 	}
 
-	public static function send_SSL_reminder_email( $client_id, $cert_data ) {
-		$cert_meta_array = array(
+	/**
+	 * Parses eNom SSL cert data to mail merge $smarty values
+	 * @param $cert_data
+	 *
+	 * @return array expiry_date, domain_name, product
+	 */
+	public static function parse_SSL_Cert_meta_array_to_Smarty ($cert_data)
+	{
+		return array(
 			'expiry_date' => $cert_data['expiration_date'],
 			'domain_name' => reset( $cert_data['domain'] ),
 			'product' => $cert_data['desc'],
 		);
+	}
+	/**
+	 * @param $client_id int tblclients.id
+	 * @param $cert_data array (expiration_date, domain, desc)
+	 *
+	 * @return bool
+	 */
+	public static function send_SSL_reminder_email( $client_id, $cert_data ) {
+		$cert_meta_array = self::parse_SSL_Cert_meta_array_to_Smarty($cert_data);
 		$return = false;
 		try {
 			$email_enabled = self::get_addon_setting( 'ssl_email_enabled' ) == "on" ? true : false;
@@ -2134,6 +2155,7 @@ class enom_pro {
 				);
 				self::whmcs_api( 'sendemail', $data );
 			}
+			$return = true;
 		} catch ( Exception $e ) {
 			self::log_activity( ENOM_PRO . ': Error Sending SSL Notification: ' . $e->getMessage() );
 		}
@@ -2221,7 +2243,14 @@ class enom_pro {
 		return $reminder_count;
 	}
 
+	/**
+	 * @param string $domain domain name to search WHMCS for
+	 *
+	 * @return bool|int
+	 * @throws WHMCSException
+	 */
 	public function getClientIdByDomain( $domain ) {
+		$domain = ltrim($domain, '*.');
 		/**
 		 * First, Try Searching by Product
 		 * (Correct enomssl configuration)
@@ -2308,7 +2337,7 @@ class enom_pro {
 			$result = self::query( $sql );
 			$array = mysql_fetch_assoc( $result );
 			$id = $array['id'];
-			self::$ssl_email_id = mysql_num_rows( $result ) == 0 ? false : $id;
+			self::$ssl_email_id = mysql_num_rows( $result ) == 0 ? false : (int) $id;
 		}
 
 		return self::$ssl_email_id;
