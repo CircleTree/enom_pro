@@ -164,6 +164,10 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	    $wholesale = $this->e->getDomainPricing();
 	    $this->assertNotEquals($retail, $wholesale);
 	}
+
+	/**
+	 * @group ssl
+	 */
 	function  test_load_ssl_mock()
 	{
 	    $file = 'tests/files/expiring_ssl.xml';
@@ -614,5 +618,14 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$this->test_load_ssl_mock();
 		$id = $this->e->getClientIdByDomain('testing-domain.com');
 		$this->assertNotEmpty($id);
+	}
+	public function testSendEmailToCustomAddy ()
+	{
+		$this->e->whmcs_api('sendemail', array(
+			'id' => 0,
+			'customtype' => 'general',
+			'messagename' => 'SSL Expiring Soon',
+
+		));
 	}
 }
