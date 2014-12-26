@@ -20,7 +20,8 @@ $requirements = array(
 	array(
 		'label' => 'IonCube',
 		'function' => 'ioncube_loader_version',
-		'version' => '4.4.0'
+		'version' => '4.3.9' //Keep this to one minor release lower than required, ioncube reports version string as two digits, not three
+							//(4.4 is NOT gte 4.4.0, according to php's version_compare)
 	),
 	array(
 		'label' => 'cURL',
