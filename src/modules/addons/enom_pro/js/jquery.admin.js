@@ -537,7 +537,13 @@ jQuery(function($) {
     	$importTableForm.trigger('submit');
     	return false;
 	});
-    $("#enom_pro_import_page").on('click',".clear_search", function  (){
+	$(".clearTLDSearch").on('click', function  (){
+		var $form = $(this).closest('form');
+		$form.find('input[name=s]').val('').removeAttr('name');
+		$form.trigger("submit");
+	});
+
+	$("#enom_pro_import_page").on('click',".clear_search", function  (){
     	$('input[name=s][type=text]').val("");
     	$("#search_form").trigger('submit');
     	return false;

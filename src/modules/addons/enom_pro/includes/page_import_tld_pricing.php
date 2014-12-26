@@ -153,8 +153,59 @@ if ( $this->is_pricing_cached() ) : ?>
 
 	<?php require_once ENOM_PRO_INCLUDES . 'page_import_tld_pricing_bulk_process.php'; ?>
 
-	<?php pager( $this ); ?>
+	<?php
+	$offset = isset( $_GET['start'] ) ? (int) $_GET['start'] : 0;
+	$search = isset( $_GET['s']) ? strip_tags($_GET['s']) : false;
+	$allDomainsPricing = $this->getAllDomainsPricing();
+	$allDomainsSearched = array();
+	if ($search) {
+		foreach ($allDomainsPricing as $tld => $domainPriceData) {
+			if (strstr($tld, $search)) {
+				$allDomainsSearched[$tld] = $domainPriceData;
+			} elseif (strstr($domainPriceData['price'], $search)) {
+				$allDomainsSearched[$tld] = $domainPriceData;
+			}
+		}
+		unset($tld, $domainPriceData); //Just for good measure
+		if (! empty($allDomainsSearched)) {
+			//Search successful, overwrite our default array
+			$allDomainsPricing = $allDomainsSearched;
+		}
+	}
+	$domains = array_slice( $allDomainsPricing,
+		$offset,
+		$per_page ); ?>
 
+	<form method="GET" id="tldSearchForm">
+		<h4>Search</h4>
+		<input type="hidden" name="module" value="enom_pro" />
+		<input type="hidden" name="view" value="pricing_import" />
+
+		<div class="input-group input-group-lg<?php isset($_GET['s']) ? ' has-success' : ''; ?>">
+			<p class="input-group-addon">.</p>
+			<input type="search" name="s" value="<?php echo isset($_GET['s']) ? htmlentities(strip_tags($_GET['s'])) : ''; ?>" class="form-control" placeholder="tld"/>
+			<span class="input-group-btn">
+				<button type="submit" class="btn btn-default"><span class="enom-pro-icon enom-pro-icon-search"></button>
+				<?php if (isset($_GET['s'])) :?>
+					<button type="button" class="btn btn-danger clearTLDSearch">Clear</button>
+				<?php endif;?>
+			</span>
+		</div>
+		<?php if (isset($_GET['s'])) :?>
+			<?php if (empty($allDomainsSearched)): ?>
+				<div class="alert alert-warning"><h4>No search results. Displaying all TLDs.</h4></div>
+			<?php else: ?>
+				<div class="alert alert-success">Found <?php echo count($allDomainsSearched) ?> search results</div>
+			<?php endif;?>
+			<script>
+				jQuery(function($) {
+					var offset = $("#tldSearchForm").offset().top;
+					$('html, body').animate({scrollTop: offset}, 350);
+				})
+			</script>
+		<?php endif;?>
+	</form>
+	<?php pager( $this ); ?>
 	<form method="POST"
 				action="<?php echo $_SERVER['PHP_SELF']; ?>?module=enom_pro&view=pricing_import"
 				id="enom_pro_pricing_import">
@@ -162,18 +213,11 @@ if ( $this->is_pricing_cached() ) : ?>
 		<input type="hidden"
 					 name="start"
 					 value="<?php echo isset( $_GET['start'] ) ? (int) $_GET['start'] : '0'; ?>"/>
-
-
 		<table class="table table-bordered table-responsive"
 					 id="enom_pro_pricing_table">
 			<tr>
 				<th>
-					<div class="input-group input-group-sm">
-						<input type="text" name="s" value="<?php echo htmlentities(strip_tags($_GET['s'])); ?>" class="form-control" placeholder="Search"/>
-						<span class="input-group-btn">
-							<button type="submit" class="btn btn-default"><span class="enom-pro-icon icon-"></button>
-						</span>
-					</div>
+					Actions
 				</th>
 				<?php foreach ( array_keys( array_fill( 1,
 					enom_pro::get_addon_setting( 'pricing_years' ),
@@ -182,29 +226,7 @@ if ( $this->is_pricing_cached() ) : ?>
 					</th>
 				<?php endforeach; ?>
 			</tr>
-			<?php
-			$offset = isset( $_GET['start'] ) ? (int) $_GET['start'] : 0;
-			$search = isset( $_GET['s']) ? strip_tags($_GET['s']) : false;
-			$allDomainsPricing = $this->getAllDomainsPricing();
-			$allDomainsSearched = array();
-			if ($search) {
-				foreach ($allDomainsPricing as $tld => $domainPriceData) {
-					if (strstr($tld, $search)) {
-						$allDomainsSearched[$tld] = $domainPriceData;
-					} elseif (strstr($domainPriceData['price'], $search)) {
-						$allDomainsSearched[$tld] = $domainPriceData;
-					}
-				}
-				unset($tld, $domainPriceData); //Just for good measure
-				if (! empty($allDomainsSearched)) {
-					//Search successful, overwrite our default array
-					$allDomainsPricing = $allDomainsSearched;
-				}
-			}
-			$domains = array_slice( $allDomainsPricing,
-				$offset,
-				$per_page );
-			foreach ( $domains as $tld => $domainPriceData ):
+			<?php foreach ( $domains as $tld => $domainPriceData ):
 				$isInWHMCS = false; ?>
 				<?php $whmcs_pricing_for_tld = $this->get_whmcs_domain_pricing( $tld ); ?>
 				<?php if ( count( $whmcs_pricing_for_tld ) > 0 ) : ?>
