@@ -585,16 +585,16 @@ Icons
 */
 @font-face {
 	font-family: 'enom-pro';
-	src:url('enom-pro.eot?fi7ffs');
-	src:url('enom-pro.eot?#iefixfi7ffs') format('embedded-opentype'),
-	url('enom-pro.woff?fi7ffs') format('woff'),
-	url('enom-pro.ttf?fi7ffs') format('truetype'),
-	url('enom-pro.svg?fi7ffs#enom-pro') format('svg');
+	src:url('enom-pro.eot?dolc4v');
+	src:url('enom-pro.eot?#iefixdolc4v') format('embedded-opentype'),
+	url('enom-pro.woff?dolc4v') format('woff'),
+	url('enom-pro.ttf?dolc4v') format('truetype'),
+	url('enom-pro.svg?dolc4v#enom-pro') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
 
-.enom-pro-icon {
+[class^="enom-pro-icon-"], [class*=" enom-pro-icon-"] {
 	font-family: 'enom-pro';
 	speak: none;
 	font-style: normal;
@@ -608,18 +608,6 @@ Icons
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.enom-pro-icon-code-fork:before {
-	content: "\f126";
-}
-.enom-pro-icon-transfer:before {
-	content: "\e602";
-}
-.enom-pro-icon-sort-by-alpha:before {
-	content: "\e604";
-}
-.enom-pro-icon-sort-by-alpha-alt:before {
-	content: "\e605";
-}
 .enom-pro-icon-home:before {
 	content: "\e009";
 }
@@ -658,6 +646,9 @@ Icons
 }
 .enom-pro-icon-refresh:before {
 	content: "\e1b2";
+}
+.enom-pro-icon-search:before {
+	content: "\e1ba";
 }
 .enom-pro-icon-secure:before {
 	content: "\e1d2";
@@ -722,6 +713,19 @@ Icons
 .enom-pro-icon-domains:before {
 	content: "\e603";
 }
+.enom-pro-icon-code-fork:before {
+	content: "\f126";
+}
+.enom-pro-icon-transfer:before {
+	content: "\e602";
+}
+.enom-pro-icon-sort-by-alpha:before {
+	content: "\e604";
+}
+.enom-pro-icon-sort-by-alpha-alt:before {
+	content: "\e605";
+}
+
 
 
 /****

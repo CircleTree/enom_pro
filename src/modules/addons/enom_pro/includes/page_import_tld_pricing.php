@@ -7,22 +7,24 @@ $per_page = 25;
 function pager( $enom_pro ) {
 	global $per_page;
 	?>
-	<ul class="pager">
-		<li class="previous">
-			<?php if ( @$_GET['start'] >= $per_page ) : ?>
-				<?php $prev_start = isset( $_GET['start'] ) ? (int) $_GET['start'] - $per_page : $per_page; ?>
-				<a data-start="<?php echo $prev_start ?>"
-					 href="<?php echo $_SERVER['PHP_SELF']; ?>?module=enom_pro&view=pricing_import&start=<?php echo $prev_start ?>#enom_pro_pricing_table">&larr; Prev</a>
-			<?php endif; ?>
-		</li>
-		<li class="next">
-			<?php if ( @$_GET['start'] <= ( count( $enom_pro->getAllDomainsPricing() ) - $per_page ) ) : ?>
-				<?php $next_start = isset( $_GET['start'] ) ? (int) $_GET['start'] + $per_page : $per_page; ?>
-				<a data-start="<?php echo $next_start ?>"
-					 href="<?php echo $_SERVER['PHP_SELF']; ?>?module=enom_pro&view=pricing_import&start=<?php echo $next_start ?>#enom_pro_pricing_table">Next &rarr;</a>
-			<?php endif; ?>
-		</li>
-	</ul>
+	<div class="pager-wrap">
+		<ul class="pager">
+			<li class="previous">
+				<?php if ( @$_GET['start'] >= $per_page ) : ?>
+					<?php $prev_start = isset( $_GET['start'] ) ? (int) $_GET['start'] - $per_page : $per_page; ?>
+					<a data-start="<?php echo $prev_start ?>"
+						 href="<?php echo $_SERVER['PHP_SELF']; ?>?module=enom_pro&view=pricing_import&start=<?php echo $prev_start ?>#enom_pro_pricing_table">&larr; Prev</a>
+				<?php endif; ?>
+			</li>
+			<li class="next">
+				<?php if ( @$_GET['start'] <= ( count( $enom_pro->getAllDomainsPricing() ) - $per_page ) ) : ?>
+					<?php $next_start = isset( $_GET['start'] ) ? (int) $_GET['start'] + $per_page : $per_page; ?>
+					<a data-start="<?php echo $next_start ?>"
+						 href="<?php echo $_SERVER['PHP_SELF']; ?>?module=enom_pro&view=pricing_import&start=<?php echo $next_start ?>#enom_pro_pricing_table">Next &rarr;</a>
+				<?php endif; ?>
+			</li>
+		</ul>
+	</div>
 <?php
 }
 
@@ -152,6 +154,7 @@ if ( $this->is_pricing_cached() ) : ?>
 	<?php require_once ENOM_PRO_INCLUDES . 'page_import_tld_pricing_bulk_process.php'; ?>
 
 	<?php pager( $this ); ?>
+
 	<form method="POST"
 				action="<?php echo $_SERVER['PHP_SELF']; ?>?module=enom_pro&view=pricing_import"
 				id="enom_pro_pricing_import">
@@ -164,7 +167,14 @@ if ( $this->is_pricing_cached() ) : ?>
 		<table class="table table-bordered table-responsive"
 					 id="enom_pro_pricing_table">
 			<tr>
-				<th>Actions</th>
+				<th>
+					<div class="input-group input-group-sm">
+						<input type="text" name="s" value="<?php echo htmlentities(strip_tags($_GET['s'])); ?>" class="form-control" placeholder="Search"/>
+						<span class="input-group-btn">
+							<button type="submit" class="btn btn-default"><span class="enom-pro-icon icon-"></button>
+						</span>
+					</div>
+				</th>
 				<?php foreach ( array_keys( array_fill( 1,
 					enom_pro::get_addon_setting( 'pricing_years' ),
 					'' ) ) as $key => $year ) : ?>
@@ -357,7 +367,8 @@ if ( $this->is_pricing_cached() ) : ?>
 
 <?php else: ?>
 	<div class="alert alert-warning" id="loading_pricing">
-		<h3>Loading <?php echo enom_pro::is_retail_pricing() ? 'retail' : 'wholesale'; ?> pricing for <?php echo count( $this->getTLDs() ) ?> top level domains.</h3>
+		<h3>Loading <?php echo enom_pro::is_retail_pricing() ? 'retail' : 'wholesale'; ?> pricing for <?php echo count( $this->getTLDs() ) ?> top level domains. <br/><span class="enom-pro-icon enom-pro-icon-spinner fa-spin"></span></h3>
+
 		<p class="text-center loadedTLD"></p>
 		<div class="enom_pro_loader"></div>
 		<div class="progress">
