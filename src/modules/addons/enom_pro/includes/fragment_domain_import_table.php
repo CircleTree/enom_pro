@@ -126,6 +126,7 @@ if ( $doingSearch ):?>
 				<p>
 					Associated with client: <a class="btn btn-default"
 						data-domain="<?php echo $domain_name;?>"
+						target="_blank"
 						href="clientsdomains.php?userid=<?php echo $domain['client']['userid'];?>&domainid=<?php echo $domain['whmcs_id'];?>">
                         <?php echo $domain['client']['firstname'] . ' ' . $domain['client']['lastname'];?>
                         </a>

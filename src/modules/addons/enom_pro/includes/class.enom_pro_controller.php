@@ -100,7 +100,7 @@ class enom_pro_controller {
 
 	protected function render_import_table() {
 		ob_start();
-		require_once ENOM_PRO_INCLUDES . 'page_domain_import_table_ajax.php';
+		require_once ENOM_PRO_INCLUDES . 'fragment_domain_import_table.php';
 		$contents = ob_get_contents();
 		ob_end_clean();
 		$data = array(
