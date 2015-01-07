@@ -620,6 +620,9 @@ class enom_pro {
 			return true;
 		}
 	}
+	public function getExchangeRateProvider () {
+		return $this->get_addon_setting('exchange_rate_provider');
+	}
 
 	public function getCustomExchangeRate ()
 	{
@@ -1472,7 +1475,14 @@ class enom_pro {
 
 	public function isUsingExchangeRateAPIKey ()
 	{
-		return null == $this->get_addon_setting('exchange-rate-api-key') ? false : true;
+		if ($this->getExchangeRateProvider() != 'currency-api') {
+			return false;
+		}
+		$key = $this->get_addon_setting('exchange-rate-api-key');
+		if ("" == trim($key)) {
+			return false;
+		}
+		return true;
 	}
 	/**
 	 * Gets exchange rate from USD to
@@ -1484,24 +1494,31 @@ class enom_pro {
 	public function get_exchange_rate_from_USD_to( $currency_code ) {
 		$currency_code = strtoupper($currency_code);
 		$cached = $this->get_cache_data( $this->cache_file_exchange_rate );
-		if ( $cached && $cached['to'] == $currency_code ) {
+		if (
+			$cached
+				&&
+			( $cached['to'] == $currency_code )
+				&&
+				(
+					isset($cached['provider'])
+			            &&
+		            ($this->getExchangeRateProvider() == $cached['provider'])
+				)
+		) {
 			return $cached['rate'];
 		}
 
 		try {
-			//@TODO write multiple exchange rate provider option
-			//http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml
-			$api_key = $this->get_addon_setting('exchange-rate-api-key');
-			if ($api_key) {
-				$url = "http://currency-api.appspot.com/api/USD/$currency_code.json";
-				$rate_resp = enom_pro::curl_get_json( $url,
-					array( 'key' => $api_key ) );
-			} else {
-				$rate_resp = enom_pro::curl_get_json( 'http://rate-exchange.appspot.com/currency',
-					array( 'from' => 'USD', 'to' => $currency_code ) );
-			}
+			switch ($this->getExchangeRateProvider()) {
+				case 'google':
+					$rate = $this->get_Exchange_Rate_google($currency_code);
+					break;
+				case 'currency-api':
+					$rate = $this->get_Exchange_rate_currency_API($currency_code);
+					break;
 
-			$data = array( 'to' => $currency_code, 'rate' => $rate_resp['rate'] );
+			}
+			$data = array( 'to' => $currency_code, 'rate' => $rate, 'provider' => $this->getExchangeRateProvider() );
 			$this->set_cached_data( $this->cache_file_exchange_rate, $data );
 		} catch (Exception $e) {
 			$data['rate'] = null;
@@ -1509,6 +1526,29 @@ class enom_pro {
 		return $data['rate'];
 	}
 
+	private function get_Exchange_Rate_google( $to ) {
+		$to = urlencode( $to );
+		$get = self::curl_get( "https://www.google.com/finance/converter",
+			array( 'a' => '1.00', 'from' => 'USD', 'to' => $to ) );
+		$get = explode( "<span class=bld>", $get );
+		$get = explode( "</span>", $get[1] );
+		$var = preg_replace( "/[^0-9\.]/", null, $get[0] );
+
+		return round( $var, 4 );
+	}
+	private function get_Exchange_rate_currency_API ($to) {
+		$currency_code = urlencode($to);
+		$api_key = $this->get_addon_setting('exchange-rate-api-key');
+		if ($api_key) {
+			$url = "http://currency-api.appspot.com/api/USD/$currency_code.json";
+			$rate_resp = enom_pro::curl_get_json( $url,
+				array( 'key' => $api_key ) );
+		} else {
+			$rate_resp = enom_pro::curl_get_json( 'http://rate-exchange.appspot.com/currency',
+				array( 'from' => 'USD', 'to' => $currency_code ) );
+		}
+		return $rate_resp['rate'];
+	}
 	private function get_cache_file_time( $cache_file, $granularity = 2) {
 		return $this->time_ago( filemtime( $cache_file ), $granularity );
 	}

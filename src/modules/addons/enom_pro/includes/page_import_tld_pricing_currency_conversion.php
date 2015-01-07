@@ -1,3 +1,4 @@
+<?php /** @var $this enom_pro */  ?>
 <?php $defaultCurrencyPrefix = $this->getDefaultCurrencyPrefix(); ?>
 <?php if ( $this->isNonUSDinWHMCS() ) :?>
 	<div class="well">
@@ -60,7 +61,9 @@
 						<span class="badge"><?php echo $defaultCurrencyCode ?></span> = <span class="badge">1</span> &rarr; <span class="badge"><?php echo $exchangeRate !== null ? $exchangeRate : '???'; ?></span>
 					</h3>
 					<p>Exchange rate updated <span class="badge"><?php echo $this->get_exchange_rate_cache_date() ?></span>
-						<?php if ($this->isUsingExchangeRateAPIKey()) :?><span class="badge">Using API key</span><?php endif;?></p>
+						<?php if ($this->isUsingExchangeRateAPIKey()) :?><span class="badge">Using API key</span><?php endif;?>
+						from <span class="label label-primary"><?php echo $this->getExchangeRateProvider(); ?></span>
+					</p>
 					<div class="btn-group">
 						<a class="btn btn-default btn-link" href="<?php echo enom_pro::MODULE_LINK . '&action=clear_exchange_cache' ?>"><span class="enom-pro-icon enom-pro-icon-refresh-alt"></span>Update Exchange Rate</a>
 						<a target="_blank" href="configcurrencies.php" class="ep_tt ep_lightbox btn btn-default" data-title="WHMCS Currencies" data-width="90%" title="" data-original-title="Configure currencies in WHMCS">Edit WHMCS Currency</a>
