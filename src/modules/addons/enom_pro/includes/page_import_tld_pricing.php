@@ -123,7 +123,7 @@ if ( $this->is_pricing_cached() ) : ?>
 	$max_input = $per_page * enom_pro::get_addon_setting( 'pricing_years' );
 	if ($max_input >= $input_limit) : ?>
 		<div class="alert alert-danger">
-			<h3>Warning - Too many fields on this page. Please change the number per page, or modify your php.ini setting for max_input_vars to be greater than: <span class="badge"><?php echo number_format($max_input) ?></span></h3>
+			<h3><span class="enom-pro-icon enom-pro-icon-error"></span> Error: Too many fields on this page. Please change the number per page, or modify your php.ini setting for <a href="http://php.net/manual/en/info.configuration.php#ini.max-input-vars" target="_blank" >max_input_vars</a> to be greater than: <span class="badge"><?php echo number_format($max_input) ?></span></h3>
 			<p>Currently, saving all of the fields on this page would result in
 				<span class="label label-danger"><?php echo number_format($max_input) ?></span> variables, which is
 				greater than PHP's maximum of
