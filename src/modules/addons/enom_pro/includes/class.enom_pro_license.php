@@ -225,7 +225,6 @@ class enom_pro_license {
 		$version_file = self::getVersionCacheFile();
 		if ( file_exists( $version_file ) ) {
 			self::$latest_version = file_get_contents( $version_file );
-
 			return self::$latest_version;
 		}
 		$xml_filename = self::isBetaOptedIn() ? 'enom_pro_version_beta.xml' : 'enom_pro_version.xml';
@@ -257,6 +256,10 @@ class enom_pro_license {
 	 * @return string Time ago
 	 */
 	public static function get_last_checked_time_ago() {
+		$version_timeout = self::isBetaOptedIn() ? '-1 Week' : '-1 Month';
+		if (enom_pro::cache_file_is_older_than(self::getVersionCacheFile(), $version_timeout)) {
+			self::delete_latest_version();
+		}
 		$version_file = self::getVersionCacheFile();
 		if ( !file_exists( $version_file ) ) {
 			self::get_latest_version();
