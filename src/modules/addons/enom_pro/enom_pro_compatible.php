@@ -146,6 +146,11 @@ function enom_pro_config() {
 				"Description" => "Limit the maximum number of years to import TLD pricing for.
                                 Speeds Up the Import Process if you only offer registrations up to 3 years, for example."
 			),
+			'pricing_per_page' => array(
+				'FriendlyName' => "# Per Page", "Type" => "dropdown",
+				"Options" => "5,10,25,50,75,100,250,500", "Default" => "25",
+				"Description" => "Results Per Page on the TLD Pricing Import Page"
+			),
 			'pricing_retail' => array(
 				'FriendlyName' => "Retail Pricing ", "Type" => "yesno",
 				'default' => false,

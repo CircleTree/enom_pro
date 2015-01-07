@@ -1,33 +1,46 @@
 <?php
 global $per_page;
-$per_page = 25;
+$per_page = enom_pro::get_addon_setting('pricing_per_page');
 /**
  * @param enom_pro $enom_pro
+ * @param bool $large is it a large or normal sized pager
  */
-function pager( $enom_pro ) {
+function pager( $enom_pro, $large = false) {
 	global $per_page;
-	?>
-	<div class="pager-wrap">
-		<ul class="pager">
-			<li class="previous">
-				<?php if ( @$_GET['start'] >= $per_page ) : ?>
-					<?php $prev_start = isset( $_GET['start'] ) ? (int) $_GET['start'] - $per_page : $per_page; ?>
-					<a data-start="<?php echo $prev_start ?>"
-						 href="<?php echo $_SERVER['PHP_SELF']; ?>?module=enom_pro&view=pricing_import&start=<?php echo $prev_start ?>#enom_pro_pricing_table">&larr; Prev</a>
-				<?php endif; ?>
-			</li>
-			<li class="next">
-				<?php if ( @$_GET['start'] <= ( count( $enom_pro->getAllDomainsPricing() ) - $per_page ) ) : ?>
-					<?php $next_start = isset( $_GET['start'] ) ? (int) $_GET['start'] + $per_page : $per_page; ?>
-					<a data-start="<?php echo $next_start ?>"
-						 href="<?php echo $_SERVER['PHP_SELF']; ?>?module=enom_pro&view=pricing_import&start=<?php echo $next_start ?>#enom_pro_pricing_table">Next &rarr;</a>
-				<?php endif; ?>
-			</li>
-		</ul>
-	</div>
-<?php
-}
+	$total = count($enom_pro->getAllDomainsPricing());
+	$pages = ceil(($total / $per_page));
+	$pages_array = array_keys(array_fill(1, $pages, ''));
+	echo '<nav><ul class="pagination'.($large ? ' pagination-lg' : '').'">';
+		echo '<li';
+			if ( @$_GET['start'] < $per_page ) {
+				echo ' class="disabled"';
+			}
+		$currentPage = ( $_GET['start'] / $per_page ) + 1;
+	$prevStart = ( $currentPage - 2 ) * $per_page;
+	if ($prevStart < 0 ) {
+		$prevStart = 0;
+	}
+	echo '><a data-start="'.$prevStart.'" href="' . $_SERVER['PHP_SELF'] . '?module=enom_pro&view=pricing_import&start='. $prevStart .'#enom_pro_pricing_table" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
 
+		foreach ($pages_array as $page) {
+			echo '<li';
+			if ( $currentPage == $page) {
+					echo ' class="active"';
+				}
+			echo '>';
+			$pageStart = ( $page - 1 ) * $per_page;
+			echo '<a data-start="'.$pageStart.'" href="' . $_SERVER['PHP_SELF'] . '?module=enom_pro&view=pricing_import&start='. $pageStart .'#enom_pro_pricing_table">'.$page.'</a>';
+			echo '</li>';
+		}
+		echo '<li';
+			if ( @$_GET['start'] >= ( $total - $per_page ) ) {
+				echo ' class="disabled"';
+			}
+	$nextStart = ( $currentPage ) * $per_page;
+	echo '><a data-start="'.$nextStart.'" href="' . $_SERVER['PHP_SELF'] . '?module=enom_pro&view=pricing_import&start='. $nextStart .'#enom_pro_pricing_table" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+
+	echo '</ul></nav>';
+}
 ?>
 <?php
 /**
@@ -105,6 +118,19 @@ if ( $this->is_pricing_cached() ) : ?>
 		</div>
 	<?php endif; //End Message wrap?>
 
+	<?php
+	$input_limit = ini_get('max_input_vars');
+	$max_input = $per_page * enom_pro::get_addon_setting( 'pricing_years' );
+	if ($max_input >= $input_limit) : ?>
+		<div class="alert alert-danger">
+			<h3>Warning - Too many fields on this page. Please change the number per page, or modify your php.ini setting for max_input_vars to be greater than: <span class="badge"><?php echo number_format($max_input) ?></span></h3>
+			<p>Currently, saving all of the fields on this page would result in
+				<span class="label label-danger"><?php echo number_format($max_input) ?></span> variables, which is
+				greater than PHP's maximum of
+				<span class="label label-success"><?php echo number_format($input_limit) ?></span>.
+			</p>
+		</div>
+	<?php endif; ?>
 	<?php if ( !enom_pro_controller::isDismissed( 'price_intro' ) ) : ?>
 		<div class="alert alert-info">
 			<button type="button"
@@ -346,7 +372,7 @@ if ( $this->is_pricing_cached() ) : ?>
 		</table>
 		<input type="submit" value="Save" class="btn btn-block btn-success">
 	</form>
-	<?php pager( $this ); ?>
+	<?php pager( $this, true); ?>
 	<script>
 		jQuery(function($) {
 			$(".pager a").on('click', function() {
