@@ -156,6 +156,12 @@ function enom_pro_config() {
 				'default' => false,
 				"Description" => "Use your eNom Retail Pricing. Un-check to use wholesale pricing (Your Cost)"
 			),
+			'exchange_rate_provider' => array(
+				'FriendlyName' => "Exchange Rate Data Provider",
+				"Type" => "dropdown",
+				"Options" => "google,currency-api", "Default" => "google",
+				"Description" => "Choose where to fetch currency data from"
+			),
 			'custom-exchange-rate' => array(
 				'FriendlyName' => "Custom Exchange Rate", "Type" => "text",
 				"Default" => NULL,
