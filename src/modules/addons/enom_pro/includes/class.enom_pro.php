@@ -1431,7 +1431,7 @@ class enom_pro {
 	 *
 	 * @return bool true if the cache file is older than the $date, false if it is newer
 	 */
-	public function cache_file_is_older_than ($file_path, $date)
+	public static function cache_file_is_older_than ($file_path, $date)
 	{
 		$modified = stat($file_path);
 		$relative_date = strtotime($date);
