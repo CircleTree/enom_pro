@@ -578,6 +578,16 @@ a.btn {
 	overflow: visible;
 	color: #E09A47;
 }
+#enom_pro_pricing_import_page .pagination
+{
+    display: inline-block;
+}
+
+/*[clearfix]*/
+#enom_pro_pricing_import_page nav
+{
+    text-align: center;
+}
 
 
 /**

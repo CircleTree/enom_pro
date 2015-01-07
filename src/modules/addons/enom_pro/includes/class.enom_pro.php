@@ -1824,7 +1824,6 @@ class enom_pro {
 	 *
 	 * @param $key
 	 *
-	 * @internal param string $setting key for the setting to get
 	 * @return string $value
 	 */
 	public static function get_addon_setting( $key ) {
