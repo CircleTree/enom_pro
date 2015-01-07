@@ -122,9 +122,9 @@ function enom_pro_config() {
 				"Description" => '<h1 style="line-height:1.1;margin:0;" >Import Options ' . $button . '</h1>'
 			),
 			'import_per_page' => array(
-				'FriendlyName' => "# Per Page", "Type" => "dropdown",
-				"Options" => "5,10,25,50,75,100", "Default" => "25",
-				"Description" => "Results Per Page on the Domain Import Page"
+				'FriendlyName' => "Show", "Type" => "dropdown",
+				"Options" => "5,10,25,50,75,100,250", "Default" => "25",
+				"Description" => "Results per-page on the Domain Import Page"
 			),
 			'auto_activate' => array(
 				'FriendlyName' => "Automatically Activate Orders on Import",
@@ -144,12 +144,12 @@ function enom_pro_config() {
 				"Type" => "dropdown",
 				"Options" => "1,2,3,4,5,6,7,8,9,10", "Default" => "10",
 				"Description" => "Limit the maximum number of years to import TLD pricing for.
-                                Speeds Up the Import Process if you only offer registrations up to 3 years, for example."
+                                <em>Speeds Up the Import Process if you only offer registrations up to 3 years, for example.</em>"
 			),
 			'pricing_per_page' => array(
-				'FriendlyName' => "# Per Page", "Type" => "dropdown",
+				'FriendlyName' => "Show", "Type" => "dropdown",
 				"Options" => "5,10,25,50,75,100,250,500", "Default" => "25",
-				"Description" => "Results Per Page on the TLD Pricing Import Page"
+				"Description" => "Results per-page on the TLD Pricing Import Page"
 			),
 			'pricing_retail' => array(
 				'FriendlyName' => "Retail Pricing ", "Type" => "yesno",
