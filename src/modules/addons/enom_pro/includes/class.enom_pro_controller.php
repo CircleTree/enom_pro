@@ -68,8 +68,10 @@ class enom_pro_controller {
 
 	protected function set_results_per_page() {
 		$per_page = (int) $_REQUEST['per_page'];
-		if ( $per_page > 100 || $per_page < 0 ) {
-			$per_page = 25;
+		$config = enom_pro_config();
+		$valid_options = explode(',', $config['fields']['import_per_page']['Options']);
+		if (! in_array($per_page, $valid_options)) {
+			throw new InvalidArgumentException('Invalid Option: ' . $per_page);
 		}
 		enom_pro::set_addon_setting( 'import_per_page', $per_page );
 		echo 'set';
