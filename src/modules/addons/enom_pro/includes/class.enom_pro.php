@@ -1282,7 +1282,6 @@ class enom_pro {
 	 * @param int|true   $limit true get all, otherwise number of records
 	 * @param int|number $start offset of returned record. default 1
 	 *
-	 * @internal param $ number||true $limit number of results to get, true to get all
 	 * @return multitype:multitype:number string boolean
 	 */
 	public function getDomains( $limit = 25, $start = 1 ) {
@@ -1354,13 +1353,14 @@ class enom_pro {
 			$this->remote_limit_reached = true;
 		}
 		if ( is_bool( $this->limit ) && true === $this->limit ) {
-			$this->limit = $meta['total_domains'];
+			//TODO get from xml list, instead of buggy API
+			$this->remote_start = (int) $this->xml->GetDomains->NextRecords;
 			$this->remote_limit_reached = false;
 			$this->is_get_all_domains = true;
 		}
 
 		while ( !$this->remote_limit_reached ) {
-			$this->getDomains( $this->limit, $this->remote_start );
+			$this->getDomains( $this->remote_limit, $this->remote_start );
 		}
 		if ( $this->is_get_all_domains ) {
 			$this->write_domains_cache( $this->last_result );
