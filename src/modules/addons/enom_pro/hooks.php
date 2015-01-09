@@ -24,6 +24,11 @@ function enom_pro_admin_balance ($vars)
 }
 
 add_hook("AdminHomeWidgets",1,"enom_pro_admin_ssl_certs");
+/**
+ * @param $vars
+ *
+ * @return array
+ */
 function enom_pro_admin_ssl_certs ($vars)
 {
 	unset($vars);
@@ -33,6 +38,7 @@ function enom_pro_admin_ssl_certs ($vars)
 	$formID = $widget->getFormID();
 	//Add-on jQuery for the "show all button"
 	$jquery = <<<EOL
+/** @noinspection PhpExpressionResultUnusedInspection */
 $("#$contentID").on("click", ".show_hidden_ssl", function  (){
 			$("#$formID").append("<input type=\"hidden\" name=\"show_all\" value=\"true\" />").trigger("submit");
 			return false;
@@ -66,6 +72,7 @@ function enom_pro_admin_pending_domain_verification( $vars ) {
 	$formID = $widget->getFormID();
 //	.flushValidateCache
 	$jquery = <<<EOL
+/** @noinspection PhpExpressionResultUnusedInspection */
 $("#$contentID").on("click", ".flushValidateCache", function  (){
 			$("#$formID").append("<input type=\"hidden\" name=\"flush_cache\" value=\"true\" />").trigger("submit");
 			return false;

@@ -50,6 +50,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	function  test_getAllDomains()
 	{
 //	    $this->markTestIncomplete('TODO re-look at this process of validating orders / domains');
+		$this->e->clear_domains_cache();
 	    $domains = $this->e->getDomains(true);
 	    $ids = array();
 	    foreach ($domains as $key => $domain) {
@@ -64,12 +65,19 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	            $dups[$id] = $count;
 	        }
 	    }
-//	    if ( count($dups) > 0) {
-//	        $this->fail('duplicated domain order ids:' . print_r($dups, true). 'domain order id => dup. count');
-//	    }
-	    $meta = $this->e->getListMeta();
-	    $this->assertEquals($meta['total_domains'], count($domains));
-	     
+	    if ( count($dups) > 0) {
+	        $this->fail('duplicated domain order ids:' . print_r($dups, true). 'domain order id => dup. count');
+	    }
+		$this->assertEmpty($dups);
+	}
+
+	/**
+	 * @group domains
+	 */
+	function  test_meta_equals_domains_list(){
+		$domains = $this->e->getDomains(true);
+		$meta = $this->e->getListMeta();
+		$this->assertEquals($meta['total_domains'], count($domains));
 	}
 	function test_cache_is_older (){
 		$filepath = ENOM_PRO_TEMP . 'test';
