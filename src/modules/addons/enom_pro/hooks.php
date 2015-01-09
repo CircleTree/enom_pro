@@ -246,7 +246,7 @@ function enom_pro_admin_css ()
     //	Only load on applicable pages
     $pages = array('index.php', 'addonmodules.php', 'configadminroles.php');
 	$scriptName = basename( $_SERVER['SCRIPT_NAME'] );
-	if (in_array( $scriptName, $pages) || ( isset($_GET['module']) && 'enom_pro' == $_GET['module']) ) {
+	if (in_array( $scriptName, $pages) && ( isset($_GET['module']) && 'enom_pro' == $_GET['module']) ) {
 			//Include our class if needed
 			if (! class_exists('enom_pro') ) {
 				require_once ENOM_PRO_INCLUDES . 'class.enom_pro.php';
