@@ -136,7 +136,7 @@
 					command="${bin_dir}/phpcb --log ${build_temp_dir}/logs --source ${src_dir} --output ${build_temp_dir}/code-browser"/>
 	</target>
 
-	<target name="ci" depends="clean,phpunit,try_ParallelTasks,phpcb"/>
+	<target name="ci" depends="clean-ci,phpunit,try_ParallelTasks,phpcb"/>
 	<target name="replace">
 		<!--<delete dir="${build_temp_dir}"/>-->
 		<!--<mkdir dir="build/encoded_prep/"/>-->
