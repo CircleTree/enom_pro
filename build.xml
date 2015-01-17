@@ -105,8 +105,9 @@
 	</target>
 
 	<target name="phpmd" description="Generate pmd.xml using PHPMD">
-		<exec logoutput="true" spawn="true"
+		<exec logoutput="true" spawn="true" checkreturn="true"
 					command="${bin_dir}/phpmd ${src_dir} xml codesize,design,naming,unusedcode --exclude=ExitExpression --reportfile ${build_temp_dir}/logs/pmd.xml"/>
+		<echo>done phpmd</echo>
 	</target>
 
 	<target name="phpcpd" description="Generate pmd-cpd.xml using PHPCPD">
@@ -123,6 +124,7 @@
 					description="Generate checkstyle.xml using PHP_CodeSniffer">
 		<exec logoutput="true"
 					command="${bin_dir}/phpcs --report=checkstyle --report-file=${build_temp_dir}/logs/checkstyle.xml --standard=PSR2 ${src_dir}"/>
+		<echo>done phpcs</echo>
 	</target>
 
 	<target name="phpdoc"

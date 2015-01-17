@@ -35,7 +35,7 @@ $expiring_certs = $this->getExpiringCerts(); ?>
 								<span class="enom-pro-icon enom-pro-icon-checkmark"></span>
 							</span>
 								SSL Reminder email will be sent to
-								<?php $clientDetails = self::whmcs_api(
+								<?php $clientDetails = enom_pro::whmcs_api(
 									'getclientsdetails',
 									array( 'clientid' => $clientIdByDomain )
 								);
