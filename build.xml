@@ -10,6 +10,7 @@
 	<property name="src_dir" value="src/"/>
 	<property name="version_xml" value="enom_pro_version.xml"/>
 	<property name="beta_version_xml" value="enom_pro_version_beta.xml"/>
+	<property name="bin_dir" value="vendor/bin" description="Composer Bin Dir" />
 	<property name="deploy" value="/Users/robertgregor/Sites/whmcs"/>
 	<property name="deploy2" value="/Users/robertgregor/Sites/whmcs2"/>
 	<!-- Location to save the encoded version -->
@@ -46,9 +47,6 @@
 		<mkdir dir="${encoded}"/>
 		<mkdir dir="${encoded_prep}"/>
 	</target>
-	<target name="composer">
-		<exec command="sudo composer install"/>
-	</target>
 	<target name="clean-ci" depends="clean">
 		<mkdir dir="${build_temp_dir}/api"/>
 		<mkdir dir="${build_temp_dir}/code-browser"/>
@@ -74,7 +72,7 @@
 	</target>
 	<target name="try_ParallelTasks"
 					description="Run the pdepend, phpmd, phpcpd, phpcs, phpdoc and phploc tasks. Checks for parallel support in PHP.">
-		<exec command="php -m | grep pcntl" returnProperty="pcntl_enabled"/>
+		<exec command="php -m | grep pcntl" outputProperty="pcntl_enabled"/>
 		<if>
 			<equals arg1="${pcntl_enabled}" arg2="pcntl"/>
 			<then>
@@ -93,48 +91,48 @@
 					description="Run unit tests using PHPUnit and generates junit.xml and clover.xml">
 		<echo msg="Running unit tests"/>
 		<exec logoutput="true"
-					command="phpunit --stop-on-failure --configuration=phpunit.xml --coverage-html ${build_temp_dir}/coverage --coverage-clover build/logs/clover.xml --log-junit build/logs/junit.xml"/>
+					command="${bin_dir}/phpunit --configuration=phpunit.xml --coverage-html ${build_temp_dir}/coverage --coverage-clover build/logs/clover.xml --log-junit build/logs/junit.xml"/>
 	</target>
 
 	<target name="pdepend"
 					description="Generate jdepend.xml and software metrics charts using PHP_Depend">
 		<exec logoutput="true"
-					command="pdepend --jdepend-xml=${build_temp_dir}/logs/jdepend.xml --jdepend-chart=${build_temp_dir}/pdepend/dependencies.svg --overview-pyramid=${build_temp_dir}/pdepend/overview-pyramid.svg ${src_dir}"/>
+					command="${bin_dir}/pdepend --jdepend-xml=${build_temp_dir}/logs/jdepend.xml --jdepend-chart=${build_temp_dir}/pdepend/dependencies.svg --overview-pyramid=${build_temp_dir}/pdepend/overview-pyramid.svg ${src_dir}"/>
 	</target>
 
 	<target name="phpmd" description="Generate pmd.xml using PHPMD">
 		<exec logoutput="true" spawn="true"
-					command="phpmd ${src_dir} xml codesize,design,naming,unusedcode --exclude=ExitExpression --reportfile ${build_temp_dir}/logs/pmd.xml"/>
+					command="${bin_dir}/phpmd ${src_dir} xml codesize,design,naming,unusedcode --exclude=ExitExpression --reportfile ${build_temp_dir}/logs/pmd.xml"/>
 	</target>
 
 	<target name="phpcpd" description="Generate pmd-cpd.xml using PHPCPD">
 		<exec logoutput="true"
-					command="phpcpd --log-pmd ${build_temp_dir}/logs/pmd-cpd.xml ${src_dir}"/>
+					command="${bin_dir}/phpcpd --log-pmd ${build_temp_dir}/logs/pmd-cpd.xml ${src_dir}"/>
 	</target>
 
 	<target name="phploc" description="Generate phploc.csv">
 		<exec logoutput="true"
-					command="phploc --log-csv ${build_temp_dir}/logs/phploc.csv ${src_dir}"/>
+					command="${bin_dir}/phploc --log-csv ${build_temp_dir}/logs/phploc.csv ${src_dir}"/>
 	</target>
 
 	<target name="phpcs"
 					description="Generate checkstyle.xml using PHP_CodeSniffer">
 		<exec logoutput="true"
-					command="phpcs --report=checkstyle --report-file=${build_temp_dir}/logs/checkstyle.xml --standard=PSR2 ${src_dir}"/>
+					command="${bin_dir}/phpcs --report=checkstyle --report-file=${build_temp_dir}/logs/checkstyle.xml --standard=PSR2 ${src_dir}"/>
 	</target>
 
 	<target name="phpdoc"
 					description="Generate API documentation using phpdocumentor">
 		<exec logoutput="true"
-					command="phpdoc -d ${src_dir} -t ${build_temp_dir}/api"/>
+					command="${bin_dir}/phpdoc -d ${src_dir} -t ${build_temp_dir}/api"/>
 	</target>
 
 	<target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
 		<exec logoutput="true"
-					command="phpcb --log ${build_temp_dir}/logs --source ${src_dir} --output ${build_temp_dir}/code-browser"/>
+					command="${bin_dir}/phpcb --log ${build_temp_dir}/logs --source ${src_dir} --output ${build_temp_dir}/code-browser"/>
 	</target>
 
-	<target name="ci" depends="clean,composer,phpunit,try_ParallelTasks,phpcb"/>
+	<target name="ci" depends="clean,phpunit,try_ParallelTasks,phpcb"/>
 	<target name="replace">
 		<!--<delete dir="${build_temp_dir}"/>-->
 		<!--<mkdir dir="build/encoded_prep/"/>-->
