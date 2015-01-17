@@ -7,7 +7,7 @@
  * @codeCoverageIgnore
  */
 defined( "WHMCS" ) or die( "This file cannot be accessed directly" );
-
+defined('BOOTSTRAP') or define('BOOTSTRAP', false);
 /**
  * eNom PRO Requirements Checker
  */
@@ -46,6 +46,9 @@ $requirements = array(
  */
 $requirements_link = '<a target="_blank" href="http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=54">View Help</a>';
 foreach ( $requirements as $requirement ) {
+	if (BOOTSTRAP) {
+		break;
+	}
 	if ( isset( $requirement['function'] ) ) {
 		if ( !function_exists( $requirement['function'] ) ) {
 			die( sprintf( '%s is required for eNom PRO to function. %s',
