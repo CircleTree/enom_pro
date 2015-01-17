@@ -95,7 +95,7 @@
 					description="Run unit tests using PHPUnit and generates junit.xml and clover.xml">
 		<echo msg="Running unit tests"/>
 		<exec logoutput="true"
-					command="${bin_dir}/phpunit --configuration=phpunit.xml --coverage-html ${build_temp_dir}/coverage --coverage-clover build/logs/clover.xml --log-junit build/logs/junit.xml"/>
+					command="${bin_dir}/phpunit --configuration=phpunit.xml --coverage-html ${build_temp_dir}/coverage --coverage-clover ${build_temp_dir}/logs/clover.xml --log-junit ${build_temp_dir}/logs/junit.xml"/>
 	</target>
 
 	<target name="pdepend"
