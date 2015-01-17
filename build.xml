@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="ENOM PRO!" default="local">
+<project name="ENOM PRO!" default="local" basedir=".">
 	<property name="name" value="eNom PRO"/>
 	<!-- Remember to pad the License header version # when the number of digits changes
 	Or, just make the next major version # 2.2.00
