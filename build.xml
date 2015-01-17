@@ -46,6 +46,9 @@
 		<mkdir dir="${encoded}"/>
 		<mkdir dir="${encoded_prep}"/>
 	</target>
+	<target name="composer">
+		<exec command="sudo composer install"/>
+	</target>
 	<target name="clean-ci" depends="clean">
 		<mkdir dir="${build_temp_dir}/api"/>
 		<mkdir dir="${build_temp_dir}/code-browser"/>
@@ -121,7 +124,7 @@
 	</target>
 
 	<target name="phpdoc"
-					description="Generate API documentation using PHPDocumentor">
+					description="Generate API documentation using phpdocumentor">
 		<exec logoutput="true"
 					command="phpdoc -d ${src_dir} -t ${build_temp_dir}/api"/>
 	</target>
@@ -131,7 +134,7 @@
 					command="phpcb --log ${build_temp_dir}/logs --source ${src_dir} --output ${build_temp_dir}/code-browser"/>
 	</target>
 
-	<target name="ci" depends="clean,phpunit,try_ParallelTasks,phpcb"/>
+	<target name="ci" depends="clean,composer,phpunit,try_ParallelTasks,phpcb"/>
 	<target name="replace">
 		<!--<delete dir="${build_temp_dir}"/>-->
 		<!--<mkdir dir="build/encoded_prep/"/>-->

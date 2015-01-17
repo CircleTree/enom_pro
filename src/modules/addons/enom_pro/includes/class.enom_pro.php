@@ -1760,7 +1760,7 @@ class enom_pro {
 			);
 		} else {
 			return array(
-				'total_domains' => (int) $this->xml->GetDomains->TotalDomainCount,
+				'total_domains' => (int) $this->xml->GetDomains->DomainCount,
 				'next_start' => (int) $this->xml->GetDomains->NextRecords,
 				'prev_start' => (int) $this->xml->GetDomains->PreviousRecords,
 			);

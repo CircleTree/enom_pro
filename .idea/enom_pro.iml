@@ -10,32 +10,27 @@
     <orderEntry type="module-library">
       <library name="PHARS">
         <CLASSES>
-          <root url="phar:///Applications/MAMP/bin/php/php5.4.26/lib/php/phpDocumentor/tests/data/test.phar" />
+          <root url="phar:///Applications/MAMP/Library/bin/go-pear.phar" />
+          <root url="phar:///Applications/MAMP/Library/bin/phpunit.phar" />
           <root url="phar://$MODULE_DIR$/phing-latest.phar" />
-          <root url="phar:///Applications/MAMP/bin/php/php5.4.26/lib/php/doc/Net_Growl/examples/growlDefaultCollection.phar" />
-          <root url="phar:///Applications/MAMP/bin/php/php5.4.26/lib/php/data/phpDocumentor/vendor/phpdocumentor/fileset/tests/data/test.phar" />
-          <root url="phar:///Applications/MAMP/bin/php/php5.4.26/lib/php/data/phpDocumentor/box.phar" />
         </CLASSES>
         <SOURCES>
-          <root url="phar:///Applications/MAMP/bin/php/php5.4.26/lib/php/phpDocumentor/tests/data/test.phar" />
+          <root url="phar:///Applications/MAMP/Library/bin/go-pear.phar" />
+          <root url="phar:///Applications/MAMP/Library/bin/phpunit.phar" />
           <root url="phar://$MODULE_DIR$/phing-latest.phar" />
-          <root url="phar:///Applications/MAMP/bin/php/php5.4.26/lib/php/doc/Net_Growl/examples/growlDefaultCollection.phar" />
-          <root url="phar:///Applications/MAMP/bin/php/php5.4.26/lib/php/data/phpDocumentor/vendor/phpdocumentor/fileset/tests/data/test.phar" />
-          <root url="phar:///Applications/MAMP/bin/php/php5.4.26/lib/php/data/phpDocumentor/box.phar" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library name="PHP">
         <CLASSES>
-          <root url="file:///Applications/MAMP/bin/php/php5.4.26/lib/php" />
+          <root url="file:///Applications/MAMP/Library/bin" />
         </CLASSES>
         <SOURCES>
-          <root url="file:///Applications/MAMP/bin/php/php5.4.26/lib/php" />
+          <root url="file:///Applications/MAMP/Library/bin" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="library" name="jQuery 1.11.0" level="application" />
   </component>
 </module>
-
