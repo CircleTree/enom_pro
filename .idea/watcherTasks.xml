@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectTasksOptions">
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="" />
+      <option name="arguments" value="$PROJECT_DIR$/phing-latest.phar" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" value="" />
       <option name="exitCodeBehavior" value="ERROR" />
@@ -15,7 +15,7 @@
       </option>
       <option name="outputFromStdout" value="false" />
       <option name="passParentEnvs" value="true" />
-      <option name="program" value="/Applications/MAMP/bin/php/php5.4.26/bin/phing" />
+      <option name="program" value="php" />
       <option name="scopeName" value="src without built files" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$ProjectFileDir$" />
@@ -63,4 +63,3 @@
     </TaskOptions>
   </component>
 </project>
-

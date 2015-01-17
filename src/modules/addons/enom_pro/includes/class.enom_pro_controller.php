@@ -95,7 +95,7 @@ class enom_pro_controller {
 		}
 		$start = isset( $_GET['start'] ) ? $_GET['start'] : 1;
 		$domains = $this->enom->getDomainsTab( $tab,
-			enom_pro::get_addon_setting( 'import_per_page' ),
+			25,
 			$start );
 		require_once ENOM_PRO_INCLUDES . 'widget_domain_stats_ajax.php';
 	}

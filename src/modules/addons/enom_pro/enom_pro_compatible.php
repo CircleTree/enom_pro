@@ -59,7 +59,7 @@ function enom_pro_config() {
 	}
 	$button = '<a class="btn btn-inverse btn-sm" ' .
 		' style="color:white;text-decoration:none;display:inline;vertical-align:middle;"' .
-		' href="' . enom_pro::MODULE_LINK . '">Go to @NAME@ &rarr;</a>';
+		' href="' . enom_pro::MODULE_LINK . '" target="_top">Go to @NAME@ &rarr;</a>';
 	$save_button = array(
 		'FriendlyName' => "Save",
 		"Type" => "null",
@@ -369,37 +369,83 @@ function enom_pro_config() {
  * @codeCoverageIgnore
  */
 function enom_pro_activate() {
-	mysql_query( "BEGIN" );
-	$query = "CREATE TABLE `mod_enom_pro` (
+	$query = "CREATE TABLE IF NOT EXISTS `mod_enom_pro` (
             `id` int(1) NOT NULL,
             `local` text NOT NULL,
             PRIMARY KEY (`id`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	mysql_query( $query );
+
+	//Reset license
 	$query = "INSERT INTO `mod_enom_pro` VALUES(0, '');";
 	mysql_query( $query );
+
 	//Delete the defaults so MySQL doesn't error out on duplicate insert
 	$query = "	DELETE FROM `tbladdonmodules` WHERE `module` = 'enom_pro';";
 	mysql_query( $query );
-	//Insert these defaults due to a bug in the WHMCS addon api with checkboxes
-	$query = "
-            INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_net', 'on');";
-	mysql_query( $query );
-	$query = "
-            INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_com', 'on');";
-	mysql_query( $query );
-	$query = "
-            INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_css', 'on');";
-	mysql_query( $query );
-	$query = "
-            INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_checkout', 'on');";
-	mysql_query( $query );
-	mysql_query( "COMMIT" );
+
+	//Check for backed-up settings
+	$query = "SELECT * FROM `mod_enom_pro` WHERE `id` = 1";
+	$result = mysql_fetch_assoc(mysql_query($query));
+	if ($result) {
+		$backup_array = unserialize($result['local']);
+		foreach ($backup_array as $setting_key => $setting_value) {
+			$setting_key = mysql_real_escape_string($setting_key);
+			$setting_value = mysql_real_escape_string($setting_value);
+			$query = "INSERT INTO `tbladdonmodules` VALUES('enom_pro', '{$setting_key}', '{$setting_value}')";
+			mysql_query($query);
+		}
+		return array(
+			'status'      => 'info',
+			'description' => ENOM_PRO . ' Re-Activated. Settings have been restored. <script> window.location = "addonmodules.php?module=enom_pro";</script>'
+		);
+
+	} else {
+		mysql_query( "BEGIN" );
+		//Insert these defaults due to a bug in the WHMCS addon api with checkboxes
+		$query = "
+	            INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_net', 'on');";
+		mysql_query( $query );
+		$query = "
+	            INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_com', 'on');";
+		mysql_query( $query );
+		$query = "
+	            INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_css', 'on');";
+		mysql_query( $query );
+		$query = "
+	            INSERT INTO `tbladdonmodules` VALUES('enom_pro', 'spinner_checkout', 'on');";
+		mysql_query( $query );
+		mysql_query( "COMMIT" );
+		return array(
+			'status'      => 'success',
+			'description' => ENOM_PRO . ' Activated'
+		);
+	}
 	if ( mysql_error() ) {
-		die ( mysql_error() );
+		return array(
+			'status'      => 'error',
+			'description' => ENOM_PRO . ' MySQL Error: ' . mysql_error()
+		);
 	}
 }
 
+function enom_pro_deactivate (){
+	$query = "SELECT * FROM `tbladdonmodules` WHERE `module` = 'enom_pro'";
+	$result = mysql_query($query);
+	$settings_backup = array();
+	while ($row = mysql_fetch_assoc($result)) {
+		$settings_backup[$row['setting']] = $row['value'];
+	}
+	mysql_query("DELETE FROM `mod_enom_pro` WHERE `id` = 1");
+	$settings_backup = mysql_real_escape_string(serialize($settings_backup));
+	$query = "INSERT INTO `mod_enom_pro` VALUES (1, '{$settings_backup}')";
+	mysql_query( $query );
+
+	return array(
+		'status'      => 'success',
+		'description' => ENOM_PRO . ' Deactivated. Settings have been backed up.'
+	);
+}
 /**
  * @param array $vars module vars
  *

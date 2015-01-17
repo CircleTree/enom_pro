@@ -24,17 +24,19 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$this->assertArrayHasKey('awaitingreply', $depts[1]);
 		$this->assertArrayHasKey('opentickets', $depts[1]);
 	}
+
+	/**
+	 * @throws WHMCSException
+	 */
 	function test_whmcs_create_acct ()
 	{
 	    $email = 'awef@af.co';
-	    $clients = $this->e->whmcs_api('getclients', array('search' => $email));
-	    $id = $clients['clients']['client'][0]['id'];
-	    $this->e->whmcs_api('deleteclient', array('clientid' => $id));
+
 	    $data = array(
 	    	  'firstname' => 'Joe',
                 'lastname' => 'Doe',
                 'email'    => $email,
-	            'address1' => '123 a stree',
+	            'address1' => '123 a street',
 	            'city'     => 'omaha',
 	            'state'    => 'NB',
 	            'postcode' => '3413',
@@ -42,6 +44,13 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	            'country'  => 'US',
 	    );
 	    $this->e->whmcs_api('addclient', $data);
+		$result = $this->e->whmcs_api('getclientsdetails', array('email' => $email));
+		$this->assertArraySubset($data, $result);
+		//Clean up
+		$clients = $this->e->whmcs_api('getclients', array('search' => $email));
+		$this->assertCount(1, $clients['clients']['client']);
+		$id = $clients['clients']['client'][0]['id'];
+		$this->e->whmcs_api('deleteclient', array('clientid' => $id));
 	}
 	
 	/**
