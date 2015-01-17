@@ -5,8 +5,11 @@
 	Or, just make the next major version # 2.2.00
 	-->
 	<property name="version" value="2.1.31"/>
-	<property name="build_temp_dir" value="build"/>
+	<property name="build_temp_dir" value="${project.basedir}/build"/>
 	<property name="build_dir" value="${build_temp_dir}"/>
+	<target name="debug">
+		<echo>${build_dir}</echo>
+	</target>
 	<property name="src_dir" value="src/"/>
 	<property name="version_xml" value="enom_pro_version.xml"/>
 	<property name="beta_version_xml" value="enom_pro_version_beta.xml"/>
@@ -71,7 +74,8 @@
 		<phingcall target="phploc"/>
 	</target>
 	<target name="try_ParallelTasks"
-					description="Run the pdepend, phpmd, phpcpd, phpcs, phpdoc and phploc tasks. Checks for parallel support in PHP.">
+					description="Run the pdepend, phpmd, phpcpd, phpcs, phpdoc and phploc tasks.
+					Checks for parallel support in PHP. Also requires `yum install php-process` to enable POSIX functions.">
 		<exec command="php -m | grep pcntl" outputProperty="pcntl_enabled"/>
 		<if>
 			<equals arg1="${pcntl_enabled}" arg2="pcntl"/>
