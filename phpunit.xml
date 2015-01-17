@@ -36,7 +36,6 @@
         </logging>
 	    -->
 	<php>
-		<const name="ROOTDIR" value="/Users/robertgregor/git/enom_pro/src" />
 		<const name="ENOM_PRO_TEMP" value="/var/tmp/" />
 		<const name="WHMCS" value="TRUE" />
 		<const name="UNIT_TESTS" value="TRUE" />
