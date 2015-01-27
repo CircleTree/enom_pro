@@ -548,14 +548,17 @@ jQuery(function($) {
     	$("#search_form").trigger('submit');
     	return false;
     });
-    $(".bulkImport").on('submit reset recalculate', function  (e){
+    $(".bulkImport").on('submit reset recalculate save', function  (e){
         if (e.type == 'reset') {
             $(".clear_all").trigger('click');
             return true; //Allow browser to reset the form
         } else if (e.type == 'submit') {
             $(".clear_all").trigger('click');
-            $(this).trigger('recalculate');
+            $(this).trigger('recalculate').trigger('save');
             return false;
+        } else if (e.type == 'save') {
+            //Do AJAX Save here
+            console.warn('implement ajax save method')
         } else if (e.type == 'recalculate') {
             var markup = parseFloat($("#percentMarkup").val()) || 0,
                 wholeMarkup = parseFloat($("#wholeMarkup").val()) || 0,

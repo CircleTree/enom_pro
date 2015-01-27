@@ -24,6 +24,7 @@
 					       max="500"
 					       name="markup"
 					       id="percentMarkup"
+					       value="<?php echo enom_pro::get_addon_setting('percent_markup_min') ?>"
 					       class="form-control input-sm"/>
 					<span class="input-group-addon">%</span>
 				</div>
