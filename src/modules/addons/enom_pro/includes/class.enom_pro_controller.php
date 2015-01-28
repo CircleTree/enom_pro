@@ -479,6 +479,8 @@ class enom_pro_controller {
 		enom_pro::set_addon_setting('min_markup_whole', (double) $_GET['min_markup_whole']);
 		enom_pro::set_addon_setting('preferred_markup_percent', (double) $_GET['preferred_markup_percent']);
 		enom_pro::set_addon_setting('preferred_markup_whole', (double) $_GET['preferred_markup_whole']);
+		enom_pro::set_addon_setting('round_to', (int) $_GET['round_to']);
+		enom_pro::set_addon_setting('overwrite_whmcs', ('true' == $_GET['overwrite_whmcs'] ? true : false));
 		echo 'saved';
 
 	}
