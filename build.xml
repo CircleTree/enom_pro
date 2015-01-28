@@ -179,9 +179,10 @@
         <ioncubeencoder
         	phpversion="5"
         	optimize="max"
-        	ioncubepath="/Users/robertgregor/ioncube"
+        	ioncubepath="/Users/robertgregor/ioncube/8"
         	nodoccomments="true"
         	targetoption="replace"
+					showcommandline="false"
         	fromdir="${encoded_prep}"
         	todir="${encoded}"
         	copy="index.php enom_pro.php"

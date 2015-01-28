@@ -557,8 +557,23 @@ jQuery(function($) {
             $(this).trigger('recalculate').trigger('save');
             return false;
         } else if (e.type == 'save') {
+            var data = {
+								min_markup_percent: $('#percentMarkup').val(),
+								min_markup_whole : $("#wholeMarkup").val(),
+								preferred_markup_percent: $("#preferredPercentMarkup").val() ,
+								preferred_markup_whole: $("#preferredWholeMarkup").val()
+						};
+            //Check if data has changed
+            if (JSON.stringify(data) === JSON.stringify(enom_pro.lastSavedTLDPricing)) {
+                return false;
+            }
+            //Cache data from last request
+            enom_pro.lastSavedTLDPricing = data;
             //Do AJAX Save here
-            console.warn('implement ajax save method')
+            $.ajax({
+                url : 'addonmodules.php?module=enom_pro',
+                data: $.extend({}, data, {action: 'save_tld_markup'})
+            })
         } else if (e.type == 'recalculate') {
             var markup = parseFloat($("#percentMarkup").val()) || 0,
                 wholeMarkup = parseFloat($("#wholeMarkup").val()) || 0,
@@ -875,6 +890,12 @@ jQuery(function($) {
                 e.preventDefault();
                 enom_pro.hideUpgradeAlert();
             })
+        },
+        lastSavedTLDPricing: {
+            min_markup_percent: $('#percentMarkup').val(),
+            min_markup_whole : $("#wholeMarkup").val() ,
+            preferred_markup_percent: $("#preferredPercentMarkup").val() ,
+            preferred_markup_whole: $("#preferredWholeMarkup").val()
         },
         /**
          * Shows changelog & hides sidebar notification

@@ -24,7 +24,7 @@
 					       max="500"
 					       name="markup"
 					       id="percentMarkup"
-					       value="<?php echo enom_pro::get_addon_setting('percent_markup_min') ?>"
+					       value="<?php echo enom_pro::get_addon_setting('min_markup_percent') ?>"
 					       class="form-control input-sm"/>
 					<span class="input-group-addon">%</span>
 				</div>
@@ -40,6 +40,7 @@
 					       name="markup2"
 					       id="wholeMarkup"
 					       placeholder="0.00"
+					       value="<?php echo enom_pro::get_addon_setting('min_markup_whole') ?>"
 					       class="form-control input-sm"/>
 				</div>
 			</div>
@@ -53,6 +54,7 @@
 					       step="0.01"
 					       name="markup"
 					       id="preferredPercentMarkup"
+					       value="<?php echo enom_pro::get_addon_setting('preferred_markup_percent') ?>"
 					       class="form-control input-sm"/>
 					<span class="input-group-addon">%</span>
 				</div>
@@ -68,6 +70,7 @@
 					       name="markup2"
 					       id="preferredWholeMarkup"
 					       placeholder="0.00"
+					       value="<?php echo enom_pro::get_addon_setting('preferred_markup_whole') ?>"
 					       class="form-control input-sm"/>
 				</div>
 			</div>

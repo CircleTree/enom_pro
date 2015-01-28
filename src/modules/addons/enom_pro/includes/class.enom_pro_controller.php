@@ -4,7 +4,7 @@ class enom_pro_controller {
 	/**
 	 * @var enom_pro
 	 */
-	protected  $enom;
+	protected $enom;
 
 	public function __construct() {
 	}
@@ -32,7 +32,7 @@ class enom_pro_controller {
 			echo '<h1>Auto-upgrade error</h1>';
 			echo $e->getMessage() . '<br/>';
 			echo '<h2>Please correct any permissions errors, and ' .
-				'<a href="' . $_SERVER['REQUEST_URI'] . '">try again</a>.</h2>';
+			     '<a href="' . $_SERVER['REQUEST_URI'] . '">try again</a>.</h2>';
 			die;
 		}
 		$_SESSION['manual_files'] = $manual_files;
@@ -67,11 +67,11 @@ class enom_pro_controller {
 	}
 
 	protected function set_results_per_page() {
-		$per_page = (int) $_REQUEST['per_page'];
-		$config = enom_pro_config();
-		$valid_options = explode(',', $config['fields']['import_per_page']['Options']);
-		if (! in_array($per_page, $valid_options)) {
-			throw new InvalidArgumentException('Invalid Option: ' . $per_page);
+		$per_page      = (int) $_REQUEST['per_page'];
+		$config        = enom_pro_config();
+		$valid_options = explode( ',', $config['fields']['import_per_page']['Options'] );
+		if ( ! in_array( $per_page, $valid_options ) ) {
+			throw new InvalidArgumentException( 'Invalid Option: ' . $per_page );
 		}
 		enom_pro::set_addon_setting( 'import_per_page', $per_page );
 		echo 'set';
@@ -93,7 +93,7 @@ class enom_pro_controller {
 		} else {
 			$tab = 'IOwn';
 		}
-		$start = isset( $_GET['start'] ) ? $_GET['start'] : 1;
+		$start   = isset( $_GET['start'] ) ? $_GET['start'] : 1;
 		$domains = $this->enom->getDomainsTab( $tab,
 			25,
 			$start );
@@ -106,7 +106,7 @@ class enom_pro_controller {
 		$contents = ob_get_contents();
 		ob_end_clean();
 		$data = array(
-			'html' => $contents,
+			'html'       => $contents,
 			'cache_date' => $this->enom->get_domain_cache_date(),
 		);
 		$this->send_json( $data );
@@ -115,7 +115,7 @@ class enom_pro_controller {
 
 	protected function get_domain_whois() {
 		try {
-			$whois = $this->enom->getWHOIS( $_REQUEST['domain'] );
+			$whois    = $this->enom->getWHOIS( $_REQUEST['domain'] );
 			$response = array(
 				'email' => $whois['registrant']['emailaddress'],
 			);
@@ -128,25 +128,25 @@ class enom_pro_controller {
 
 	protected function clear_cache() {
 		$this->enom->clear_domains_cache();
-		$this->redirect('domain_import', 'cleared');
+		$this->redirect( 'domain_import', 'cleared' );
 	}
 
 	protected function clear_price_cache() {
 		$this->enom->clear_price_cache();
-		$this->redirect('pricing_import', 'cleared');
+		$this->redirect( 'pricing_import', 'cleared' );
 	}
 
 	protected function clear_exchange_cache() {
 		$this->enom->clear_exchange_rate_cache();
 		$this->enom->get_exchange_rate_from_USD_to( $this->enom->getDefaultCurrencyCode() );
-		$this->redirect('pricing_import', 'exchange');
+		$this->redirect( 'pricing_import', 'exchange' );
 	}
 
 	protected function get_pricing_data() {
-		$retail = enom_pro::is_retail_pricing();
+		$retail   = enom_pro::is_retail_pricing();
 		$response = $this->enom->getAllDomainsPricing( $retail );
-		if (isset($response['tld']) ) {
-			$this->send_json($response);
+		if ( isset( $response['tld'] ) ) {
+			$this->send_json( $response );
 		} else {
 			echo 'success';
 		}
@@ -155,9 +155,9 @@ class enom_pro_controller {
 	protected function add_enom_pro_domain_order() {
 
 		$whmcsAddOrderData = array(
-			'clientid' => $_REQUEST['clientid'],
-			'domaintype' => array( 'register' ),
-			'domain' => array( $_REQUEST['domain'] ),
+			'clientid'      => $_REQUEST['clientid'],
+			'domaintype'    => array( 'register' ),
+			'domain'        => array( $_REQUEST['domain'] ),
 			'paymentmethod' => $_REQUEST['paymentmethod']
 		);
 		if ( isset( $_REQUEST['regperiod'] ) ) {
@@ -175,13 +175,13 @@ class enom_pro_controller {
 		if ( isset( $_REQUEST['idprotection'] ) ) {
 			$whmcsAddOrderData['idprotection'] = array( 'on' );
 		}
-		if ( !isset( $_REQUEST['noemail'] ) ) {
+		if ( ! isset( $_REQUEST['noemail'] ) ) {
 			$whmcsAddOrderData['noemail'] = true;
 		}
-		if ( !isset( $_REQUEST['noinvoice'] ) ) {
+		if ( ! isset( $_REQUEST['noinvoice'] ) ) {
 			$whmcsAddOrderData['noinvoice'] = true;
 		}
-		if ( !isset( $_REQUEST['noinvoiceemail'] ) ) {
+		if ( ! isset( $_REQUEST['noinvoiceemail'] ) ) {
 			$whmcsAddOrderData['noinvoiceemail'] = true;
 		}
 		//We have to set this by default because WHMCS stops execution if there is a domain configuration issue
@@ -194,7 +194,7 @@ class enom_pro_controller {
 		$whmcs_order = enom_pro::whmcs_api( 'addorder', $whmcsAddOrderData );
 		header( 'Content-Type: text/html' );
 		$success = 'success' == $whmcs_order['result'] ? true : false;
-		$data = array(
+		$data    = array(
 			'success' => $success,
 		);
 		try {
@@ -202,19 +202,19 @@ class enom_pro_controller {
 			if ( $success ) {
 				//Here we replace the error header :-)
 				header( "HTTP/1.0 200 Ok", true );
-				$data['orderid'] = $whmcs_order['orderid'];
-				$autoActivateDomainOrders = strtolower( enom_pro::get_addon_setting( 'auto_activate' ) ) == 'on' ? true : false;
-				$accept_response = array();
+				$data['orderid']           = $whmcs_order['orderid'];
+				$autoActivateDomainOrders  = strtolower( enom_pro::get_addon_setting( 'auto_activate' ) ) == 'on' ? true : false;
+				$accept_response           = array();
 				$accept_response['result'] = false; //No isset errors
 				if ( $autoActivateDomainOrders ) {
 					//Auto-activate orders is enabled
-					$accept_data = array(
-						'orderid' => $whmcs_order['orderid'],
+					$accept_data            = array(
+						'orderid'   => $whmcs_order['orderid'],
 						'sendemail' => false,
 						'autosetup' => false,
 						'registrar' => 'enom'
 					);
-					$accept_response = enom_pro::whmcs_api( 'acceptorder', $accept_data );
+					$accept_response        = enom_pro::whmcs_api( 'acceptorder', $accept_data );
 					$accept_response['run'] = true;
 					if ( $accept_response['result'] !== 'success' ) {
 						throw new WHMCSException( $accept_response['message'] );
@@ -222,8 +222,8 @@ class enom_pro_controller {
 				}
 				$updateClientData = array(
 					'nextduedate' => $_REQUEST['nextduedate'],
-					'expirydate' => $_REQUEST['expiresdate'],
-					'domain' => $_REQUEST['domain'],
+					'expirydate'  => $_REQUEST['expiresdate'],
+					'domain'      => $_REQUEST['domain'],
 				);
 				if ( $free_domain ) {
 					//Free domains
@@ -234,27 +234,27 @@ class enom_pro_controller {
 				if ( $due_response['result'] !== 'success' ) {
 					throw new WHMCSException( $due_response['message'] );
 				}
-				$data['domainid'] = $whmcs_order['domainids'];
+				$data['domainid']  = $whmcs_order['domainids'];
 				$data['activated'] = $accept_response['result'] == 'success' ? true : false;
 
 			} else {
-				$message = 'Error: ' . $whmcs_order['message'];
+				$message       = 'Error: ' . $whmcs_order['message'];
 				$data['error'] = $message;
 			}
 
-			if ( $success && !empty( $whmcs_order['invoiceid'] ) ) {
+			if ( $success && ! empty( $whmcs_order['invoiceid'] ) ) {
 				$data['invoiceid'] = $whmcs_order['invoiceid'];
 			}
 
 			if ( enom_pro::is_debug_enabled() ) {
 				$data['debug'] = array(
-					'$accept_response' => $accept_response,
-					'$whmcs_order' => $whmcs_order,
+					'$accept_response'   => $accept_response,
+					'$whmcs_order'       => $whmcs_order,
 					'$whmcsAddOrderData' => $whmcsAddOrderData,
 				);
 			}
 		} catch ( Exception $e ) {
-			$data['error'] = $e->getMessage();
+			$data['error']   = $e->getMessage();
 			$data['success'] = false;
 		}
 		$this->send_json( $data );
@@ -265,7 +265,7 @@ class enom_pro_controller {
 		if ( empty( $current ) ) {
 			$current = array();
 		}
-		if ( !in_array( $_REQUEST['certid'], $current ) ) {
+		if ( ! in_array( $_REQUEST['certid'], $current ) ) {
 			$current[] = (int) $_REQUEST['certid'];
 		}
 		enom_pro::set_addon_setting( 'ssl_hidden', $current );
@@ -289,7 +289,7 @@ class enom_pro_controller {
 	protected function save_domain_pricing() {
 		if ( isset( $_POST['pricing'] ) ) {
 			$validated_data = array();
-			$tlds = array_keys( $this->enom->getAllDomainsPricing() );
+			$tlds           = array_keys( $this->enom->getAllDomainsPricing() );
 			foreach ( $_POST['pricing'] as $tld => $years ) {
 				$tld_pricing = array();
 				foreach ( $years as $year => $price ) {
@@ -298,44 +298,46 @@ class enom_pro_controller {
 						$validated_year = false;
 					}
 					if ( $validated_year ) {
-						$tld_pricing[$validated_year] = str_replace( ',', '', $price );
+						$tld_pricing[ $validated_year ] = str_replace( ',', '', $price );
 					}
 				}
 				$validated_tld = (string) $tld;
 				if ( in_array( $validated_tld, $tlds ) ) {
-					$validated_data[$validated_tld] = $tld_pricing;
+					$validated_data[ $validated_tld ] = $tld_pricing;
 				}
 			}
 		}
 		$updated = $new = $deleted = 0;
 		foreach ( $validated_data as $tld => $pricing ) {
-			$pricing_data = array(
-				'msetupfee' => $pricing[1],
-				'qsetupfee' => $pricing[2],
-				'ssetupfee' => $pricing[3],
-				'asetupfee' => $pricing[4],
-				'bsetupfee' => $pricing[5],
-				'monthly' => $pricing[6],
-				'quarterly' => $pricing[7],
+			$pricing_data       = array(
+				'msetupfee'    => $pricing[1],
+				'qsetupfee'    => $pricing[2],
+				'ssetupfee'    => $pricing[3],
+				'asetupfee'    => $pricing[4],
+				'bsetupfee'    => $pricing[5],
+				'monthly'      => $pricing[6],
+				'quarterly'    => $pricing[7],
 				'semiannually' => $pricing[8],
-				'annually' => $pricing[9],
-				'biennially' => $pricing[10],
-				'currency' => 1,
+				'annually'     => $pricing[9],
+				'biennially'   => $pricing[10],
+				'currency'     => 1,
 			);
 			$registration_types = array(
-				'domainregister', 'domainrenew', 'domaintransfer'
+				'domainregister',
+				'domainrenew',
+				'domaintransfer'
 			);
-			$existing_pricing = $this->enom->get_whmcs_domain_pricing( $tld );
-			if ( !empty( $existing_pricing ) ) {
+			$existing_pricing   = $this->enom->get_whmcs_domain_pricing( $tld );
+			if ( ! empty( $existing_pricing ) ) {
 				//Update
-				$result = mysql_fetch_assoc( select_query( 'tbldomainpricing',
+				$result        = mysql_fetch_assoc( select_query( 'tbldomainpricing',
 					'id',
 					array( 'extension' => '.' . $tld ) ) );
-				$relid = $result['id'];
+				$relid         = $result['id'];
 				$total_minus_1 = 0;
 				foreach ( $pricing_data as $key => $price ) {
 					if ( $price == '-1.00' ) {
-						$total_minus_1++;
+						$total_minus_1 ++;
 					}
 				}
 				//delete
@@ -344,25 +346,25 @@ class enom_pro_controller {
 					mysql_query( $sql );
 					$sql = 'DELETE FROM `tbldomainpricing` WHERE `id` = "' . $relid . '"';
 					mysql_query( $sql );
-					$deleted++;
+					$deleted ++;
 				} else {
 					foreach ( $registration_types as $type ) {
 						$where = array( 'type' => $type, 'relid' => $relid );
 						update_query( 'tblpricing', $pricing_data, $where );
 					}
-					$updated++;
+					$updated ++;
 				}
 			} else {
 				//Insert
-				$relid = insert_query( 'tbldomainpricing',
+				$relid                 = insert_query( 'tbldomainpricing',
 					array( 'extension' => '.' . $tld ) );
 				$pricing_data['relid'] = $relid;
 				foreach ( $registration_types as $type ) {
-					$this_pricing_data = $pricing_data;
+					$this_pricing_data         = $pricing_data;
 					$this_pricing_data['type'] = $type;
 					insert_query( 'tblpricing', $this_pricing_data );
 				}
-				$new++;
+				$new ++;
 			}
 		}
 		$url = enom_pro::MODULE_LINK . '&view=pricing_import';
@@ -399,13 +401,13 @@ class enom_pro_controller {
 	}
 
 	protected function sort_domains() {
-		$query = 'SELECT `id`, `extension` FROM `tbldomainpricing`';
+		$query  = 'SELECT `id`, `extension` FROM `tbldomainpricing`';
 		$result = mysql_query( $query );
-		if ( !$result ) {
+		if ( ! $result ) {
 			return false;
 		}
-		if (self::is_ajax()) {
-			$this->sort_domains_ajax( );
+		if ( self::is_ajax() ) {
+			$this->sort_domains_ajax();
 		} else {
 			$this->sort_domains_auto( $result );
 		}
@@ -419,7 +421,7 @@ class enom_pro_controller {
 	 * @return bool
 	 */
 	public static function isDismissed( $alert ) {
-		return !self::dismissAlert( $alert, false );
+		return ! self::dismissAlert( $alert, false );
 	}
 
 	const DISMISSED_ALERTS = 'dismissed_alerts';
@@ -428,7 +430,6 @@ class enom_pro_controller {
 	 * Dismiss the alert
 	 *
 	 * @param      $alert
-	 *
 	 * @param bool $save should it be saved? Default true
 	 *
 	 * @return bool true if dismissed, false if already dismissed
@@ -438,7 +439,7 @@ class enom_pro_controller {
 		if ( empty( $current ) || trim( $current ) === "" ) {
 			$current = array();
 		}
-		if ( !in_array( $alert, $current ) ) {
+		if ( ! in_array( $alert, $current ) ) {
 			$current[] = $alert;
 			if ( $save ) {
 				enom_pro::set_addon_setting( self::DISMISSED_ALERTS, $current );
@@ -455,8 +456,8 @@ class enom_pro_controller {
 	}
 
 	public static function getAdminJS() {
-		$filepath = ENOM_PRO_ROOT . 'js/jquery.admin.'.(! enom_pro::isBeta() ? 'min.' : '').'js';
-		$result = ioncube_read_file( $filepath );
+		$filepath = ENOM_PRO_ROOT . 'js/jquery.admin.' . ( ! enom_pro::isBeta() ? 'min.' : '' ) . 'js';
+		$result   = ioncube_read_file( $filepath );
 		if ( is_int( $result ) ) {
 			if ( 3 == $result ) {
 				throw new Exception( 'An updated Ioncube Loader should be installed to read the file. ', 3 );
@@ -471,26 +472,39 @@ class enom_pro_controller {
 		self::caching_headers( $filepath );
 		self::sendGzipped( $result );
 	}
-	public function preview_ssl_email ()
+
+	public function save_tld_markup ()
 	{
+		enom_pro::set_addon_setting('min_markup_percent', (double) $_GET['min_markup_percent']);
+		enom_pro::set_addon_setting('min_markup_whole', (double) $_GET['min_markup_whole']);
+		enom_pro::set_addon_setting('preferred_markup_percent', (double) $_GET['preferred_markup_percent']);
+		enom_pro::set_addon_setting('preferred_markup_whole', (double) $_GET['preferred_markup_whole']);
+		echo 'saved';
+
+	}
+
+	public function preview_ssl_email() {
 		$expiring_certs = $this->enom->getExpiringCerts();
-		if (! isset($expiring_certs[$_REQUEST['index']])) {
-			throw new Exception('Certificate not found.');
+		if ( ! isset( $expiring_certs[ $_REQUEST['index'] ] ) ) {
+			throw new Exception( 'Certificate not found.' );
 		}
-		$cert = $expiring_certs[$_REQUEST['index']];
-		$merge = $this->enom->parse_SSL_Cert_meta_array_to_Smarty($cert);
+		$cert     = $expiring_certs[ $_REQUEST['index'] ];
+		$merge    = $this->enom->parse_SSL_Cert_meta_array_to_Smarty( $cert );
 		$email_id = $this->enom->is_ssl_email_installed();
-		if ( is_int($email_id)) {
-			$email_message = mysql_fetch_assoc(mysql_query('SELECT `message`, `subject` FROM `tblemailtemplates` WHERE id='. $email_id));
-			$merged = str_replace(array( '{$expiry_date}', '{$domain_name}', '{$product}' ), $merge, $email_message['message']);
+		if ( is_int( $email_id ) ) {
+			$email_message = mysql_fetch_assoc( mysql_query( 'SELECT `message`, `subject` FROM `tblemailtemplates` WHERE id=' . $email_id ) );
+			$merged        = str_replace( array( '{$expiry_date}', '{$domain_name}', '{$product}' ),
+				$merge,
+				$email_message['message'] );
 		} else {
-			throw new Exception('SSL Reminder Template Not found. Please install from eNom PRO home first');
+			throw new Exception( 'SSL Reminder Template Not found. Please install from eNom PRO home first' );
 		}
 		$subject = $email_message['subject'];
 		require_once ENOM_PRO_INCLUDES . 'fragment_ssl_email_preview.php';
 	}
-	protected function resend_raa_email () {
-		echo $this->enom->resendRAAEmail($_REQUEST['domain']);
+
+	protected function resend_raa_email() {
+		echo $this->enom->resendRAAEmail( $_REQUEST['domain'] );
 	}
 
 	public static function caching_headers( $file ) {
@@ -512,6 +526,7 @@ class enom_pro_controller {
 			}
 		}
 	}
+
 	/**
 	 * Echo GZipped data
 	 *
@@ -522,13 +537,13 @@ class enom_pro_controller {
 				'gzip' )
 		) {
 			header( 'Content-Encoding: gzip' );
-			$compressed = gzencode( $data, 9 );
-			$orignalLength = strlen( $data );
+			$compressed       = gzencode( $data, 9 );
+			$orignalLength    = strlen( $data );
 			$compressedLength = strlen( $compressed );
 
 			if ( $orignalLength ) {
 				header( "X-Compression-Info: original $orignalLength bytes, gzipped $compressedLength bytes " .
-					'(' . round( 100 / $orignalLength * $compressedLength ) . '%)' );
+				        '(' . round( 100 / $orignalLength * $compressedLength ) . '%)' );
 			}
 			echo $compressed;
 		} else {
@@ -546,17 +561,17 @@ class enom_pro_controller {
 
 		$found_ignored = array();
 		while ( $row = mysql_fetch_assoc( $result ) ) {
-			if ( !in_array( $row['extension'], $ignored ) ) {
+			if ( ! in_array( $row['extension'], $ignored ) ) {
 				$sorted[] = array(
 					'processed' => ltrim( $row['extension'], '.' ),
 					'extension' => $row['extension'],
-					'id' => $row['id']
+					'id'        => $row['id']
 				);
 			} else {
 				$found_ignored[] = array(
 					'processed' => ltrim( $row['extension'], '.' ),
 					'extension' => $row['extension'],
-					'id' => $row['id']
+					'id'        => $row['id']
 				);
 			}
 		}
@@ -571,11 +586,11 @@ class enom_pro_controller {
 			array_unshift( $sorted, $ignored_row );
 		}
 		foreach ( $sorted as $new_order => $new_row ) {
-			$id = $new_row['id'];
+			$id    = $new_row['id'];
 			$query = "UPDATE `tbldomainpricing` SET `order` = '{$new_order}}' WHERE `id` = '{$id}}';";
 			mysql_query( $query );
 		}
-		$this->redirect('pricing_sort', 'sorted');
+		$this->redirect( 'pricing_sort', 'sorted' );
 	}
 
 	/**
@@ -583,10 +598,10 @@ class enom_pro_controller {
 	 */
 	private function sort_domains_ajax() {
 		$sorted = array();
-		foreach ($_REQUEST['order'] as $new_order => $tld) {
-			$tld_array = explode('_', $tld);
-			$tld_id = end($tld_array);
-			$sorted[$new_order] = $tld_id;
+		foreach ( $_REQUEST['order'] as $new_order => $tld ) {
+			$tld_array            = explode( '_', $tld );
+			$tld_id               = end( $tld_array );
+			$sorted[ $new_order ] = $tld_id;
 		}
 		foreach ( $sorted as $new_order => $tld_id ) {
 			$query = "UPDATE `tbldomainpricing` SET `order` = '{$new_order}}' WHERE `id` = '{$tld_id}}';";
@@ -599,23 +614,25 @@ class enom_pro_controller {
 	 * @param      $view string view query param
 	 * @param null $message optional message flag to set
 	 */
-	private function redirect ($view, $message = null) {
+	private function redirect( $view, $message = null ) {
 		$location = "Location: " . enom_pro::MODULE_LINK;
 		$location .= "&view=$view";
-		if (null !== $message) {
-			$location.= "&$message";
+		if ( null !== $message ) {
+			$location .= "&$message";
 		}
 		header( $location );
 	}
-	protected function save_custom_exchange_rate () {
-		if (-1 == $_REQUEST['custom-exchange-rate']) {
-			$this->enom->set_addon_setting('custom-exchange-rate', null);
+
+	protected function save_custom_exchange_rate() {
+		if ( - 1 == $_REQUEST['custom-exchange-rate'] ) {
+			$this->enom->set_addon_setting( 'custom-exchange-rate', null );
 		} else {
-			$this->enom->set_addon_setting('custom-exchange-rate', $_REQUEST['custom-exchange-rate']);
+			$this->enom->set_addon_setting( 'custom-exchange-rate', $_REQUEST['custom-exchange-rate'] );
 		}
-		$this->redirect('pricing_import', 'saved-exchange');
+		$this->redirect( 'pricing_import', 'saved-exchange' );
 	}
-	protected function get_beta_log () {
-		echo json_encode(enom_pro::curl_get_json('https://mycircletree.com/versions/enom_pro_beta_log.json'));
+
+	protected function get_beta_log() {
+		echo json_encode( enom_pro::curl_get_json( 'https://mycircletree.com/versions/enom_pro_beta_log.json' ) );
 	}
 }
