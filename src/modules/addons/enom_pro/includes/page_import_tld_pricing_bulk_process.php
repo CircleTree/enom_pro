@@ -79,20 +79,27 @@
 			<div class="form-group col-xs-12">
 				<h5>Price Options</h5>
 				<div class="input-group">
+					<?php $current_rounding_option = enom_pro::get_addon_setting('round_to') ?>
 					<label for="roundTo" class="input-group-addon">Round up to $</label>
+					<?php $rounding_options = array(
+						'-1' => 'Disabled',
+						'99' => '.99',
+						'98' => '.98',
+						'95' => '.95',
+						'50' => '.50',
+						'01' => '.01',
+						'00' => '.00'
+					); ?>
 					<select name="round" id="roundTo" class="form-control input-sm-2">
-						<option value="-1">Disabled</option>
-						<option value="99">.99</option>
-						<option value="98">.98</option>
-						<option value="95">.95</option>
-						<option value="50">.50</option>
-						<option value="01">.01</option>
-						<option value="00">.00</option>
+						<?php foreach ($rounding_options as $value => $label): ?>
+							<?php $selected = ($current_rounding_option == $value ? ' selected="selected" ' : ''); ?>
+							<option value="<?php echo $value ?>"<?php echo $selected ?>><?php echo $label ?></option>
+						<?php endforeach; ?>
 					</select>
 				</div>
 				<div class="input-group checkbox">
 					<label for="overWriteWHMCS" class="input-group-addon">
-						<input type="checkbox" name="overwrite" id="overWriteWHMCS"/>
+						<input type="checkbox" name="overwrite" id="overWriteWHMCS" <?php echo enom_pro::get_addon_setting('overwrite_whmcs') == '1' ? 'checked="checked"' : '' ?>/>
 						Overwrite Values Already in WHMCS
 					</label>
 				</div>

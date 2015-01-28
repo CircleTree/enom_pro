@@ -561,8 +561,10 @@ jQuery(function($) {
 								min_markup_percent: $('#percentMarkup').val(),
 								min_markup_whole : $("#wholeMarkup").val(),
 								preferred_markup_percent: $("#preferredPercentMarkup").val() ,
-								preferred_markup_whole: $("#preferredWholeMarkup").val()
-						};
+								preferred_markup_whole: $("#preferredWholeMarkup").val(),
+                round_to: $("#roundTo").val(),
+                overwrite_whmcs: ("on" === $("#overWriteWHMCS:checked").val() ? 'true' : 'false')
+            };
             //Check if data has changed
             if (JSON.stringify(data) === JSON.stringify(enom_pro.lastSavedTLDPricing)) {
                 return false;
@@ -895,7 +897,9 @@ jQuery(function($) {
             min_markup_percent: $('#percentMarkup').val(),
             min_markup_whole : $("#wholeMarkup").val() ,
             preferred_markup_percent: $("#preferredPercentMarkup").val() ,
-            preferred_markup_whole: $("#preferredWholeMarkup").val()
+            preferred_markup_whole: $("#preferredWholeMarkup").val(),
+            round_to: $("#roundTo").val(),
+            overwrite_whmcs: ("on" === $("#overWriteWHMCS:checked").val() ? 'true' : 'false')
         },
         /**
          * Shows changelog & hides sidebar notification
