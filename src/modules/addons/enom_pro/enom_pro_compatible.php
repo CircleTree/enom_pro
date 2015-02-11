@@ -397,7 +397,7 @@ function enom_pro_activate() {
 		}
 		return array(
 			'status'      => 'info',
-			'description' => ENOM_PRO . ' Re-Activated. Settings have been restored. <script> window.location = "addonmodules.php?module=enom_pro";</script>'
+			'description' => ENOM_PRO . ' Re-Activated. Settings have been restored.'
 		);
 
 	} else {
