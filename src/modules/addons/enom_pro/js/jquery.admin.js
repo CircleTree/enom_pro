@@ -814,7 +814,7 @@ jQuery(function($) {
                         if (enom_pro.version.search(value.sha) > -1) {
                             badge += ' current-version';
                         }
-                        var revString = '<span class="'+badge+'">'+value.sha+':</span>' + value.subject;
+                        var revString = '<span class="'+badge+'">'+value.sha+':</span>' + value.subject + '<span class="badge">'+value.relative_date+'</span>';
                         $betaLogUL.append('<li data-hash="'+value.sha+'">'+revString+'</li>')
                     });
                 }
