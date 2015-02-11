@@ -1813,7 +1813,7 @@ class enom_pro {
 	 * @return mixed           $data
 	 */
 	public static function curl_get( $url,
-		array $get = null,
+		array $get = array(),
 		array $options = array() ) {
 		if ( !function_exists( 'curl_init' ) ) {
 			throw new MissingDependencyException( 'cURL is Required for the eNom PRO modules', RemoteException::CURL_EXCEPTION );
@@ -1846,10 +1846,10 @@ class enom_pro {
 	 * @param array $options
 	 *
 	 * @throws RemoteException
-	 * @return mixed
+	 * @return array
 	 */
 	public static function curl_get_json( $url,
-		array $get = null,
+		array $get = array(),
 		array $options = array() ) {
 		$result = self::curl_get( $url, $get, $options );
 		$json_decode = json_decode( $result, true );

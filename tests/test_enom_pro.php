@@ -250,6 +250,18 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	    $this->assertArrayHasKey('lname', $return['technical']);
 	    $this->assertArrayHasKey('emailaddress', $return['technical']);
 	}
+	function  testGetBetaLog(){
+		$c = new ReflectionMethod('enom_pro_controller', 'get_beta_log');
+		$c->setAccessible(true);
+		ob_start();
+		$c->invoke(new enom_pro_controller());
+		$content = ob_get_contents();
+		ob_end_clean();
+		$json = json_decode($content, true);
+		$this->assertNotEmpty($json);
+		$this->assertArrayHasKey('relative_date', $json[0]);
+		$this->assertArrayHasKey('subject', $json[0]);
+	}
 	/**
 	 * @group whmcs
 	 * @expectedException EnomException

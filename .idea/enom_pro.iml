@@ -8,26 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
-      <library name="PHARS">
-        <CLASSES>
-          <root url="phar:///Applications/MAMP/Library/bin/phpunit.phar" />
-          <root url="phar://$MODULE_DIR$/vendor/phpdocumentor/fileset/tests/data/test.phar" />
-          <root url="phar://$MODULE_DIR$/vendor/phpdocumentor/phpdocumentor/tests/data/test.phar" />
-          <root url="phar:///Applications/MAMP/Library/bin/go-pear.phar" />
-          <root url="phar://$MODULE_DIR$/vendor/symfony/dependency-injection/Symfony/Component/DependencyInjection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar" />
-          <root url="phar://$MODULE_DIR$/phing-latest.phar" />
-        </CLASSES>
-        <SOURCES>
-          <root url="phar:///Applications/MAMP/Library/bin/phpunit.phar" />
-          <root url="phar://$MODULE_DIR$/vendor/phpdocumentor/fileset/tests/data/test.phar" />
-          <root url="phar://$MODULE_DIR$/vendor/phpdocumentor/phpdocumentor/tests/data/test.phar" />
-          <root url="phar:///Applications/MAMP/Library/bin/go-pear.phar" />
-          <root url="phar://$MODULE_DIR$/vendor/symfony/dependency-injection/Symfony/Component/DependencyInjection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar" />
-          <root url="phar://$MODULE_DIR$/phing-latest.phar" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
       <library name="PHP">
         <CLASSES>
           <root url="file:///Applications/MAMP/Library/bin" />
@@ -38,5 +18,25 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="jQuery 1.11.0" level="application" />
+    <orderEntry type="module-library">
+      <library name="PHARS">
+        <CLASSES>
+          <root url="phar:///Applications/MAMP/Library/bin/phpunit.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/phpdocumentor/phpdocumentor/tests/data/test.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/phpdocumentor/fileset/tests/data/test.phar" />
+          <root url="phar:///Applications/MAMP/Library/bin/go-pear.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/symfony/dependency-injection/Symfony/Component/DependencyInjection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar" />
+          <root url="phar://$MODULE_DIR$/phing-latest.phar" />
+        </CLASSES>
+        <SOURCES>
+          <root url="phar:///Applications/MAMP/Library/bin/phpunit.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/phpdocumentor/phpdocumentor/tests/data/test.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/phpdocumentor/fileset/tests/data/test.phar" />
+          <root url="phar:///Applications/MAMP/Library/bin/go-pear.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/symfony/dependency-injection/Symfony/Component/DependencyInjection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar" />
+          <root url="phar://$MODULE_DIR$/phing-latest.phar" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>

@@ -635,6 +635,12 @@ class enom_pro_controller {
 	}
 
 	protected function get_beta_log() {
-		echo json_encode( enom_pro::curl_get_json( 'https://mycircletree.com/versions/enom_pro_beta_log.json' ) );
+		$beta_log_array = enom_pro::curl_get_json( 'https://mycircletree.com/versions/enom_pro_beta_log.json' );
+		$formatted = array();
+		foreach ($beta_log_array as $key => $log_item) {
+			$formatted[$key] = $log_item;
+			$formatted[$key]['relative_date'] = enom_pro::time_ago($formatted[$key]['date']);
+		}
+		echo json_encode( $formatted );
 	}
 }
