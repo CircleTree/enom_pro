@@ -688,6 +688,14 @@ function enom_pro_output( $vars ) {
 					<?php enom_pro::render_admin_widget( 'enom_pro_admin_ssl_certs' ); ?>
 				</div>
 			</div>
+			<?php if (! enom_pro::areAnyWidgetsEnabled()) :?>
+				<div class="alert alert-danger">
+					<h3>No widgets enabled</h3>
+					<img src="../modules/addons/enom_pro/images/admin-roles-list.jpg" height="" width="" alt="" />
+					<img src="../modules/addons/enom_pro/images/admin-roles-widgets.jpg" height="" width="" alt="" />
+				</div>
+			<?php endif;?>
+			<p>Widgets are enabled in WHMCS roles. <a href="configadminroles.php" class="ep_lightbox btn btn-info" data-refresh="true" data-width="90%">WHMCS Admin Roles</a></p>
 			<div id="enom_faq">
 				<p>
 					Looks like you're connected to enom! Want to import some domains to
