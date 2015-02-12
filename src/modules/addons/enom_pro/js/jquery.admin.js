@@ -808,14 +808,23 @@ jQuery(function($) {
                 success: function  (data){
                     $betaLog.empty();
                     $betaLogUL.appendTo($betaLog);
+                    var newer = 'newer', nextIsOlder = false;
                     $.each(data, function  (k, value){
                         //Value has properties: date_iso, date (timestamp), sha, subject
-                        var badge = 'badge';
+                        var badge = 'label label-info';
+                        if (nextIsOlder) {
+                            newer = 'older';
+                        }
                         if (enom_pro.version.search(value.sha) > -1) {
                             badge += ' current-version';
+                            nextIsOlder = true;
                         }
-                        var revString = '<span class="'+badge+'">'+value.sha+':</span>' + value.subject + '<span class="badge">'+value.relative_date+'</span>';
-                        $betaLogUL.append('<li data-hash="'+value.sha+'">'+revString+'</li>')
+                        var revString = '<span class="'+badge+' sha">'+
+                            value.sha +
+                            ' <span class="enom-pro-icon-code-fork enom-pro-icon"></span></span>' +
+                            '<span class="label label-inverse date">'+value.relative_date+'</span>' +
+                            '<span class="betaLogItem">'+value.subject+'</span>';
+                        $betaLogUL.append('<li class="'+newer+'" data-hash="'+value.sha+'">'+revString+'</li>')
                     });
                 }
             });

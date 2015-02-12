@@ -564,19 +564,39 @@ a.btn {
 	}
 }
 
-.badge.current-version
+#enom_pro_beta_changelog .current-version
 {
 	background-color: #F8AC01;
 	overflow: visible;
 	position: relative;
 }
-.badge.current-version:before
+#enom_pro_beta_changelog .current-version:before
 {
 	content: '\25BA';
 	position: absolute;
 	left: -16px;
 	overflow: visible;
 	color: #E09A47;
+}
+#enom_pro_beta_changelog ul li .sha,
+#enom_pro_beta_changelog ul li .date
+{
+    display: inline-block;
+}
+#enom_pro_beta_changelog ul li .sha {
+    width: 70px;
+}
+#enom_pro_beta_changelog ul li .date {
+    width: 100px;
+    text-align:center;
+    text-transform: lowercase;
+}
+#enom_pro_beta_changelog ul li .betaLogItem {
+    display: inline-block;
+    color: #000;
+    text-indent: 5px;
+    text-shadow: 0 1px 2px #FFF;
+    font-style: italic;
 }
 #enom_pro_pricing_import_page .pagination
 {
