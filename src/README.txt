@@ -1,6 +1,6 @@
 **********************************************************
 *  eNom PRO WHMCS Addon Module                           *
-*  Compatible with WHMCS 5.2+                            *
+*  Compatible with WHMCS 5.3+                            *
 *                                                        *
 *  README                                                *
 *  (c)@YEAR@ Orion IP Ventures, LLC - ALL RIGHTS RESERVED  *
@@ -20,10 +20,9 @@
 * REQUIREMENTS
 **/
     WHMCS 5.3.x+
-    IonCube Loaders 4.4+ (Latest 4.6.x recommended)
+    IonCube Loaders 4.4+ (Latest 4.7.x recommended)
     PHP 5.3.x+ (PHP 5.4 Recommended)
     MySQL 5.1.x+
-
 
 /**
 * Installation Instructions *
@@ -39,8 +38,7 @@ Upload the addon directory to the /whmcs/modules/addons/ directory
 
 Upload enom_srv.php to the /whmcs/ directory 
 Copy the templates to your active WHMCS template.
-	If you have customized your templates, see the 
-	eNom PRO Admin page for instructions
+	If you have customized your templates, see http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=57
 Go to the admin -> addons panel & activate
 Enter License key & Select the Admin Groups you want
 	to give access to the addon
