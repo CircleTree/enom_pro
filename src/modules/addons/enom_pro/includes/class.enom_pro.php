@@ -2381,7 +2381,29 @@ class enom_pro {
 
 		return self::$ssl_email_id;
 	}
+	private static $widgets = array (
+		'enom_pro_admin_balance',
+		'enom_pro_admin_expiring_domains',
+		'enom_pro_admin_pending_domain_verification',
+		'enom_pro_admin_transfers',
+		'enom_pro_admin_ssl_certs'
+	);
 
+	/**
+	 * Check for any enabled widgets for this role
+	 * @return bool
+	 */
+	public static function areAnyWidgetsEnabled ()
+	{
+		$enabled = false;
+		foreach (self::$widgets as $widget) {
+			if (self::is_widget_enabled_for_this_user($widget)) {
+				$enabled = true;
+				break;
+			}
+		}
+		return $enabled;
+	}
 	public static function render_admin_widget( $function ) {
 		if ( !function_exists( $function ) ) {
 			throw new InvalidArgumentException( 'Invalid Admin Widget Function: ' . $function );
