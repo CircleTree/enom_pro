@@ -38,5 +38,6 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="select2-DefinitelyTyped" level="application" />
   </component>
 </module>

@@ -32,6 +32,12 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	{
 	    $email = 'awef@af.co';
 
+		//Clean up
+		$clients = $this->e->whmcs_api('getclients', array('search' => $email));
+		$this->assertCount(1, $clients['clients']['client']);
+		$id = $clients['clients']['client'][0]['id'];
+		$this->e->whmcs_api('deleteclient', array('clientid' => $id));
+
 	    $data = array(
 	    	  'firstname' => 'Joe',
                 'lastname' => 'Doe',
@@ -46,11 +52,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	    $this->e->whmcs_api('addclient', $data);
 		$result = $this->e->whmcs_api('getclientsdetails', array('email' => $email));
 		$this->assertArraySubset($data, $result);
-		//Clean up
-		$clients = $this->e->whmcs_api('getclients', array('search' => $email));
-		$this->assertCount(1, $clients['clients']['client']);
-		$id = $clients['clients']['client'][0]['id'];
-		$this->e->whmcs_api('deleteclient', array('clientid' => $id));
+
 	}
 	
 	/**
@@ -488,6 +490,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		try {
 			$this->e->resubmit_locked('1234');
 		} catch (EnomException $e) {
+
 			enom_pro::render_admin_errors($e->get_errors());
 		} catch (Exception $e) {
 			echo $e->getMessage();
@@ -657,4 +660,102 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 
 		));
 	}
+
+	public function testCreateLotsOfAccounts() {
+		$this->markTestSkipped('Only run this to batch produce 100k accounts');
+		$sql = 'DELETE FROM `tblclients` WHERE `companyname` = "AUTO ACCOUNT"';
+		mysql_query($sql);
+		$before = mysql_fetch_assoc(mysql_query('SELECT count(*) as count FROM `tblclients`'))['count'];
+		$i = 0;
+		$create = 100 * 1000;
+		set_time_limit( 600 );
+		$accounts = array();
+		while ($i < $create) {
+			$data = array();
+			$data["firstname"] = "'Test'";
+			$data["lastname"] = "'User'";
+			$data["companyname"] = "'AUTO ACCOUNT'";
+			$accounts[] = $data;
+			$i++;
+		}
+		$values = '';
+		foreach ($accounts as $account) {
+			$values .= '(' . implode(',', $account) . '),';
+		}
+		$values = rtrim($values, ',');
+		$sql = <<<'TAG'
+INSERT INTO `tblclients` (`firstname`, `lastname`, `companyname`) VALUES
+TAG
+ . $values;
+		mysql_query($sql);
+		$after = mysql_fetch_assoc(mysql_query('SELECT count(*) as count FROM `tblclients`'))['count'];
+		$this->assertEquals($create, ($after - $before));
+	}
+
+	/**
+	 * @group whmcs
+	 */
+	public function testUnlimitedClients() {
+		enom_pro::set_addon_setting('client_limit', 'Unlimited');
+		$this->assertCount(enom_pro::CLIENT_LIST_AJAX_LENGTH, $this->e->get_clients()['results']);
+		enom_pro::set_addon_setting('client_limit', '500');
+		$this->assertCount(enom_pro::CLIENT_LIST_AJAX_LENGTH, $this->e->get_clients()['results']);
+
+	}
+
+	/**
+	 * @group whmcs
+	 */
+	public function testSearchClients() {
+		$_GET['q'] = 'AUTO ACCOUNT';
+		$this->assertEquals((100 * 1000), $this->e->get_clients()['total_count']);
+		//Make sure a search doesn't affect paging
+		$this->assertEquals(0, $this->e->get_clients()['start']);
+		$this->assertEquals(enom_pro::CLIENT_LIST_AJAX_LENGTH, $this->e->get_clients()['count']);
+	}
+
+	public function testGetClientsWithPaging() {
+		//Select 2 default to page 1 being the 1st ajax request
+		$_GET['page'] = 2;
+		$clients = $this->e->get_clients();
+		$this->assertCount(enom_pro::CLIENT_LIST_AJAX_LENGTH, $clients['results'] );
+		//WHMCS tracks start 0 index
+		//So page 2 should start @ 10
+		$this->assertEquals(10, $clients['start']);
+		$this->assertEquals(enom_pro::CLIENT_LIST_AJAX_LENGTH, $clients['count']);
+	}
+
+	public function testClientsHaveID() {
+		$clients = $this->e->get_clients();
+		$client = reset($clients['results']);
+		$this->assertArrayHasKey('id', $client);
+	}
+
+	public function testClientsHasMore() {
+		$this->assertArrayHasKey('more', $this->e->get_clients());
+	}
+
+	/**
+	 * @group whmcs
+	 */
+	public function testInvalidPageReturnsResults() {
+
+		$_GET['page'] = 0;
+		$clients = $this->e->get_clients();
+		$this->assertArrayHasKey('results', $clients);
+		$this->assertTrue( $clients['more']);
+	}
+
+	/**
+	 * @group whmcs
+	 */
+	public function testEndOfListReturnsNoMoreResults() {
+
+		$total_count = (int) $this->e->get_clients()['total_count'];
+		$page = ceil( $total_count / enom_pro::CLIENT_LIST_AJAX_LENGTH );
+		$this->assertGreaterThan(5, $page);
+		$_GET['page'] = $page;
+		$this->assertFalse($this->e->get_clients()['more']);
+	}
+
 }

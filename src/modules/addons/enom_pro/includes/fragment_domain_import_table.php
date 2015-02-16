@@ -23,7 +23,6 @@ if ( empty($domains_array) ) { ?>
 <?php
 if ( $doingSearch ):?>
     <?php
-    //@TODO search on next page
     $results = array();
     $s = trim(strtolower($_REQUEST['s'])); 
     foreach ($domains_array as $domain) {
@@ -70,7 +69,7 @@ if ( $doingSearch ):?>
             <?php if (! isset($domain['client'])) : ?>
                 <div class="alert alert-danger">
 				<p>
-					Not Found <a class="btn btn-primary create_order"
+					Domain not found in WHMCS <a class="btn btn-primary create_order"
 						data-domain="<?php echo $domain_name;?>"
 						data-id-protect="<?php echo $domain['privacy']?>"
 						data-dns="<?php echo $domain['enom_dns']?>"

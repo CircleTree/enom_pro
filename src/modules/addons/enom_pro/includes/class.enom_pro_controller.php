@@ -643,4 +643,10 @@ class enom_pro_controller {
 		}
 		echo json_encode( $formatted );
 	}
+	protected function get_client_list ()
+	{
+
+		$this->send_json(enom_pro::get_clients());
+
+	}
 }

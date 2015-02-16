@@ -4,14 +4,15 @@
  * Thrown when enom returns an error
  */
 class EnomException extends Exception {
+
 	private $errors = array();
 
 	/**
-	 *
 	 * @param string $error
 	 */
 	public function set_error( $error ) {
-		$this->message = $error;
+
+		$this->message  = $error;
 		$this->errors[] = $error;
 	}
 
@@ -19,6 +20,7 @@ class EnomException extends Exception {
 	 * @return array
 	 */
 	public function get_errors() {
+
 		return $this->errors;
 	}
 }
@@ -26,9 +28,9 @@ class EnomException extends Exception {
 /**
  * Base class for interacting with the enom API
  * @author robertgregor
- *
  */
 class enom_pro {
+
 	private $xml;
 	private $response;
 	private $URL;
@@ -49,8 +51,7 @@ class enom_pro {
 	/**
 	 * Install service order URL
 	 */
-	const INSTALL_URL =
-		'https://mycircletree.com/client-area/cart.php?a=add&pid=44';
+	const INSTALL_URL = 'https://mycircletree.com/client-area/cart.php?a=add&pid=44';
 	/**
 	 * Submit Ticket url
 	 */
@@ -59,9 +60,11 @@ class enom_pro {
 	 * Online help URL
 	 */
 	const HELP_URL = 'http://mycircletree.com/client-area/knowledgebase.php?action=displaycat&catid=11';
-	const MODULE_LINK = 'addonmodules.php?module=enom_pro';
-	const CHANGELOG_URI =
-		'http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43';
+	/**
+	 * Relative admin URL to the module addon page
+	 */
+	const MODULE_LINK   = 'addonmodules.php?module=enom_pro';
+	const CHANGELOG_URI = 'http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43';
 	/**
 	 * implemented API commands
 	 * @var array $commands
@@ -110,24 +113,26 @@ class enom_pro {
 	private $cache_file_exchange_rate;
 	private $parameters = array();
 	private $cache_file_verification_report;
+
 	/**
 	 * eNom API Class
 	 * Gets API login info from WHMCS and connects to verify the login information is correct
 	 */
 	public function __construct() {
+
 		self::$debug = ( $this->get_addon_setting( "debug" ) == "on" ? true : false );
 		$this->setParams( array( "ResponseType" => "XML" ) );
 		$this->get_login_credientials();
-		$this->cache_file_all_domains = ENOM_PRO_TEMP . 'all_domains.cache';
-		$this->cache_file_all_prices = ENOM_PRO_TEMP . 'all_prices.cache';
-		$this->cache_file_all_tlds = ENOM_PRO_TEMP . 'all_tlds.cache';
-		$this->cache_file_exchange_rate = ENOM_PRO_TEMP . 'exchange.cache';
+		$this->cache_file_all_domains         = ENOM_PRO_TEMP . 'all_domains.cache';
+		$this->cache_file_all_prices          = ENOM_PRO_TEMP . 'all_prices.cache';
+		$this->cache_file_all_tlds            = ENOM_PRO_TEMP . 'all_tlds.cache';
+		$this->cache_file_exchange_rate       = ENOM_PRO_TEMP . 'exchange.cache';
 		$this->cache_file_verification_report = ENOM_PRO_TEMP . 'domain_verification.cache';
-		$this->api_request_limit = self::get_addon_setting( 'api_request_limit' );
+		$this->api_request_limit              = self::get_addon_setting( 'api_request_limit' );
 		if ( php_sapi_name() == 'cli' ) {
 			self::$cli = true;
 		} else {
-			if ( !defined( 'CLIENTAREA' ) ) {
+			if ( ! defined( 'CLIENTAREA' ) ) {
 				$this->license = new enom_pro_license();
 			}
 		}
@@ -138,9 +143,9 @@ class enom_pro {
 	 * Override api limit for specific request types
 	 *
 	 * @param int $number
-	 *
 	 */
 	public function override_request_limit( $number ) {
+
 		$this->api_request_limit = $number;
 	}
 
@@ -148,8 +153,8 @@ class enom_pro {
 	 * Gets currently configured remote API request limit
 	 * @return int|string
 	 */
-	public function get_API_request_limit ()
-	{
+	public function get_API_request_limit() {
+
 		return $this->api_request_limit;
 	}
 
@@ -157,10 +162,12 @@ class enom_pro {
 	 * Checks login credentials
 	 */
 	public function check_login() {
+
 		$this->runTransaction( "CheckLogin" );
 	}
 
 	private function get_login_credientials() {
+
 		if ( defined( 'UNIT_TESTS' ) ) {
 			$params = array(
 				'TestMode' => 'on',
@@ -170,7 +177,7 @@ class enom_pro {
 		} else {
 			//@codeCoverageIgnoreStart
 			//Make sure WHMCS only includes these files if the function we're calling is undefined
-			if ( !function_exists( 'getRegistrarConfigOptions' ) ) {
+			if ( ! function_exists( 'getRegistrarConfigOptions' ) ) {
 				require_once( ROOTDIR . "/includes/functions.php" );
 				require( ROOTDIR . "/includes/registrarfunctions.php" );
 			}
@@ -183,12 +190,10 @@ class enom_pro {
 		//Set the API url
 		$this->URL = ( $live ? 'http://reseller.enom.com/interface.asp' : 'http://resellertest.enom.com/interface.asp' );
 		//Build the initial connection test
-		$this->setParams(
-			array(
+		$this->setParams( array(
 				'uid' => $params['Username'],
-				'pw' => $params['Password']
-			)
-		);
+				'pw'  => $params['Password']
+			) );
 	}
 
 	/**
@@ -198,10 +203,12 @@ class enom_pro {
 	 * @param string $url
 	 */
 	public function set_url( $url ) {
+
 		$this->URL = $url;
 	}
 
 	public static function minify( $string ) {
+
 		return str_replace( array( "\t", "\r\n", "\n", "\r", "\t" ), '', $string );
 	}
 
@@ -215,7 +222,8 @@ class enom_pro {
 	 * @TODO refactor to use enomException as param, instead of array.
 	 */
 	public static function render_admin_errors( array $errors ) {
-		$s = count( $errors ) > 1 ? 's' : '';
+
+		$s      = count( $errors ) > 1 ? 's' : '';
 		$string = '<div class="errorbox"><h3>Error' . $s . '</h3>' . PHP_EOL;
 		foreach ( $errors as $error ) {
 			$error_code = 0;
@@ -235,8 +243,8 @@ class enom_pro {
                     For the Live API, you'll need to open a 
                     <a target=\"_blank\" href=\"http://www.enom.com/help/default.aspx\">support ticket with enom.
                     </a></li>";
-				if (isset($_SERVER['SERVER_ADDR'])) {
-					$string .= '<pre>Current IP Address reported by PHP: '.$_SERVER['SERVER_ADDR'].'</pre>';
+				if ( isset( $_SERVER['SERVER_ADDR'] ) ) {
+					$string .= '<pre>Current IP Address reported by PHP: ' . $_SERVER['SERVER_ADDR'] . '</pre>';
 				}
 			}
 			if ( strstr( $error_msg, "Bad" ) ) {
@@ -259,15 +267,18 @@ class enom_pro {
 	 * @return $debug (bool) true for yes, false for no
 	 */
 	public static function debug() {
+
 		return self::$debug;
 	}
 
 	public static function is_debug_enabled() {
+
 		return self::debug();
 	}
 
 	public function getBalance() {
-		if ( !isset( $this->xml->Balance ) ) {
+
+		if ( ! isset( $this->xml->Balance ) ) {
 			$this->runTransaction( 'getBalance' );
 		}
 
@@ -275,11 +286,11 @@ class enom_pro {
 	}
 
 	/**
-	 *
 	 * @return string
 	 */
 	public function getAvailableBalance() {
-		if ( !isset( $this->xml->AvailableBalance ) ) {
+
+		if ( ! isset( $this->xml->AvailableBalance ) ) {
 			$this->runTransaction( 'getBalance' );
 		}
 
@@ -292,6 +303,7 @@ class enom_pro {
 	 * @param array $params
 	 */
 	public function setParams( array $params ) {
+
 		$this->parameters = array_merge( $this->parameters, $params );
 	}
 
@@ -303,7 +315,8 @@ class enom_pro {
 	 * @return mixed string on success, false on failure
 	 */
 	public function getParam( $name ) {
-		return isset( $this->parameters[$name] ) ? $this->parameters[$name] : false;
+
+		return isset( $this->parameters[ $name ] ) ? $this->parameters[ $name ] : false;
 	}
 
 	/**
@@ -311,6 +324,7 @@ class enom_pro {
 	 * @return array $parameters
 	 */
 	public function getParams() {
+
 		return $this->parameters;
 	}
 
@@ -320,11 +334,13 @@ class enom_pro {
 	 * @param int $orderid for the order. API used to get "TransferOrderDetailID"
 	 */
 	public function resubmit_locked( $orderid ) {
+
 		$this->setParams( array( 'TransferOrderDetailID' => $this->get_transfer_order_detail_id( $orderid ) ) );
 		$this->runTransaction( 'TP_ResubmitLocked' );
 	}
 
 	private function get_transfer_order_detail_id( $orderid ) {
+
 		$this->setParams( array( 'TransferOrderID' => $orderid ) );
 		$this->runTransaction( 'TP_GetOrder' );
 
@@ -339,9 +355,10 @@ class enom_pro {
 	 * @return array
 	 */
 	public static function array_to_upper( array $values ) {
+
 		$return = array();
 		foreach ( $values as $key => $value ) {
-			$return[strtoupper( $key )] = strtoupper( $value );
+			$return[ strtoupper( $key ) ] = strtoupper( $value );
 		}
 
 		return $return;
@@ -351,17 +368,16 @@ class enom_pro {
 	 * @throws EnomException
 	 */
 	private function parse_errors() {
-		$errs = $this->xml->ErrCount;
-		$i = 1;
-		$exception = new EnomException(
-			(string) $this->xml->responses->response->ResponseString,
-			(int) $this->xml->responses->response->ResponseNumber
-		);
+
+		$errs      = $this->xml->ErrCount;
+		$i         = 1;
+		$exception = new EnomException( (string) $this->xml->responses->response->ResponseString,
+			(int) $this->xml->responses->response->ResponseNumber );
 		while ( $i <= $errs ) {
 			$string = 'Err' . $i;
-			$error = (string) $this->xml->errors->$string;
+			$error  = (string) $this->xml->errors->$string;
 			$exception->set_error( $error );
-			$i++;
+			$i ++;
 		}
 		throw $exception;
 	}
@@ -379,19 +395,18 @@ class enom_pro {
 	 * @throws RemoteException
 	 */
 	public function runTransaction( $command ) {
+
 		if ( $this->xml_override ) {
 			return true;
 		}
 		//Set the command
-		if ( !in_array( strtoupper( trim( $command ) ),
+		if ( ! in_array( strtoupper( trim( $command ) ),
 			self::array_to_upper( $this->implemented_commands ) )
 		) {
 			throw new InvalidArgumentException( 'API Method ' . $command . ' not implemented', 400 );
 		}
 		if ( $this->remote_run_number >= $this->api_request_limit ) {
-			throw new EnomException(
-				'Too many remote API requests. Limit: ' . $this->api_request_limit
-			);
+			throw new EnomException( 'Too many remote API requests. Limit: ' . $this->api_request_limit );
 		}
 		$this->setParams( array( 'command' => $command ) );
 
@@ -403,8 +418,7 @@ class enom_pro {
 		// @codeCoverageIgnoreStart
 		//Log calls to WHMCS module log: systemmodulelog.php
 		if ( function_exists( 'logModuleCall' ) ) {
-			logModuleCall(
-				'enom_pro', //Module name
+			logModuleCall( 'enom_pro', //Module name
 				$this->getParam( 'command' ), //Command
 				$this->parameters, //Parameters 
 				$this->response, //Response
@@ -413,8 +427,7 @@ class enom_pro {
 				array(
 					$this->getParam( 'uid' ),
 					$this->getParam( 'pw' )
-				)
-			);
+				) );
 		}
 		// @codeCoverageIgnoreEnd
 		if ( is_object( $this->xml ) ) {
@@ -432,7 +445,7 @@ class enom_pro {
 				//The full XML response wasn't received
 				//Try the transaction again;
 				//if it doesn't receive the full XML response (noted by the Done XML node returned by enom's API);
-				$this->retry_count++;
+				$this->retry_count ++;
 				if ( $this->retry_count <= self::RETRY_LIMIT ) {
 					$this->runTransaction( $this->parameters['command'] );
 					// @codeCoverageIgnoreStart
@@ -460,8 +473,9 @@ class enom_pro {
 	 * @param string $string well formed XML string
 	 */
 	private function load_xml( $string ) {
+
 		//Increment the remote API counter
-		$this->remote_run_number++;
+		$this->remote_run_number ++;
 		//Use simpleXML to parse the XML string
 		libxml_use_internal_errors( true );
 		$this->xml = simplexml_load_string( $string,
@@ -470,7 +484,6 @@ class enom_pro {
 	}
 
 	/**
-	 *
 	 * Parses the domain name using the API into TLD/SLD
 	 *
 	 * @param  string $domainName
@@ -478,6 +491,7 @@ class enom_pro {
 	 * @return array('tld'=>'...','sld'=>'...');
 	 */
 	private function parseDomain( $domainName ) {
+
 		$this->setParams( array( 'PassedDomain' => $domainName ) );
 		$this->runTransaction( 'ParseDomain' );
 		$SLD = (string) $this->xml->ParseDomain->SLD;
@@ -492,13 +506,16 @@ class enom_pro {
 	 * @param string $domain domain name including TLD
 	 */
 	public function setDomain( $domain ) {
+
 		$domain_parts = $this->parseDomain( $domain );
 		$this->setParams( array(
-			'TLD' => $domain_parts['TLD'], 'SLD' => $domain_parts['SLD']
+			'TLD' => $domain_parts['TLD'],
+			'SLD' => $domain_parts['SLD']
 		) );
 	}
 
 	public function getDomainParts( $domain ) {
+
 		$this->setDomain( $domain );
 		$return = array(
 			'TLD' => $this->parameters['TLD'],
@@ -513,13 +530,14 @@ class enom_pro {
 	 * @return array $tlds
 	 */
 	public function getTLDs() {
+
 		if ( false !== ( $cached = $this->get_cache_data( $this->cache_file_all_tlds ) ) ) {
 			return $cached;
 		}
 		$this->runTransaction( 'GetTLDList' );
 		$tlds = array();
 		foreach ( $this->xml->tldlist->tld as $tld ) {
-			if ( !empty( $tld->tld ) ) {
+			if ( ! empty( $tld->tld ) ) {
 				$tlds[] = (string) $tld->tld;
 			}
 		}
@@ -537,13 +555,12 @@ class enom_pro {
 	 * @return array enabled => true/false, price => double
 	 */
 	public function getDomainPricing( $tld = 'com', $retail = false ) {
+
 		try {
-			$this->setParams(
-				array(
-					'TLD' => $tld,
+			$this->setParams( array(
+					'TLD'         => $tld,
 					'ProductType' => 10,
-				)
-			);
+				) );
 			if ( $retail ) {
 				$this->runTransaction( 'PE_GetRetailPrice' );
 			} else {
@@ -551,15 +568,15 @@ class enom_pro {
 			}
 
 			return array(
-				'enabled' => ( $this->xml->productprice->productenabled == 'True' ? true : false ),
-				'price' => (string) $this->xml->productprice->price,
+				'enabled'    => ( $this->xml->productprice->productenabled == 'True' ? true : false ),
+				'price'      => (string) $this->xml->productprice->price,
 				'min_period' => (int) $this->xml->productprice->minimumregistration
 			);
 		} catch ( Exception $e ) {
 			return array(
-				'price' => 0.00,
+				'price'   => 0.00,
 				'enabled' => false,
-				'error' => $e->getMessage()
+				'error'   => $e->getMessage()
 			);
 		}
 	}
@@ -569,8 +586,9 @@ class enom_pro {
 	 * @return string
 	 */
 	public function getDefaultCurrencyCode() {
+
 		self::getWHMCSCurrencyData();
-		$currencies = self::$whmcsCurrencyData;
+		$currencies     = self::$whmcsCurrencyData;
 		$currency_array = $currencies['currencies']['currency'];
 
 		return strtoupper( trim( $currency_array[0]['code'] ) );
@@ -578,55 +596,61 @@ class enom_pro {
 
 	/**
 	 * Checks if the current WHMCS base currency is USD or not
-	 *
 	 * @return bool
 	 */
-	public function isNonUSDinWHMCS ()
-	{
+	public function isNonUSDinWHMCS() {
+
 		$defaultCurrencyCode = $this->getDefaultCurrencyCode();
-		if ($defaultCurrencyCode != 'USD') {
+		if ( $defaultCurrencyCode != 'USD' ) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	public static function getDefaultCurrencyPrefix ()
-	{
+
+	public static function getDefaultCurrencyPrefix() {
+
 		self::getWHMCSCurrencyData();
 		$defaultCurrencyPrefix = self::$whmcsCurrencyData['currencies']['currency'][0]['prefix'];
+
 		return $defaultCurrencyPrefix;
 	}
 
 	/**
 	 * In-Memory cache of WHMCS API response to limit API requests
 	 */
-	private static function getWHMCSCurrencyData () {
-		if (false === self::$whmcsCurrencyData) {
-			self::$whmcsCurrencyData = self::whmcs_api('getcurrencies', array());
+	private static function getWHMCSCurrencyData() {
+
+		if ( false === self::$whmcsCurrencyData ) {
+			self::$whmcsCurrencyData = self::whmcs_api( 'getcurrencies', array() );
 		}
 	}
+
 	private static $whmcsCurrencyData = false;
+
 	/**
 	 * Is a custom exchange rate set?
 	 * Lazy interface for dealing with WHMCS settings api
 	 * @return bool
 	 */
-	public function isCustomExchangeRate ()
-	{
-		$custom_rate = $this->get_addon_setting('custom-exchange-rate');
-		if (0.00 === $custom_rate || null === $custom_rate || "" === trim($custom_rate)) {
+	public function isCustomExchangeRate() {
+
+		$custom_rate = $this->get_addon_setting( 'custom-exchange-rate' );
+		if ( 0.00 === $custom_rate || null === $custom_rate || "" === trim( $custom_rate ) ) {
 			return false;
 		} else {
 			return true;
 		}
 	}
-	public function getExchangeRateProvider () {
-		return $this->get_addon_setting('exchange_rate_provider');
+
+	public function getExchangeRateProvider() {
+
+		return $this->get_addon_setting( 'exchange_rate_provider' );
 	}
 
-	public function getCustomExchangeRate ()
-	{
-		return $this->get_addon_setting('custom-exchange-rate');
+	public function getCustomExchangeRate() {
+
+		return $this->get_addon_setting( 'custom-exchange-rate' );
 	}
 
 	/**
@@ -637,23 +661,24 @@ class enom_pro {
 	 * @return array tld => pricing, or batch meta
 	 */
 	public function getAllDomainsPricing( $retail = false ) {
+
 		if ( $this->is_pricing_cached() ) {
 			//Just-in-time currency conversion
 			//This way exchange rates can be updated
 			//without having to fetch pricing again from eNom
 
 			$cache_data = $this->get_cache_data( $this->cache_file_all_prices );
-			if ($this->isCustomExchangeRate()) {
+			if ( $this->isCustomExchangeRate() ) {
 				$rate = $this->getCustomExchangeRate();
 			} else {
 				$rate = $this->get_exchange_rate_from_USD_to( $this->getDefaultCurrencyCode() );
 			}
 			$domainsCached = $cache_data['data'];
 
-			if ($this->isNonUSDinWHMCS()) {
+			if ( $this->isNonUSDinWHMCS() ) {
 				foreach ( $domainsCached as $tld => $cachedDomainData ) {
-					$convertedPrice = $domainsCached[$tld]['price'] * $rate;
-					$domainsCached[$tld]['price'] = $convertedPrice;
+					$convertedPrice                 = $domainsCached[ $tld ]['price'] * $rate;
+					$domainsCached[ $tld ]['price'] = $convertedPrice;
 				}
 			}
 
@@ -662,29 +687,29 @@ class enom_pro {
 		$allTLDs = $this->getTLDs();
 		if ( false !== ( $cache_data = $this->get_cache_data( $this->cache_file_all_prices ) ) ) {
 			//Cached, but not complete.
-			$tld = $cache_data['next_tld'];
+			$tld     = $cache_data['next_tld'];
 			$thisTLD = $cache_data['data'];
 		} else {
 			//Nothing cached, start with first TLD
 			$thisTLD = array();
-			$tld = reset( $allTLDs );
+			$tld     = reset( $allTLDs );
 		}
-		$tldsPerStep = 5;
+		$tldsPerStep  = 5;
 		$thisTLDIndex = array_search( $tld, $allTLDs );
 		$nextTLDIndex = $thisTLDIndex + $tldsPerStep;
-		$thisBatch = array_slice($allTLDs, $thisTLDIndex, $nextTLDIndex);
-		foreach ($thisBatch as $index => $thisBatchTLD) {
-			$pricingData = $this->getDomainPricing( $thisBatchTLD, $retail );
-			$thisTLD[$thisBatchTLD] = $pricingData;
+		$thisBatch    = array_slice( $allTLDs, $thisTLDIndex, $nextTLDIndex );
+		foreach ( $thisBatch as $index => $thisBatchTLD ) {
+			$pricingData              = $this->getDomainPricing( $thisBatchTLD, $retail );
+			$thisTLD[ $thisBatchTLD ] = $pricingData;
 		}
 		$nextTLD = false;
-		if ( isset( $allTLDs[$nextTLDIndex] ) ) {
-			$nextTLD = $allTLDs[$nextTLDIndex];
+		if ( isset( $allTLDs[ $nextTLDIndex ] ) ) {
+			$nextTLD = $allTLDs[ $nextTLDIndex ];
 		}
 		if ( count( $thisTLD ) > 0 ) {
 			$cached = array(
-				'data' => $thisTLD,
-				'retail' => ( $this->is_retail_pricing() ? 1 : 0 ),
+				'data'    => $thisTLD,
+				'retail'  => ( $this->is_retail_pricing() ? 1 : 0 ),
 				'version' => self::DOMAIN_CACHE_VERSION
 			);
 			if ( $nextTLD !== false ) {
@@ -697,9 +722,9 @@ class enom_pro {
 		}
 
 		return array(
-			'tld' => $tld,
+			'tld'    => $tld,
 			'loaded' => $thisTLDIndex,
-			'total' => count($allTLDs)
+			'total'  => count( $allTLDs )
 		);
 	}
 
@@ -710,6 +735,7 @@ class enom_pro {
 	 * @return bool
 	 */
 	public function is_pricing_cached() {
+
 		$cache_data = $this->get_cache_data( $this->cache_file_all_prices );
 		if ( $cache_data === false ) {
 			//Nothing Cached
@@ -727,44 +753,50 @@ class enom_pro {
 	}
 
 	public function render_domain_import() {
+
 		require_once ENOM_PRO_INCLUDES . 'page_domain_import.php';
 	}
 
 	public function render_pricing_import() {
+
 		require_once ENOM_PRO_INCLUDES . 'page_import_tld_pricing.php';
 	}
 
-	public function render_send_ssl_test ()
-	{
+	public function render_send_ssl_test() {
+
 		require_once ENOM_PRO_INCLUDES . 'page_send_ssl_test.php';
 	}
 
-	public function render_whois_checker ()
-	{
+	public function render_whois_checker() {
+
 		require_once ENOM_PRO_INCLUDES . 'page_whois_checker.php';
 
 	}
 
 	public function  render_pricing_sort() {
+
 		require_once ENOM_PRO_INCLUDES . 'page_sort_tld_pricing.php';
 
 	}
-	public function render_domains_widget () {
+
+	public function render_domains_widget() {
+
 		require_once ENOM_PRO_INCLUDES . 'widget_domain_stats.php';
 	}
 
 	public function render_ssl_widget() {
+
 		require_once ENOM_PRO_INCLUDES . 'widget_expiring_ssl.php';
 
 	}
 
-	public function render_balance_widget ()
-	{
+	public function render_balance_widget() {
+
 		require_once ENOM_PRO_INCLUDES . 'widget_credit_balance.php';
 	}
 
-	public function render_pending_verification_widget ()
-	{
+	public function render_pending_verification_widget() {
+
 		require_once ENOM_PRO_INCLUDES . 'widget_pending_verification.php';
 	}
 
@@ -773,17 +805,20 @@ class enom_pro {
 	 * @return boolean
 	 */
 	public static function is_upgrader_compatible() {
+
 		return method_exists( 'DirectoryIterator', 'getExtension' );
 	}
 
 	/**
 	 * Checks if a domain is already in WHMCS
+	 *
 	 * @param $domain
 	 *
 	 * @return bool
 	 */
 	public static function is_domain_in_whmcs( $domain ) {
-		$result = self::whmcs_api( 'getclientsdomains',
+
+		$result  = self::whmcs_api( 'getclientsdomains',
 			array( 'domain' => $domain ) );
 		$domains = $result['totalresults'];
 		if ( $domains >= 1 ) {
@@ -808,10 +843,11 @@ class enom_pro {
 	 * @throws InvalidArgumentException on file not found
 	 */
 	public function _load_xml( $file ) {
-		if ( !file_exists( $file ) ) {
+
+		if ( ! file_exists( $file ) ) {
 			throw new InvalidArgumentException( 'XML File not found: ' . $file );
 		}
-		$string = file_get_contents( $file );
+		$string             = file_get_contents( $file );
 		$this->xml_override = true;
 		$this->load_xml( $string );
 	}
@@ -824,23 +860,24 @@ class enom_pro {
 	 * @return array transfer domains, and transfer orders per domain
 	 */
 	public function getTransfers( $userid = null ) {
-		$query = "SELECT `id`,`userid`,`type`,`domain`,`status` FROM `tbldomains` 
+
+		$query = "SELECT `id`,`userid`,`type`,`domain`,`status` FROM `tbldomains`
                 WHERE `registrar`='enom' AND `status`='Pending Transfer'";
-		if ( !is_null( $userid ) ) {
+		if ( ! is_null( $userid ) ) {
 			$query .= " AND `userid`=" . (int) $userid;
 		}
-		$result = mysql_query( $query );
-		$transfers = array();
+		$result         = mysql_query( $query );
+		$transfers      = array();
 		$transfer_index = 0;
 		while ( $row = mysql_fetch_assoc( $result ) ) {
 			$this->setDomain( $row['domain'] );
 			//And run the transaction
 			$this->runTransaction( 'TP_GetDetailsByDomain' );
 			//prepare the response array
-			$transfers[$transfer_index] = array(
-				'domain' => $row['domain'],
-				'userid' => $row['userid'],
-				'id' => $row['id'],
+			$transfers[ $transfer_index ] = array(
+				'domain'   => $row['domain'],
+				'userid'   => $row['userid'],
+				'id'       => $row['id'],
 				'statuses' => array()
 			);
 			//Reset transferorder index
@@ -853,16 +890,16 @@ class enom_pro {
 				}
 				// @codeCoverageIgnoreEnd
 				//Prepare the order array for readability
-				$order_array = array(
-					'orderid' => (string) $order->orderid,
-					'orderdate' => (string) $order->orderdate,
-					'statusid' => (string) $order->statusid,
+				$order_array                                                 = array(
+					'orderid'    => (string) $order->orderid,
+					'orderdate'  => (string) $order->orderdate,
+					'statusid'   => (string) $order->statusid,
 					'statusdesc' => (string) $order->statusdesc,
 				);
-				$transfers[$transfer_index]['statuses'][$transfer_order] = $order_array;
-				$transfer_order++;
+				$transfers[ $transfer_index ]['statuses'][ $transfer_order ] = $order_array;
+				$transfer_order ++;
 			}
-			$transfer_index++;
+			$transfer_index ++;
 		}
 
 		return $transfers;
@@ -873,58 +910,67 @@ class enom_pro {
 	 * expiring, expired, redemption, ext_redemption
 	 */
 	public function getAccountStats() {
+
 		$this->runTransaction( 'GetDomainCount' );
 		$response = array(
-			'registered' => (int) $this->xml->RegisteredCount,
-			'expiring' => (int) $this->xml->ExpiringCount,
-			'expired' => (int) $this->xml->ExpiredDomainsCount,
-			'redemption' => (int) $this->xml->RGP,
+			'registered'     => (int) $this->xml->RegisteredCount,
+			'expiring'       => (int) $this->xml->ExpiringCount,
+			'expired'        => (int) $this->xml->ExpiredDomainsCount,
+			'redemption'     => (int) $this->xml->RGP,
 			'ext_redemption' => (int) $this->xml->ExtendedRGP,
 		);
+
 		return $response;
 	}
-	private function isValidationCacheStale () {
-		return $this->cache_file_is_older_than($this->cache_file_verification_report, '-5 Minutes');
+
+	private function isValidationCacheStale() {
+
+		return $this->cache_file_is_older_than( $this->cache_file_verification_report, '-5 Minutes' );
 	}
+
 	private function clearDomainVerificationCache() {
-		unlink($this->cache_file_verification_report);
+
+		unlink( $this->cache_file_verification_report );
 	}
 
 	/**
 	 * Gets domain verification stats
 	 * @return array $data = array ( 'pending_verification', 'pending_suspension', 'suspended, 'domains' )
 	 */
-	public function getDomainVerificationStats ()
-	{
-		if (isset($_REQUEST['flush_cache']) && $this->isValidationCacheStale()) {
+	public function getDomainVerificationStats() {
+
+		if ( isset( $_REQUEST['flush_cache'] ) && $this->isValidationCacheStale() ) {
 			$this->clearDomainVerificationCache();
 		}
-		if ($this->cache_file_is_older_than($this->cache_file_verification_report, '-12 Hours')) {
+		if ( $this->cache_file_is_older_than( $this->cache_file_verification_report, '-12 Hours' ) ) {
 			$this->clearDomainVerificationCache();
 		}
-		if ($this->get_cache_data($this->cache_file_verification_report)) {
-			return $this->get_cache_data($this->cache_file_verification_report);
+		if ( $this->get_cache_data( $this->cache_file_verification_report ) ) {
+			return $this->get_cache_data( $this->cache_file_verification_report );
 		}
 		$this->setParams( array(
-			'ReportType' => 31, 'Version' => 1, 'Download' => 'False'
+			'ReportType' => 31,
+			'Version'    => 1,
+			'Download'   => 'False'
 		) );
-		$this->runTransaction('RPT_GETREPORT');
-		$data = array();
+		$this->runTransaction( 'RPT_GETREPORT' );
+		$data                         = array();
 		$data['pending_verification'] = (int) $this->xml->rpt->results->PendingVerificationDomains;
-		$data['pending_suspension'] = (int) $this->xml->rpt->results->PendingSuspensionDomains;
-		$data['suspended'] = (int) $this->xml->rpt->results->SuspendedDomains;
-		$domains = array();
-		foreach ($this->xml->rpt->results->rptrawxml->{"report31-single"} as $report) {
+		$data['pending_suspension']   = (int) $this->xml->rpt->results->PendingSuspensionDomains;
+		$data['suspended']            = (int) $this->xml->rpt->results->SuspendedDomains;
+		$domains                      = array();
+		foreach ( $this->xml->rpt->results->rptrawxml->{"report31-single"} as $report ) {
 			/** @var SimpleXMLElement $report */
 			$this_domain_meta = array();
-			foreach ($report->attributes() as $key => $value) {
-				$this_domain_meta[$key] = (string) $value;
+			foreach ( $report->attributes() as $key => $value ) {
+				$this_domain_meta[ $key ] = (string) $value;
 			}
 			$domains[] = $this_domain_meta;
-			unset($this_domain_meta);
+			unset( $this_domain_meta );
 		}
 		$data['domains'] = $domains;
-		$this->set_cached_data($this->cache_file_verification_report, $data);
+		$this->set_cached_data( $this->cache_file_verification_report, $data );
+
 		return $data;
 	}
 
@@ -936,10 +982,11 @@ class enom_pro {
 	 *
 	 * @return string
 	 */
-	public function resendRAAEmail ($domain)
-	{
-		$this->setParams(array('DomainName' => $domain));
-		$this->runTransaction('RAA_ResendNotification');
+	public function resendRAAEmail( $domain ) {
+
+		$this->setParams( array( 'DomainName' => $domain ) );
+		$this->runTransaction( 'RAA_ResendNotification' );
+
 		return 'sent';
 	}
 
@@ -960,7 +1007,8 @@ class enom_pro {
 	 * </code>
 	 */
 	public function get_SRV_records( $domain = null ) {
-		if ( !is_null( $domain ) ) {
+
+		if ( ! is_null( $domain ) ) {
 			$this->setDomain( $domain );
 		}
 
@@ -984,7 +1032,7 @@ class enom_pro {
 				$record_array = (array) $record;
 				if ( $record_array['RecordType'] == 'SRV' ) {
 					$parsed_record = $this->parse_xml_to_srv( $record_array );
-					$response[] = $parsed_record;
+					$response[]    = $parsed_record;
 				}
 			}
 		}
@@ -993,19 +1041,19 @@ class enom_pro {
 	}
 
 	private function parse_xml_to_srv( array $record ) {
+
 		return array(
-			'service' => $record['HostName'],
+			'service'  => $record['HostName'],
 			'protocol' => $record['Protocol'],
 			'priority' => $record['priority'],
-			'weight' => $record['Weight'],
-			'port' => $record['Port'],
-			'target' => $record['Address'],
-			'hostid' => $record['HostID'],
+			'weight'   => $record['Weight'],
+			'port'     => $record['Port'],
+			'target'   => $record['Address'],
+			'hostid'   => $record['HostID'],
 		);
 	}
 
 	/**
-	 *
 	 * @param array $records indexed array of records with form
 	 *     array(
 	 *     'service' => string name,
@@ -1016,24 +1064,26 @@ class enom_pro {
 	 *     'target'   => string hostname
 	 */
 	public function set_SRV_Records( $records ) {
+
 		$srv_index = 1;
 		foreach ( $records as $record ) {
 			$this->parse_srv_params( $record, $srv_index );
-			$srv_index++;
+			$srv_index ++;
 		}
 		$this->runTransaction( 'SetDomainSRVHosts' );
 	}
 
 	private function parse_srv_params( $record, $index ) {
+
 		if ( isset( $record['hostid'] ) && trim( $record['hostid'] ) != "" ) {
-			$this->parameters['HostID' . $index] = $record['hostid'];
+			$this->parameters[ 'HostID' . $index ] = $record['hostid'];
 		}
-		$this->parameters['Service' . $index] = @ $this->parse_field( $record['service'] );
-		$this->parameters['Protocol' . $index] = @ $this->parse_field( $record['protocol'] );
-		$this->parameters['Priority' . $index] = @ $this->parse_field( $record['priority'] );
-		$this->parameters['Weight' . $index] = @ $this->parse_field( $record['weight'] );
-		$this->parameters['Port' . $index] = @ $this->parse_field( $record['port'] );
-		$this->parameters['Target' . $index] = @ $this->parse_field( $record['target'] );
+		$this->parameters[ 'Service' . $index ]  = @ $this->parse_field( $record['service'] );
+		$this->parameters[ 'Protocol' . $index ] = @ $this->parse_field( $record['protocol'] );
+		$this->parameters[ 'Priority' . $index ] = @ $this->parse_field( $record['priority'] );
+		$this->parameters[ 'Weight' . $index ]   = @ $this->parse_field( $record['weight'] );
+		$this->parameters[ 'Port' . $index ]     = @ $this->parse_field( $record['port'] );
+		$this->parameters[ 'Target' . $index ]   = @ $this->parse_field( $record['target'] );
 	}
 
 	/**
@@ -1042,18 +1092,19 @@ class enom_pro {
 	 * @param string $field
 	 */
 	private function parse_field( $field ) {
+
 		return isset( $field ) ? $field : '';
 	}
 
 	/**
-	 *
 	 * @return array domain, status, expiration_date, desc
 	 */
 	public function getExpiringCerts() {
-		$this->setParams(array('SortBy' => 'Expiration'));
+
+		$this->setParams( array( 'SortBy' => 'Expiration' ) );
 		$this->runTransaction( 'CertGetCerts' );
 		$return = array();
-		$days = $this->get_addon_setting( 'ssl_days' );
+		$days   = $this->get_addon_setting( 'ssl_days' );
 		$hidden = $this->get_addon_setting( 'ssl_hidden' );
 		if ( empty( $hidden ) ) {
 			$hidden = array();
@@ -1066,19 +1117,19 @@ class enom_pro {
 		}
 		foreach ( $this->xml->CertGetCerts->Certs->Cert as $cert ) {
 			$expiring_timestamp = strtotime( $cert->ExpirationDate );
-			$expiry_filter = ( time() + ( (int) $days * 60 * 60 * 24 ) );
-			if ( $expiring_timestamp < $expiry_filter && !in_array( (int) $cert->CertID,
+			$expiry_filter      = ( time() + ( (int) $days * 60 * 60 * 24 ) );
+			if ( $expiring_timestamp < $expiry_filter && ! in_array( (int) $cert->CertID,
 					$hidden )
 			) {
 				$formatted_result = array(
-					'domain' => (array) $cert->DomainName,
-					'status' => (string) $cert->CertStatus,
+					'domain'          => (array) $cert->DomainName,
+					'status'          => (string) $cert->CertStatus,
 					'expiration_date' => (string) $cert->ExpirationDate,
-					'OrderID' => (int) $cert->OrderID,
-					'CertID' => (int) $cert->CertID,
-					'desc' => (string) $cert->ProdDesc,
+					'OrderID'         => (int) $cert->OrderID,
+					'CertID'          => (int) $cert->CertID,
+					'desc'            => (string) $cert->ProdDesc,
 				);
-				$return[] = $formatted_result;
+				$return[]         = $formatted_result;
 			}
 		}
 
@@ -1086,22 +1137,23 @@ class enom_pro {
 	}
 
 	public function getSpinner( $domain ) {
+
 		$this->setDomain( $domain );
 		$max_results = $this->get_addon_setting( "spinner_results" );
-		$params = array(
+		$params      = array(
 			'SensitiveContent' => ( $this->get_addon_setting( 'spinner_sensitive' ) == "on" ? 'True' : 'False' ),
 			//enom API requires a literal string!
-			'MaxResults' => $max_results,
-			'UseHyphens' => ( $this->get_addon_setting( 'spinner_hyphens' ) == "on" ? 'True' : 'False' ),
+			'MaxResults'       => $max_results,
+			'UseHyphens'       => ( $this->get_addon_setting( 'spinner_hyphens' ) == "on" ? 'True' : 'False' ),
 			//String!
-			'UseNumbers' => ( $this->get_addon_setting( 'spinner_numbers' ) == "on" ? 'True' : 'False' ),
+			'UseNumbers'       => ( $this->get_addon_setting( 'spinner_numbers' ) == "on" ? 'True' : 'False' ),
 			//another STRING!
-			'Basic' => $this->get_addon_setting( "spinner_basic" ),
-			'Related' => $this->get_addon_setting( "spinner_related" ),
-			'Similar' => $this->get_addon_setting( "spinner_similiar" ),
-			'Topical' => $this->get_addon_setting( "spinner_topical" )
+			'Basic'            => $this->get_addon_setting( "spinner_basic" ),
+			'Related'          => $this->get_addon_setting( "spinner_related" ),
+			'Similar'          => $this->get_addon_setting( "spinner_similiar" ),
+			'Topical'          => $this->get_addon_setting( "spinner_topical" )
 		);
-		$api_tlds = array( 'com', 'net', 'tv', 'cc' );
+		$api_tlds    = array( 'com', 'net', 'tv', 'cc' );
 		//get from settings
 		$allowed_tlds = array();
 		if ( $this->get_addon_setting( "spinner_com" ) == "on" ) {
@@ -1119,14 +1171,14 @@ class enom_pro {
 		$this->setParams( $params );
 		$this->runTransaction( "NameSpinner" );
 		$domains = array();
-		for ( $i = 0; $i < $this->xml->namespin->spincount; $i++ ) {
-			$node = $this->xml->namespin->domains->domain[$i];
+		for ( $i = 0; $i < $this->xml->namespin->spincount; $i ++ ) {
+			$node = $this->xml->namespin->domains->domain[ $i ];
 			foreach ( $api_tlds as $tld ) {
-				if ( in_array( $tld, $allowed_tlds ) && $node[$tld] == 'y' ) {
+				if ( in_array( $tld, $allowed_tlds ) && $node[ $tld ] == 'y' ) {
 					$domains[] = array(
 						'domain' => $node['name'] . '.' . $tld,
-						'score' => (int) $node[$tld . 'score'],
-						'tld' => $tld
+						'score'  => (int) $node[ $tld . 'score' ],
+						'tld'    => $tld
 					);
 				}
 			}
@@ -1135,15 +1187,15 @@ class enom_pro {
 		//valid values from API are 'score','domain'
 		define( 'NS_SORT_BY', $this->get_addon_setting( "spinner_sortby" ) );
 		$sort_order = ( $this->get_addon_setting( "spinner_sort_order" ) == "Ascending" ? SORT_ASC : SORT_DESC );
-		$sort = array();
+		$sort       = array();
 		foreach ( $domains as $k => $v ) {
-			$sort[$k] = $v[NS_SORT_BY];
+			$sort[ $k ] = $v[ NS_SORT_BY ];
 		}
 		//Sort the results
 		array_multisort( $sort, $sort_order, $domains );
 		$pricing = array();
 		foreach ( $allowed_tlds as $tld ) {
-			$pricing[$tld] = $this->get_whmcs_domain_pricing( $tld );
+			$pricing[ $tld ] = $this->get_whmcs_domain_pricing( $tld );
 		}
 		$response = array(
 			'domains' => $domains,
@@ -1154,15 +1206,15 @@ class enom_pro {
 	}
 
 	/**
-	 *
 	 * @param string $tld
 	 *
 	 * @return array year => price, ... , 10 => $ . price
 	 */
 	public function get_whmcs_domain_pricing( $tld ) {
+
 		//Check for cart session currency
 		$currency = ( isset( $_SESSION['currency'] ) ? (int) $_SESSION['currency'] : 1 );
-		$query = "
+		$query    = "
         SELECT
         tlds.`extension` AS 'tld',
         tlds.`id` AS 'id',
@@ -1181,20 +1233,20 @@ class enom_pro {
         WHERE pricing.`type`='domainregister'
         AND tlds.`extension` = '.{$tld}'
         AND pricing.`currency` = $currency";
-		$prices = mysql_fetch_assoc( mysql_query( $query ) );
+		$prices   = mysql_fetch_assoc( mysql_query( $query ) );
 		if ( $prices ) {
 			return array(
 				'id' => $prices['id'],
-				1 => $prices['1'],
-				2 => $prices['2'],
-				3 => $prices['3'],
-				4 => $prices['4'],
-				5 => $prices['5'],
-				6 => $prices['6'],
-				7 => $prices['7'],
-				8 => $prices['8'],
-				9 => $prices['9'],
-				10 => $prices['10']
+				1    => $prices['1'],
+				2    => $prices['2'],
+				3    => $prices['3'],
+				4    => $prices['4'],
+				5    => $prices['5'],
+				6    => $prices['6'],
+				7    => $prices['7'],
+				8    => $prices['8'],
+				9    => $prices['9'],
+				10   => $prices['10']
 			);
 		} else {
 			return array();
@@ -1202,7 +1254,6 @@ class enom_pro {
 	}
 
 	/**
-	 *
 	 * Resend the transfer activation email
 	 *
 	 * @param  string $domain domain name to re-send email for
@@ -1211,6 +1262,7 @@ class enom_pro {
 	 * @throws EnomException
 	 */
 	public function resendActivation( $domain ) {
+
 		$this->setDomain( $domain );
 		$this->runTransaction( "TP_ResendEmail" );
 
@@ -1224,6 +1276,7 @@ class enom_pro {
 	 * @see enom_pro::resendActivation();
 	 */
 	public function resend_activation( $domain ) {
+
 		self::deprecated( 'resend is deprecated',
 			2.1,
 			'enom_pro::resendActivation()' );
@@ -1285,6 +1338,7 @@ class enom_pro {
 	 * @return multitype:multitype:number string boolean
 	 */
 	public function getDomains( $limit = 25, $start = 1 ) {
+
 		$this->limit = $limit;
 
 		if ( true === $this->limit && $this->get_domains_cache() ) {
@@ -1307,31 +1361,31 @@ class enom_pro {
 		}
 		$this->setParams( array(
 			'Display' => $this->remote_limit,
-			'Start' => $this->remote_start,
+			'Start'   => $this->remote_start,
 		) );
 
 		$this->runTransaction( 'GetDomains' );
-		$return = array();
+		$return    = array();
 		$list_node = "domain-list";
-		$sub_node = 'domain';
+		$sub_node  = 'domain';
 		if ( $this->getParam( 'Tab' ) && $this->getParam( 'Tab' ) != 'IOwn' ) {
-			$tab = $this->getParam( 'Tab' );
+			$tab       = $this->getParam( 'Tab' );
 			$list_node = 'Get' . $tab;
 			if ( $tab == 'RGP' ) {
 				$list_node .= 'Domains';
 			}
 			$sub_node = 'item';
 		}
-		if ( !empty( $this->xml->GetDomains->{$list_node}->{$sub_node} ) ) {
+		if ( ! empty( $this->xml->GetDomains->{$list_node}->{$sub_node} ) ) {
 			foreach ( $this->xml->GetDomains->{$list_node}->{$sub_node} as $domain ) {
 				$return[] = array(
-					'id' => (int) $domain->DomainNameID,
-					'sld' => (string) $domain->sld,
-					'tld' => (string) $domain->tld,
+					'id'         => (int) $domain->DomainNameID,
+					'sld'        => (string) $domain->sld,
+					'tld'        => (string) $domain->tld,
 					'expiration' => (string) $domain->{'expiration-date'},
-					'enom_dns' => ( strtolower( $domain->{'ns-status'} ) == 'yes' ? true : false ),
-					'privacy' => ( strtolower( $domain->wppsstatus ) == 'enabled' ? true : false ),
-					'autorenew' => ( strtolower( $domain->{'auto-renew'} ) == "yes" ? true : false ),
+					'enom_dns'   => ( strtolower( $domain->{'ns-status'} ) == 'yes' ? true : false ),
+					'privacy'    => ( strtolower( $domain->wppsstatus ) == 'enabled' ? true : false ),
+					'autorenew'  => ( strtolower( $domain->{'auto-renew'} ) == "yes" ? true : false ),
 				);
 			}
 		}
@@ -1343,23 +1397,22 @@ class enom_pro {
 
 		$meta = $this->getListMeta();
 
-		$this->last_result_count = count( $this->last_result );
-		$this->remote_limit_reached = !( $this->last_result_count <= $this->limit );
+		$this->last_result_count    = count( $this->last_result );
+		$this->remote_limit_reached = ! ( $this->last_result_count <= $this->limit );
 
 		if ( $this->last_result_count >= $meta['total_domains'] ) {
 			$this->remote_limit_reached = true;
 		}
-		if ( $this->last_result_count >= $this->limit && !is_bool( $this->limit ) ) {
+		if ( $this->last_result_count >= $this->limit && ! is_bool( $this->limit ) ) {
 			$this->remote_limit_reached = true;
 		}
 		if ( is_bool( $this->limit ) && true === $this->limit ) {
-			//TODO get from xml list, instead of buggy API
-			$this->remote_start = (int) $this->xml->GetDomains->NextRecords;
+			$this->remote_start         = (int) $this->xml->GetDomains->NextRecords;
 			$this->remote_limit_reached = false;
-			$this->is_get_all_domains = true;
+			$this->is_get_all_domains   = true;
 		}
 
-		while ( !$this->remote_limit_reached ) {
+		while ( ! $this->remote_limit_reached ) {
 			$this->getDomains( $this->remote_limit, $this->remote_start );
 		}
 		if ( $this->is_get_all_domains ) {
@@ -1370,21 +1423,25 @@ class enom_pro {
 	}
 
 	private function write_domains_cache( array $domains ) {
+
 		$this->set_cached_data( $this->cache_file_all_domains, $domains );
 	}
 
 	private function get_domains_cache() {
+
 		return $this->get_cache_data( $this->cache_file_all_domains );
 	}
+
 	private $cache_key = '1 Nu`RvWf6hz(JFyqBD!`;TNg}e= b*z&l%[(|5pTL(16uuY-BOQC2Z+SHKu>NvW';
+
 	/**
-	 *
 	 * @param string $file_path
 	 *
 	 * @return boolean|mixed false on no cache, mixed on success
 	 */
 	private function get_cache_data( $file_path ) {
-		if ( !file_exists( $file_path ) ) {
+
+		if ( ! file_exists( $file_path ) ) {
 			return false;
 		} else {
 			$handle = fopen( $file_path, 'r' );
@@ -1393,31 +1450,30 @@ class enom_pro {
 			}
 			$data = fread( $handle, filesize( $file_path ) );
 			fclose( $handle );
-			$md5 = substr( $data, 0, 32 );
+			$md5             = substr( $data, 0, 32 );
 			$serialized_data = substr( $data, 32 );
-			if ( $md5 ==  $this->getSerializedHash($serialized_data) ) {
+			if ( $md5 == $this->getSerializedHash( $serialized_data ) ) {
 				return unserialize( $serialized_data );
 			} else {
 				return false;
 			}
 		}
 	}
-	private function getSerializedHash ($serialized_data)
-	{
-		return md5( $this->cache_key . $serialized_data . str_rot13($this->cache_key) . strrev($this->cache_key));
+
+	private function getSerializedHash( $serialized_data ) {
+
+		return md5( $this->cache_key . $serialized_data . str_rot13( $this->cache_key ) . strrev( $this->cache_key ) );
 	}
+
 	private function set_cached_data( $file_path, array $data ) {
+
 		$handle = fopen( $file_path, 'w' );
 		if ( false === $handle ) {
-			throw new Exception(
-				'Unable to open ' .
-				dirname( $file_path ) .
-				' for writing. You will need to CHMOD 777 to continue'
-			);
+			throw new Exception( 'Unable to open ' . dirname( $file_path ) . ' for writing. You will need to CHMOD 777 to continue' );
 		}
 		if ( count( $data ) > 0 ) {
 			$serialized_data = serialize( $data );
-			$md5 = $this->getSerializedHash($serialized_data);
+			$md5             = $this->getSerializedHash( $serialized_data );
 			fwrite( $handle, $md5 . $serialized_data );
 		}
 		fclose( $handle );
@@ -1431,11 +1487,11 @@ class enom_pro {
 	 *
 	 * @return bool true if the cache file is older than the $date, false if it is newer
 	 */
-	public static function cache_file_is_older_than ($file_path, $date)
-	{
-		$modified = stat($file_path);
-		$relative_date = strtotime($date);
-		if ($modified['mtime'] <= $relative_date) {
+	public static function cache_file_is_older_than( $file_path, $date ) {
+
+		$modified      = stat( $file_path );
+		$relative_date = strtotime( $date );
+		if ( $modified['mtime'] <= $relative_date ) {
 			return true;
 		} else {
 			return false;
@@ -1443,15 +1499,19 @@ class enom_pro {
 	}
 
 	public function clear_domains_cache() {
+
 		$this->set_cached_data( $this->cache_file_all_domains, array() );
 	}
 
 	public function clear_price_cache() {
+
 		$this->set_cached_data( $this->cache_file_all_prices, array() );
 		$this->set_cached_data( $this->cache_file_all_tlds, array() );
 	}
+
 	public function clear_exchange_rate_cache() {
-		$this->set_cached_data( $this->cache_file_exchange_rate, array());
+
+		$this->set_cached_data( $this->cache_file_exchange_rate, array() );
 	}
 
 	/**
@@ -1459,31 +1519,38 @@ class enom_pro {
 	 * @return string
 	 */
 	public function get_domain_cache_date() {
+
 		return $this->get_cache_file_time( $this->cache_file_all_domains );
 	}
-	public function  get_validation_cache_date ()
-	{
+
+	public function  get_validation_cache_date() {
+
 		return $this->get_cache_file_time( $this->cache_file_verification_report );
 	}
+
 	public function get_price_cache_date() {
+
 		return $this->get_cache_file_time( $this->cache_file_all_prices );
 	}
 
 	public function get_exchange_rate_cache_date() {
+
 		return $this->get_cache_file_time( $this->cache_file_exchange_rate, 1 );
 	}
 
-	public function isUsingExchangeRateAPIKey ()
-	{
-		if ($this->getExchangeRateProvider() != 'currency-api') {
+	public function isUsingExchangeRateAPIKey() {
+
+		if ( $this->getExchangeRateProvider() != 'currency-api' ) {
 			return false;
 		}
-		$key = $this->get_addon_setting('exchange-rate-api-key');
-		if ("" == trim($key)) {
+		$key = $this->get_addon_setting( 'exchange-rate-api-key' );
+		if ( "" == trim( $key ) ) {
 			return false;
 		}
+
 		return true;
 	}
+
 	/**
 	 * Gets exchange rate from USD to
 	 *
@@ -1492,42 +1559,36 @@ class enom_pro {
 	 * @return double|null $rate rate or null on failure
 	 */
 	public function get_exchange_rate_from_USD_to( $currency_code ) {
-		$currency_code = strtoupper($currency_code);
-		$cached = $this->get_cache_data( $this->cache_file_exchange_rate );
-		if (
-			$cached
-				&&
-			( $cached['to'] == $currency_code )
-				&&
-				(
-					isset($cached['provider'])
-			            &&
-		            ($this->getExchangeRateProvider() == $cached['provider'])
-				)
+
+		$currency_code = strtoupper( $currency_code );
+		$cached        = $this->get_cache_data( $this->cache_file_exchange_rate );
+		if ( $cached && ( $cached['to'] == $currency_code ) && ( isset( $cached['provider'] ) && ( $this->getExchangeRateProvider() == $cached['provider'] ) )
 		) {
 			return $cached['rate'];
 		}
 
 		try {
-			switch ($this->getExchangeRateProvider()) {
+			switch ( $this->getExchangeRateProvider() ) {
 				case 'google':
-					$rate = $this->get_Exchange_Rate_google($currency_code);
+					$rate = $this->get_Exchange_Rate_google( $currency_code );
 					break;
 				case 'currency-api':
-					$rate = $this->get_Exchange_rate_currency_API($currency_code);
+					$rate = $this->get_Exchange_rate_currency_API( $currency_code );
 					break;
 
 			}
 			$data = array( 'to' => $currency_code, 'rate' => $rate, 'provider' => $this->getExchangeRateProvider() );
 			$this->set_cached_data( $this->cache_file_exchange_rate, $data );
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$data['rate'] = null;
 		}
+
 		return $data['rate'];
 	}
 
 	private function get_Exchange_Rate_google( $to ) {
-		$to = urlencode( $to );
+
+		$to  = urlencode( $to );
 		$get = self::curl_get( "https://www.google.com/finance/converter",
 			array( 'a' => '1.00', 'from' => 'USD', 'to' => $to ) );
 		$get = explode( "<span class=bld>", $get );
@@ -1536,50 +1597,57 @@ class enom_pro {
 
 		return round( $var, 4 );
 	}
-	private function get_Exchange_rate_currency_API ($to) {
-		$currency_code = urlencode($to);
-		$api_key = $this->get_addon_setting('exchange-rate-api-key');
-		if ($api_key) {
-			$url = "http://currency-api.appspot.com/api/USD/$currency_code.json";
+
+	private function get_Exchange_rate_currency_API( $to ) {
+
+		$currency_code = urlencode( $to );
+		$api_key       = $this->get_addon_setting( 'exchange-rate-api-key' );
+		if ( $api_key ) {
+			$url       = "http://currency-api.appspot.com/api/USD/$currency_code.json";
 			$rate_resp = enom_pro::curl_get_json( $url,
 				array( 'key' => $api_key ) );
 		} else {
 			$rate_resp = enom_pro::curl_get_json( 'http://rate-exchange.appspot.com/currency',
 				array( 'from' => 'USD', 'to' => $currency_code ) );
 		}
+
 		return $rate_resp['rate'];
 	}
-	private function get_cache_file_time( $cache_file, $granularity = 2) {
+
+	private function get_cache_file_time( $cache_file, $granularity = 2 ) {
+
 		return $this->time_ago( filemtime( $cache_file ), $granularity );
 	}
 
 	/**
-	 *
 	 * @param int        $timestamp
 	 * @param int|number $granularity
 	 * @param string     $format fallback
 	 *
 	 * @return string
 	 */
-	public static function time_ago( $timestamp,
+	public static function time_ago(
+		$timestamp,
 		$granularity = 1,
-		$format = 'Y-m-d H:i:s' ) {
+		$format = 'Y-m-d H:i:s'
+	) {
+
 		$difference = time() - $timestamp;
 		if ( $difference <= 2 ) {
 			return 'just now';
 		} elseif ( $difference < ( 31556926 * 5 ) ) { //5 years
 			$periods = array(
-				'year' => 31556926,
-				'month' => 2629743,
-				'week' => 604800,
-				'day' => 86400,
-				'hour' => 3600,
+				'year'   => 31556926,
+				'month'  => 2629743,
+				'week'   => 604800,
+				'day'    => 86400,
+				'hour'   => 3600,
 				'minute' => 60,
 				'second' => 1
 			);
-			$output = '';
+			$output  = '';
 			if ( $difference > 31556926 ) {
-				$granularity++;
+				$granularity ++;
 			} //If longer than a year, increase granularity
 			foreach ( $periods as $label => $value ) {
 				if ( $difference >= $value ) {
@@ -1587,7 +1655,7 @@ class enom_pro {
 					$difference %= $value;
 					$output .= ( $output ? ' ' : '' ) . $time . ' ';
 					$output .= ( ( $time > 1 ) ? $label . 's' : $label );
-					$granularity--;
+					$granularity --;
 				}
 				if ( $granularity == 0 ) {
 					break;
@@ -1605,15 +1673,18 @@ class enom_pro {
 	 *
 	 * @param string $domain domain name
 	 *
-	 * @return
-	 *     array ('registrant', 'administrative', 'technical' =>
-	 *         array ('organization' =>
-	 *          array ( fname, lname, address1, address2, city, stateprovince,
-	 *             postalcode, country, phone, phoneext, fax, emailaddress )
-	 *          )
-	 *     )
+	 * @return array array ('registrant', 'administrative', 'technical' =>
+	 * array ('registrant', 'administrative', 'technical' =>
+	 * array ('organization' =>
+	 * array ( fname, lname, address1, address2, city, stateprovince,
+	 * postalcode, country, phone, phoneext, fax, emailaddress )
+	 * )
+	 * )
+	 * @throws EnomException
+	 * @throws RemoteException
 	 */
 	public function getWHOIS( $domain ) {
+
 		$this->setDomain( $domain );
 
 		$this->runTransaction( 'GetWhoisContact' );
@@ -1622,10 +1693,10 @@ class enom_pro {
 		 * @var SimpleXMLElement $contact
 		 */
 		foreach ( $this->xml->GetWhoisContacts->contacts->contact as $contact ) {
-			$type = strtolower( (string) $contact->attributes() );
-			$return[$type] = array();
+			$type            = strtolower( (string) $contact->attributes() );
+			$return[ $type ] = array();
 			foreach ( $contact as $key => $field ) {
-				$return[$type][strtolower( $key )] = (string) $field;
+				$return[ $type ][ strtolower( $key ) ] = (string) $field;
 			}
 		}
 
@@ -1642,43 +1713,44 @@ class enom_pro {
 	 * @return array $domains with client key with client details
 	 *  array( domain...details, 'client' => array());
 	 */
-	public function getDomainsWithClients( $limit = 30,
+	public function getDomainsWithClients(
+		$limit = 30,
 		$start = 1,
-		$show_only = false ) {
-		$domains = $this->getDomains( true, $start );
+		$show_only = false
+	) {
+
+		$domains              = $this->getDomains( true, $start );
 		$show_only_unimported = $show_only == 'unimported' ? true : false;
-		$show_only_imported = $show_only == 'imported' ? true : false;
-		$return = array();
+		$show_only_imported   = $show_only == 'imported' ? true : false;
+		$return               = array();
 		foreach ( $domains as $key => $domain ) {
-			$return[$key] = $domain;
-			$domain_name = $domain['sld'] . '.' . $domain['tld'];
-			$domain_search = self::whmcs_api( 'getclientsdomains',
+			$return[ $key ] = $domain;
+			$domain_name    = $domain['sld'] . '.' . $domain['tld'];
+			$domain_search  = self::whmcs_api( 'getclientsdomains',
 				array( 'domain' => $domain_name ) );
 			//Domain isn't in WHMCS, and we want to only show imported, unset this result
 			if ( $domain_search['totalresults'] == 0 && $show_only_imported ) {
-				unset( $return[$key] );
+				unset( $return[ $key ] );
 			}
 
 			//Domain is in WHMCS, we want to show only non-imported, do not include in return  
 			if ( $domain_search['totalresults'] == 1 && $show_only_unimported ) {
-				unset( $return[$key] );
+				unset( $return[ $key ] );
 			}
 			//Domain is in whmcs, and not filtered, add client meta
-			if ( $domain_search['totalresults'] == 1 && isset( $return[$key] ) ) {
+			if ( $domain_search['totalresults'] == 1 && isset( $return[ $key ] ) ) {
 				//If we get here, we can add the client details
-				$whmcs_domain = $domain_search['domains']['domain'][0];
-				$return[$key]['whmcs_id'] = $whmcs_domain['id'];
+				$whmcs_domain               = $domain_search['domains']['domain'][0];
+				$return[ $key ]['whmcs_id'] = $whmcs_domain['id'];
 
-				$return[$key]['client'] = self::whmcs_api(
-					'getclientsdetails',
-					array( 'clientid' => $whmcs_domain['userid'] )
-				);
+				$return[ $key ]['client'] = self::whmcs_api( 'getclientsdetails',
+					array( 'clientid' => $whmcs_domain['userid'] ) );
 			}
 			//No search results & result hasn't been filtered
-			if ( $domain_search['totalresults'] == 0 && isset( $return[$key] ) ) {
+			if ( $domain_search['totalresults'] == 0 && isset( $return[ $key ] ) ) {
 				//we need to remove this result, because of the filter
 				if ( $show_only_imported ) {
-					unset( $return[$key] );
+					unset( $return[ $key ] );
 				}
 			}
 		}
@@ -1695,6 +1767,7 @@ class enom_pro {
 	 * @throws WHMCSException
 	 */
 	public static function whmcs_api( $command, $data ) {
+
 		$adminid = 1;
 		if ( isset( $_SESSION ) && isset( $_SESSION['adminid'] ) ) {
 			$adminid = (int) $_SESSION['adminid'];
@@ -1718,13 +1791,14 @@ class enom_pro {
 	 * @return mixed
 	 */
 	private static function whmcs_curl( $command, $data ) {
-		$postfields = array();
-		$postfields["username"] = WHMCS_API_UN;
-		$postfields["password"] = md5( WHMCS_API_PW );
-		$postfields["action"] = $command;
-		$postfields["responsetype"] = "json";
+
+		$postfields                    = array();
+		$postfields["username"]        = WHMCS_API_UN;
+		$postfields["password"]        = md5( WHMCS_API_PW );
+		$postfields["action"]          = $command;
+		$postfields["responsetype"]    = "json";
 		$postfields["whmcsAPISilence"] = true; //We use this to silence the buggy whmcs API for development
-		$postfields = array_merge( $postfields, $data );
+		$postfields                    = array_merge( $postfields, $data );
 
 		$ch = curl_init();
 		curl_setopt( $ch, CURLOPT_URL, WHMCS_API_URL );
@@ -1737,8 +1811,7 @@ class enom_pro {
 		$jsondata = curl_exec( $ch );
 		//@codeCoverageIgnoreStart
 		if ( curl_error( $ch ) ) {
-			throw new RemoteException(
-				"cURL Error: " . curl_errno( $ch ) . ' - ' . curl_error( $ch ),
+			throw new RemoteException( "cURL Error: " . curl_errno( $ch ) . ' - ' . curl_error( $ch ),
 				RemoteException::CURL_EXCEPTION );
 		}
 		//@codeCoverageIgnoreEnd
@@ -1752,23 +1825,23 @@ class enom_pro {
 	 * @return array total_domains, next_start, prev_start
 	 */
 	public function getListMeta() {
-		if ( !isset( $this->xml ) ) {
+
+		if ( ! isset( $this->xml ) ) {
 			return array(
 				'total_domains' => count( $this->get_domains_cache() ),
-				'next_start' => 0,
-				'prev_start' => 0,
+				'next_start'    => 0,
+				'prev_start'    => 0,
 			);
 		} else {
 			return array(
 				'total_domains' => (int) $this->xml->GetDomains->DomainCount,
-				'next_start' => (int) $this->xml->GetDomains->NextRecords,
-				'prev_start' => (int) $this->xml->GetDomains->PreviousRecords,
+				'next_start'    => (int) $this->xml->GetDomains->NextRecords,
+				'prev_start'    => (int) $this->xml->GetDomains->PreviousRecords,
 			);
 		}
 	}
 
 	/**
-	 *
 	 * @param string     $tab IOwn current names in this account
 	 *      ExpiringNames names nearing expiration
 	 *      ExpiredDomains expired but able to renew
@@ -1780,22 +1853,23 @@ class enom_pro {
 	 * @return array $domains
 	 */
 	public function getDomainsTab( $tab, $limit = 25, $start = 1 ) {
+
 		$this->setParams( array( 'Tab' => $tab ) );
 		if ( $tab == 'ExpiringNames' ) {
 			$this->setParams( array(
 				'DaysToExpired' => 30,
-				'OrderBy' => 'ExpirationDate'
+				'OrderBy'       => 'ExpirationDate'
 			) );
 
 		}
 		$domains = $this->getDomains( $limit, $start );
 		foreach ( $domains as $key => $domain ) {
 			$domain_name = $domain['sld'] . '.' . $domain['tld'];
-			$client = self::whmcs_api( 'getclientsdomains',
+			$client      = self::whmcs_api( 'getclientsdomains',
 				array( 'domain' => $domain_name ) );
 			if ( $client['totalresults'] == 1 ) {
-				$domains[$key]['userid'] = $client['domains']['domain'][0]['userid'];
-				$domains[$key]['domainid'] = $client['domains']['domain'][0]['id'];
+				$domains[ $key ]['userid']   = $client['domains']['domain'][0]['userid'];
+				$domains[ $key ]['domainid'] = $client['domains']['domain'][0]['id'];
 			}
 		}
 
@@ -1803,7 +1877,6 @@ class enom_pro {
 	}
 
 	/**
-	 *
 	 * @param  string $url
 	 * @param  array  $get
 	 * @param  array  $options
@@ -1812,18 +1885,22 @@ class enom_pro {
 	 * @throws MissingDependencyException
 	 * @return mixed           $data
 	 */
-	public static function curl_get( $url,
+	public static function curl_get(
+		$url,
 		array $get = array(),
-		array $options = array() ) {
-		if ( !function_exists( 'curl_init' ) ) {
-			throw new MissingDependencyException( 'cURL is Required for the eNom PRO modules', RemoteException::CURL_EXCEPTION );
+		array $options = array()
+	) {
+
+		if ( ! function_exists( 'curl_init' ) ) {
+			throw new MissingDependencyException( 'cURL is Required for the eNom PRO modules',
+				RemoteException::CURL_EXCEPTION );
 		}
 		$defaults = array(
-			CURLOPT_URL => $url . ( strpos( $url,
+			CURLOPT_URL            => $url . ( strpos( $url,
 					'?' ) === false ? '?' : '' ) . http_build_query( $get ),
-			CURLOPT_HEADER => 0,
+			CURLOPT_HEADER         => 0,
 			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_TIMEOUT => 15,
+			CURLOPT_TIMEOUT        => 15,
 			CURLOPT_SSL_VERIFYPEER => false
 		);
 
@@ -1848,14 +1925,18 @@ class enom_pro {
 	 * @throws RemoteException
 	 * @return array
 	 */
-	public static function curl_get_json( $url,
+	public static function curl_get_json(
+		$url,
 		array $get = array(),
-		array $options = array() ) {
-		$result = self::curl_get( $url, $get, $options );
+		array $options = array()
+	) {
+
+		$result      = self::curl_get( $url, $get, $options );
 		$json_decode = json_decode( $result, true );
-		if (null === $json_decode) {
-			throw new RemoteException('Error Parsing JSON Response');
+		if ( null === $json_decode ) {
+			throw new RemoteException( 'Error Parsing JSON Response' );
 		}
+
 		return $json_decode;
 	}
 
@@ -1867,9 +1948,10 @@ class enom_pro {
 	 * @return string $value
 	 */
 	public static function get_addon_setting( $key ) {
+
 		//Check to see if this value is already cached
-		if ( !empty( self::$settings ) && isset( self::$settings[$key] ) ) {
-			return self::$settings[$key];
+		if ( ! empty( self::$settings ) && isset( self::$settings[ $key ] ) ) {
+			return self::$settings[ $key ];
 		}
 		//Fetch from db
 		$result = mysql_query( 'SELECT `setting`, `value` FROM `tbladdonmodules` WHERE `module`=\'enom_pro\'' );
@@ -1877,12 +1959,12 @@ class enom_pro {
 			$settings = array();
 			while ( $setting = mysql_fetch_assoc( $result ) ) {
 				//Set the value in the cache
-				self::$settings[$setting['setting']] = self::maybe_unserialize( $setting['value'] );
+				self::$settings[ $setting['setting'] ] = self::maybe_unserialize( $setting['value'] );
 			}
-			$val = isset( self::$settings[$key] ) ? self::$settings[$key] : false;
+			$val = isset( self::$settings[ $key ] ) ? self::$settings[ $key ] : false;
 			if ( empty( $val ) ) {
 				$settings = enom_pro_config();
-				$val = isset( $settings['fields'][$key]['Default'] ) ? $settings['fields'][$key]['Default'] : false;
+				$val      = isset( $settings['fields'][ $key ]['Default'] ) ? $settings['fields'][ $key ]['Default'] : false;
 			}
 
 			return $val;
@@ -1892,16 +1974,19 @@ class enom_pro {
 	}
 
 	public static function is_retail_pricing() {
+
 		$pricing = self::get_addon_setting( 'pricing_retail' );
+
 
 		return 'on' == $pricing ? true : false;
 	}
 
 	public static function set_addon_setting( $key, $value ) {
+
 		//Flush cache
 		self::$settings = array();
 		//Check for results
-		$result = self::query( "SELECT * from tbladdonmodules WHERE `setting` = '" . self::escape( $key ) . "'" );
+		$result   = self::query( "SELECT * FROM tbladdonmodules WHERE `setting` = '" . self::escape( $key ) . "'" );
 		$escValue = self::escape( self::maybe_serialize( $value ) );
 		if ( mysql_num_rows( $result ) == 1 ) {
 			//Update
@@ -1932,6 +2017,7 @@ class enom_pro {
 	 * @uses mysql_real_escape_string
 	 */
 	public static function escape( $string ) {
+
 		return mysql_real_escape_string( $string );
 	}
 
@@ -1944,6 +2030,7 @@ class enom_pro {
 	 * @return resource mysql_result
 	 */
 	public static function query( $query ) {
+
 		$result = mysql_query( $query );
 		if ( mysql_error() ) {
 			throw new Exception( mysql_error() . '. Query : ' . $query );
@@ -1953,16 +2040,16 @@ class enom_pro {
 	}
 
 	/**
-	 *
 	 * @param string $msg deprecated message
 	 * @param int    $since
 	 * @param string $use_instead function or method to use instead, optional
 	 */
 	public static function deprecated( $msg, $since, $use_instead = null ) {
-		if ( !self::debug() ) {
+
+		if ( ! self::debug() ) {
 			return;
 		}
-		if ( !is_null( $use_instead ) ) {
+		if ( ! is_null( $use_instead ) ) {
 			trigger_error( sprintf( '%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.' ),
 				$msg,
 				$since,
@@ -1975,13 +2062,15 @@ class enom_pro {
 	}
 
 	public function get_upgrade_zip_url() {
-			$url = 'http://mycircletree.com/client-area/get_enom_pro.php?key=';
-			$url .= self::get_addon_setting( 'license' );
-			$url .= '&id=' . $this->license->get_id();
-			if (enom_pro_license::isBetaOptedIn()) {
-				$url .= '&beta=1';
-			}
-			return  $url;
+
+		$url = 'http://mycircletree.com/client-area/get_enom_pro.php?key=';
+		$url .= self::get_addon_setting( 'license' );
+		$url .= '&id=' . $this->license->get_id();
+		if ( enom_pro_license::isBetaOptedIn() ) {
+			$url .= '&beta=1';
+		}
+
+		return $url;
 	}
 
 
@@ -1991,24 +2080,20 @@ class enom_pro {
 	 * @param string $path full path of dir to remove
 	 */
 	private function rmdir( $path ) {
+
 		foreach (
-			new RecursiveIteratorIterator(
-				new RecursiveDirectoryIterator(
-					$path,
-					FilesystemIterator::SKIP_DOTS
-				),
-				RecursiveIteratorIterator::CHILD_FIRST
-			) as $path ) {
+			new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $path, FilesystemIterator::SKIP_DOTS ),
+				RecursiveIteratorIterator::CHILD_FIRST ) as $path
+		) {
 			$path->isFile() ? unlink( $path->getPathname() ) : rmdir( $path->getPathname() );
 		}
 	}
 
 	public function do_upgrade() {
-		if ( !class_exists( 'ZipArchive' ) ) {
-			throw new MissingDependencyException(
-				'ZipArchive class is required for upgrade. See:
-	                 http://www.php.net/manual/en/class.ziparchive.php'
-			);
+
+		if ( ! class_exists( 'ZipArchive' ) ) {
+			throw new MissingDependencyException( 'ZipArchive class is required for upgrade. See:
+	                 http://www.php.net/manual/en/class.ziparchive.php' );
 		}
 		//Get ZIP contents
 		$curl_response = self::curl_get( self::get_upgrade_zip_url(),
@@ -2033,7 +2118,7 @@ class enom_pro {
 				}
 			}
 		}
-		if ( !$zipfile ) {
+		if ( ! $zipfile ) {
 			echo '<h1>Error Downloading ZIP File</h1>';
 			echo '<h2>Headers:</h2>';
 			foreach ( $headers as $head ) {
@@ -2041,7 +2126,7 @@ class enom_pro {
 			}
 			die();
 		}
-		if ( !is_writeable( ENOM_PRO_TEMP ) ) {
+		if ( ! is_writeable( ENOM_PRO_TEMP ) ) {
 			throw new Exception( 'Enom Pro Temp dir is un-writable (' . ENOM_PRO_TEMP . '.).' );
 		}
 		$filename = ENOM_PRO_TEMP . 'upgrade.zip';
@@ -2053,14 +2138,14 @@ class enom_pro {
 
 		fwrite( $handle, $zipfile );
 		fclose( $handle );
-		$zip = new ZipArchive();
+		$zip          = new ZipArchive();
 		$zip_response = $zip->open( $filename );
 		if ( true !== $zip_response ) {
 			throw new RemoteException( 'Error extracting ZIP file: ' . $zip_response );
 		}
 
 		$upgrade_dir = ENOM_PRO_TEMP . 'upgrade/';
-		if ( !is_writeable( $upgrade_dir ) ) {
+		if ( ! is_writeable( $upgrade_dir ) ) {
 			$temp_dir_created = mkdir( $upgrade_dir );
 			if ( false === $temp_dir_created ) {
 				throw new Exception( 'Unable to open temporary upgrade folder for writing: ' . $upgrade_dir . ".
@@ -2076,18 +2161,18 @@ class enom_pro {
 		//File types to extract to frontend directories
 		$frontend_types = array( 'php' );
 		foreach ( $frontend_files as $file ) {
-			if ( !$file->isDot() && in_array( $file->getExtension(),
+			if ( ! $file->isDot() && in_array( $file->getExtension(),
 					$frontend_types )
 			) {
 				$frontend_dest = ROOTDIR;
 				copy( $file->getPathname(), $frontend_dest );
 			}
 		}
-		$template_files = $upgrade_dir . 'templates/default/';
-		$tpl_files = new DirectoryIterator( $template_files );
+		$template_files        = $upgrade_dir . 'templates/default/';
+		$tpl_files             = new DirectoryIterator( $template_files );
 		$manual_template_files = array();
 		foreach ( $tpl_files as $file ) {
-			if ( !$file->isDot() && in_array( $file->getExtension(),
+			if ( ! $file->isDot() && in_array( $file->getExtension(),
 					array( 'tpl' ) )
 			) {
 				//Build new file string
@@ -2102,12 +2187,11 @@ class enom_pro {
 
 		//Upgrade Core Files
 		$upgrade_files_dir = $upgrade_dir . 'modules/addons/enom_pro/';
-		$objects = new RecursiveIteratorIterator(
-			new RecursiveDirectoryIterator( $upgrade_files_dir, FilesystemIterator::SKIP_DOTS )
-		);
+		$objects           = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $upgrade_files_dir,
+				FilesystemIterator::SKIP_DOTS ) );
 
 		//Subfolders to extract into, used for security
-		$core_dirs = array( 'images', 'includes', 'js', 'css' );
+		$core_dirs         = array( 'images', 'includes', 'js', 'css' );
 		$failed_core_files = array();
 		foreach ( $objects as $object ) {
 			if ( is_readable( $object->getPathname() ) ) {
@@ -2138,39 +2222,42 @@ class enom_pro {
 		$this->migrate220();
 
 		//Cleanup temp dir
-		$this->rmdir(ENOM_PRO_TEMP);
+		$this->rmdir( ENOM_PRO_TEMP );
 		$return = array();
-		if ( !empty( $manual_template_files ) ) {
+		if ( ! empty( $manual_template_files ) ) {
 			$return['templates'] = $manual_template_files;
 		}
-		if ( !empty( $failed_core_files ) ) {
+		if ( ! empty( $failed_core_files ) ) {
 			$return['core_files'] = $failed_core_files;
 		}
 
 		return $return;
 	}
 
-	private function migrate220 () {
+	private function migrate220() {
+
 		$legacy_version_file = ENOM_PRO_TEMP . 'version';
-		if (file_exists($legacy_version_file)) {
-			unlink($legacy_version_file);
+		if ( file_exists( $legacy_version_file ) ) {
+			unlink( $legacy_version_file );
 		}
 	}
 
 	/**
 	 * Parses eNom SSL cert data to mail merge $smarty values
+	 *
 	 * @param $cert_data
 	 *
 	 * @return array expiry_date, domain_name, product
 	 */
-	public static function parse_SSL_Cert_meta_array_to_Smarty ($cert_data)
-	{
+	public static function parse_SSL_Cert_meta_array_to_Smarty( $cert_data ) {
+
 		return array(
 			'expiry_date' => $cert_data['expiration_date'],
 			'domain_name' => reset( $cert_data['domain'] ),
-			'product' => $cert_data['desc'],
+			'product'     => $cert_data['desc'],
 		);
 	}
+
 	/**
 	 * @param $client_id int tblclients.id
 	 * @param $cert_data array (expiration_date, domain, desc)
@@ -2178,8 +2265,9 @@ class enom_pro {
 	 * @return bool
 	 */
 	public static function send_SSL_reminder_email( $client_id, $cert_data ) {
-		$cert_meta_array = self::parse_SSL_Cert_meta_array_to_Smarty($cert_data);
-		$return = false;
+
+		$cert_meta_array = self::parse_SSL_Cert_meta_array_to_Smarty( $cert_data );
+		$return          = false;
 		try {
 			$email_enabled = self::get_addon_setting( 'ssl_email_enabled' ) == "on" ? true : false;
 			//Back compat
@@ -2187,10 +2275,10 @@ class enom_pro {
 			if ( 'Disabled' !== $email_days && $email_enabled ) {
 				//Send to WHOIS
 				$data = array(
-					'id' => $client_id,
-					'customtype' => 'general',
+					'id'          => $client_id,
+					'customtype'  => 'general',
 					'messagename' => 'SSL Expiring Soon',
-					'customvars' => base64_encode( serialize( $cert_meta_array ) ),
+					'customvars'  => base64_encode( serialize( $cert_meta_array ) ),
 				);
 				self::whmcs_api( 'sendemail', $data );
 			}
@@ -2202,31 +2290,31 @@ class enom_pro {
 			$ticket_dept = self::get_addon_setting( 'ssl_open_ticket' );
 			if ( 'Disabled' !== $ticket_dept ) {
 				//Parse string into department id
-				$ticket_dept_array = explode( '|', $ticket_dept );
-				$dept_id = reset( $ticket_dept_array );
+				$ticket_dept_array      = explode( '|', $ticket_dept );
+				$dept_id                = reset( $ticket_dept_array );
 				$smarty_cert_meta_array = array();
 				foreach ( $cert_meta_array as $key => $value ) {
 					//WHMCS's api doesn't support open ticket merge values
 					//We have to hack them in using str_replace
-					$smarty_cert_meta_array['{$' . $key . '}'] = $value;
+					$smarty_cert_meta_array[ '{$' . $key . '}' ] = $value;
 				}
 				//Open ticket
-				$data = array(
+				$data                = array(
 					'clientid' => $client_id,
-					'deptid' => $dept_id,
+					'deptid'   => $dept_id,
 					'priority' => self::get_addon_setting( 'ssl_ticket_priority' ),
-					'subject' => self::get_addon_setting( 'ssl_ticket_subject' ),
-					'message' => str_replace( array_keys( $smarty_cert_meta_array ),
+					'subject'  => self::get_addon_setting( 'ssl_ticket_subject' ),
+					'message'  => str_replace( array_keys( $smarty_cert_meta_array ),
 						array_values( $smarty_cert_meta_array ),
 						self::get_addon_setting( 'ssl_ticket_message' ) ),
-					'noemail' => ( "on" == self::get_addon_setting( 'ssl_ticket_email_enabled' ) ? false : true ),
+					'noemail'  => ( "on" == self::get_addon_setting( 'ssl_ticket_email_enabled' ) ? false : true ),
 				);
 				$ticket_default_name = trim( self::get_addon_setting( 'ssl_ticket_default_name' ) );
-				if ( empty( $client_id ) && !empty( $ticket_default_name ) ) {
+				if ( empty( $client_id ) && ! empty( $ticket_default_name ) ) {
 					//No matching client found, fall back to defaults
 					$data['clientid'] = 0;
-					$data['name'] = $ticket_default_name;
-					$data['email'] = self::get_addon_setting( 'ssl_ticket_default_email' );
+					$data['name']     = $ticket_default_name;
+					$data['email']    = self::get_addon_setting( 'ssl_ticket_default_email' );
 				}
 				self::whmcs_api( 'openticket', $data );
 			}
@@ -2244,6 +2332,7 @@ class enom_pro {
 	 * @return array id => array (id, name, awaitingreply, opentickets)
 	 */
 	public static function getSupportDepartments() {
+
 		$response = $api_response = array();
 		try {
 			$api_response = self::whmcs_api( 'getsupportdepartments',
@@ -2254,7 +2343,7 @@ class enom_pro {
 		if ( $api_response['totalresults'] > 0 ) {
 			$departments = $api_response['departments']['department'];
 			foreach ( $departments as $department ) {
-				$response[$department['id']] = $department;
+				$response[ $department['id'] ] = $department;
 			}
 		}
 
@@ -2262,10 +2351,11 @@ class enom_pro {
 	}
 
 	public function send_all_ssl_reminder_emails() {
+
 		$expiry_days_before = self::get_addon_setting( 'ssl_email_days' );
-		$certs = $this->getExpiringCerts();
-		$send_timestamp = strtotime( "+$expiry_days_before days" );
-		$reminder_count = 0;
+		$certs              = $this->getExpiringCerts();
+		$send_timestamp     = strtotime( "+$expiry_days_before days" );
+		$reminder_count     = 0;
 		foreach ( $certs as $cert ) {
 			$expiry_timestamp = strtotime( $cert['expiration_date'] );
 			if ( $this->format_ts( $expiry_timestamp ) == $this->format_ts( $send_timestamp ) ) {
@@ -2274,7 +2364,7 @@ class enom_pro {
 				if ( false !== $client_id ) {
 					//Send Email
 					$this->send_SSL_reminder_email( $client_id, $cert );
-					$reminder_count++;
+					$reminder_count ++;
 				}
 			}
 		}
@@ -2289,36 +2379,37 @@ class enom_pro {
 	 * @throws WHMCSException
 	 */
 	public function getClientIdByDomain( $domain ) {
-		$domain = ltrim($domain, '*.');
+
+		$domain = ltrim( $domain, '*.' );
 		/**
 		 * First, Try Searching by Product
 		 * (Correct enomssl configuration)
 		 */
-		$products = self::whmcs_api( 'getclientsproducts',
+		$products            = self::whmcs_api( 'getclientsproducts',
 			array( 'domain' => $domain ) );
 		$clientIDFromProduct = $clientIDFromDomain = false;
 		if ( ! empty( $products['products'] ) ) {
 			$clientIDFromProduct = (int) $products['products']['product'][0]['clientid'];
 		}
-		unset($products);
+		unset( $products );
 
 		/*
 		 * Search by Domains
 		 */
 		$domains = self::whmcs_api( 'getclientsdomains',
 			array( 'domain' => $domain ) );
-		if (! empty( $domains['domains'] ) ) {
+		if ( ! empty( $domains['domains'] ) ) {
 			$clientIDFromDomain = (int) $domains['domains']['domain'][0]['userid'];
 		}
-		unset($domains);
+		unset( $domains );
 
-		if (false === $clientIDFromDomain && false === $clientIDFromProduct) {
+		if ( false === $clientIDFromDomain && false === $clientIDFromProduct ) {
 			self::log_activity( ENOM_PRO . ': No Client Domain or Product Found for ' . $domain . ' to send SSL reminder email' );
 		} else {
-			if (true == $clientIDFromProduct) {
+			if ( true == $clientIDFromProduct ) {
 				return $clientIDFromProduct;
 			}
-			if (true == $clientIDFromDomain) {
+			if ( true == $clientIDFromDomain ) {
 				return $clientIDFromDomain;
 			}
 		}
@@ -2332,8 +2423,9 @@ class enom_pro {
 	 * @param string $msg
 	 */
 	public static function log_activity( $msg ) {
-		if (defined('UNIT_TESTS') && UNIT_TESTS) {
-			self::whmcs_api('logactivity', array('description' => $msg));
+
+		if ( defined( 'UNIT_TESTS' ) && UNIT_TESTS ) {
+			self::whmcs_api( 'logactivity', array( 'description' => $msg ) );
 		} else {
 			logActivity( $msg );
 		}
@@ -2347,16 +2439,17 @@ class enom_pro {
 	 * @return string m-d-Y
 	 */
 	private function format_ts( $ts ) {
+
 		return date( 'm-d-Y', $ts );
 	}
 
 	public static function install_ssl_email() {
+
 		if ( self::is_ssl_email_installed() ) {
 			return self::is_ssl_email_installed();
 		}
-		$ssl_message = '<p>Your {$product} for {$domain_name} is set to expire on&nbsp;{$expiry_date} <br/>' .
-			'Please renew today to avoid any interruption. <br/><br/> {$signature}</p>';
-		$sql = "INSERT INTO `tblemailtemplates`
+		$ssl_message = '<p>Your {$product} for {$domain_name} is set to expire on&nbsp;{$expiry_date} <br/>' . 'Please renew today to avoid any interruption. <br/><br/> {$signature}</p>';
+		$sql         = "INSERT INTO `tblemailtemplates`
 	       (`type`, `name`, `subject`, `message`, `attachments`, `fromname`, `fromemail`, `disabled`, `custom`, `language`, `copyto`, `plaintext`) VALUES
             ('general', 'SSL Expiring Soon', 'SSL Expiring Soon', '{$ssl_message}', '', '', '', '', '1', '', '', 0);";
 		self::query( $sql );
@@ -2367,21 +2460,22 @@ class enom_pro {
 	private static $ssl_email_id = null;
 
 	/**
-	 *
 	 * @return false or int template  id on installed
 	 */
 	public static function is_ssl_email_installed() {
+
 		if ( null === self::$ssl_email_id ) {
-			$sql = 'SELECT `id` FROM `tblemailtemplates` WHERE `name` = \'SSL Expiring Soon\'';
-			$result = self::query( $sql );
-			$array = mysql_fetch_assoc( $result );
-			$id = $array['id'];
+			$sql                = 'SELECT `id` FROM `tblemailtemplates` WHERE `name` = \'SSL Expiring Soon\'';
+			$result             = self::query( $sql );
+			$array              = mysql_fetch_assoc( $result );
+			$id                 = $array['id'];
 			self::$ssl_email_id = mysql_num_rows( $result ) == 0 ? false : (int) $id;
 		}
 
 		return self::$ssl_email_id;
 	}
-	private static $widgets = array (
+
+	private static $widgets = array(
 		'enom_pro_admin_balance',
 		'enom_pro_admin_expiring_domains',
 		'enom_pro_admin_pending_domain_verification',
@@ -2393,19 +2487,22 @@ class enom_pro {
 	 * Check for any enabled widgets for this role
 	 * @return bool
 	 */
-	public static function areAnyWidgetsEnabled ()
-	{
+	public static function areAnyWidgetsEnabled() {
+
 		$enabled = false;
-		foreach (self::$widgets as $widget) {
-			if (self::is_widget_enabled_for_this_user($widget)) {
+		foreach ( self::$widgets as $widget ) {
+			if ( self::is_widget_enabled_for_this_user( $widget ) ) {
 				$enabled = true;
 				break;
 			}
 		}
+
 		return $enabled;
 	}
+
 	public static function render_admin_widget( $function ) {
-		if ( !function_exists( $function ) ) {
+
+		if ( ! function_exists( $function ) ) {
 			throw new InvalidArgumentException( 'Invalid Admin Widget Function: ' . $function );
 		}
 		if ( self::is_widget_enabled_for_this_user( $function ) ) {
@@ -2427,9 +2524,10 @@ class enom_pro {
 	}
 
 	private static function is_widget_enabled_for_this_user( $function ) {
-		$whmcs_string = substr( $function, 7 );
-		$role = mysql_fetch_assoc( self::query( 'SELECT `roleid` FROM `tbladmins` WHERE `id` = ' . (int) $_SESSION['adminid'] ) );
-		$widgets = mysql_fetch_assoc( self::query( 'SELECT `widgets` FROM `tbladminroles` WHERE `id` = ' . $role['roleid'] ) );
+
+		$whmcs_string  = substr( $function, 7 );
+		$role          = mysql_fetch_assoc( self::query( 'SELECT `roleid` FROM `tbladmins` WHERE `id` = ' . (int) $_SESSION['adminid'] ) );
+		$widgets       = mysql_fetch_assoc( self::query( 'SELECT `widgets` FROM `tbladminroles` WHERE `id` = ' . $role['roleid'] ) );
 		$widgets_array = explode( ',', $widgets['widgets'] );
 
 		return in_array( $whmcs_string, $widgets_array );
@@ -2437,7 +2535,6 @@ class enom_pro {
 
 	/**
 	 * Unserialize value only if it was serialized.
-	 *
 	 * @since 2.0.0
 	 *
 	 * @param string $original Maybe unserialized original, if is needed.
@@ -2445,6 +2542,7 @@ class enom_pro {
 	 * @return mixed Unserialized data can be any type.
 	 */
 	static function maybe_unserialize( $original ) {
+
 		if ( self::is_serialized( $original ) ) // don't attempt to unserialize data that wasn't serialized going in
 		{
 			return @unserialize( $original );
@@ -2455,10 +2553,8 @@ class enom_pro {
 
 	/**
 	 * Check value to find if it was serialized.
-	 *
 	 * If $data is not an string, then returned value will always be false.
 	 * Serialized data is always a string.
-	 *
 	 * @since 2.0.5
 	 *
 	 * @param mixed $data Value to check to see if was serialized.
@@ -2467,8 +2563,9 @@ class enom_pro {
 	 * @return bool False if not serialized and true if it was.
 	 */
 	static function is_serialized( $data, $strict = true ) {
+
 		// if it isn't a string, it isn't serialized
-		if ( !is_string( $data ) ) {
+		if ( ! is_string( $data ) ) {
 			return false;
 		}
 		$data = trim( $data );
@@ -2483,13 +2580,13 @@ class enom_pro {
 			return false;
 		}
 		if ( $strict ) {
-			$lastc = $data[$length - 1];
+			$lastc = $data[ $length - 1 ];
 			if ( ';' !== $lastc && '}' !== $lastc ) {
 				return false;
 			}
 		} else {
 			$semicolon = strpos( $data, ';' );
-			$brace = strpos( $data, '}' );
+			$brace     = strpos( $data, '}' );
 			// Either ; or } must exist.
 			if ( false === $semicolon && false === $brace ) {
 				return false;
@@ -2506,7 +2603,7 @@ class enom_pro {
 		switch ( $token ) {
 			case 's' :
 				if ( $strict ) {
-					if ( '"' !== $data[$length - 2] ) {
+					if ( '"' !== $data[ $length - 2 ] ) {
 						return false;
 					}
 				} elseif ( false === strpos( $data, '"' ) ) {
@@ -2530,7 +2627,6 @@ class enom_pro {
 
 	/**
 	 * Serialize data, if needed.
-	 *
 	 * @since 2.0.5
 	 *
 	 * @param mixed $data Data that might be serialized.
@@ -2538,6 +2634,7 @@ class enom_pro {
 	 * @return mixed A scalar data
 	 */
 	static function maybe_serialize( $data ) {
+
 		if ( is_array( $data ) || is_object( $data ) ) {
 			return serialize( $data );
 		}
@@ -2545,63 +2642,141 @@ class enom_pro {
 		return $data;
 	}
 
-	public static function getBetaReportLink ()
-	{
-	?>
+	public static function getBetaReportLink() {
+
+		?>
 		<a class="btn btn-block btn-warning"
-			 title="<?php echo ENOM_PRO; ?> Help"
-			 target="_blank"
-			 href="<?php echo self::TICKET_URL?>&subject=<?php echo urlencode(ENOM_PRO . ' Bug Report') .'&message='. self::getSupportMessage(); ?>">
+		   title="<?php echo ENOM_PRO; ?> Help"
+		   target="_blank"
+		   href="<?php echo self::TICKET_URL?>&subject=<?php echo urlencode( ENOM_PRO . ' Bug Report' ) . '&message=' . self::getSupportMessage(); ?>">
 			<span class="enom-pro-icon enom-pro-icon-support"></span>
-			BETA Mode<br/> Please report bugs <span class="enom-pro-icon enom-pro-icon-bug"></span>
+			BETA Mode<br /> Please report bugs <span class="enom-pro-icon enom-pro-icon-bug"></span>
 		</a>
-<?php
+	<?php
 	}
+
 	public static function getSupportMessage() {
+
 		$raw_text = require_once ENOM_PRO_INCLUDES . 'betaSupportMessageText.php';
-		return urlencode(
-			str_replace(
-				array(
-					'%VERSION%',
-					'%PHPVERSION%',
-					'%WHMCSVERSION%',
-					'%CURRPAGE%'
-				),
+
+		return urlencode( str_replace( array(
+				'%VERSION%',
+				'%PHPVERSION%',
+				'%WHMCSVERSION%',
+				'%CURRPAGE%'
+			),
 				array(
 					ENOM_PRO_VERSION,
 					PHP_VERSION,
 					$GLOBALS['CONFIG']['Version'],
 					$_SERVER['REQUEST_URI']
 				),
-				$raw_text
-			)
-		);
+				$raw_text ) );
 	}
 
 	/**
 	 * Accessibility function to check license for beta opt-in
-	 *
 	 * @uses enom_pro_license::isBetaOptedIn()
-	 *
 	 * @return bool
 	 */
-	public static function isBeta ()
-	{
+	public static function isBeta() {
+
 		return enom_pro_license::isBetaOptedIn();
+	}
+
+	public static function isBetaBuild() {
+
+		//TODO implement strstr search for . (releases have dots, SHA hashes never have dots)
+		return false;
 	}
 
 	/**
 	 * Checks if WHMCS Module debug is enabled
-	 *
 	 * @return bool
 	 */
-	public static function isModuleDebugEnabled ()
-	{
-		$result = select_query('tblconfiguration', 'value', array('setting' => 'ModuleDebugMode', 'value' => 'on'));
-		if (mysql_num_rows($result) > 0) {
+	public static function isModuleDebugEnabled() {
+
+		$result = select_query( 'tblconfiguration', 'value', array( 'setting' => 'ModuleDebugMode', 'value' => 'on' ) );
+		if ( mysql_num_rows( $result ) > 0 ) {
 			return true;
 		} else {
 			return false;
 		}
 	}
+
+	/**
+	 * @return array $result array(
+	 *      'items' => array(...),
+	 * 'count' => (int) number of results in this result set
+	 * 'total_count' => (int) total number of results,
+	 * 'start' => (int) starting index of current result set
+	 * )
+	 * @throws WHMCSException
+	 */
+	public static function get_clients() {
+
+		$api_settings = array( 'limitnum' => self::CLIENT_LIST_AJAX_LENGTH );
+		$search = false;
+		if (isset($_GET['q'])) {
+			$search = trim(self::escape(strip_tags($_GET['q'])));
+		}
+		if (isset($_GET['page'])) {
+			$page = (int) $_GET['page']; //2
+			$page = ($page <= 1) ? 2 : $page;
+			//Convert to a 0 index that whmcs uses for limits
+			$page = $page - 1; // 2 - 1 = 1 * 10 = 10
+			$limit_start = $page * self::CLIENT_LIST_AJAX_LENGTH;
+		} else {
+			$limit_start = 0;
+		}
+		$sql = "SELECT SQL_CALC_FOUND_ROWS id, firstname, lastname, companyname FROM tblclients";
+		if ($search) {
+			$sql .= " WHERE email LIKE '" . $search . "%' OR firstname LIKE '" . $search . "%' OR lastname LIKE '" . $search . "%' OR companyname LIKE '" . $search . "%'";
+		}
+		$sql .=	" ORDER BY `id` LIMIT " . $limit_start . ", " . (int) self::CLIENT_LIST_AJAX_LENGTH;
+		$result = enom_pro::query($sql);
+		$count = mysql_num_rows($result);
+
+		$total_result_count_query = mysql_fetch_array(self::query("SELECT FOUND_ROWS()"));
+		$total_count = $total_result_count_query[0];
+		unset($total_result_count_query);
+
+		$clients = array();
+		while ($data = mysql_fetch_array($result)) {
+			$clients[] = array(
+				"id" => $data['id'],
+				"firstname" => $data['firstname'],
+				"lastname" => $data['lastname'],
+				"companyname" => $data['companyname'],
+			);
+		}
+		$return = array();
+		$return['results'] = array_map(array(__CLASS__, 'whmcs_client_formatter'), $clients);
+		$return['total_count'] = $total_count;
+		$return['count'] = $count;
+		$return['start'] = $limit_start;
+
+		if (($return['start'] + $return['count']) < $return['total_count']) {
+			$return['more'] = true;
+		} else {
+			$return['more'] = false;
+		}
+
+		return $return;
+	}
+
+	/**
+	 * @param $client array data from whmcs api
+	 *
+	 * @return array
+	 */
+	public static function whmcs_client_formatter ($client)
+	{
+
+		return array(
+			'id' => $client['id'],
+			'text' => $client['firstname']  . ' ' . $client['lastname'] . (! empty($client['companyname']) ? ' &mdash; ' . $client['companyname'] : '')
+		);
+	}
+	const CLIENT_LIST_AJAX_LENGTH = 10;
 }
