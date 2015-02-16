@@ -234,8 +234,8 @@ function get_enom_pro_widget_form( $action, $id ) {
 	if ( 'configadminroles.php' == basename( $_SERVER['PHP_SELF'] ) ) {
 		return '';
 	}
-	ob_start();?>
-	<form id="<?php echo $id; ?>" class="refreshbutton" action="<?php echo $_SERVER['PHP_SELF'];?>">
+	ob_start(); ?>
+	<form id="<?php echo $id; ?>" class="refreshbutton" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 		<input type="hidden" name="<?php echo $action; ?>" value="1" />
 		<button type="submit" class="btn btn-default btn-xs">
 			Refresh <span class="enom-pro-icon enom-pro-icon-refresh-alt"></span>
@@ -251,13 +251,14 @@ function get_enom_pro_widget_form( $action, $id ) {
 /**
  * Admin Page CSS
  */
-add_hook( "AdminAreaHeadOutput", - 89512, "enom_pro_admin_css" );
-function enom_pro_admin_css() {
+add_hook( "AdminAreaHeadOutput", - 89512, "enom_pro_admin_head_output" );
+function enom_pro_admin_head_output() {
 	//	Only load on applicable pages
 	$pages      = array( 'index.php', 'addonmodules.php', 'configadminroles.php' );
 	$scriptName = basename( $_SERVER['SCRIPT_NAME'] );
-	if ( in_array( $scriptName, $pages ) && ( isset( $_GET['module'] ) && 'enom_pro' == $_GET['module'] ) ) {
+	if ( in_array( $scriptName, $pages ) ) {
 		//Include our class if needed
+
 		if ( ! class_exists( 'enom_pro' ) ) {
 			require_once ENOM_PRO_INCLUDES . 'class.enom_pro.php';
 		}
@@ -265,15 +266,20 @@ function enom_pro_admin_css() {
 		<script>
 			var enom_pro = {
 				isBeta : <?php echo enom_pro::isBeta() ? 'true': 'false'; ?>,
-				version: "<?php echo ENOM_PRO_VERSION ?>"
+				version: "<?php echo ENOM_PRO_VERSION ?>",
+				adminurl: "<?php echo enom_pro::MODULE_LINK ?>"
 			};
 		</script>
+		<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap-theme.min.css" />
 		<link rel="stylesheet" href="../modules/addons/enom_pro/css/admin.min.css" />
-		<?php if ( $scriptName !== 'configadminroles.php' ) : ?>
+		<?php if ( isset( $_GET['module'] ) && 'enom_pro' == $_GET['module'] ) : ?>
 			<?php //Don't include these on the admin roles page to prevent unintended conflicts / regressions ?>
-			<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap.min.css" />
-			<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap-theme.min.css" />
 			<script src="<?php echo enom_pro::MODULE_LINK ?>&action=getAdminJS&version=<?php echo urlencode( ENOM_PRO_VERSION ) ?>"></script>
+			<?php if (isset($_GET['view']) && 'domain_import' == $_GET['view']) :?>
+				<link rel="stylesheet" href="../modules/addons/enom_pro/css/select2/select2.min.css" />
+				<script src="../modules/addons/enom_pro/js/select2/select2.full.min.js"></script>
+			<?php endif;?>
 		<?php endif; ?>
 		<?php
 
@@ -316,7 +322,8 @@ function enom_pro_admin_actions() {
 		'save_custom_exchange_rate',
 		'get_beta_log',
 		'preview_ssl_email',
-		'save_tld_markup'
+		'save_tld_markup',
+		'get_client_list',
 	);
 	//Only load this hook if an ajax request is being run
 	if ( ! ( isset( $_REQUEST['action'] ) && in_array( $_REQUEST['action'], $enom_actions ) ) ) {

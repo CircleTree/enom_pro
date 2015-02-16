@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{jQuery 1.11.0}" />
+    <file url="file://$PROJECT_DIR$/src/modules/addons/enom_pro/js" libraries="{HTML5 / EcmaScript 5, jQuery 1.11.0}" />
+    <file url="file://$PROJECT_DIR$/src/modules/addons/enom_pro/js/jquery.admin.js" libraries="{HTML5 / EcmaScript 5, jQuery 1.11.0, select2-DefinitelyTyped}" />
+    <file url="PROJECT" libraries="{jQuery 1.11.0, select2-DefinitelyTyped}" />
   </component>
 </project>
-

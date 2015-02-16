@@ -400,8 +400,9 @@ jQuery(function($) {
         $("#import_next_button").hide();
         $("#domain_field").add('#domain_field2').val(domain_name);
         $("#create_order_dialog").dialog('open');
-        if ($("#generateinvoice").is(':checked') && $("#invoice_email").not(':visible')) {
-        	$("#invoice_email").show();
+			var $invoiceEmail = $("#invoice_email");
+			if ($("#generateinvoice").is(':checked') && $invoiceEmail.not(':visible')) {
+        	$invoiceEmail.show();
         }
         var $button = $(this),
         	email = $button.data('email'),
@@ -410,7 +411,10 @@ jQuery(function($) {
         	autorenew = $button.data('autorenew'),
         	nextduedate = $button.data('nextduedate');
         if (email != "") {
-            $("option[data-email='" + email + "']").attr('selected', true);
+					//Set the drop-down state
+					var $clientSelect = $("#client_select");
+					$clientSelect.select2("open");
+					$clientSelect.data('select2').dropdown.$search.val(email).trigger('keyup')
         }
         $("[name=nextduedate]").val($button.data('nextduedate')); 
         $("[name=nextduedatelabel]").val($button.data('nextduedatelabel')); 
@@ -531,7 +535,32 @@ jQuery(function($) {
         });
         return false;
     }).trigger('submit');
-    $("#search_form").on('submit', function  (){
+	$("#client_select").select2({
+		ajax: {
+			url: enom_pro.adminurl + '&action=get_client_list',
+			dataType: 'json',
+			delay: 250,
+			data: function (params) {
+				return {
+					q: params.term, // search term
+					page: params.page
+				};
+			},
+			processResults: function (data, page) {
+				// parse the results into the format expected by Select2.
+				// since we are using custom formatting functions we do not need to
+				// alter the remote JSON data
+				return {
+					results: data.results,
+					pagination: {
+						more: data.more
+					}
+				};
+			},
+			cache: true
+		}
+	});
+	$("#search_form").on('submit', function  (){
     	var search = $(this).find('input[name=s][type=text]').val();
     	$("input[name=s][type=hidden]").val(search); 
     	$importTableForm.trigger('submit');

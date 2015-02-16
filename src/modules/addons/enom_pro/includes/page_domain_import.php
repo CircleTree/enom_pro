@@ -97,34 +97,13 @@
 					</div>
 					<div class="row">
 
-						<?php $clients = enom_pro::whmcs_api('getclients', array('limitnum' =>
-										('Unlimited' == enom_pro::get_addon_setting('client_limit') ? 9999999999999 : enom_pro::get_addon_setting('client_limit')) //9 trillion
-						)); ?>
-
-					<?php if ('success' == $clients['result']):
-							$clients_array = $clients['clients']['client']; ?>
 						<label class="col-xs-6">
 							Client
-							<select name="clientid" id="client_select">
-								<?php foreach ($clients_array as $client) : ?>
-									<?php $label = htmlentities(utf8_decode($client['firstname'])) . ' ' .
-																 htmlentities(utf8_decode($client['lastname'])) .
-																(! empty($client['companyname']) ?
-																' ('. htmlentities($client['companyname']) .')' : ''); ?>
-										<option data-email="<?php echo $client['email']; ?>" value="<?php echo $client['id'] ?>">
-											<?php echo $label; ?>
-										</option>
-								<?php endforeach; ?>
+<!--							<input type="hidden" value="" name="clientid" id="client_select" style="width: 100%"/>-->
+							<select name="clientid" id="client_select" style="width: 100%">
+								<option value="default">Select...</option>
 							</select>
 						</label>
-						<?php else :?>
-							<div class="alert alert-danger col-xs-12">
-								WHMCS API Error:
-								<pre>
-									<?php print_r($clients);?>
-								</pre>
-							</div>
-						<?php endif;?>
 						<label class="col-xs-4">
 							Years<br/>
 							<select name="regperiod" id="register_years">
