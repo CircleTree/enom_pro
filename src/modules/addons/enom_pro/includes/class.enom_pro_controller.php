@@ -120,6 +120,7 @@ class enom_pro_controller {
 				'email' => $whois['registrant']['emailaddress'],
 			);
 		} catch ( Exception $e ) {
+			sleep(2);//Add a delay to avoid DDOS'ing enom.com
 			$response = array( 'error' => $e->getMessage() );
 		}
 		header( 'Content-Type: application/json' );

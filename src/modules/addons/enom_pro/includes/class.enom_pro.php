@@ -188,7 +188,7 @@ class enom_pro {
 		//Clean up the testmode to a (bool)
 		$live = ( $params['TestMode'] == 'on' ) ? false : true;
 		//Set the API url
-		$this->URL = ( $live ? 'http://reseller.enom.com/interface.asp' : 'http://resellertest.enom.com/interface.asp' );
+		$this->URL = ( $live ? 'https://reseller.enom.com/interface.asp' : 'https://resellertest.enom.com/interface.asp' );
 		//Build the initial connection test
 		$this->setParams( array(
 				'uid' => $params['Username'],
@@ -400,9 +400,14 @@ class enom_pro {
 			return true;
 		}
 		//Set the command
-		if ( ! in_array( strtoupper( trim( $command ) ),
-			self::array_to_upper( $this->implemented_commands ) )
-		) {
+		if (
+			! in_array(
+				strtoupper( trim( $command )  ),
+				self::array_to_upper( $this->implemented_commands ) )
+		 &&
+			! defined('UNIT_TESTS')
+		)
+		{
 			throw new InvalidArgumentException( 'API Method ' . $command . ' not implemented', 400 );
 		}
 		if ( $this->remote_run_number >= $this->api_request_limit ) {
@@ -1895,26 +1900,45 @@ class enom_pro {
 			throw new MissingDependencyException( 'cURL is Required for the eNom PRO modules',
 				RemoteException::CURL_EXCEPTION );
 		}
+		$get_query = http_build_query( $get );
+		if (strlen($get_query) < 1900) {
+			unset($get_query);
+			$result = self::do_curl_get( $url, $get, $options );
+		} else {
+			unset($get_query);
+			$result = self::do_curl_post($url, $get, $options);
+		}
+
+		return $result;
+	}
+	private static function do_curl_post ($url,  array $params, array $options = array())
+	{
+		$postData = '';
+		//create name value pairs seperated by &
+		foreach($params as $k => $v)
+		{
+			$postData .= $k . '='.$v.'&';
+		}
+		rtrim($postData, '&');
+
 		$defaults = array(
-			CURLOPT_URL            => $url . ( strpos( $url,
-					'?' ) === false ? '?' : '' ) . http_build_query( $get ),
-			CURLOPT_HEADER         => 0,
+			CURLOPT_URL            => $url,
+			CURLOPT_HEADER         => false,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_TIMEOUT        => 15,
-			CURLOPT_SSL_VERIFYPEER => false
+			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_POST => count($params),
+			CURLOPT_POSTFIELDS => $postData
 		);
 
 		$ch = curl_init();
 		curl_setopt_array( $ch, ( $options + $defaults ) );
-		$result = curl_exec( $ch );
-		if ( 0 != curl_errno( $ch ) ) {
-			throw new RemoteException( curl_error( $ch ), RemoteException::CURL_EXCEPTION );
-		}
-		curl_close( $ch );
 
-		return $result;
+		$output=curl_exec($ch);
+
+		curl_close($ch);
+		return $output;
 	}
-
 	/**
 	 * cURL get, and decodes JSON response
 	 *
@@ -2242,6 +2266,12 @@ class enom_pro {
 		}
 	}
 
+	/**
+	 * Clears memory cache of data
+	 */
+	public function clearXMLCache () {
+		unset( $this->xml );
+	}
 	/**
 	 * Parses eNom SSL cert data to mail merge $smarty values
 	 *
@@ -2779,4 +2809,34 @@ class enom_pro {
 		);
 	}
 	const CLIENT_LIST_AJAX_LENGTH = 10;
+
+	/**
+	 * @param       $url
+	 * @param array $get
+	 * @param array $options
+	 *
+	 * @return mixed
+	 * @throws RemoteException
+	 */
+	private static function do_curl_get( $url, array $get = array(), array $options = array() ) {
+
+		$defaults = array(
+			CURLOPT_URL            => $url . ( strpos( $url,
+					'?' ) === false ? '?' : '' ) . http_build_query($get),
+			CURLOPT_HEADER         => 0,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_TIMEOUT        => 15,
+			CURLOPT_SSL_VERIFYPEER => false
+		);
+
+		$ch = curl_init();
+		curl_setopt_array( $ch, ( $options + $defaults ) );
+		$result = curl_exec( $ch );
+		if ( 0 != curl_errno( $ch ) ) {
+			throw new RemoteException( curl_error( $ch ), RemoteException::CURL_EXCEPTION );
+		}
+		curl_close( $ch );
+
+		return $result;
+}
 }
