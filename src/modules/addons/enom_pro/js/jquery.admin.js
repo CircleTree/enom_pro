@@ -187,23 +187,153 @@ try {
             })
         }
     })(jQuery);
-    var whois_xhrs = [],
-    whois_incomplete = false;
-function abort_whois_xhrs ()
-{
-	if (whois_xhrs.length > 0) {
-    	jQuery.each(whois_xhrs, function  (k, v) {
-    		if (typeof(v) == 'object') {
-    			v.abort();
-    		} else {
-    			console.log('abort', v);
-    		}
-        });
-	}
-}
+// https://github.com/Foliotek/ajaxq
+
+	(function($) {
+
+		var queues = {};
+		var activeReqs = {};
+
+		// Register an $.ajaxq function, which follows the $.ajax interface, but allows a queue name which will force only one request per queue to fire.
+		$.ajaxq = function(qname, opts) {
+
+			if (typeof opts === "undefined") {
+				throw ("AjaxQ: queue name is not provided");
+			}
+
+			// Will return a Deferred promise object extended with success/error/callback, so that this function matches the interface of $.ajax
+			var deferred = $.Deferred(),
+					promise = deferred.promise();
+
+			promise.success = promise.done;
+			promise.error = promise.fail;
+			promise.complete = promise.always;
+
+			// Create a deep copy of the arguments, and enqueue this request.
+			var clonedOptions = $.extend(true, {}, opts);
+			enqueue(function() {
+				// Send off the ajax request now that the item has been removed from the queue
+				var jqXHR = $.ajax.apply(window, [clonedOptions]);
+
+				// Notify the returned deferred object with the correct context when the jqXHR is done or fails
+				// Note that 'always' will automatically be fired once one of these are called: http://api.jquery.com/category/deferred-object/.
+				jqXHR.done(function() {
+					deferred.resolve.apply(this, arguments);
+				});
+				jqXHR.fail(function() {
+					deferred.reject.apply(this, arguments);
+				});
+
+				jqXHR.always(dequeue); // make sure to dequeue the next request AFTER the done and fail callbacks are fired
+				return jqXHR;
+			});
+
+			return promise;
+
+
+			// If there is no queue, create an empty one and instantly process this item.
+			// Otherwise, just add this item onto it for later processing.
+			function enqueue(cb) {
+				if (!queues[qname]) {
+					queues[qname] = [];
+					var xhr = cb();
+					activeReqs[qname] = xhr;
+				}
+				else {
+					queues[qname].push(cb);
+				}
+			}
+
+			// Remove the next callback from the queue and fire it off.
+			// If the queue was empty (this was the last item), delete it from memory so the next one can be instantly processed.
+			function dequeue() {
+				if (!queues[qname]) {
+					return;
+				}
+				var nextCallback = queues[qname].shift();
+				if (nextCallback) {
+					var xhr = nextCallback();
+					activeReqs[qname] = xhr;
+				}
+				else {
+					delete queues[qname];
+					delete activeReqs[qname];
+				}
+			}
+		};
+
+		// Register a $.postq and $.getq method to provide shortcuts for $.get and $.post
+		// Copied from jQuery source to make sure the functions share the same defaults as $.get and $.post.
+		$.each( [ "getq", "postq" ], function( i, method ) {
+			$[ method ] = function( qname, url, data, callback, type ) {
+
+				if ( $.isFunction( data ) ) {
+					type = type || callback;
+					callback = data;
+					data = undefined;
+				}
+
+				return $.ajaxq(qname, {
+					type: method === "postq" ? "post" : "get",
+					url: url,
+					data: data,
+					success: callback,
+					dataType: type
+				});
+			};
+		});
+
+		var isQueueRunning = function(qname) {
+			return queues.hasOwnProperty(qname);
+		};
+
+		var isAnyQueueRunning = function() {
+			for (var i in queues) {
+				if (isQueueRunning(i)) return true;
+			}
+			return false;
+		};
+
+		$.ajaxq.isRunning = function(qname) {
+			if (qname) return isQueueRunning(qname);
+			else return isAnyQueueRunning();
+		};
+
+		$.ajaxq.getActiveRequest = function(qname) {
+			if (!qname) throw ("AjaxQ: queue name is required");
+
+			return activeReqs[qname];
+		};
+
+		$.ajaxq.abort = function(qname) {
+			if (!qname) throw ("AjaxQ: queue name is required");
+
+			var current = $.ajaxq.getActiveRequest(qname);
+			delete queues[qname];
+			delete activeReqs[qname];
+			if (current) current.abort();
+		};
+
+		$.ajaxq.clear = function(qname) {
+			if (!qname) {
+				for (var i in queues) {
+					if (queues.hasOwnProperty(i)) {
+						queues[i] = [];
+					}
+				}
+			}
+			else {
+				if (queues[qname]) {
+					queues[qname] = [];
+				}
+			}
+		};
+
+	})(jQuery);
 function precise_round(num,decimals){
 	return Math.round(num*Math.pow(10,decimals))/Math.pow(10,decimals);
 }
+
 var sortTldXHR = null;
 jQuery(function($) {
     $("#generateinvoice").bind('click', function() {
@@ -300,7 +430,7 @@ jQuery(function($) {
             do_whois_results($target, data);
             return false;
         }
-        whois_xhrs.push($.ajax({
+        $.ajaxq('whois', {
             url : 'addonmodules.php?module=enom_pro',
             global : false,
             data : {
@@ -342,22 +472,15 @@ jQuery(function($) {
                     "error": json
                 });
             }
-        })
-        );
-        return false;
+        });
     });
     window.onbeforeunload = function  (e) {
         var incomplete = 0;
-        if (whois_xhrs.length > 0) {
-            if ($.each(whois_xhrs, function  (k,v){
-                if (v.readyState == 1 || v.readyState == 2 || v.readyState == 3) {
-                    incomplete++;
-                }
-            }))
-            if (incomplete > 0) {
-                abort_whois_xhrs();
-            }
+        if (jQuery.ajaxq.isRunning('whois')) {
+					return 'Fetching WHOIS still in progress\nAbort?';
         }
+			console.log('after');
+			jQuery.ajaxq.abort('whois');
     };
     if (localStorage) {
         function getLabel() {
@@ -374,19 +497,26 @@ jQuery(function($) {
         });
     }
     function do_whois_results($target, data) {
+
         $("#local_storage").trigger('refresh');
-        if (data.email) {
-            $target.closest('.alert').find('.create_order').data('email',
+			var $alert = $target.closest('.alert');
+			if (data.email) {
+            $alert.find('.create_order').data('email',
                 data.email);
         }
         var $response = $target.find('.response');
-        var label = data.error || data;
+        var label = data.error || ('Found: ' + data.email);
         $response.html(label);
+			if (!data.error) {
+				$alert.removeClass('alert-danger').addClass('alert-warning');
+				$alert.find('.create_order').removeClass('btn-primary').addClass('btn-success');
+			}
         if (data.error) {
             $('<button class="btn btn-danger">Try Again?</button>').on('click', function  (){
                 if (localStorage) {
                     localStorage.removeItem($target.data('domain'));
                 }
+							$(this).addClass('disabled');
             }).appendTo($response);
         }
         $target.find('.enom_pro_loader').addClass('hidden');
@@ -507,9 +637,9 @@ jQuery(function($) {
     });
     $(".no-js").hide(); 
     $importTableForm.on('submit', function() {
+				$.ajaxq.clear('whois');
         $(".enom_pro_loader").not('.small').removeClass('hidden');
-        abort_whois_xhrs();
-        $("#domain_caches").hide(); 
+        $("#domain_caches").hide();
         $.ajax({
             url : 'addonmodules.php?module=enom_pro',
             data : $(this).serialize(),
@@ -749,7 +879,6 @@ jQuery(function($) {
     $("#domains_target").on("click", ".pager A", function() {
     	var start = $(this).data('start');
         $("input[name=start]").val(start);
-    	abort_whois_xhrs();
         $importTableForm.trigger('submit');
         return false;
     });

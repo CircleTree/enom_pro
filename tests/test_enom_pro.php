@@ -758,4 +758,63 @@ TAG
 		$this->assertFalse($this->e->get_clients()['more']);
 	}
 
+	public function testCreateLotsOfEnomDomains() {
+		$count = 400;
+//		$this->markTestSkipped("Only run this to batch produce $count domains in test account");
+		$loops = $count / 100;
+		set_time_limit( $loops * 20);
+		for ($loops; $loops--;) {
+			$this->e->clearXMLCache();
+			$balance = preg_replace( "/[^0-9]/", "", $this->e->getAvailableBalance() );
+			if ((100 * 8.95) > $balance ) {
+				$this->fail('Balance too low: '. $balance);
+			}
+			$this->doDomainBatch();
+			sleep(10);
+		}
+	}
+
+	private function doDomainBatch() {
+
+		$limit       = 100;
+		$length      = 15;
+		$chars       = 'abcdefghijklmnopqrstuvwxyz1234567890-';
+		$chars_array = str_split( $chars, 1 );
+		$domains     = array();
+		for ( $i = 0; $i < $limit; $i ++ ) {
+			$word = "";
+			while ( $length > strlen( $word ) ) {
+				$word .= $chars_array[ mt_rand( 0, ( count( $chars_array ) - 1 ) ) ];
+				//Valid domains do not start (or end) with -
+				$word = trim( $word, '-' );
+				//Make 1st char @ the end of alphabet
+				$word = ltrim( $word, 'abcdefghijklmnop1234567890' );
+			}
+			$prefix    = 'new-domain-';
+			$domains[] = $prefix . $word;
+		}
+		$this->assertCount( $limit, $domains );
+		$tlds = array_fill_keys( $domains, 'com' );
+
+		$params = array(
+			'ProductType' => 'register',
+			'ListCount'   => count( $domains ),
+			'UseCart'     => 0
+		);
+		$i      = 1;
+		foreach ( $tlds as $domain => $tld ) {
+			$params[ 'TLD' . $i ] = $tld;
+			$params[ 'SLD' . $i ] = $domain;
+			$params['numyears'.$i] = 1;
+			$i ++;
+		}
+		$this->e->setParams( $params );
+		try {
+			$this->e->runTransaction( 'addbulkdomains' );
+		} catch ( Exception $e ) {
+			echo $e->getMessage() . PHP_EOL;
+			echo $e->getTraceAsString();
+		}
+	}
+
 }
