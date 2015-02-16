@@ -535,34 +535,33 @@ jQuery(function($) {
         });
         return false;
     }).trigger('submit');
-	$("#client_select").select2({
-		ajax: {
-			url: enom_pro.adminurl + '&action=get_client_list',
-			dataType: 'json',
-			delay: 250,
-			data: function (params) {
-				return {
-					q: params.term, // search term
-					page: params.page
-				};
-			},
-			processResults: function (data, page) {
-				// parse the results into the format expected by Select2.
-				// since we are using custom formatting functions we do not need to
-				// alter the remote JSON data
-				return {
-					results: data.results,
-					pagination: {
-						more: data.more
-					}
-				};
-			},
-			cache: true
-		}
-	});
+	if (typeof(jQuery.fn.select2) == 'function') {
+		$("#client_select").select2({
+			ajax: {
+				url: enom_pro.adminurl + '&action=get_client_list',
+				dataType: 'json',
+				delay: 250,
+				data: function (params) {
+					return {
+						q: params.term,
+						page: params.page
+					};
+				},
+				processResults: function (data, page) {
+					return {
+						results: data.results,
+						pagination: {
+							more: data.more
+						}
+					};
+				},
+				cache: true
+			}
+		});
+	}
 	$("#search_form").on('submit', function  (){
     	var search = $(this).find('input[name=s][type=text]').val();
-    	$("input[name=s][type=hidden]").val(search); 
+    	$("input[name=s][type=hidden]").val(search);
     	$importTableForm.trigger('submit');
     	return false;
 	});
