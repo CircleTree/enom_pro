@@ -141,7 +141,7 @@ if ( $doingSearch ):?>
 	</tr>
     <?php endforeach; ?>
 </table>
-<?php if ($ $doingSearch) :?>
+<?php if (! $doingSearch) :?>
 	<?php
 	if ( 1 == $_GET['start'] ) {
 		//Find a better way of encapsulating pagination
