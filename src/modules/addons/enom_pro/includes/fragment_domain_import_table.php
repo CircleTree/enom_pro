@@ -1,4 +1,6 @@
 <?php
+require_once ENOM_PRO_INCLUDES . 'pager.php';
+
 $doingSearch = isset( $_REQUEST['s'] ) && !empty( $_REQUEST['s'] );
 $enom = new enom_pro();
 $show_only = (isset($_GET['show_only'])  && ! empty($_GET['show_only'])) ? $_GET['show_only'] : false;
@@ -7,11 +9,12 @@ if ($doingSearch) {
 	//Search all
 	$per_page = true;
 }
-$domains_array = $enom->getDomainsWithClients($per_page, (int) $_GET['start'], $show_only);
+$start         = (int) $_GET['start'];
+if (0 === $start ) {
+	$start = 1;
+}
+$domains_array = $enom->getDomainsWithClients($per_page, $start, $show_only);
 
-//echo '<pre>';
-//print_r($domains_array);
-//echo '</pre>';
 $list_meta = $enom->getListMeta();
 if ( empty($domains_array) ) { ?>
 <div class="alert alert-danger">
@@ -111,8 +114,10 @@ if ( $doingSearch ):?>
                         data-expiresdatelabel="<?php echo date($pretty_date_format, strtotime($domain['expiration'])); ?>"
 						data-nextduedate="<?php echo $nextduedate ?>"
 						data-nextduedatelabel="<?php echo $nextduedate_pretty ?>"
-						href="#">Create
-						Order</a>
+						href="#">
+						Create Order
+						 <span class="enom-pro-icon enom-pro-icon-cart-plus"></span>
+					</a>
 				</p>
 				<div class="domain_whois clearfix" data-action="get_domain_whois"
 					data-domain="<?php echo $domain_name; ?>">
@@ -136,34 +141,29 @@ if ( $doingSearch ):?>
 	</tr>
     <?php endforeach; ?>
 </table>
-<ul class="pager">
-    <?php $prev_start = isset($_REQUEST['start']) ? ($_REQUEST['start'] - $per_page < 0 ? '0' : $_REQUEST['start'] - $per_page) : 0; ?>
-    <?php if ($prev_start >= 1) :?>
-        <li class="previous"><a data-start="<?php echo $prev_start;?>"
-		href="<?php echo enom_pro::MODULE_LINK; ?>&view=domain_import&start=<?php echo $prev_start;?>#import_table">&larr;
-			Previous </a></li>
-    <?php endif;?>
-    <?php $next_start = isset($_REQUEST['start']) ? ((int)$_REQUEST['start'] + $per_page) : $per_page; ?>
-    <?php if ($next_start <= $list_meta['total_domains']) :?>
-        <li class="next"><a data-start="<?php echo $next_start;?>"
-		href="<?php echo enom_pro::MODULE_LINK; ?>&view=domain_import&start=<?php echo $next_start;?>#import_table">Next
-			&rarr;</a></li>
-    <?php endif; ?>
-</ul>
-<div class="clearfix">
-	<span class="floatleft">
-		Page
-		<span class="badge">
-			<?php echo ceil( $_GET['start'] / $per_page );?>
-		</span>
-		of
-		<span class="badge">
-			<?php $domainsCount = count( $enom->getDomains( true ) );
-			echo ceil( $domainsCount / $per_page); ?>
-		</span>
-    </span>
-		<span class="text-right">
-			<span class="badge"><?php echo $domainsCount;?></span>
-			Total domains
-    </span>
-</div>
+<?php if ($ $doingSearch) :?>
+	<?php
+	if ( 1 == $_GET['start'] ) {
+		//Find a better way of encapsulating pagination
+		$_GET['start'] = 0;
+	}
+
+	pager($list_meta['total_domains'], 'domain_import', true, $per_page, false); ?>
+	<div class="clearfix">
+		<span class="floatleft">
+			Page
+			<span class="badge">
+				<?php echo ceil( $_GET['start'] / $per_page );?>
+			</span>
+			of
+			<span class="badge">
+				<?php $domainsCount = count( $enom->getDomains( true ) );
+				echo ceil( $domainsCount / $per_page); ?>
+			</span>
+	    </span>
+			<span class="text-right">
+				<span class="badge"><?php echo $domainsCount;?></span>
+				Total domains
+	    </span>
+	</div>
+<?php endif;?>

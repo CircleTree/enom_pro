@@ -1,48 +1,5 @@
 <?php
-global $per_page;
-$per_page = enom_pro::get_addon_setting('pricing_per_page');
-/**
- * @param enom_pro $enom_pro
- * @param bool $large is it a large or normal sized pager
- */
-function pager( $enom_pro, $large = false) {
-	global $per_page;
-	$total = count($enom_pro->getAllDomainsPricing());
-	$pages = ceil(($total / $per_page));
-	$pages_array = array_keys(array_fill(1, $pages, ''));
-	echo '<nav><ul class="pagination'.($large ? ' pagination-lg' : '').'">';
-		echo '<li';
-			if ( @$_GET['start'] < $per_page ) {
-				echo ' class="disabled"';
-			}
-		$currentPage = ( $_GET['start'] / $per_page ) + 1;
-	$prevStart = ( $currentPage - 2 ) * $per_page;
-	if ($prevStart < 0 ) {
-		$prevStart = 0;
-	}
-	echo '><a data-start="'.$prevStart.'" href="' . $_SERVER['PHP_SELF'] . '?module=enom_pro&view=pricing_import&start='. $prevStart .'#enom_pro_pricing_table" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
-
-		foreach ($pages_array as $page) {
-			echo '<li';
-			if ( $currentPage == $page) {
-					echo ' class="active"';
-				}
-			echo '>';
-			$pageStart = ( $page - 1 ) * $per_page;
-			echo '<a data-start="'.$pageStart.'" href="' . $_SERVER['PHP_SELF'] . '?module=enom_pro&view=pricing_import&start='. $pageStart .'#enom_pro_pricing_table">'.$page.'</a>';
-			echo '</li>';
-		}
-		echo '<li';
-			if ( @$_GET['start'] >= ( $total - $per_page ) ) {
-				echo ' class="disabled"';
-			}
-	$nextStart = ( $currentPage ) * $per_page;
-	echo '><a data-start="'.$nextStart.'" href="' . $_SERVER['PHP_SELF'] . '?module=enom_pro&view=pricing_import&start='. $nextStart .'#enom_pro_pricing_table" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
-
-	echo '</ul></nav>';
-}
-?>
-<?php
+require_once ENOM_PRO_INCLUDES . 'pager.php';
 /**
  * @var $this enom_pro
  */
@@ -53,6 +10,8 @@ function pager( $enom_pro, $large = false) {
  */
 if ( $this->is_pricing_cached() ) : ?>
 	<div id="enom_pro_pricing_import_page">
+	<?php $allDomainsPricing = $this->getAllDomainsPricing(); ?>
+	<?php $per_page = enom_pro::get_addon_setting('pricing_per_page'); ?>
 	<?php if (
 		isset( $_GET['cleared'] ) ||
 		isset( $_GET['new'] ) ||
@@ -158,6 +117,7 @@ if ( $this->is_pricing_cached() ) : ?>
 			<img src="../modules/addons/enom_pro/images/pricing-drop-down-help.jpg" height="209" width="238" alt="" />
 		</div>
 	<?php endif; ?>
+
 	<?php if ( !enom_pro_controller::isDismissed( 'order-types' ) ) : ?>
 		<div class="alert alert-warning fade in">
 			<button type="button"
@@ -182,7 +142,7 @@ if ( $this->is_pricing_cached() ) : ?>
 	<?php
 	$offset = isset( $_GET['start'] ) ? (int) $_GET['start'] : 0;
 	$search = isset( $_GET['s']) ? strip_tags($_GET['s']) : false;
-	$allDomainsPricing = $this->getAllDomainsPricing();
+
 	$allDomainsSearched = array();
 	if ($search) {
 		foreach ($allDomainsPricing as $tld => $domainPriceData) {
@@ -231,7 +191,7 @@ if ( $this->is_pricing_cached() ) : ?>
 			</script>
 		<?php endif;?>
 	</form>
-	<?php pager( $this ); ?>
+	<?php pager( count($allDomainsPricing), 'pricing_import', false, $per_page, '#enom_pro_pricing_table'); ?>
 	<form method="POST"
 				action="<?php echo $_SERVER['PHP_SELF']; ?>?module=enom_pro&view=pricing_import"
 				id="enom_pro_pricing_import">
@@ -372,7 +332,7 @@ if ( $this->is_pricing_cached() ) : ?>
 		</table>
 		<input type="submit" value="Save" class="btn btn-block btn-success">
 	</form>
-	<?php pager( $this, true); ?>
+	<?php pager( count($allDomainsPricing), 'pricing_import', true, $per_page, '#enom_pro_pricing_table'); ?>
 	<script>
 		jQuery(function($) {
 			$(".pager a").on('click', function() {
