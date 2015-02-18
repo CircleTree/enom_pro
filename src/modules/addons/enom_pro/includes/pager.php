@@ -17,7 +17,6 @@
  */
 function pager( $count, $view, $large = false, $per_page = 25, $dom_element = false) {
 
-
 	$total       = $count;
 	$pages       = ceil( ( $total / $per_page ) );
 	$pages_array = array_keys( array_fill( 1, $pages, '' ) );
