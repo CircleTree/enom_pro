@@ -147,22 +147,6 @@ if ( $doingSearch ):?>
 		//Find a better way of encapsulating pagination
 		$_GET['start'] = 0;
 	}
-	pager($list_meta['total_domains'], 'domain_import', true, $per_page, false); ?>
-	<div class="clearfix">
-		<span class="floatleft">
-			Page
-			<span class="badge">
-				<?php echo ceil( $_GET['start'] / $per_page );?>
-			</span>
-			of
-			<span class="badge">
-				<?php $domainsCount = count( $enom->getDomains( true ) );
-				echo ceil( $domainsCount / $per_page); ?>
-			</span>
-	    </span>
-			<span class="text-right">
-				<span class="badge"><?php echo $domainsCount;?></span>
-				Total domains
-	    </span>
-	</div>
+	pager($list_meta['total_domains'], 'domain_import', true, $per_page, false);
+	?>
 <?php endif;?>

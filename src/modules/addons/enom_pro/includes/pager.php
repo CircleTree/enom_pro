@@ -13,7 +13,7 @@
  * @param int    $per_page
  * @param bool   $dom_element #hash to point browser to
  *
- * @uses $_GET['start'] index of result
+ * @uses $_GET['start'] 0 index start of result set
  */
 function pager( $count, $view, $large = false, $per_page = 25, $dom_element = false) {
 
@@ -50,5 +50,23 @@ function pager( $count, $view, $large = false, $per_page = 25, $dom_element = fa
 	$nextStart = ( $currentPage ) * $per_page;
 	echo '><a data-start="' . $nextStart . '" href="' . $_SERVER['PHP_SELF'] . '?module=enom_pro&view=' . $view . '&start=' . $nextStart . '#enom_pro_pricing_table" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
 
-	echo '</ul></nav>';
+	echo '</ul></nav>'; ?>
+
+<div class="clearfix">
+		<span class="floatleft">
+			Page
+			<span class="badge">
+				<?php echo (ceil( $_GET['start'] / $per_page ) + 1);?>
+			</span>
+			of
+			<span class="badge">
+				<?php echo ceil( $count / $per_page); ?>
+			</span>
+	    </span>
+			<span class="text-right">
+				<span class="badge"><?php echo $count;?></span>
+				Total
+	    </span>
+</div>
+	<?php
 }
