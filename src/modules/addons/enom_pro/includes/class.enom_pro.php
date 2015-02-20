@@ -1340,7 +1340,7 @@ class enom_pro {
 	 * @param int|true   $limit true get all, otherwise number of records
 	 * @param int|number $start offset of returned record. default 1
 	 *
-	 * @return multitype:multitype:number string boolean
+	 * @return array
 	 */
 	public function getDomains( $limit = 25, $start = 1 ) {
 
