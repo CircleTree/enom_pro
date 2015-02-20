@@ -60,9 +60,10 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 */
 	function  test_getAllDomains()
 	{
-//	    $this->markTestIncomplete('TODO re-look at this process of validating orders / domains');
 		$this->e->clear_domains_cache();
+		$this->e->override_request_limit(25);
 	    $domains = $this->e->getDomains(true);
+		$this->assertCount($this->e->getListMeta()['total_domains'], $domains);
 	    $ids = array();
 	    foreach ($domains as $key => $domain) {
 	        if (! isset( $ids[$domain['id']]) )

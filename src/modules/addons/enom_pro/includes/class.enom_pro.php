@@ -1351,6 +1351,7 @@ class enom_pro {
 		}
 
 		if ( true === $this->limit || $this->limit >= 100 ) {
+			set_time_limit(0);
 			//No limit or gte 100 records 
 			$this->remote_limit = 100;
 			if ( $this->remote_run_number == 0 ) {
@@ -1403,9 +1404,10 @@ class enom_pro {
 		$meta = $this->getListMeta();
 
 		$this->last_result_count    = count( $this->last_result );
-		$this->remote_limit_reached = ! ( $this->last_result_count <= $this->limit );
+		$this->remote_limit_reached = false;
 
-		if ( $this->last_result_count >= $meta['total_domains'] ) {
+		if ( $this->last_result_count >= $meta['total_domains'] || 0 == $meta['total_domains']) {
+
 			$this->remote_limit_reached = true;
 		}
 		if ( $this->last_result_count >= $this->limit && ! is_bool( $this->limit ) ) {
@@ -1413,12 +1415,11 @@ class enom_pro {
 		}
 		if ( is_bool( $this->limit ) && true === $this->limit ) {
 			$this->remote_start         = (int) $this->xml->GetDomains->NextRecords;
-			$this->remote_limit_reached = false;
 			$this->is_get_all_domains   = true;
 		}
 
 		while ( ! $this->remote_limit_reached ) {
-			$this->getDomains( $this->remote_limit, $this->remote_start );
+			$this->getDomains( $this->limit, $this->remote_start );
 		}
 		if ( $this->is_get_all_domains ) {
 			$this->write_domains_cache( $this->last_result );
