@@ -147,7 +147,6 @@ if ( $doingSearch ):?>
 		//Find a better way of encapsulating pagination
 		$_GET['start'] = 0;
 	}
-
 	pager($list_meta['total_domains'], 'domain_import', true, $per_page, false); ?>
 	<div class="clearfix">
 		<span class="floatleft">

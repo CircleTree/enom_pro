@@ -21,6 +21,8 @@
 	<property name="encoded_prep" value="${build_dir}/encoded_prep"/>
 	<property name="ftp.password" value="***REMOVED***"/>
 	<property name="ftp.username" value="***REMOVED***"/>
+	<property name="ftp.password.versions" value="***REMOVED***"/>
+	<property name="ftp.username.versions" value="***REMOVED***"/>
 	<property name="yui.jarfile" value="~/java/yuicompressor-2.4.7.jar"/>
 	<property name="threads" value="4"/>
 	<!--suppress PhingDomInspection -->
@@ -286,9 +288,8 @@
 		<ftpdeploy
 				host="mycircletree.com"
 				port="21"
-				username="${ftp.username}"
-				password="${ftp.password}"
-				dir="/public_html/versions/"
+				username="${ftp.username.versions}"
+				password="${ftp.password.versions}"
 				passive="false"
 				level="debug"
 				mode="ascii">
@@ -302,7 +303,6 @@
 				port="21"
 				username="${ftp.username}"
 				password="${ftp.password}"
-				dir="/downloads/"
 				passive="false"
 				level="debug"
 				mode="binary">
@@ -345,29 +345,29 @@
 		<move file="${encoded_prep}/${version_xml}" tofile="${encoded_prep}/${beta_version_xml}" haltonerror="true"/>
 	</target>
 
-	<!-- BETA Release - Public Target -->
-	<target name="beta" depends="zip-beta" description="Builds &amp; Deploys HEAD revision to beta testers">
+	<target name="beta-version">
 		<ftpdeploy
 				host="mycircletree.com"
 				port="21"
-				username="${ftp.username}"
-				password="${ftp.password}"
-				dir="/public_html/versions/"
+				username="${ftp.username.versions}"
+				password="${ftp.password.versions}"
 				passive="false"
-				level="debug"
 				mode="ascii">
 			<fileset dir="${encoded_prep}">
 				<include name="${beta_version_xml}"/>
 			</fileset>
 		</ftpdeploy>
 
+	</target>
+	<!-- BETA Release - Public Target -->
+	<target name="beta" depends="zip-beta" description="Builds &amp; Deploys HEAD revision to beta testers">
+		<phingcall target="beta-version" />
 		<echo msg="Deploying BETA to myCircleTree.com"/>
 		<ftpdeploy
 				host="mycircletree.com"
 				port="21"
 				username="${ftp.username}"
 				password="${ftp.password}"
-				dir="/downloads/"
 				passive="false"
 				level="debug"
 				mode="binary">
@@ -397,9 +397,8 @@
 		<ftpdeploy
 				host="mycircletree.com"
 				port="21"
-				username="${ftp.username}"
-				password="${ftp.password}"
-				dir="/public_html/versions/"
+				username="${ftp.username.versions}"
+				password="${ftp.password.versions}"
 				passive="false"
 				level="debug"
 				mode="ascii">
