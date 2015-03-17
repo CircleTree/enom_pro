@@ -188,7 +188,7 @@ class enom_pro {
 		//Clean up the testmode to a (bool)
 		$live = ( $params['TestMode'] == 'on' ) ? false : true;
 		//Set the API url
-		$this->URL = ( $live ? 'https://reseller.enom.com/interface.asp' : 'https://resellertest.enom.com/interface.asp' );
+		$this->URL = ( $live ? 'http://reseller.enom.com/interface.asp' : 'http://resellertest.enom.com/interface.asp' );
 		//Build the initial connection test
 		$this->setParams( array(
 				'uid' => $params['Username'],
@@ -1712,12 +1712,13 @@ class enom_pro {
 	/**
 	 * Gets domains with assocaited whmcs clients
 	 *
-	 * @param int|true   $limit true to get all, number to limit
-	 * @param int|number $start default 1
-	 * @param mixed      $show_only imported, unimported, defaults to false to not filter results
+	 * @param int|true          $limit true to get all, number to limit
+	 * @param int|number        $start default 1
+	 * @param bool|false|string $show_only imported, un-imported, defaults to false to not filter results
 	 *
 	 * @return array $domains with client key with client details
 	 *  array( domain...details, 'client' => array());
+	 * @throws WHMCSException
 	 */
 	public function getDomainsWithClients(
 		$limit = 30,
@@ -2827,7 +2828,8 @@ class enom_pro {
 			CURLOPT_HEADER         => 0,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_TIMEOUT        => 15,
-			CURLOPT_SSL_VERIFYPEER => false
+			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_SSL_VERIFYHOST => 0,
 		);
 
 		$ch = curl_init();
