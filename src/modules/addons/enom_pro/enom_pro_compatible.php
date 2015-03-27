@@ -670,6 +670,7 @@ function enom_pro_output( $vars ) {
 			) {
 				$view = (string) $_GET['view'];
 				$method = "render_$view";
+				$enom->check_login();
 				$enom->$method();
 				return;
 			} else {
