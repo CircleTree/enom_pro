@@ -294,7 +294,7 @@ function enom_pro_config() {
 				'FriendlyName' => "Namespinner Result Animation Speed",
 				"Type" => "dropdown", "Default" => "Medium",
 				"Options" => "Off,Slow,Medium,Fast",
-				"Description" => "Number of namespinner results to show", 'Size' => 10
+				"Description" => "Speed of the NameSpinner Results Animation", 'Size' => 10
 			),
 			'spinner_com' => array(
 				'FriendlyName' => ".com", "Type" => "yesno",
