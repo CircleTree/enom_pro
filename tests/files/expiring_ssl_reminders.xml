@@ -1,0 +1,82 @@
+<!--?xml version="1.0" encoding="utf-8"? xmlns="default namespace" -->
+<interface-response>
+<CertGetCerts>
+  <Certs>
+    <Cert>
+      <isexpired>False</isexpired>
+      <certid>398591</certid>
+      <orderdate>7/9/2013</orderdate>
+      <DomainName>mycircletree.com</DomainName>
+      <validityperiod>24</validityperiod>
+      <renewalindicator>False</renewalindicator>
+      <prodtype>211</prodtype>
+      <ProdDesc>SSL Certificate - Comodo Essential</ProdDesc>
+      <ExpirationDate>{$EXP_DATE}</ExpirationDate>
+      <servercount>1</servercount>
+      <CertStatus>Certificate Issued</CertStatus>
+      <certstatusid>4</certstatusid>
+      <orderid>233934278</orderid>
+    </Cert>
+    <Cert>
+      <isexpired>False</isexpired>
+      <certid>350574</certid>
+      <orderdate>12/22/2012</orderdate>
+      <DomainName>*.mycircletree.com</DomainName>
+      <validityperiod>12</validityperiod>
+      <renewalindicator>False</renewalindicator>
+      <prodtype>214</prodtype>
+      <ProdDesc>SSL Certificate - Comodo Essential Wildcard</ProdDesc>
+      <ExpirationDate>{$EXP_DATE}</ExpirationDate>
+      <servercount>1</servercount>
+      <CertStatus>Certificate Issued</CertStatus>
+      <CertStatusid>4</CertStatusid>
+      <orderid>228725658</orderid>
+    </Cert>
+    <Cert>
+      <certid>320843</certid>
+      <DomainName>mycircletree.com</DomainName>
+      <ProdDesc>SSL Certificate - Comodo EV SGC</ProdDesc>
+      <ExpirationDate>{$EXP_DATE}</ExpirationDate>
+      <servercount>1</servercount>
+      <CertStatus>Certificate Issued</CertStatus>
+      <CertStatusid>4</CertStatusid>
+      <orderid>225666964</orderid>
+    </Cert>
+    <Cert>
+      <isexpired>True</isexpired>
+      <certid>225726</certid>
+      <orderdate>6/29/2011</orderdate>
+      <DomainName>mycircletree.com</DomainName>
+      <validityperiod>24</validityperiod>
+      <renewalindicator>False</renewalindicator>
+      <prodtype>212</prodtype>
+      <ProdDesc>SSL Certificate - Comodo Instant</ProdDesc>
+      <ExpirationDate>{$EXP_DATE}</ExpirationDate>
+      <servercount>1</servercount>
+      <CertStatus>Should not be sent</CertStatus>
+      <CertStatusid>9</CertStatusid>
+      <orderid>214076663</orderid>
+    </Cert>
+    <producttype>all</producttype>
+    <statusid>all</statusid>
+    <startposition>1</startposition>
+    <count>4</count>
+    <sortbydirection>desc</sortbydirection>
+    <totalrecords>4</totalrecords>
+  </Certs>
+</CertGetCerts>
+<totalcertcount>4</totalcertcount>
+<command>CERTGETCERTS</command>
+<language>eng</language>
+<errcount>0</errcount>
+<responsecount>0</responsecount>
+<minperiod>1</minperiod>
+<maxperiod>10</maxperiod>
+<server>sjl01wresell01</server>
+<site>eNom</site>
+<timedifference>+0.00</timedifference>
+<exectime>0.016</exectime>
+<done>true</done>
+<trackingkey>2ab658c2-fd56-4b61-8cca-42338b8e6bf9</trackingkey>
+<requestdatetime>7/9/2013 8:26:13 AM</requestdatetime>
+</interface-response>

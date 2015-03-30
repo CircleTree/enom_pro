@@ -844,7 +844,7 @@ class enom_pro {
 	 *
 	 * @param string $file path to valid XML file
 	 *
-	 * @access private unit testing mock interface
+	 * @internal unit testing mock interface
 	 * @throws InvalidArgumentException on file not found
 	 */
 	public function _load_xml( $file ) {
@@ -1102,7 +1102,7 @@ class enom_pro {
 	}
 
 	/**
-	 * @return array domain, status, expiration_date, desc
+	 * @return array domain, status, expiration_date, desc, status_id
 	 */
 	public function getExpiringCerts() {
 
@@ -1129,6 +1129,7 @@ class enom_pro {
 				$formatted_result = array(
 					'domain'          => (array) $cert->DomainName,
 					'status'          => (string) $cert->CertStatus,
+					'status_id'       => (int) (isset($cert->CertStatusid) ? $cert->CertStatusid : $cert->certstatusid),
 					'expiration_date' => (string) $cert->ExpirationDate,
 					'OrderID'         => (int) $cert->OrderID,
 					'CertID'          => (int) $cert->CertID,
@@ -2381,7 +2382,16 @@ class enom_pro {
 
 		return $response;
 	}
+	public $ssl_reminder_cert_status_ids = array(
+		4, //Certificate Issued
+		8, //Refunded - Cert Issued
+		13, //Cert Installed (associate with our hosting)
+	);
 
+	/**
+	 * Sends all reminder emails
+	 * @return int number of reminders sent
+	 */
 	public function send_all_ssl_reminder_emails() {
 
 		$expiry_days_before = self::get_addon_setting( 'ssl_email_days' );
@@ -2393,10 +2403,11 @@ class enom_pro {
 			if ( $this->format_ts( $expiry_timestamp ) == $this->format_ts( $send_timestamp ) ) {
 				//Get client id for $domain
 				$client_id = $this->getClientIdByDomain( reset( $cert['domain'] ) );
-				if ( false !== $client_id ) {
+				if ( false !== $client_id && in_array($cert['status_id'], $this->ssl_reminder_cert_status_ids)) {
 					//Send Email
-					$this->send_SSL_reminder_email( $client_id, $cert );
-					$reminder_count ++;
+					if (true === $this->send_SSL_reminder_email( $client_id, $cert ) )  {
+						$reminder_count ++;
+					}
 				}
 			}
 		}
