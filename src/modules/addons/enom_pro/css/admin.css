@@ -615,11 +615,11 @@ Icons
 */
 @font-face {
 	font-family: 'enom-pro';
-	src:url('fonts/enom-pro.eot?unolkg');
-	src:url('fonts/enom-pro.eot?#iefixunolkg') format('embedded-opentype'),
-	url('fonts/enom-pro.woff?unolkg') format('woff'),
-	url('fonts/enom-pro.ttf?unolkg') format('truetype'),
-	url('fonts/enom-pro.svg?unolkg#enom-pro') format('svg');
+	src:url('enom-pro.eot?unolkg');
+	src:url('enom-pro.eot?#iefixunolkg') format('embedded-opentype'),
+	url('enom-pro.woff?unolkg') format('woff'),
+	url('enom-pro.ttf?unolkg') format('truetype'),
+	url('enom-pro.svg?unolkg#enom-pro') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
