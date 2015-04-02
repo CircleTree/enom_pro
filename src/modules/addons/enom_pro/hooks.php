@@ -4,6 +4,7 @@
  * @version @VERSION@
  * Copyright 2012 Orion IP Ventures, LLC.
  * Licenses Resold by Circle Tree, LLC. Under Reseller Licensing Agreement
+ * @TODO refactor this to use requirements checker so incompatible installs are not taken down (as they are right now, because hooks.php gets run on EVERY WHMCS page)
  */
 defined( 'WHMCS' ) or die( 'UNAUTHORIZED ACCESS' );
 
@@ -270,6 +271,7 @@ function enom_pro_admin_head_output() {
 				adminurl: "<?php echo enom_pro::MODULE_LINK ?>"
 			};
 		</script>
+		<?php //TODO encapsulate widget css & namespace all bootstrap ?>
 		<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap-theme.min.css" />
 		<link rel="stylesheet" href="../modules/addons/enom_pro/css/admin.min.css" />
