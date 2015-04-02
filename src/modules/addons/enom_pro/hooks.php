@@ -279,8 +279,8 @@ function enom_pro_admin_head_output() {
 			<?php //Don't include these on the admin roles page to prevent unintended conflicts / regressions ?>
 			<script src="<?php echo enom_pro::MODULE_LINK ?>&action=getAdminJS&version=<?php echo urlencode( ENOM_PRO_VERSION ) ?>"></script>
 			<?php if (isset($_GET['view']) && 'domain_import' == $_GET['view']) :?>
-				<link rel="stylesheet" href="../modules/addons/enom_pro/css/select2/select2.min.css" />
-				<script src="../modules/addons/enom_pro/js/select2/select2.full.min.js"></script>
+				<link rel="stylesheet" href="../modules/addons/enom_pro/css/select2.min.css" />
+				<script src="../modules/addons/enom_pro/js/select2.full.min.js"></script>
 			<?php endif;?>
 		<?php endif; ?>
 		<?php
