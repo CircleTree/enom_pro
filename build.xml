@@ -179,49 +179,52 @@
 			</filterchain>
 			<fileset refid="open_files"/>
 		</copy>
-        <ioncubeencoder
-        	phpversion="5"
-        	optimize="max"
-        	ioncubepath="/Users/robertgregor/ioncube/8"
-        	nodoccomments="true"
-        	targetoption="replace"
-					showcommandline="false"
-        	fromdir="${encoded_prep}"
-        	todir="${encoded}"
-        	copy="index.php enom_pro.php"
-        	ignore="*.DS_Store *.cache enom_pro_version*.xml"
-						>
-    			<comment>*************************************************************************</comment>
-				<comment>* enom PRO Addon for WHMCS                                              *</comment>
-				<comment>* Version ${version} </comment>
-				<comment>* Copyright (c) 2001-${YEAR} Orion IP Ventures, LLC. All Rights Reserved   *</comment>
-				<comment>*************************************************************************</comment>
-				<comment>* Licenses Resold and Supported by Circle Tree, LLC                     *</comment>
-				<comment>* For More Information on Becoming an Orion IP Authorized Reseller      *</comment>
-				<comment>* Visit Our Website: http://www.OrionIPVentures.com/                    *</comment>
-				<comment>*************************************************************************</comment>
-				<comment>* The use of this software means that you accept the terms and          *</comment>
-				<comment>* conditions of the license, and agree to be bound by the terms set     *</comment>
-				<comment>* forth in the End User License Agreement (EULA). Each purchased        *</comment>
-				<comment>* license entitles you, the named account holder, to one installation.  *</comment>
-				<comment>* You may not use the license for anyone other than the named person    *</comment>
-				<comment>* on the account, you may transfer the license after it has been        *</comment>
-				<comment>* approved by Orion IP Ventures, LLC. We may at any time terminate      *</comment>
-				<comment>* your license to use our software if you do not abide by the terms     *</comment>
-				<comment>* set out in the EULA. In this event, licensee agrees to return         *</comment>
-				<comment>* licensor or destroy all copies of software upon termination of the    *</comment>
-				<comment>* license.                                                              *</comment>
-				<comment>*************************************************************************</comment>
-				<comment>*  You may not alter, merge, modify, adapt or translate the Software,   *</comment>
-				<comment>* or decompile, reverse engineer, disassemble, defeat licensing         *</comment>
-				<comment>* mechanisms, or otherwise reduce the Software to a human-perceivable   *</comment>
-				<comment>* form                                                                  *</comment>
-				<comment>*************************************************************************</comment>
-				<comment>* Please see included EULA.txt for the full End User License Agreement. *</comment>
-				<comment>*************************************************************************</comment>
-    	</ioncubeencoder>
+
     </target>
 
+	<target name="encode" hidden="true" depends="replace">
+		<ioncubeencoder
+				phpversion="5"
+				optimize="max"
+				ioncubepath="/Users/robertgregor/ioncube/8"
+				nodoccomments="true"
+				targetoption="replace"
+				showcommandline="false"
+				fromdir="${encoded_prep}"
+				todir="${encoded}"
+				copy="index.php enom_pro.php"
+				ignore="*.DS_Store *.cache enom_pro_version*.xml"
+				>
+			<comment>*************************************************************************</comment>
+			<comment>* enom PRO Addon for WHMCS                                              *</comment>
+			<comment>* Version ${version} </comment>
+			<comment>* Copyright (c) 2001-${YEAR} Orion IP Ventures, LLC. All Rights Reserved   *</comment>
+			<comment>*************************************************************************</comment>
+			<comment>* Licenses Resold and Supported by Circle Tree, LLC                     *</comment>
+			<comment>* For More Information on Becoming an Orion IP Authorized Reseller      *</comment>
+			<comment>* Visit Our Website: http://www.OrionIPVentures.com/                    *</comment>
+			<comment>*************************************************************************</comment>
+			<comment>* The use of this software means that you accept the terms and          *</comment>
+			<comment>* conditions of the license, and agree to be bound by the terms set     *</comment>
+			<comment>* forth in the End User License Agreement (EULA). Each purchased        *</comment>
+			<comment>* license entitles you, the named account holder, to one installation.  *</comment>
+			<comment>* You may not use the license for anyone other than the named person    *</comment>
+			<comment>* on the account, you may transfer the license after it has been        *</comment>
+			<comment>* approved by Orion IP Ventures, LLC. We may at any time terminate      *</comment>
+			<comment>* your license to use our software if you do not abide by the terms     *</comment>
+			<comment>* set out in the EULA. In this event, licensee agrees to return         *</comment>
+			<comment>* licensor or destroy all copies of software upon termination of the    *</comment>
+			<comment>* license.                                                              *</comment>
+			<comment>*************************************************************************</comment>
+			<comment>*  You may not alter, merge, modify, adapt or translate the Software,   *</comment>
+			<comment>* or decompile, reverse engineer, disassemble, defeat licensing         *</comment>
+			<comment>* mechanisms, or otherwise reduce the Software to a human-perceivable   *</comment>
+			<comment>* form                                                                  *</comment>
+			<comment>*************************************************************************</comment>
+			<comment>* Please see included EULA.txt for the full End User License Agreement. *</comment>
+			<comment>*************************************************************************</comment>
+		</ioncubeencoder>
+	</target>
 	<!-- =================================
 			target: local
 		 ================================= -->
@@ -315,7 +318,7 @@
 		<phingcall target="git-push"/>
 
 	</target>
-	<target name="zip" depends="replace">
+	<target name="zip" depends="encode">
 		<echo msg="Creating Zip files from encoded &amp; encoded_prep"/>
 		<delete file="enom_pro.zip"/>
 		<delete file="enom_pro_open.zip"/>
@@ -333,7 +336,7 @@
 	<target name="zip-beta">
 		<exec command="git rev-parse --short=12 HEAD" outputProperty="git_version"/>
 		<echo>Parsed Git Hash: ${git_version}</echo>
-		<phingcall target="replace">
+		<phingcall target="encode">
 			<property name="version" value="${git_version}" />
 		</phingcall>
 		<echo msg="Creating Zip files from encoded &amp; encoded_prep"/>

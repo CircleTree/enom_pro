@@ -1,5 +1,6 @@
-Add checkbox to disable the flashing warning icon
-
+TODO Add checkbox to disable the flashing warning icon
+TODO refactor bootstrap inside of a namespace http://stackoverflow.com/questions/13966259/how-to-namespace-twitter-bootstrap-so-styles-dont-conflict
+TODO write build script for compiling / optimizing css, like ct2012 theme.
 
 == 4.0 ==
 Add bulk domain import
