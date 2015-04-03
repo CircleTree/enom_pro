@@ -94,15 +94,23 @@ $stats = $this->getDomainVerificationStats();
 			<?php endforeach; ?>
 		</table>
 	</div>
-<script>jQuery(function($) {
-		$(".ep_tt").tooltip();
-		$(".pop").popover();
-		$(".verification:not('.disabled')").popover({
-			title: 'View All',
-			content: 'Click to see a full list of domains pending verification',
-			trigger: 'hover',
-			placement: 'top'
-		});
+<script>
+	jQuery(function($) {
+		if (typeof(jQuery.fn.tooltip) == 'function') {
+			$(".ep_tt").tooltip();
+		}
+		var verifyLabel = 'Click to see a full list of domains pending verification';
+		if (typeof(jQuery.fn.popover) == 'function') {
+			$(".pop").popover();
+			$(".verification:not('.disabled')").popover({
+				title: 'View All',
+				content: verifyLabel,
+				trigger: 'hover',
+				placement: 'top'
+			});
+		} else {
+			$(".verification").attr('title', verifyLabel);
+		}
 		$(".resendAuth").on('click', function  (){
 			var $this = $(this),
 				$loader = $this.find('.enom_pro_loader');
@@ -122,8 +130,11 @@ $stats = $this->getDomainVerificationStats();
 			return false;
 		});
 		$(".verification").on('click', function  (){
-			$(".verificationDomains").removeClass('hidden');
+			var $verificationDomains = $(".verificationDomains");
+			$verificationDomains.removeClass('hidden');
+			var offset = $verificationDomains.offset().top;
+			$('html, body').animate({scrollTop: offset}, 1000);
 			return false;
 		});
-	})
+	});
 </script>
