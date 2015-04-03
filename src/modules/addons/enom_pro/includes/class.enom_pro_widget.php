@@ -26,11 +26,14 @@ class enom_pro_widget {
 			if (! method_exists($this->callback[0], $this->callback[1])) {
 				die('Unknown callback: ' . get_class($this->callback[0]) . '::' . $this->callback[1]);
 			} else {
-				try {
-					call_user_func($this->callback);
-				} catch (Exception $e) {
-					echo $e->getMessage();
-				}
+				echo '<div class="enom_pro_output">';
+					try {
+						call_user_func($this->callback);
+					} catch (Exception $e) {
+						echo $e->getMessage();
+					}
+				echo '</div>';
+
 				die;
 			}
 		}
@@ -65,7 +68,11 @@ class enom_pro_widget {
 	}
 	public function getContent ()
 	{
-		return '<div id="'. $this->content_id . '"><span class="enom_pro_loader"></span></div>';
+		return '<div class="enom_pro_output">' .
+		            '<div id="'. $this->content_id . '">' .
+		                '<span class="enom_pro_loader"></span>' .
+		            '</div>' .
+		       '</div>';
 	}
 
 	/**
@@ -79,9 +86,11 @@ class enom_pro_widget {
 		if ( $this->icon ) {
 			$iconSpan = '<span class="enom-pro-icon enom-pro-widget-icon '.$this->icon.'"></span>';
 		}
-		$return['title'] = '<span class="enom_pro_widget_title">'.$iconSpan.'<a href="'.enom_pro::MODULE_LINK.'">'.ENOM_PRO.'</a> &mdash; ' . $this->title . $this->getWidgetForm() .  '</span>';
+		$return['title'] = '
+<span class="enom_pro_output">
+<span class="enom_pro_widget_title">'.$iconSpan.'<a href="'.enom_pro::MODULE_LINK.'">'.ENOM_PRO.'</a> &dash; ' . $this->title . $this->getWidgetForm() .  '</span></span>';
 		$return['content'] = $this->getContent();
-		$return['jquerycode'] = $this->get_jQuery() . $this->jQuery;
+		$return['jquerycode'] = $this->get_jQuery();
 		return $return;
 	}
 	public function getFormID ()
@@ -116,7 +125,7 @@ jQuery(function($) {
 			refreshButton = refreshForm.find('.enom-pro-icon-refresh-alt');
 	refreshForm.on("submit", function() {
 			var content = jQuery("#$contentID");
-			content.html('<span class="enom_pro_loader"></span>');
+			content.html('<span class="enom_pro_output"><span class="enom_pro_loader"></span></span>');
 			refreshButton.addClass('fa-spin');
 			jQuery.post("index.php", $(this).serialize(), function(data) {
 					refreshButton.removeClass('fa-spin');

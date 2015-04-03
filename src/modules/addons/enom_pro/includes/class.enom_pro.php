@@ -804,6 +804,10 @@ class enom_pro {
 
 		require_once ENOM_PRO_INCLUDES . 'widget_pending_verification.php';
 	}
+	public function render_domain_pending_transfer_widget() {
+
+		require_once ENOM_PRO_INCLUDES . 'widget_domain_pending_transfers.php';
+	}
 
 	/**
 	 * Check for upgrader compatibility against known missing core PHP components
