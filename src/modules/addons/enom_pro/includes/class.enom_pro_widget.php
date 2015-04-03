@@ -27,9 +27,15 @@ class enom_pro_widget {
 				die('Unknown callback: ' . get_class($this->callback[0]) . '::' . $this->callback[1]);
 			} else {
 					try {
+						ob_start();
 						call_user_func($this->callback);
+						$data = ob_get_contents();
+						ob_end_clean();
+						enom_pro_controller::sendGzipped($data);
 					} catch (Exception $e) {
-						echo $e->getMessage();
+						echo '<div class="alert alert-warning">';
+						echo    $e->getMessage();
+						echo '</div>';
 					}
 				die;
 			}

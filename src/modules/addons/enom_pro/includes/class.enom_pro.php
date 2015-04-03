@@ -960,7 +960,8 @@ class enom_pro {
 		$this->setParams( array(
 			'ReportType' => 31,
 			'Version'    => 1,
-			'Download'   => 'False'
+			'Download'   => 'False',
+			'RecordsToReturn' => 10000
 		) );
 		$this->runTransaction( 'RPT_GETREPORT' );
 		$data                         = array();

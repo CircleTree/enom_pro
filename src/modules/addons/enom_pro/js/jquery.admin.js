@@ -1016,9 +1016,8 @@ try {
 					}
 				});
 			});
-		}
-
-		$("body").on("click", ".enom_stat_button .btn", function () {
+		};
+		$(".enom_pro_output").on("click", ".enom_stat_button .btn", function () {
 			if ($(this).hasClass("disabled")) {
 				return false;
 			}
@@ -1026,18 +1025,37 @@ try {
 			if (!tab) {
 				return true;
 			}
-			var $loader = $(this).closest(".enom_stat_button").find(".enom_pro_loader");
-			$loader.removeClass('hidden');
+			var loader = $(this).closest(".enom_stat_button").find(".enom_pro_loader");
+			loader.removeClass('hidden');
 			$.ajax({
 				url     : $(this).attr("href"),
 				success : function (data) {
 					$("#enom_pro_" + tab).html(data);
 				},
 				complete: function () {
-					$loader.addClass('hidden');
+					loader.addClass('hidden');
 				},
 				error   : function (xhr) {
-					console.log(xhr.responseText);
+					alert(xhr.responseText);
+				}
+			});
+			return false;
+		}).on('click', '.load_more', function  (){
+			var button = $(this), row = button.closest('tr'), loader = button.closest('td').find('.enom_pro_loader');
+			loader.removeClass('hidden');
+			var ajaxUrl = $(this).attr('href');
+			$.ajax({
+				url    : ajaxUrl,
+				success: function(data) {
+					$(".domain-widget-response tbody").append(data);
+					button.add(row).hide();
+					$(".ep_tt").tooltip();
+					loader.remove();
+				},
+				error  : function(xhr) {
+					var errString = '<tr><td colspan="7">' + '<div class="alert alert-danger">' + xhr.responseText + '</div>' + '</td>';
+					$(".domain-widget-response tbody").append(errString);
+					loader.remove();
 				}
 			});
 			return false;

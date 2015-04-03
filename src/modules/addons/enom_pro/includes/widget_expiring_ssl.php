@@ -49,8 +49,8 @@ $expiring_certs = $this->getExpiringCerts(); ?>
 			<?php $count = count( $hidden ); ?>
 		<p>No Certificates Expiring in the next <?php echo $this->get_addon_setting( 'ssl_days' ); ?> days. </p>
 
-		<p><b>But there are <?php echo $count ?> hidden certificates</b><a href="#"
-																																			 class="show_hidden_ssl">Show All</a>
+		<p><b>But there <?php echo $count == 1 ? 'is' : 'are' ?> <?php echo $count ?> hidden certificates</b>
+			 <a href="#" class="show_hidden_ssl btn btn-default">Show All</a>
 		</p>
 	<?php else: ?>
 		<?php //No expiring certs ?>
