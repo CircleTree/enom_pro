@@ -260,12 +260,22 @@
 		<property name="bs-dir" value="../bootstrap/dist/"/>
 		<property name="bs-copy-dir"
 							value="${project.basedir}/src/modules/addons/enom_pro/"/>
+		<echo>Concatenating bootstrap files into bootstrap.min.css</echo>
+		<append destFile="${bs-copy-dir}css/bootstrap.min.css">
+			<fileset dir="${bs-dir}">
+				<include name="${bs-dir}css/bootstrap.min.css"/>
+				<include name="${bs-dir}css/bootstrap-theme.min.css"/>
+			</fileset>
+		</append>
+		<!--
+
 		<copy file="${bs-dir}css/bootstrap.min.css"
 					tofile="${bs-copy-dir}css/bootstrap.min.css"
 					overwrite="true"/>
 		<copy file="${bs-dir}css/bootstrap-theme.min.css"
 					tofile="${bs-copy-dir}css/bootstrap-theme.min.css"
 					overwrite="true"/>
+					-->
 		<copy file="${bs-dir}js/bootstrap.min.js"
 					tofile="${bs-copy-dir}js/bootstrap.min.js"
 					overwrite="true"/>
