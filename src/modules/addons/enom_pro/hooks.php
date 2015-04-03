@@ -273,7 +273,6 @@ function enom_pro_admin_head_output() {
 		</script>
 		<?php //TODO encapsulate widget css & namespace all bootstrap ?>
 		<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap.min.css" />
-		<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap-theme.min.css" />
 		<link rel="stylesheet" href="../modules/addons/enom_pro/css/admin.min.css" />
 		<?php if ( isset( $_GET['module'] ) && 'enom_pro' == $_GET['module'] ) : ?>
 			<?php //Don't include these on the admin roles page to prevent unintended conflicts / regressions ?>
