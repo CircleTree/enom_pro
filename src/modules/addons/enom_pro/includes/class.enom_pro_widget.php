@@ -26,14 +26,11 @@ class enom_pro_widget {
 			if (! method_exists($this->callback[0], $this->callback[1])) {
 				die('Unknown callback: ' . get_class($this->callback[0]) . '::' . $this->callback[1]);
 			} else {
-				echo '<div class="enom_pro_output">';
 					try {
 						call_user_func($this->callback);
 					} catch (Exception $e) {
 						echo $e->getMessage();
 					}
-				echo '</div>';
-
 				die;
 			}
 		}
@@ -119,12 +116,13 @@ class enom_pro_widget {
 	{
 		$baseID = $this->base_id;
 		$contentID = $this->content_id;
+		$jQuery = $this->jQuery;
 $jSCode = <<<JS
 jQuery(function($) {
-	var refreshForm = jQuery("#$baseID"),
+	var refreshForm = jQuery("#{$baseID}"),
 			refreshButton = refreshForm.find('.enom-pro-icon-refresh-alt');
 	refreshForm.on("submit", function() {
-			var content = jQuery("#$contentID");
+			var content = jQuery("#{$contentID}");
 			content.html('<span class="enom_pro_output"><span class="enom_pro_loader"></span></span>');
 			refreshButton.addClass('fa-spin');
 			jQuery.post("index.php", $(this).serialize(), function(data) {
@@ -136,6 +134,7 @@ jQuery(function($) {
 	if (refreshForm.is(":visible")) {
 			refreshForm.trigger("submit");
 	}
+	{$jQuery}
 });
 JS;
 		return enom_pro::minify($jSCode);

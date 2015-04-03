@@ -4,7 +4,8 @@
  * @version @VERSION@
  * Copyright 2012 Orion IP Ventures, LLC.
  * Licenses Resold by Circle Tree, LLC. Under Reseller Licensing Agreement
- * @TODO refactor this to use requirements checker so incompatible installs are not taken down (as they are right now, because hooks.php gets run on EVERY WHMCS page)
+ * @TODO refactor this to use requirements checker so incompatible installs are not taken down (as they are right now,
+ *     because hooks.php gets run on EVERY WHMCS page)
  */
 defined( 'WHMCS' ) or die( 'UNAUTHORIZED ACCESS' );
 
@@ -16,6 +17,7 @@ if ( ! class_exists( 'enom_pro' ) ) {
 
 add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_balance" );
 function enom_pro_admin_balance( $vars ) {
+
 	unset( $vars );
 	$enom   = new enom_pro();
 	$widget = new enom_pro_widget( 'Account Balance', 'enom_balance', array( $enom, 'render_balance_widget' ) );
@@ -31,6 +33,7 @@ add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_ssl_certs" );
  * @return array
  */
 function enom_pro_admin_ssl_certs( $vars ) {
+
 	unset( $vars );
 	$enom      = new enom_pro();
 	$widget    = new enom_pro_widget( 'SSL Certificates', 'ssl_certs', array( $enom, 'render_ssl_widget' ) );
@@ -52,6 +55,7 @@ EOL;
 
 add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_expiring_domains" );
 function enom_pro_admin_expiring_domains( $vars ) {
+
 	unset( $vars );
 	$enom = new enom_pro();
 
@@ -66,6 +70,7 @@ function enom_pro_admin_expiring_domains( $vars ) {
 
 add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_pending_domain_verification" );
 function enom_pro_admin_pending_domain_verification( $vars ) {
+
 	unset( $vars );
 	$enom      = new enom_pro();
 	$widget    = new enom_pro_widget( 'Pending Domain Verifications', 'pending_verification', array(
@@ -74,7 +79,7 @@ function enom_pro_admin_pending_domain_verification( $vars ) {
 	) );
 	$contentID = $widget->getContentID();
 	$formID    = $widget->getFormID();
-//	.flushValidateCache
+	//	.flushValidateCache
 	$jquery = <<<EOL
 /** @noinspection PhpExpressionResultUnusedInspection */
 $("#$contentID").on("click", ".flushValidateCache", function  (){
@@ -90,42 +95,49 @@ EOL;
 
 add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_transfers" );
 function enom_pro_admin_transfers( $vars ) {
+
 	if ( ! class_exists( 'enom_pro' ) ) {
 		require_once 'enom_pro.php';
 	}
-	$enom      = new enom_pro();
-	$widget = new enom_pro_widget('Pending Domain Transfers', 'pending_transfers', array($enom, 'render_domain_pending_transfer_widget'));
-	$widget->setIcon('enom-pro-icon-transfer');
+	$enom   = new enom_pro();
+	$widget = new enom_pro_widget( 'Pending Domain Transfers',
+		'pending_transfers',
+		array( $enom, 'render_domain_pending_transfer_widget' ) );
+	$widget->setIcon( 'enom-pro-icon-transfer' );
+	$contentID = $widget->getContentID();
 
-	//Yes, $.ready is redundant, but since WHMCS doesn't namespace $, we use it here for convenience;
-	$jquerycode = <<<EOL
-
-jQuery(function($) {
-        $(".ajax_submit").live("submit", function  () {
+	$jquerycode = <<<JS
+        $("#$contentID").on("submit", ".ajax_submit", function  (){
             var t = $(this),
                 submit = t.find("input[type=submit]");
             $(".activation_loading", t).remove();
             submit.attr("disabled","disabled");
-            t.append("<div class=\"activation_loading\"><span class=\"enom_pro_loader\"></span></div>");
+            t.append('<span class="activation_loading"><span class="enom_pro_loader"></span></span>');
             $.ajax({
                 data: t.serialize(),
                 success: function  (response) {
                     $(".activation_loading", t).html(response);
+                },
+                error: function  (xhr){
+                    $(".activation_loading", t).remove();
+                	alert(xhr.responseText);
+				},
+				complete: function  (){
                     submit.removeAttr("disabled");
-                }
+				}
             });
 
         return false;
         });
-    });';
-EOL;
-	$widget->addjQuery($jquerycode);
+JS;
+	$widget->addjQuery( $jquerycode );
 
 	return $widget->toArray();
 }
 
 
 function get_enom_pro_widget_form( $action, $id ) {
+
 	if ( 'configadminroles.php' == basename( $_SERVER['PHP_SELF'] ) ) {
 		return '';
 	}
@@ -148,6 +160,7 @@ function get_enom_pro_widget_form( $action, $id ) {
  */
 add_hook( "AdminAreaHeadOutput", - 89512, "enom_pro_admin_head_output" );
 function enom_pro_admin_head_output() {
+
 	//	Only load on applicable pages
 	$pages      = array( 'index.php', 'addonmodules.php', 'configadminroles.php' );
 	$scriptName = basename( $_SERVER['SCRIPT_NAME'] );
@@ -160,8 +173,8 @@ function enom_pro_admin_head_output() {
 		ob_start(); ?>
 		<script>
 			var enom_pro = {
-				isBeta : <?php echo enom_pro::isBeta() ? 'true': 'false'; ?>,
-				version: "<?php echo ENOM_PRO_VERSION ?>",
+				isBeta  : <?php echo enom_pro::isBeta() ? 'true': 'false'; ?>,
+				version : "<?php echo ENOM_PRO_VERSION ?>",
 				adminurl: "<?php echo enom_pro::MODULE_LINK ?>"
 			};
 		</script>
@@ -171,10 +184,10 @@ function enom_pro_admin_head_output() {
 		<?php if ( isset( $_GET['module'] ) && 'enom_pro' == $_GET['module'] ) : ?>
 			<?php //Don't include these on the admin roles page to prevent unintended conflicts / regressions ?>
 			<script src="<?php echo enom_pro::MODULE_LINK ?>&action=getAdminJS&version=<?php echo urlencode( ENOM_PRO_VERSION ) ?>"></script>
-			<?php if (isset($_GET['view']) && 'domain_import' == $_GET['view']) :?>
+			<?php if ( isset( $_GET['view'] ) && 'domain_import' == $_GET['view'] ) : ?>
 				<link rel="stylesheet" href="../modules/addons/enom_pro/css/select2.min.css" />
 				<script src="../modules/addons/enom_pro/js/select2.full.min.js"></script>
-			<?php endif;?>
+			<?php endif; ?>
 		<?php endif; ?>
 		<?php
 
@@ -192,6 +205,7 @@ function enom_pro_admin_head_output() {
  */
 add_hook( "AdminAreaPage", - 284917, "enom_pro_admin_actions" );
 function enom_pro_admin_actions() {
+
 	$enom_actions = array(
 		'resend_enom_transfer_email',
 		'resubmit_enom_transfer_order',
@@ -243,6 +257,7 @@ function enom_pro_admin_actions() {
  */
 add_hook( "ClientAreaPage", - 10101, "enom_pro_namespinner" );
 function enom_pro_namespinner() {
+
 	if ( ! class_exists( 'enom_pro' ) ) {
 		require_once 'enom_pro.php';
 	}
@@ -309,6 +324,7 @@ function enom_pro_namespinner() {
 
 add_hook( "ClientAreaPage", 20291, "enom_pro_clientarea_transfers" );
 function enom_pro_clientarea_transfers( $vars ) {
+
 	//Prep the userid of currently logged in account
 	$uid = isset( $_SESSION['uid'] ) ? (int) $_SESSION['uid'] : 0; //Set this to 0 for security to return no results if the WHMCS uid is not set in the session
 	//This is where the magic happens
@@ -346,6 +362,7 @@ function enom_pro_clientarea_transfers( $vars ) {
 
 add_hook( "ClientAreaPage", - 30101, "enom_pro_srv_page" );
 function enom_pro_srv_page( $vars ) {
+
 	if ( ! ( 'clientarea.php' == basename( $_SERVER['SCRIPT_NAME'] ) && isset( $_GET['action'] ) && 'domaindetails' == $_GET['action'] ) ) {
 		return $vars;
 	}
@@ -360,6 +377,7 @@ function enom_pro_srv_page( $vars ) {
 
 add_hook( "DailyCronJob", 10101, "enom_pro_cron" );
 function enom_pro_cron() {
+
 	$salt = 'lJsif3n1F9GKeSIdM9VAeJrrPC1grpBpSZLtWMb';
 	require_once 'enom_pro.php';
 	$enom = new enom_pro();
