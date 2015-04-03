@@ -93,141 +93,35 @@ function enom_pro_admin_transfers( $vars ) {
 	if ( ! class_exists( 'enom_pro' ) ) {
 		require_once 'enom_pro.php';
 	}
-	if ( isset( $_REQUEST['enom_pro_check_transfers'] ) ) {
-		$enom = new enom_pro();
-		try {
-			$transfers = $enom->getTransfers();
-			$str       = '';
-			if ( empty( $transfers ) ) {
-				$str .= '<div class="alert alert-success enom_pro_widget">No pending transfers found in WHMCS</div>';
-				$str .= '</div>';
-				echo $str;
-				die;
-			}
-			$str .= '<div class="enomtransfers enom_pro_widget">';
-			$str .= ' <table id="enom_pro_transfers_table">';
-			$str .= '
-                <tr>
-                    <th>Domain</th>
-                    <th>WHMCS Domains</th>
-                    <th>Orders</th>
-                </tr>
-                ';
-			foreach ( $transfers as $domain ) {
-				//Loop through the actual domains returned from WHMCS
-				$edit_domain_button = '<a href="clientsdomains.php?userid=' . $domain['userid'] . '&id=' . $domain['id'] . '" class="btn btn-default" >Edit</a>';
-				$str .= '<tr>
-                    <td>
-                        <a class="domain_name" target="_blank" title="View WHOIS" href="http://www.whois.net/whois/' . $domain['domain'] . '">' . $domain['domain'] . '
-                    </td>
-                    <td style="text-align:center;">
-                            ' . $edit_domain_button . '
-                    </td>
-                    <td>
-                        ';
-				if ( count( $domain['statuses'] ) > 0 ):
-					$str .= '
-                        <table class="none">
-                        <tr>
-                            <th>eNom Order ID</td>
-                            <th>Actions</td>
-                            <th class="center">Description</td>
-                        </tr>
-                    ';
-					//now we need to loop through the multiple statuses returned for each domain by the enom API
-					foreach ( $domain['statuses'] as $status ) {
-						$status = (array) $status;
-						switch ( $status['statusid'] ) {
-							case 22:
-								//Cancelled, domain is locked or not yet 60 days old
-								$action = ' <form method="GET" class="resubmit_enom_transfer ajax_submit" action="' . $_SERVER['PHP_SELF'] . '">
-                                                        <input type="hidden" name="action"  value="resubmit_enom_transfer_order"/>
-                                                        <input type="hidden" name="orderid"  value="' . $status['orderid'] . '"/>
-                                                        <input type="image" src="images/icons/import.png "class="button" title="Re-Submit Transfer Order"/>
-                                                    </form>';
-								break;
-							case 9:
-							case 11:
-								//Awaiting auto-verification of transfer request
-								$action = ' <form method="GET" class="resend_enom_activation ajax_submit" action="' . $_SERVER['PHP_SELF'] . '">
-                                                        <input type="hidden" name="action"  value="resend_enom_transfer_email"/>
-                                                        <input type="hidden" name="domain"  value="' . $domain['domain'] . '"/>
-                                                        <input type="image" src="images/icons/resendemail.png "class="button" title="Re-Send Transfer Authorization E-Mail"/>
-                                                    </form>';
-								break;
-							default:
-								$action = false;
-						}
-						$str .= "
-                            <tr>
-                                <td><a target=\"_blank\" title=\"Order Date: {$status['orderdate']}\" href=\"https://www.enom.com/domains/TransferStatus.asp?transferorderid={$status['orderid']}\">{$status['orderid']}</a></td>
-                                <td style=\"text-align:center;\" >" . ( $action ? $action : '<input type="image" src="images/icons/disabled.png" class="btn btn-default" title="No actions for this order status"/>' ) . "</td>
-                                <td>{$status['statusdesc']}</td>
-                            </tr>
-                                ";
-					}
+	$enom      = new enom_pro();
+	$widget = new enom_pro_widget('Pending Domain Transfers', 'pending_transfers', array($enom, 'render_domain_pending_transfer_widget'));
+	$widget->setIcon('enom-pro-icon-transfer');
 
-					$str .= "
-                        </table>";
-				else:
-					$str .= '<div class="alert alert-info">No Orders Found ' . $edit_domain_button . '</div>';
-				endif;
-				$str .= "
-                    </td>
-                </tr>";
-			}
-			$str .= "</table></div>";
-			$content = $str;
-		} catch ( Exception $e ) {
-			$content = $e->getMessage();
-		}
-		echo enom_pro::minify( $content );
-		exit;
-	}
-	$content = '<div id="enomtransfers"><span class="enom_pro_loader"></span></div>';
+	//Yes, $.ready is redundant, but since WHMCS doesn't namespace $, we use it here for convenience;
+	$jquerycode = <<<EOL
 
-	//Yes, $.ready is redundant, but since WHMCS doesnt alias $, we use it here for convenience;
-	$jquerycode = '
-        jQuery(document).ready(function($){
-                var $refresh_transfers = $("#refreshEnomTransfers");
-        $refresh_transfers.live("submit", function  () {
-        var $elem = $("#enomtransfers");
-        $elem.html(\'<span class="enom_pro_loader"></span>\');
-            $.post("index.php", $(this).serialize(),
-                function(data){
-                  $elem.html(data);
-                });
-
-                return false;
-        });
-        if ($refresh_transfers.is(":visible"))
-                $refresh_transfers.trigger("submit");
-
+jQuery(function($) {
         $(".ajax_submit").live("submit", function  () {
-            var $this = $(this),
-                $submit = $this.find("input[type=submit]");
-            $(".activation_loading", $this).remove();
-            $submit.attr("disabled","disabled");
-            $this.append("<div class=\"activation_loading\"><span class=\"enom_pro_loader\"></span></div>");
+            var t = $(this),
+                submit = t.find("input[type=submit]");
+            $(".activation_loading", t).remove();
+            submit.attr("disabled","disabled");
+            t.append("<div class=\"activation_loading\"><span class=\"enom_pro_loader\"></span></div>");
             $.ajax({
-                data: $this.serialize(),
+                data: t.serialize(),
                 success: function  (response) {
-                    $(".activation_loading", $this).html(response);
-                    $submit.removeAttr("disabled");
+                    $(".activation_loading", t).html(response);
+                    submit.removeAttr("disabled");
                 }
             });
 
         return false;
         });
     });';
+EOL;
+	$widget->addjQuery($jquerycode);
 
-	return array(
-		'title'      => '<a href="' . enom_pro::MODULE_LINK . '">@NAME@</a> ' .
-		                '- Pending Transfers <span class="enom-pro-icon enom-pro-icon-transfer"></span>' .
-		                get_enom_pro_widget_form( 'enom_pro_check_transfers', 'refreshEnomTransfers' ),
-		'content'    => $content,
-		'jquerycode' => enom_pro::minify( $jquerycode ),
-	);
+	return $widget->toArray();
 }
 
 
