@@ -1,6 +1,7 @@
 <?php
 
 class enom_pro_controller {
+
 	/**
 	 * @var enom_pro
 	 */
@@ -10,6 +11,7 @@ class enom_pro_controller {
 	}
 
 	public function route() {
+
 		if ( method_exists( __CLASS__, $_REQUEST['action'] ) ) {
 			$this->enom = new enom_pro();
 			call_user_func( array( __CLASS__, $_REQUEST['action'] ) );
@@ -18,7 +20,36 @@ class enom_pro_controller {
 		}
 	}
 
+	/**
+	 * @param $relid
+	 */
+	public static function delete_TLD_pricing_from_WHMCS( $relid ) {
+
+		$sql = 'DELETE FROM `tblpricing` WHERE `relid`="' . $relid . '"';
+		mysql_query( $sql );
+		$sql = 'DELETE FROM `tbldomainpricing` WHERE `id` = "' . $relid . '"';
+		mysql_query( $sql );
+	}
+
+	/**
+	 * @param string $tld the tld to search for
+	 *
+	 * @return mixed
+	 */
+	public static function get_TLD_relationshipID_in_WHMCS( $tld ) {
+
+		//Normalize the TLD
+		$tld = '.' . ltrim($tld, '.');
+		$result = mysql_fetch_assoc( select_query( 'tbldomainpricing',
+			'id',
+			array( 'extension' => $tld ) ) );
+		$relid  = $result['id'];
+
+		return $relid;
+	}
+
 	protected function resend_enom_transfer_email() {
+
 		$response = $this->enom->resendActivation( (string) $_REQUEST['domain'] );
 		if ( is_bool( $response ) ) {
 			echo "Sent!";
@@ -26,13 +57,13 @@ class enom_pro_controller {
 	}
 
 	protected function do_upgrade() {
+
 		try {
 			$manual_files = $this->enom->do_upgrade();
 		} catch ( Exception $e ) {
 			echo '<h1>Auto-upgrade error</h1>';
 			echo $e->getMessage() . '<br/>';
-			echo '<h2>Please correct any permissions errors, and ' .
-			     '<a href="' . $_SERVER['REQUEST_URI'] . '">try again</a>.</h2>';
+			echo '<h2>Please correct any permissions errors, and ' . '<a href="' . $_SERVER['REQUEST_URI'] . '">try again</a>.</h2>';
 			die;
 		}
 		$_SESSION['manual_files'] = $manual_files;
@@ -40,21 +71,25 @@ class enom_pro_controller {
 	}
 
 	protected function dismiss_manual_upgrade() {
+
 		unset( $_SESSION['manual_files'] );
 		header( 'Location: ' . enom_pro::MODULE_LINK . '&dismissed' );
 	}
 
 	protected function do_upgrade_check() {
+
 		enom_pro_license::clearLicense();
 		enom_pro_license::delete_latest_version();
 		header( 'Location: ' . enom_pro::MODULE_LINK . '&checked' );
 	}
 
 	public static function is_ajax() {
+
 		return isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
 	}
 
 	protected function resubmit_enom_transfer_order() {
+
 		$response = $this->enom->resubmit_locked( (int) $_REQUEST['orderid'] );
 		if ( is_bool( $response ) ) {
 			echo "Submitted!";
@@ -62,11 +97,13 @@ class enom_pro_controller {
 	}
 
 	protected function install_ssl_template() {
+
 		$return = $this->enom->install_ssl_email();
 		header( 'Location: ' . enom_pro::MODULE_LINK . '&ssl_email=' . $return );
 	}
 
 	protected function set_results_per_page() {
+
 		$per_page      = (int) $_REQUEST['per_page'];
 		$config        = enom_pro_config();
 		$valid_options = explode( ',', $config['fields']['import_per_page']['Options'] );
@@ -78,6 +115,7 @@ class enom_pro_controller {
 	}
 
 	protected function get_domains() {
+
 		if ( isset( $_GET['tab'] ) ) {
 			switch ( $_GET['tab'] ) {
 				case 'redemption':
@@ -101,7 +139,8 @@ class enom_pro_controller {
 	}
 
 	protected function render_import_table() {
-		self::status_header(500);
+
+		self::status_header( 500 );
 		ob_start();
 		require_once ENOM_PRO_INCLUDES . 'fragment_domain_import_table.php';
 		$contents = ob_get_contents();
@@ -110,18 +149,20 @@ class enom_pro_controller {
 			'html'       => $contents,
 			'cache_date' => $this->enom->get_domain_cache_date(),
 		);
-		self::status_header(200);
+		self::status_header( 200 );
 		$this->send_json( $data );
 
 	}
+
 	protected function get_domain_whois() {
+
 		try {
 			$whois    = $this->enom->getWHOIS( $_REQUEST['domain'] );
 			$response = array(
 				'email' => $whois['registrant']['emailaddress'],
 			);
 		} catch ( Exception $e ) {
-			sleep(2);//Add a delay to avoid DDOS'ing enom.com
+			sleep( 2 );//Add a delay to avoid DDOS'ing enom.com
 			$response = array( 'error' => $e->getMessage() );
 		}
 		header( 'Content-Type: application/json' );
@@ -129,22 +170,26 @@ class enom_pro_controller {
 	}
 
 	protected function clear_cache() {
+
 		$this->enom->clear_domains_cache();
 		$this->redirect( 'domain_import', 'cleared' );
 	}
 
 	protected function clear_price_cache() {
+
 		$this->enom->clear_price_cache();
 		$this->redirect( 'pricing_import', 'cleared' );
 	}
 
 	protected function clear_exchange_cache() {
+
 		$this->enom->clear_exchange_rate_cache();
 		$this->enom->get_exchange_rate_from_USD_to( $this->enom->getDefaultCurrencyCode() );
 		$this->redirect( 'pricing_import', 'exchange' );
 	}
 
 	protected function get_pricing_data() {
+
 		$retail   = enom_pro::is_retail_pricing();
 		$response = $this->enom->getAllDomainsPricing( $retail );
 		if ( isset( $response['tld'] ) ) {
@@ -263,6 +308,7 @@ class enom_pro_controller {
 	}
 
 	protected function enom_pro_hide_ssl() {
+
 		$current = enom_pro::get_addon_setting( 'ssl_hidden' );
 		if ( empty( $current ) ) {
 			$current = array();
@@ -287,8 +333,26 @@ class enom_pro_controller {
 			header( 'Location: ' . $location );
 		}
 	}
+	protected function delete_tld () {
+		$tld = strip_tags($_GET['tld']);
+		if (self::is_ajax()) {
+		    //Already confirmed
+			self::delete_TLD_pricing_from_WHMCS(self::get_TLD_relationshipID_in_WHMCS($tld));
+			echo 1;
+		} else {
+			if (isset($_GET['confirmed'])) {
+				self::delete_TLD_pricing_from_WHMCS(self::get_TLD_relationshipID_in_WHMCS($tld));
+				header('Location: ' . enom_pro::MODULE_LINK . '&view=whois_checker');
+			} else {
+				echo "Are you sure you want to delete the $tld TLD from WHMCS? <br/>";
+				echo '<a href="'.enom_pro::MODULE_LINK.'&action=delete_tld&tld='.$tld.'&confirmed=1">yes</a> <br/>';
+				echo '<a href="'.enom_pro::MODULE_LINK.'&view=whois_checker">NO!</a> <br/>';
+			}
+		}
+	}
 
 	protected function save_domain_pricing() {
+
 		if ( isset( $_POST['pricing'] ) ) {
 			$validated_data = array();
 			$tlds           = array_keys( $this->enom->getAllDomainsPricing() );
@@ -332,10 +396,6 @@ class enom_pro_controller {
 			$existing_pricing   = $this->enom->get_whmcs_domain_pricing( $tld );
 			if ( ! empty( $existing_pricing ) ) {
 				//Update
-				$result        = mysql_fetch_assoc( select_query( 'tbldomainpricing',
-					'id',
-					array( 'extension' => '.' . $tld ) ) );
-				$relid         = $result['id'];
 				$total_minus_1 = 0;
 				foreach ( $pricing_data as $key => $price ) {
 					if ( $price == '-1.00' ) {
@@ -343,11 +403,9 @@ class enom_pro_controller {
 					}
 				}
 				//delete
+				$relid = self::get_TLD_relationshipID_in_WHMCS( $tld);
 				if ( $total_minus_1 == enom_pro::get_addon_setting( 'pricing_years' ) ) {
-					$sql = 'DELETE FROM `tblpricing` WHERE `relid`="' . $relid . '"';
-					mysql_query( $sql );
-					$sql = 'DELETE FROM `tbldomainpricing` WHERE `id` = "' . $relid . '"';
-					mysql_query( $sql );
+					self::delete_TLD_pricing_from_WHMCS( $relid );
 					$deleted ++;
 				} else {
 					foreach ( $registration_types as $type ) {
@@ -395,6 +453,7 @@ class enom_pro_controller {
 	 * @param array $data
 	 */
 	private function send_json( $data ) {
+
 		header( "Cache-Control: no-cache, must-revalidate" ); // HTTP/1.1
 		header( "Expires: Sat, 26 Jul 1997 05:00:00 GMT" ); // Date in the past
 		header( 'Content-Type: application/json', true );
@@ -403,6 +462,7 @@ class enom_pro_controller {
 	}
 
 	protected function sort_domains() {
+
 		$query  = 'SELECT `id`, `extension` FROM `tbldomainpricing`';
 		$result = mysql_query( $query );
 		if ( ! $result ) {
@@ -423,6 +483,7 @@ class enom_pro_controller {
 	 * @return bool
 	 */
 	public static function isDismissed( $alert ) {
+
 		return ! self::dismissAlert( $alert, false );
 	}
 
@@ -437,6 +498,7 @@ class enom_pro_controller {
 	 * @return bool true if dismissed, false if already dismissed
 	 */
 	private static function dismissAlert( $alert, $save = true ) {
+
 		$current = enom_pro::get_addon_setting( self::DISMISSED_ALERTS );
 		if ( empty( $current ) || trim( $current ) === "" ) {
 			$current = array();
@@ -454,10 +516,12 @@ class enom_pro_controller {
 	}
 
 	public static function dismiss_alert() {
+
 		echo self::dismissAlert( trim( $_REQUEST['alert'] ) );
 	}
 
 	public static function getAdminJS() {
+
 		$filepath = ENOM_PRO_ROOT . 'js/jquery.admin.' . ( ! enom_pro::isBeta() ? 'min.' : '' ) . 'js';
 		$result   = ioncube_read_file( $filepath );
 		if ( is_int( $result ) ) {
@@ -475,19 +539,20 @@ class enom_pro_controller {
 		self::sendGzipped( $result );
 	}
 
-	public function save_tld_markup ()
-	{
-		enom_pro::set_addon_setting('min_markup_percent', (double) $_GET['min_markup_percent']);
-		enom_pro::set_addon_setting('min_markup_whole', (double) $_GET['min_markup_whole']);
-		enom_pro::set_addon_setting('preferred_markup_percent', (double) $_GET['preferred_markup_percent']);
-		enom_pro::set_addon_setting('preferred_markup_whole', (double) $_GET['preferred_markup_whole']);
-		enom_pro::set_addon_setting('round_to', (int) $_GET['round_to']);
-		enom_pro::set_addon_setting('overwrite_whmcs', ('true' == $_GET['overwrite_whmcs'] ? true : false));
+	public function save_tld_markup() {
+
+		enom_pro::set_addon_setting( 'min_markup_percent', (double) $_GET['min_markup_percent'] );
+		enom_pro::set_addon_setting( 'min_markup_whole', (double) $_GET['min_markup_whole'] );
+		enom_pro::set_addon_setting( 'preferred_markup_percent', (double) $_GET['preferred_markup_percent'] );
+		enom_pro::set_addon_setting( 'preferred_markup_whole', (double) $_GET['preferred_markup_whole'] );
+		enom_pro::set_addon_setting( 'round_to', (int) $_GET['round_to'] );
+		enom_pro::set_addon_setting( 'overwrite_whmcs', ( 'true' == $_GET['overwrite_whmcs'] ? true : false ) );
 		echo 'saved';
 
 	}
 
 	public function preview_ssl_email() {
+
 		$expiring_certs = $this->enom->getExpiringCerts();
 		if ( ! isset( $expiring_certs[ $_REQUEST['index'] ] ) ) {
 			throw new Exception( 'Certificate not found.' );
@@ -508,10 +573,12 @@ class enom_pro_controller {
 	}
 
 	protected function resend_raa_email() {
+
 		echo $this->enom->resendRAAEmail( $_REQUEST['domain'] );
 	}
 
 	public static function caching_headers( $file ) {
+
 		$timestamp = filemtime( $file );
 		$gmt_mtime = gmdate( 'r', $timestamp );
 		header( 'ETag: "' . md5( $timestamp . $file ) . '"' );
@@ -537,20 +604,20 @@ class enom_pro_controller {
 	 * @param $data
 	 */
 	public static function sendGzipped( $data ) {
+
 		if ( isset( $_SERVER['HTTP_ACCEPT_ENCODING'] ) && strstr( $_SERVER['HTTP_ACCEPT_ENCODING'],
 				'gzip' )
 		) {
 			header( 'Content-Encoding: gzip' );
-			$before_gzip = microtime(true);
+			$before_gzip      = microtime( true );
 			$compressed       = gzencode( $data, 7 );
-			$after_gzip = microtime(true);
+			$after_gzip       = microtime( true );
 			$orignalLength    = strlen( $data );
 			$compressedLength = strlen( $compressed );
-			$gzip_time = round( ($after_gzip - $before_gzip) * 1000, 2);
-			header("X-Gzip-Time: {$gzip_time}ms");
+			$gzip_time        = round( ( $after_gzip - $before_gzip ) * 1000, 2 );
+			header( "X-Gzip-Time: {$gzip_time}ms" );
 			if ( $orignalLength ) {
-				header( "X-Compression-Info: original $orignalLength bytes, gzipped $compressedLength bytes " .
-				        '(Saved ' . (100 - round( 100 / $orignalLength * $compressedLength )) . '%)' );
+				header( "X-Compression-Info: original $orignalLength bytes, gzipped $compressedLength bytes " . '(Saved ' . ( 100 - round( 100 / $orignalLength * $compressedLength ) ) . '%)' );
 			}
 			echo $compressed;
 		} else {
@@ -562,6 +629,7 @@ class enom_pro_controller {
 	 * @param resource $result
 	 */
 	private function sort_domains_auto( $result ) {
+
 		$sorted = array();
 		/** @var array $ignored TLDs that should be prepended before an update */
 		$ignored = isset( $_REQUEST['ignore'] ) ? array_keys( $_REQUEST['ignore'] ) : array();
@@ -604,6 +672,7 @@ class enom_pro_controller {
 	 * Sorts TLDs using jQuery-ui sortable
 	 */
 	private function sort_domains_ajax() {
+
 		$sorted = array();
 		foreach ( $_REQUEST['order'] as $new_order => $tld ) {
 			$tld_array            = explode( '_', $tld );
@@ -622,6 +691,7 @@ class enom_pro_controller {
 	 * @param null $message optional message flag to set
 	 */
 	private function redirect( $view, $message = null ) {
+
 		$location = "Location: " . enom_pro::MODULE_LINK;
 		$location .= "&view=$view";
 		if ( null !== $message ) {
@@ -631,6 +701,7 @@ class enom_pro_controller {
 	}
 
 	protected function save_custom_exchange_rate() {
+
 		if ( - 1 == $_REQUEST['custom-exchange-rate'] ) {
 			$this->enom->set_addon_setting( 'custom-exchange-rate', null );
 		} else {
@@ -640,25 +711,28 @@ class enom_pro_controller {
 	}
 
 	protected function get_beta_log() {
+
 		$beta_log_array = enom_pro::curl_get_json( 'https://mycircletree.com/versions/enom_pro_beta_log.json' );
-		$formatted = array();
-		foreach ($beta_log_array as $key => $log_item) {
-			$formatted[$key] = $log_item;
-			$formatted[$key]['relative_date'] = enom_pro::time_ago($formatted[$key]['date']);
+		$formatted      = array();
+		foreach ( $beta_log_array as $key => $log_item ) {
+			$formatted[ $key ]                  = $log_item;
+			$formatted[ $key ]['relative_date'] = enom_pro::time_ago( $formatted[ $key ]['date'] );
 		}
 		echo json_encode( $formatted );
 	}
-	protected function get_client_list ()
-	{
 
-		$this->send_json(enom_pro::get_clients());
+	protected function get_client_list() {
+
+		$this->send_json( enom_pro::get_clients() );
 
 	}
-	public static function status_header ($statusCode) {
+
+	public static function status_header( $statusCode ) {
+
 		static $status_codes = null;
 
-		if ($status_codes === null) {
-			$status_codes = array (
+		if ( $status_codes === null ) {
+			$status_codes = array(
 				100 => 'Continue',
 				101 => 'Switching Protocols',
 				102 => 'Processing',
@@ -712,9 +786,9 @@ class enom_pro_controller {
 			);
 		}
 
-		if (isset($status_codes[$statusCode])) {
-			$status_string = $statusCode . ' ' . $status_codes[$statusCode];
-			header($_SERVER['SERVER_PROTOCOL'] . ' ' . $status_string, true, $statusCode);
+		if ( isset( $status_codes[ $statusCode ] ) ) {
+			$status_string = $statusCode . ' ' . $status_codes[ $statusCode ];
+			header( $_SERVER['SERVER_PROTOCOL'] . ' ' . $status_string, true, $statusCode );
 		}
 	}
 }
