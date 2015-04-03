@@ -57,6 +57,7 @@ add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_expiring_domains" );
 function enom_pro_admin_expiring_domains( $vars ) {
 
 	unset( $vars );
+	/* @var enom_pro */
 	$enom = new enom_pro();
 
 	$widget = new enom_pro_widget( 'Domain Stats', 'domain_stats', array(
@@ -181,9 +182,9 @@ function enom_pro_admin_head_output() {
 		<?php //TODO encapsulate widget css & namespace all bootstrap ?>
 		<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="../modules/addons/enom_pro/css/admin.min.css" />
+		<script src="<?php echo enom_pro::MODULE_LINK ?>&action=getAdminJS&version=<?php echo urlencode( ENOM_PRO_VERSION ) ?>"></script>
 		<?php if ( isset( $_GET['module'] ) && 'enom_pro' == $_GET['module'] ) : ?>
 			<?php //Don't include these on the admin roles page to prevent unintended conflicts / regressions ?>
-			<script src="<?php echo enom_pro::MODULE_LINK ?>&action=getAdminJS&version=<?php echo urlencode( ENOM_PRO_VERSION ) ?>"></script>
 			<?php if ( isset( $_GET['view'] ) && 'domain_import' == $_GET['view'] ) : ?>
 				<link rel="stylesheet" href="../modules/addons/enom_pro/css/select2.min.css" />
 				<script src="../modules/addons/enom_pro/js/select2.full.min.js"></script>

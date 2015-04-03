@@ -9,27 +9,27 @@ $stats = $this->getDomainVerificationStats();
 ?>
 <table class="table-responsive table">
 	<tr>
-		<td class="enom_stat_button">
+		<td class="text-center">
 			<a class="btn btn-success verification <?php echo( $stats['pending_verification'] > 0 ? '' : 'disabled' ) ?>"
-				 href="#">
+			   href="<?php echo enom_pro::MODULE_LINK . '&action=get_domain_verification&tab=pending_verification'; ?>">
 				<?php echo $stats['pending_verification']; ?>
 			</a>
 		</td>
 		<td class="enom_stat_label">Pending Verification</td>
 	</tr>
 	<tr>
-		<td class="enom_stat_button">
+		<td class="text-center">
 			<a class="btn btn-warning verification <?php echo( $stats['pending_suspension'] > 0 ? '' : 'disabled' ) ?>"
-				 href="#">
+				 href="<?php echo enom_pro::MODULE_LINK . '&action=get_domain_verification&tab=pending_suspension'; ?>">
 				<?php echo $stats['pending_suspension']; ?>
 			</a>
 		</td>
 		<td class="enom_stat_label">Pending Suspension</td>
 	</tr>
 	<tr>
-		<td class="enom_stat_button">
+		<td class="text-center">
 			<a class="btn btn-danger verification <?php echo( $stats['suspended'] > 0 ? '' : 'disabled' ) ?>"
-				 href="#">
+				 href="<?php echo enom_pro::MODULE_LINK . '&action=get_domain_verification&tab=suspended'; ?>">
 				<?php echo $stats['suspended']; ?>
 			</a>
 		</td>
@@ -72,13 +72,18 @@ $stats = $this->getDomainVerificationStats();
 						</span>
 					</td>
 					<td>
+						<?php $content = '' ?>
+						<?php if (! empty($domain['lastemailsenttime'])) :?>
+							<?php $content .= 'Last Emailed: ' . $domain['lastemailsenttime'] . '.' . PHP_EOL; ?>
+						<?php endif;?>
+						<?php $content .= 'Click to resend.' ?>
 						<a href="<?php echo enom_pro::MODULE_LINK ?>&action=resend_raa_email"
 							 data-domain="<?php echo $domain['domainname'] ?>"
 							 data-toggle="popover"
 							 data-trigger="hover"
 							 data-placement="left"
 							 title="Authorization Email: <?php echo $domain['newemailaddress'] ?>"
-							 data-content="Last Emailed: <?php echo $domain['lastemailsenttime']; ?>. Click to resend."
+							 data-content="<?php echo $content; ?>"
 							 class="btn btn-default btn-xs pop resendAuth">
 							Resend
 							<span class="enom_pro_loader small hidden"></span>

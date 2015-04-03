@@ -536,18 +536,21 @@ class enom_pro_controller {
 	 *
 	 * @param $data
 	 */
-	private static function sendGzipped( $data ) {
+	public static function sendGzipped( $data ) {
 		if ( isset( $_SERVER['HTTP_ACCEPT_ENCODING'] ) && strstr( $_SERVER['HTTP_ACCEPT_ENCODING'],
 				'gzip' )
 		) {
 			header( 'Content-Encoding: gzip' );
-			$compressed       = gzencode( $data, 9 );
+			$before_gzip = microtime(true);
+			$compressed       = gzencode( $data, 7 );
+			$after_gzip = microtime(true);
 			$orignalLength    = strlen( $data );
 			$compressedLength = strlen( $compressed );
-
+			$gzip_time = round( ($after_gzip - $before_gzip) * 1000, 2);
+			header("X-Gzip-Time: {$gzip_time}ms");
 			if ( $orignalLength ) {
 				header( "X-Compression-Info: original $orignalLength bytes, gzipped $compressedLength bytes " .
-				        '(' . round( 100 / $orignalLength * $compressedLength ) . '%)' );
+				        '(Saved ' . (100 - round( 100 / $orignalLength * $compressedLength )) . '%)' );
 			}
 			echo $compressed;
 		} else {
