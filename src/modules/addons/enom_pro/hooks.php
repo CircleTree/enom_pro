@@ -167,7 +167,6 @@ function enom_pro_admin_head_output() {
 	$scriptName = basename( $_SERVER['SCRIPT_NAME'] );
 	if ( in_array( $scriptName, $pages ) ) {
 		//Include our class if needed
-
 		if ( ! class_exists( 'enom_pro' ) ) {
 			require_once ENOM_PRO_INCLUDES . 'class.enom_pro.php';
 		}
