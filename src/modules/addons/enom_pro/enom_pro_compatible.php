@@ -708,59 +708,7 @@ function enom_pro_output( $vars ) {
 		</div>
 	<?php } catch ( EnomException $e ) { ?>
 		<div class="alert alert-danger">
-			<h2>There was a problem communicating with the eNom API:</h2>
-			<?php $system_bit = substr( $e->getCode(), 0, 1 ); ?>
-			<?php
-			switch ( $system_bit ) {
-				case 0:
-					echo 'An unknown error has occurred';;
-					break;
-				case 1:
-					echo 'Command completed successfully';
-					break;
-				case 2:
-					echo 'Registry error';
-					break;
-				case 3:
-					echo 'Validation error';
-					break;
-				case 4:
-					echo 'Authentication error';
-					break;
-				case 5:
-					echo 'Payment error';
-					break;
-				case 6:
-					echo 'System error';
-					break;
-				case 7:
-					echo 'Policy error';
-					break;
-			}
-			?>
-			<?php $error_bit = substr( $e->getCode(), 1, 2 ); ?>
-			<?php
-			switch ( $error_bit ) {
-				case 02:
-					echo 'Duplicate';
-					break;
-				case 03:
-					echo 'Out of Range';
-					break;
-				case 04:
-					echo 'Invalid';
-					break;
-				case 18:
-					echo 'Down for Maintenance';
-					break;
-			}
-			?>
-			<?php $param_bit = substr( $e->getCode(), 3, 3 ); ?>
-			<?php if ( $param_bit == '155' ) : ?>
-				Login ID
-			<?php elseif ( $param_bit == '156' ) : ?>
-				Password
-			<?php endif; ?>
+			<h2>eNom API Error:</h2>
 			<?php echo enom_pro::render_admin_errors( $e->get_errors() ); ?>
 		</div>
 	<?php } catch ( Exception $e ) { ?>

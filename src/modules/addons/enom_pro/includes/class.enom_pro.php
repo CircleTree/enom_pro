@@ -961,7 +961,7 @@ class enom_pro {
 			'ReportType' => 31,
 			'Version'    => 1,
 			'Download'   => 'False',
-			'RecordsToReturn' => 10000
+			'RecordsToReturn' => 9
 		) );
 		$this->runTransaction( 'RPT_GETREPORT' );
 		$data                         = array();
