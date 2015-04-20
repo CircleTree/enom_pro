@@ -731,7 +731,7 @@ function enom_pro_output( $vars ) {
 				$enom->getAvailableBalance();
 			}
 			?>
-			<div id="enom_pro_admin_widgets" class="row clearfix">
+			<div id="enom_pro_admin_widgets" class="row">
 				<div class="col-xs-6">
 					<?php enom_pro::render_admin_widget( 'enom_pro_admin_balance' ); ?>
 					<?php enom_pro::render_admin_widget( 'enom_pro_admin_expiring_domains' ); ?>
