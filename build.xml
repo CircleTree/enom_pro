@@ -236,7 +236,7 @@
 		</copy>
 		-->
 	</target>
-	<target name="bootstrap">
+	<target name="bootstrap" description="Rebuilds Bootstrap">
 		<echo message="ReBuilding bootstrap theme"/>
 		<exec checkreturn="true" command="git rev-parse --abbrev-ref HEAD"
 					dir="../bootstrap/" outputProperty="branch"/>
@@ -295,7 +295,7 @@
 		</copy>
 	</target>
 
-	<target name="release" depends="zip,replace-version">
+	<target name="release" depends="zip,replace-version" description="GO TIME - Public Release!">
 		<echo msg="Deploying XML to myCircleTree.com"/>
 		<ftpdeploy
 				host="mycircletree.com"
@@ -327,7 +327,7 @@
 		<phingcall target="git-push"/>
 
 	</target>
-	<target name="zip" depends="encode">
+	<target name="zip" depends="encode" description="Zip new Release">
 		<echo msg="Creating Zip files from encoded &amp; encoded_prep"/>
 		<delete file="enom_pro.zip"/>
 		<delete file="enom_pro_open.zip"/>
@@ -342,7 +342,7 @@
 	<!-- BETA Release Prepares ZIP File-->
 
 
-	<target name="zip-beta">
+	<target name="zip-beta" description="Zip new Beta Release">
 		<exec command="git rev-parse --short=12 HEAD" outputProperty="git_version"/>
 		<echo>Parsed Git Hash: ${git_version}</echo>
 		<phingcall target="encode">

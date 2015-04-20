@@ -743,3 +743,6 @@ Top level DOM items
   box-sizing: border-box;
   width: 100%;
 }
+#content_container .fieldarea .enom_pro_output .enom_pro_widget_title {
+  display: inline;
+}
