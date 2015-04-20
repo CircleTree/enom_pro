@@ -2,8 +2,15 @@
 eNom PRO for WHMCS by Circle Tree, LLC
 Licensed from Orion IP Ventures, LLC
 */
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
 .enom_pro_output {
-  /*[clearfix]*/
   /**
 	Icons
 	*/
@@ -310,9 +317,6 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output .slideup.fixed .alert P {
   margin: 0;
 }
-.enom_pro_output #enom_pro_pricing_import_page {
-  position: relative;
-}
 .enom_pro_output #enom_pro_import_page #top_loader {
   position: absolute;
   margin-top: -10px;
@@ -377,8 +381,10 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output #enom_pro_pricing_table TD {
   padding: 0;
 }
-.enom_pro_output #enom_pro_pricing_import_page {
-  overflow: auto;
+.enom_pro_output #enom_pro_pricing_import {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  position: relative;
 }
 .enom_pro_output .domain-widget-response .badge {
   margin: 0 auto;
@@ -460,7 +466,7 @@ Licensed from Orion IP Ventures, LLC
   vertical-align: bottom;
   /*+placement:anchor-top-right 0px -2px;*/
   position: absolute;
-  right: 20px;
+  right: 2px;
   top: -2px;
 }
 .enom_pro_output .fa-spin {
@@ -676,6 +682,9 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output .enom-pro-icon-domains {
   color: #1b61b5;
 }
+.enom_pro_output .well {
+  overflow: hidden;
+}
 /**
 Top level DOM items
 **/
@@ -712,6 +721,10 @@ Top level DOM items
 .content-container {
   overflow: auto;
 }
+.content-container .enom_pro_output table th {
+  color: #FFFFFF;
+}
+/**END Swiftmods admin tweaks */
 /** Whmcs V4 Tweaks */
 #content_container .enom_pro_output .btn {
   transition: none;
