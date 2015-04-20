@@ -2698,7 +2698,7 @@ class enom_pro {
 		   target="_blank"
 		   href="<?php echo self::TICKET_URL?>&subject=<?php echo urlencode( ENOM_PRO . ' Bug Report' ) . '&message=' . self::getSupportMessage(); ?>">
 			<span class="enom-pro-icon enom-pro-icon-support"></span>
-			BETA Mode<br /> Please report bugs <span class="enom-pro-icon enom-pro-icon-bug"></span>
+			Please report bugs <span class="enom-pro-icon enom-pro-icon-bug"></span>
 		</a>
 	<?php
 	}

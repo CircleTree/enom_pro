@@ -676,6 +676,9 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output .enom-pro-icon-domains {
   color: #1b61b5;
 }
+/**
+Top level DOM items
+**/
 #tooltip {
   position: absolute;
   z-index: 3000;
@@ -708,4 +711,22 @@ Licensed from Orion IP Ventures, LLC
 /**Swiftmods admin tweaks */
 .content-container {
   overflow: auto;
+}
+/** Whmcs V4 Tweaks */
+#content_container .enom_pro_output .btn {
+  transition: none;
+  -webkit-transition: none;
+}
+#content_container .enom_pro_output .btn:hover {
+  background-position: inherit;
+}
+#content_container #left_side .enom_pro_output.sidebar .header {
+  background-color: #888888;
+  border-radius: 15px 15px 0 0;
+  background-image: none;
+  box-sizing: border-box;
+}
+#content_container #left_side .enom_pro_output.sidebar * {
+  box-sizing: border-box;
+  width: 100%;
 }
