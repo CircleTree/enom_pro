@@ -4,6 +4,9 @@
     <buildFilePaths>
       <buildFile options="" path="file://$PROJECT_DIR$/build.xml">
         <targetsToHide>
+          <target value="debug" />
+          <target value="clean" />
+          <target value="clean-ci" />
           <target value="run_parallel_tasks" />
           <target value="run_serial_tasks" />
           <target value="tasks_to_try" />
@@ -16,9 +19,17 @@
           <target value="phpcs" />
           <target value="phpdoc" />
           <target value="phpcb" />
+          <target value="ci" />
           <target value="replace" />
+          <target value="local" />
           <target value="do-bootstrap-build" />
           <target value="bootstrap-copy" />
+          <target value="replace-version" />
+          <target value="git-push" />
+          <target value="beta-version" />
+          <target value="verify" />
+          <target value="beta-log" />
+          <target value="install" />
         </targetsToHide>
       </buildFile>
     </buildFilePaths>
