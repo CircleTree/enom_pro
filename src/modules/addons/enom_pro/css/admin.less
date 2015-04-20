@@ -2,6 +2,18 @@
 eNom PRO for WHMCS by Circle Tree, LLC
 Licensed from Orion IP Ventures, LLC
 */
+
+.clearfix {
+	&:before,
+	&:after {
+		content: " "; // 1
+		display: table; // 2
+	}
+	&:after {
+		clear: both;
+	}
+}
+
 .enom_pro_output {
 	PRE.api_error {
 		background-color: #FFFFFF;
@@ -332,10 +344,6 @@ Licensed from Orion IP Ventures, LLC
 		margin: 0;
 	}
 
-	#enom_pro_pricing_import_page {
-		position: relative;
-	}
-
 	#enom_pro_import_page #top_loader {
 		position: absolute;
 		margin-top: -10px;
@@ -409,8 +417,10 @@ Licensed from Orion IP Ventures, LLC
 		padding: 0;
 	}
 
-	#enom_pro_pricing_import_page {
-		overflow: auto;
+	#enom_pro_pricing_import {
+		overflow-x: scroll;
+		overflow-y: hidden;
+		position: relative;
 	}
 
 	.domain-widget-response .badge {
@@ -494,7 +504,7 @@ Licensed from Orion IP Ventures, LLC
 		vertical-align: bottom;
 		/*+placement:anchor-top-right 0px -2px;*/
 		position: absolute;
-		right: 20px;
+		right: 2px;
 		top: -2px;
 	}
 
@@ -558,9 +568,9 @@ Licensed from Orion IP Ventures, LLC
 		display: inline-block;
 	}
 
-	/*[clearfix]*/
 	#enom_pro_pricing_import_page nav {
 		text-align: center;
+		//		clearfix()
 	}
 
 	/**
@@ -770,6 +780,9 @@ Licensed from Orion IP Ventures, LLC
 		color: #1b61b5;
 	}
 
+	.well {
+		overflow: hidden;
+	}
 }
 
 /**
@@ -810,7 +823,14 @@ Top level DOM items
 /**Swiftmods admin tweaks */
 .content-container {
 	overflow: auto;
+	.enom_pro_output {
+		table th {
+			color: #FFFFFF;
+		}
+	}
 }
+
+/**END Swiftmods admin tweaks */
 
 /** Whmcs V4 Tweaks */
 #content_container {
