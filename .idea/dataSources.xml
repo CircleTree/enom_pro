@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="1796836975">
-    <data-source source="LOCAL" name="MySQL - whmcs_3@localhost" uuid="473f518f-c9b6-4e15-b437-c072cac9b478">
+  <component name="DataSourceManagerImpl" format="xml" hash="3068640421">
+    <data-source source="LOCAL" name="v5 dev@localhost" uuid="473f518f-c9b6-4e15-b437-c072cac9b478">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/whmcs_3</jdbc-url>
+      <driver-properties>
+        <property name="zeroDateTimeBehavior" value="convertToNull" />
+        <property name="tinyInt1isBit" value="false" />
+      </driver-properties>
+      <libraries />
+    </data-source>
+    <data-source source="LOCAL" name="v6@localhost" uuid="8632cca9-88ed-41df-8cbb-120440bd542c">
+      <driver-ref>mysql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/whmcs_v6</jdbc-url>
       <driver-properties>
         <property name="zeroDateTimeBehavior" value="convertToNull" />
         <property name="tinyInt1isBit" value="false" />

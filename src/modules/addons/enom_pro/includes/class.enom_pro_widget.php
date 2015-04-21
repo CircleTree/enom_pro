@@ -28,6 +28,7 @@ class enom_pro_widget {
 			} else {
 					try {
 						ob_start();
+						new enom_pro_license();
 						call_user_func($this->callback);
 						$data = ob_get_contents();
 						ob_end_clean();

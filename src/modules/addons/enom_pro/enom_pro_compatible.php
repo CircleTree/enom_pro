@@ -707,6 +707,7 @@ function enom_pro_output( $vars ) {
 	}
 	try {
 
+		new enom_pro_license();
 		$enom = new enom_pro();
 		?>
 
@@ -720,9 +721,13 @@ function enom_pro_output( $vars ) {
 			if ( isset( $_GET['view'] ) && method_exists( $enom,
 					render_ . $_GET['view'] )
 			) {
+
+				//Run this test to throw an exception sooner
+				//  (before rendering page content)
+				$enom->check_login();
+
 				$view   = (string) $_GET['view'];
 				$method = "render_$view";
-				$enom->check_login();
 				$enom->$method();
 
 				return;

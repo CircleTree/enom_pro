@@ -139,7 +139,6 @@ class enom_pro_controller {
 	}
 
 	protected function render_import_table() {
-
 		self::status_header( 500 );
 		ob_start();
 		require_once ENOM_PRO_INCLUDES . 'fragment_domain_import_table.php';

@@ -15,7 +15,19 @@ if ( ! class_exists( 'enom_pro' ) ) {
 	require_once ENOM_PRO_ROOT . 'enom_pro.php';
 }
 
+
 add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_balance" );
+add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_ssl_certs" );
+add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_expiring_domains" );
+add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_pending_domain_verification" );
+add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_transfers" );
+add_hook( "AdminAreaHeadOutput", - 89512, "enom_pro_admin_head_output" );
+add_hook( "AdminAreaPage", - 284917, "enom_pro_admin_actions" );
+add_hook( "ClientAreaPage", - 30101, "enom_pro_srv_page" );
+add_hook( "ClientAreaPage", - 10101, "enom_pro_namespinner" );
+add_hook( "ClientAreaPage", - 20291, "enom_pro_clientarea_transfers" );
+add_hook( "DailyCronJob", 10101, "enom_pro_cron" );
+
 function enom_pro_admin_balance( $vars ) {
 
 	unset( $vars );
@@ -26,7 +38,6 @@ function enom_pro_admin_balance( $vars ) {
 	return $widget->toArray();
 }
 
-add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_ssl_certs" );
 /**
  * @param $vars
  *
@@ -53,7 +64,7 @@ EOL;
 	return $widget->toArray();
 }
 
-add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_expiring_domains" );
+
 function enom_pro_admin_expiring_domains( $vars ) {
 
 	unset( $vars );
@@ -69,7 +80,7 @@ function enom_pro_admin_expiring_domains( $vars ) {
 	return $widget->toArray();
 }
 
-add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_pending_domain_verification" );
+
 function enom_pro_admin_pending_domain_verification( $vars ) {
 
 	unset( $vars );
@@ -94,7 +105,7 @@ EOL;
 	return $widget->toArray();
 }
 
-add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_transfers" );
+
 function enom_pro_admin_transfers( $vars ) {
 
 	if ( ! class_exists( 'enom_pro' ) ) {
@@ -159,7 +170,7 @@ function get_enom_pro_widget_form( $action, $id ) {
 /**
  * Admin Page CSS
  */
-add_hook( "AdminAreaHeadOutput", - 89512, "enom_pro_admin_head_output" );
+
 function enom_pro_admin_head_output() {
 
 	//	Only load on applicable pages
@@ -203,7 +214,7 @@ function enom_pro_admin_head_output() {
 /**
  * Admin page Actions
  */
-add_hook( "AdminAreaPage", - 284917, "enom_pro_admin_actions" );
+
 function enom_pro_admin_actions() {
 
 	$enom_actions = array(
@@ -244,6 +255,7 @@ function enom_pro_admin_actions() {
 		require_once 'enom_pro.php';
 	}
 	try {
+		new enom_pro_license();
 		$controller = new enom_pro_controller();
 		$controller->route();
 	} catch ( Exception $e ) {
@@ -256,12 +268,27 @@ function enom_pro_admin_actions() {
 /**
  * Namespinner
  */
-add_hook( "ClientAreaPage", - 10101, "enom_pro_namespinner" );
-function enom_pro_namespinner() {
+
+
+function enom_pro_namespinner( $vars ) {
 
 	if ( ! class_exists( 'enom_pro' ) ) {
 		require_once 'enom_pro.php';
 	}
+	try {
+		new enom_pro_license();
+	} catch ( Exception $e ) {
+		if ( isset( $_SESSION['adminid'] ) ) {
+			//Display a message to logged in admins
+			return array(
+				'namespinner' => '<div class="alert alert-danger">
+									eNom PRO License Error.
+									Please check your license in the eNom PRO Addon Settings</div>'
+			);
+		}
+
+		return null;
+	};
 	$spinnercode = '';
 	if ( enom_pro::get_addon_setting( "spinner_css" ) == "on" ) {
 		//Only include the css if enabled
@@ -306,7 +333,7 @@ function enom_pro_namespinner() {
 	$domain = addslashes( $domain );
 	$spinnercode .= '
     jQuery(function($) {
-        $.post("enom_srv.php", {action:"spinner", domain:"' . $domain . '", token: "' . $GLOBALS['smarty']->_tpl_vars['token'] . '" }, function  (data) {
+        $.post("enom_srv.php", {action:"spinner", domain:"' . $domain . '"}, function  (data) {
             $("#spinner_ajax_results").html(data)' . $animation . '
         });
         $("#spinner_ajax_results").on("click", "INPUT", function  () {
@@ -323,7 +350,7 @@ function enom_pro_namespinner() {
 	return array( 'namespinner' => $spinnercode );
 }
 
-add_hook( "ClientAreaPage", 20291, "enom_pro_clientarea_transfers" );
+
 function enom_pro_clientarea_transfers( $vars ) {
 
 	//Prep the userid of currently logged in account
@@ -351,24 +378,23 @@ function enom_pro_clientarea_transfers( $vars ) {
 		$result = mysql_query( $query );
 		//Check if there are any results
 		$there_are_results = $result && ( mysql_num_rows( $result ) > 0 ) ? true : false;
-		if ( $there_are_results ) {
-			$enom_pro_transfers = true;
-		} else {
-			$enom_pro_transfers = false;
-		}
 
 		return array( 'enom_transfers' => $there_are_results );
 	}
 }
 
-add_hook( "ClientAreaPage", - 30101, "enom_pro_srv_page" );
 function enom_pro_srv_page( $vars ) {
 
+	//	$converted_from_object = false;
+	//	if (is_object($vars)) {
+	//		$converted_from_object = $vars;
+	//		$vars = (array) $vars;
+	//	}
 	if ( ! ( 'clientarea.php' == basename( $_SERVER['SCRIPT_NAME'] ) && isset( $_GET['action'] ) && 'domaindetails' == $_GET['action'] ) ) {
-		return $vars;
+		return null;
 	}
 	if ( ! ( isset( $vars['registrar'] ) && 'enom' == $vars['registrar'] ) ) {
-		return $vars;
+		return null;
 	}
 	//We only get here if there is an active enom domain on the domain details.tpl page
 	$vars['enom_srv'] = true;
@@ -376,7 +402,6 @@ function enom_pro_srv_page( $vars ) {
 	return $vars;
 }
 
-add_hook( "DailyCronJob", 10101, "enom_pro_cron" );
 function enom_pro_cron() {
 
 	$salt = 'lJsif3n1F9GKeSIdM9VAeJrrPC1grpBpSZLtWMb';
