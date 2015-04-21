@@ -1,6 +1,7 @@
 <?php
+define("CLIENTAREA",true);
 require 'init.php';
-require_once ROOTDIR . '/modules/addons/enom_pro/enom_pro.php';
+//require_once ROOTDIR . '/modules/addons/enom_pro/enom_pro.php';
 global $_LANG;
 if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'spinner') {
 	try {
@@ -69,12 +70,14 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'spinner') {
 	}
 	die();
 }
-
+if (! class_exists('WHMCS_ClientArea')) {
+	class WHMCS_ClientArea extends \WHMCS\ClientArea {}
+}
 $ca = new WHMCS_ClientArea();
 $ca->setPageTitle('SRV Records');
 $ca->initPage();
 $ca->requireLogin();
-
+//die;
 if (isset($_REQUEST['action'])) {
     switch ($_REQUEST['action']) {
         case 'save_srv':

@@ -132,9 +132,6 @@ class enom_pro {
 		if ( php_sapi_name() == 'cli' ) {
 			self::$cli = true;
 		} else {
-			if ( ! defined( 'CLIENTAREA' ) ) {
-				$this->license = new enom_pro_license();
-			}
 		}
 	}
 
@@ -2698,7 +2695,7 @@ class enom_pro {
 		   target="_blank"
 		   href="<?php echo self::TICKET_URL?>&subject=<?php echo urlencode( ENOM_PRO . ' Bug Report' ) . '&message=' . self::getSupportMessage(); ?>">
 			<span class="enom-pro-icon enom-pro-icon-support"></span>
-			Please report bugs <span class="enom-pro-icon enom-pro-icon-bug"></span>
+			BETA Mode<br /> Please report bugs <span class="enom-pro-icon enom-pro-icon-bug"></span>
 		</a>
 	<?php
 	}

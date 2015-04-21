@@ -723,6 +723,10 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		unlink( $fileNameTmp );
 
 	}
+	function  testNoWidgetsEnabled(){
+		$_SESSION['adminid'] = 1;
+		$this->assertFalse($this->e->areAnyWidgetsEnabled());
+	}
 
 	/**
 	 * @expectedException InvalidArgumentException

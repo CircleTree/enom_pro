@@ -1,8 +1,8 @@
 <?php
 define( "WHMCS", true );
-require( "dbconnect.php" );
-require( "includes/functions.php" );
-require( "includes/clientareafunctions.php" );
+require( "init.php" );
+//require( "includes/functions.php" );
+//require( "includes/clientareafunctions.php" );
 if ( !isset( $_REQUEST['key'] ) ) {
 	die( 'No Key' );
 }
