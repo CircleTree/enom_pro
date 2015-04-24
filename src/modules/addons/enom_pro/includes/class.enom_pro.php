@@ -2090,11 +2090,13 @@ class enom_pro {
 		}
 	}
 
+
 	public function get_upgrade_zip_url() {
 
+		$license = new enom_pro_license();
 		$url = 'http://mycircletree.com/client-area/get_enom_pro.php?key=';
 		$url .= self::get_addon_setting( 'license' );
-		$url .= '&id=' . $this->license->get_id();
+		$url .= '&id=' . $license->get_id();
 		if ( enom_pro_license::isBetaOptedIn() ) {
 			$url .= '&beta=1';
 		}
