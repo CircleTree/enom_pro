@@ -184,7 +184,7 @@
 
 	<target name="encode" hidden="true" depends="replace">
 		<ioncubeencoder
-				phpversion="5"
+				phpversion="53"
 				optimize="max"
 				ioncubepath="/Users/robertgregor/ioncube/8"
 				nodoccomments="true"
