@@ -33,7 +33,8 @@
 					data-dismiss="alert"
 					data-alert="pro-install"
 					aria-hidden="true">&times;</button>
-		<h1>Thank you<?php echo (false !== ($name = $enom->license->getCustomerName()) ? ', '.$name : '');?>, for your support!</h1>
+		<?php $license = new enom_pro_license(); ?>
+		<h1>Thank you<?php echo (false !== ($name = $license->getCustomerName()) ? ', '.$name : '');?>, for your support!</h1>
 		<p>We appreciate your support of <?php echo ENOM_PRO; ?>, and hope it continues to provide a valuable service to you.</p>
 		<p>If you're just getting started, please view our comprehensive suite of <a href="<?php echo enom_pro::HELP_URL ?>" target="_blank" >online help articles</a>.</p>
 		<h3>Get Help with Integration/Installation of <?php echo ENOM_PRO; ?></h3>
@@ -127,7 +128,8 @@
 <?php endif;?>
 <?php //Update Available  ?>
 <?php if (enom_pro_license::is_update_available()) :?>
-	<?php $status = $enom->license->get_supportandUpdates();?>
+	<?php $license = new enom_pro_license(); ?>
+	<?php $status = $license->get_supportandUpdates();?>
 	<?php if (! in_array($status['status'], array('active', 'beta')) ) :?>
 		<?php //Support & updates expired ?>
 		<div class="alert alert-danger">
