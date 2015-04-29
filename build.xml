@@ -2,7 +2,7 @@
 <project name="ENOM PRO!" default="local" basedir=".">
 	<property name="name" value="eNom PRO"/>
 	<!-- Remember to pad the License header version # when the number of digits changes
-	Or, just make the next major version # 2.2.00
+	Or, just make the next major version # 3.0.00
 	-->
 	<property name="version" value="2.1.31"/>
 	<property name="build_temp_dir" value="${project.basedir}/build"/>
@@ -337,7 +337,7 @@
 
 <target name="git-push">
 	<echo>Pushing to remote GIT branch</echo>
-	<exec command="git push origin master" logoutput="true"/>
+	<exec command="git push github master" logoutput="true"/>
 </target>
 	<!-- BETA Release Prepares ZIP File-->
 

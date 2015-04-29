@@ -33,6 +33,6 @@
         </targetsToHide>
       </buildFile>
     </buildFilePaths>
-    <phingPath>$PROJECT_DIR$/phing-latest.phar</phingPath>
+    <phingPath>$PROJECT_DIR$/vendor/bin/phing</phingPath>
   </component>
 </project>
