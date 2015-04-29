@@ -728,7 +728,7 @@ Top level DOM items
   color: #FFFFFF;
 }
 /**END Swiftmods admin tweaks */
-/** Whmcs V4 Tweaks */
+/** Whmcs V5 Tweaks */
 #content_container .enom_pro_output .btn {
   transition: none;
   -webkit-transition: none;
@@ -749,3 +749,5 @@ Top level DOM items
 #content_container .fieldarea .enom_pro_output .enom_pro_widget_title {
   display: inline;
 }
+
+#whmcsdevbanner { display: none; }

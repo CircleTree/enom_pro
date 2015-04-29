@@ -337,7 +337,7 @@
 
 <target name="git-push">
 	<echo>Pushing to remote GIT branch</echo>
-	<exec command="git push origin master" logoutput="true"/>
+	<exec command="git push github master" logoutput="true"/>
 </target>
 	<!-- BETA Release Prepares ZIP File-->
 
