@@ -33,7 +33,7 @@ jQuery(function($) {
 <?php $license = new enom_pro_license(); ?>
 <?php if ($license->is_update_available()) :?>
 	<div class="alert alert-info text-center"><b>Update available!</b>
-		<span class="text-muted">Version: <?php echo $this->license->get_latest_version() ?></span><br/>
+		<span class="text-muted">Version: <?php echo $license->get_latest_version() ?></span><br/>
 		<a class="btn btn-success btn-block" href="<?php echo enom_pro_license::DO_UPGRADE_URL; ?>">
 			Upgrade automatically
 			<span class="enom-pro-icon enom-pro-icon-update"></span>
