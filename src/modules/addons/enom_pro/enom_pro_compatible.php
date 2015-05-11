@@ -576,8 +576,7 @@ function enom_pro_sidebar( $vars ) {
 			<li>
 				<a class="btn btn-block btn-default"
 				   title="<?php echo ENOM_PRO; ?> Help"
-				   target="_blank"
-				   href="<?php echo enom_pro::HELP_URL ?>">
+				   href="<?php echo enom_pro::MODULE_LINK ?>&view=help">
 					<span class="enom-pro-icon enom-pro-icon-question"></span>
 					Online Help
 				</a>
@@ -600,6 +599,14 @@ function enom_pro_sidebar( $vars ) {
 
 		<span class="header"><?php echo ENOM_PRO; ?> Helpful Links</span>
 		<ul class="menu">
+			<li>
+				<a class="ep_tt"
+				   title="<?php echo ENOM_PRO; ?> Help"
+				   href="<?php echo enom_pro::MODULE_LINK ?>&view=help">
+					<span class="enom-pro-icon enom-pro-icon-question"></span>
+					Online Help
+				</a>
+			</li>
 			<li>
 				<a target="_blank"
 				   href="systemmodulelog.php"
@@ -626,12 +633,22 @@ function enom_pro_sidebar( $vars ) {
 			</li>
 			<li>
 				<a href="configregistrars.php#enom"
-				   class="ep_lightbox"
+				   class="ep_lightbox ep_tt"
 				   id="edit_registrar"
-				   title="Edit eNom Registrar Settings"
+				   title="Edit eNom Registrar Settings in WHMCS"
 				   data-width="90%">
 					<span class="enom-pro-icon enom-pro-icon-earth"></span>
 					eNom Registrar Settings
+				</a>
+			</li>
+			<li>
+				<a href="configadminroles.php"
+				   class="ep_lightbox ep_tt"
+				   id="edit_registrar"
+				   title="Edit Admin Roles to Enable Widgets."
+				   data-width="90%">
+					<span class="enom-pro-icon enom-pro-icon-verify-alt"></span>
+					WHMCS Admin Roles
 				</a>
 			</li>
 		</ul>
@@ -719,7 +736,7 @@ function enom_pro_output( $vars ) {
 			<?php require_once ENOM_PRO_INCLUDES . 'admin_messages.php'; ?>
 			<?php
 			if ( isset( $_GET['view'] ) && method_exists( $enom,
-					render_ . $_GET['view'] )
+					'render_' . $_GET['view'] )
 			) {
 
 				//Run this test to throw an exception sooner
@@ -736,6 +753,17 @@ function enom_pro_output( $vars ) {
 				$enom->getAvailableBalance();
 			}
 			?>
+			<div class="well">
+				<h3>We're connected to eNom!</h3>
+				<a class="btn btn-success large"
+				   href="<?php echo enom_pro::MODULE_LINK . '&view=domain_import' ?>">Import
+					Domains</a>
+				<a class="btn btn-success large"
+				   href="<?php echo enom_pro::MODULE_LINK . '&view=pricing_import' ?>">Import TLD Pricing</a>
+				<a class="btn btn-danger large"
+				   href="<?php echo enom_pro::MODULE_LINK . '&view=help' ?>">View Help <span class="enom-pro-icon enom-pro-icon-question"></span></a>
+
+			</div>
 			<div id="enom_pro_admin_widgets" class="row">
 				<div class="col-xs-6">
 					<?php enom_pro::render_admin_widget( 'enom_pro_admin_balance' ); ?>
@@ -754,18 +782,6 @@ function enom_pro_output( $vars ) {
 					<img src="../modules/addons/enom_pro/images/admin-roles-widgets.jpg" height="" width="" alt="" />
 				</div>
 			<?php endif; ?>
-			<p>Widgets are enabled in WHMCS roles.
-				<a href="configadminroles.php" class="ep_lightbox btn btn-info" data-refresh="true" data-width="90%">WHMCS Admin Roles</a>
-			</p>
-
-			<div id="enom_faq">
-				<p>
-					Looks like you're connected to enom! Want to import some domains to
-					WHMCS? <a class="btn btn-success large"
-					          href="<?php echo $_SERVER['PHP_SELF'] . '?module=enom_pro&view=domain_import' ?>">Import
-						Domains!</a>
-				</p>
-			</div>
 		</div>
 	<?php } catch ( EnomException $e ) { ?>
 		<div class="alert alert-danger">
