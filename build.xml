@@ -193,7 +193,7 @@
 				showcommandline="false"
 				fromdir="${encoded_prep}"
 				todir="${encoded}"
-				copy="index.php enom_pro.php"
+				copy="index.php enom_pro.php hooks.php"
 				ignore="*.DS_Store *.cache enom_pro_version*.xml"
 				>
 			<comment>*************************************************************************</comment>
