@@ -12,10 +12,6 @@ defined( "WHMCS" ) or die( "This file cannot be accessed directly" );
  */
 define( "ENOM_PRO_VERSION", '@VERSION@' );
 
-/**
- * @var string full path to includes directory
- */
-define( 'ENOM_PRO_INCLUDES', ENOM_PRO_ROOT . 'includes/' );
 
 /**
  * @var string full path to temp dir, with trailing /
@@ -55,6 +51,9 @@ function enom_pro_config() {
 				break;
 			case 'whois_checker':
 				$view = ' - WHOIS Checker';
+				break;
+			case 'help':
+				$view = ' - Online Help';
 				break;
 		}
 	}
@@ -754,7 +753,7 @@ function enom_pro_output( $vars ) {
 			}
 			?>
 			<div class="well">
-				<h3>We're connected to eNom!</h3>
+				<h3>Welcome to eNom PRO!</h3>
 				<a class="btn btn-success large"
 				   href="<?php echo enom_pro::MODULE_LINK . '&view=domain_import' ?>">Import
 					Domains</a>
