@@ -23,7 +23,7 @@
 	<property name="ftp.username" value="***REMOVED***"/>
 	<property name="ftp.password.versions" value="***REMOVED***"/>
 	<property name="ftp.username.versions" value="***REMOVED***"/>
-	<property name="yui.jarfile" value="~/java/yuicompressor-2.4.7.jar"/>
+	<property name="yui.jarfile" value="~/java/yuicompressor-2.4.8.jar"/>
 	<property name="threads" value="4"/>
 	<!--suppress PhingDomInspection -->
 	<!--<taskdef name="sync" classname="phing.tasks.ext.FileSyncTask"/>-->
@@ -155,12 +155,12 @@
 		<!-- delete files that need to be replaced -->
 		<echo>Minifying admin.css</echo>
 		<exec
-				command="java -jar ${yui.jarfile} -o ${encoded_prep}/modules/addons/enom_pro/css/admin.min.css ${src_dir}modules/addons/enom_pro/css/admin.css"
-				checkreturn="true"/>
+				command="java -jar ${yui.jarfile} -v -o ${encoded_prep}/modules/addons/enom_pro/css/admin.min.css ${src_dir}modules/addons/enom_pro/css/admin.css"
+				checkreturn="true" passthru="true"/>
 		<echo>minify jquery.admin.js</echo>
 		<exec
-				command="java -jar ${yui.jarfile} -o ${encoded_prep}/modules/addons/enom_pro/js/jquery.admin.min.js ${src_dir}modules/addons/enom_pro/js/jquery.admin.js"
-				checkreturn="true"/>
+				command="java -jar ${yui.jarfile} -v -o ${encoded_prep}/modules/addons/enom_pro/js/jquery.admin.min.js ${src_dir}modules/addons/enom_pro/js/jquery.admin.js"
+				checkreturn="true" passthru="true"/>
 		<echo>delete old minify files</echo>
 		<delete
 				file="${encoded_prep}/modules/addons/enom_pro/includes/class.enom_pro_license.php"/>

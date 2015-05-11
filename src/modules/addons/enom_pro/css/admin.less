@@ -45,14 +45,14 @@ Licensed from Orion IP Ventures, LLC
 	#enom_pro_admin_widgets {
 		overflow: hidden;
 	}
-	#enom_faq H1, #enom_faq H2, #enom_faq H3, #enom_faq H4 {
+	#helpWrapper H1, #helpWrapper H2, #helpWrapper H3, #helpWrapper H4 {
 		color: #000000;
 		font-weight: normal;
 		padding: 0;
 		margin: 0;
 	}
 
-	#enom_faq H1 {
+	#helpWrapper H1 {
 		margin-top: 20px;
 		margin-bottom: 15px;
 		border-bottom: 1px solid #DDDDDD;
@@ -60,21 +60,67 @@ Licensed from Orion IP Ventures, LLC
 		font-weight: bold;
 	}
 
-	#enom_faq H2 {
+	#helpWrapper H2 {
 		font-size: 15pt;
 		border-bottom: 1px solid #DDDDDD;
 		margin-bottom: 20px;
 		margin-top: 10px;
 	}
 
-	#enom_faq H3 {
+	#helpWrapper H3 {
 		font-size: 12pt;
 	}
 
-	#enom_faq H4 {
-		font-size: 11pt;
+	#helpWrapper H4 {
+		font-size: 14pt;
 		border-bottom: 1px solid #3A87AD;
-		margin-top: 20px;
+		margin-top: 3px;
+		margin-bottom: 10px;
+	}
+
+	#homeHelpContent
+	{
+	}
+
+	#homeHelpContent ul
+	{
+		padding-left: 0;
+	}
+
+	#homeHelpContent ul li
+	{
+		box-sizing: border-box;
+		width: calc(50% - 5px);
+		float: left;
+		padding: 5px;
+		border-bottom: 1px solid #DDD;
+		border-right: 1px solid #E9E9E9;
+		background-color: #F7FCFE;
+		margin-bottom: 6px;
+		margin-right: 5px;
+	}
+
+	.searchWrap
+	{
+		width: 100%;
+		max-width: 400px;
+		position: relative;
+		display: block;
+	}
+
+	.searchWrap input
+	{
+		width: 100%;
+		font-size: 14pt;
+	}
+
+	.searchWrap .enom-pro-icon-cancel-circle
+	{
+		/*+placement: anchor-top-right 8px 8px;*/
+		position: absolute;
+		right: 8px;
+		top: 8px;
+		font-size: 16px;
 	}
 
 	FORM.refreshbutton {
@@ -772,6 +818,9 @@ Licensed from Orion IP Ventures, LLC
 	.enom-pro-icon-sort-by-alpha-alt:before {
 		content: "\e605";
 	}
+	.enom-pro-icon-cancel-circle:before {
+		content: "\e365";
+	}
 
 	/****
 	* END Icons
@@ -864,4 +913,19 @@ Top level DOM items
 	.fieldarea .enom_pro_output .enom_pro_widget_title {
 		display: inline;
 	}
+}
+#whmcsdevbanner {
+	display: none !important;
+}
+
+/**
+Dialog */
+#helpDialogContent .content ol li {
+	list-style: decimal;
+}
+#helpDialogContent .content ol li h1,
+#helpDialogContent .content ol li h2,
+#helpDialogContent .content ol li h3,
+#helpDialogContent .content ol li h4 {
+	height: inherit;
 }

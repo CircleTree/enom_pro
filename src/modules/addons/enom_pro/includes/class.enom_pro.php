@@ -759,6 +759,11 @@ class enom_pro {
 		require_once ENOM_PRO_INCLUDES . 'page_domain_import.php';
 	}
 
+	public function render_help() {
+
+		require_once ENOM_PRO_INCLUDES . 'page_help.php';
+	}
+
 	public function render_pricing_import() {
 
 		require_once ENOM_PRO_INCLUDES . 'page_import_tld_pricing.php';

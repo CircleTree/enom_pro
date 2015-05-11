@@ -222,8 +222,7 @@ try {
 			}
 
 			// Will return a Deferred promise object extended with success/error/callback, so that this function matches the interface of $.ajax
-			var deferred = $.Deferred(),
-					promise = deferred.promise();
+			var deferred = $.Deferred(), promise = deferred.promise();
 
 			promise.success = promise.done;
 			promise.error = promise.fail;
@@ -250,7 +249,6 @@ try {
 
 			return promise;
 
-
 			// If there is no queue, create an empty one and instantly process this item.
 			// Otherwise, just add this item onto it for later processing.
 			function enqueue(cb) {
@@ -258,8 +256,7 @@ try {
 					queues[qname] = [];
 					var xhr = cb();
 					activeReqs[qname] = xhr;
-				}
-				else {
+				} else {
 					queues[qname].push(cb);
 				}
 			}
@@ -274,8 +271,7 @@ try {
 				if (nextCallback) {
 					var xhr = nextCallback();
 					activeReqs[qname] = xhr;
-				}
-				else {
+				} else {
 					delete queues[qname];
 					delete activeReqs[qname];
 				}
@@ -315,8 +311,7 @@ try {
 		};
 
 		$.ajaxq.isRunning = function (qname) {
-			if (qname) return isQueueRunning(qname);
-			else return isAnyQueueRunning();
+			if (qname) return isQueueRunning(qname); else return isAnyQueueRunning();
 		};
 
 		$.ajaxq.getActiveRequest = function (qname) {
@@ -341,8 +336,7 @@ try {
 						queues[i] = [];
 					}
 				}
-			}
-			else {
+			} else {
 				if (queues[qname]) {
 					queues[qname] = [];
 				}
@@ -358,12 +352,14 @@ try {
 	jQuery(function ($) {
 		$("#generateinvoice").bind('click', function () {
 			var $invoice_email = $("#invoice_email");
-			if ($invoice_email.is(':animated'))
+			if ($invoice_email.is(':animated')) {
 				return;
-			if (!$("#generateinvoice").is(':checked'))
+			}
+			if (!$("#generateinvoice").is(':checked')) {
 				$invoice_email.slideUp();
-			else
+			} else {
 				$invoice_email.slideDown();
+			}
 		});
 		$("#create_order_dialog").dialog({
 			width   : 450,
@@ -373,8 +369,7 @@ try {
 		$importTableForm.on('ajaxComplete', function (e, xhr, settings) {
 			$(".domain_whois").trigger('getwhois');
 		});
-		var whois_cache = Array,
-				localStorage;
+		var whois_cache = Array, localStorage;
 		if (typeof (window.localStorage) == 'object') {
 			localStorage = window.localStorage;
 		} else {
@@ -440,8 +435,7 @@ try {
 			$("#enom_pro_dialog").dialog("close");
 		});
 		$importTableForm.on('getwhois', ".domain_whois", function (e) {
-			var $target = $(this),
-					$loader = $target.find('.enom_pro_loader');
+			var $target = $(this), $loader = $target.find('.enom_pro_loader');
 			var domain_name = $(this).data('domain');
 			var data = false;
 			if (localStorage && localStorage.getItem(domain_name)) {
@@ -501,7 +495,6 @@ try {
 			if (jQuery.ajaxq.isRunning('whois')) {
 				return 'Fetching WHOIS still in progress\nAbort?';
 			}
-			console.log('after');
 			jQuery.ajaxq.abort('whois');
 		};
 		if (localStorage) {
@@ -523,8 +516,7 @@ try {
 			$("#local_storage").trigger('refresh');
 			var $alert = $target.closest('.alert');
 			if (data.email) {
-				$alert.find('.create_order').data('email',
-						data.email);
+				$alert.find('.create_order').data('email', data.email);
 			}
 			var $response = $target.find('.response');
 			var label = data.error || ('Found: ' + data.email);
@@ -556,12 +548,7 @@ try {
 			if ($("#generateinvoice").is(':checked') && $invoiceEmail.not(':visible')) {
 				$invoiceEmail.show();
 			}
-			var $button = $(this),
-					email = $button.data('email'),
-					id_protect = $button.data('id-protect'),
-					dns = $button.data('dns'),
-					autorenew = $button.data('autorenew'),
-					nextduedate = $button.data('nextduedate');
+			var $button = $(this), email = $button.data('email'), id_protect = $button.data('id-protect'), dns = $button.data('dns'), autorenew = $button.data('autorenew'), nextduedate = $button.data('nextduedate');
 			if (email != "") {
 				//Set the drop-down state
 				var $clientSelect = $("#client_select");
@@ -627,16 +614,14 @@ try {
 						});
 						var message = 'Created ' + (data.activated ? 'Active' : 'Pending') + ' Order #';
 						if (data.activated) {
-							message += data.orderid +
-							'<a class="btn btn-xs btn-default" target="_blank" href="clientsdomains.php?domainid=' + data.domainid + '">View Domain</a>';
+							message += data.orderid + '<a class="btn btn-xs btn-default" target="_blank" href="clientsdomains.php?domainid=' + data.domainid + '">View Domain</a>';
 							;
 						} else {
 							message += '<a class="btn btn-xs" target="_blank" href="orders.php?action=view&id=' + data.orderid + '">View Pending Order #' + data.orderid + '</a>';
 							;
 						}
 						if (data.invoiceid) {
-							message += ' invoice #' +
-							'<a class="btn btn-xs btn-default" target="_blank" href="invoices.php?action=edit&id=' + data.invoiceid + '">' + data.invoiceid + '</a>';
+							message += ' invoice #' + '<a class="btn btn-xs btn-default" target="_blank" href="invoices.php?action=edit&id=' + data.invoiceid + '">' + data.invoiceid + '</a>';
 						}
 
 						$message.html(message);
@@ -651,10 +636,7 @@ try {
 				},
 				error  : function (xhr, text) {
 					$loader.hide();
-					$message.addClass('alert-danger').html(
-							'WHMCS Error: '
-							+ xhr.responseText)
-							.slideDown();
+					$message.addClass('alert-danger').html('WHMCS Error: ' + xhr.responseText).slideDown();
 					$process.slideDown();
 				}
 			});
@@ -757,12 +739,7 @@ try {
 					data: $.extend({}, data, {action: 'save_tld_markup'})
 				})
 			} else if (e.type == 'recalculate') {
-				var markup = parseFloat($("#percentMarkup").val()) || 0,
-						wholeMarkup = parseFloat($("#wholeMarkup").val()) || 0,
-						round = parseFloat($("#roundTo").val()) || false,
-						preferredMarkup = parseFloat($("#preferredPercentMarkup").val()) || 0,
-						preferredWholeMarkup = parseFloat($("#preferredWholeMarkup").val()) || 0,
-						doRound = (round == -1) ? false : true, //Kept ternary operator for readability
+				var markup = parseFloat($("#percentMarkup").val()) || 0, wholeMarkup = parseFloat($("#wholeMarkup").val()) || 0, round = parseFloat($("#roundTo").val()) || false, preferredMarkup = parseFloat($("#preferredPercentMarkup").val()) || 0, preferredWholeMarkup = parseFloat($("#preferredWholeMarkup").val()) || 0, doRound = (round == -1) ? false : true, //Kept ternary operator for readability
 						newPriceDouble = 0.00;
 				if ($('#overWriteWHMCS').prop('checked')) {
 					var $elems = jQuery('[data-price]');
@@ -771,16 +748,13 @@ try {
 				}
 				$elems.each(function () {
 					//If min. is lt preferred, use preferred, else use minimum
-					var $elem = $(this),
-							price = parseFloat($elem.data('price'));
+					var $elem = $(this), price = parseFloat($elem.data('price'));
 					var newMinPrice = price * ( 1 + (markup / 100)) + wholeMarkup;
 					var newPreferredPrice = price * ( 1 + (preferredMarkup / 100)) + preferredWholeMarkup;
 					var newMinPriceDouble = (newMinPrice < newPreferredPrice) ? newPreferredPrice : newMinPrice;
 					newMinPriceDouble = Math.ceil(newMinPriceDouble * 100) / 100;
 					var newPriceString = newMinPriceDouble.toFixed(2);
-					var priceArray = newPriceString.split("."),
-							thisDollarAmount = parseFloat(priceArray[0]),
-							thisCentAmount = parseFloat(priceArray[1]);
+					var priceArray = newPriceString.split("."), thisDollarAmount = parseFloat(priceArray[0]), thisCentAmount = parseFloat(priceArray[1]);
 					//Is Rounding enabled?
 					if (doRound) {
 						if (thisCentAmount >= round) {
@@ -805,8 +779,7 @@ try {
 			return false;
 		});
 		$(".toggle_tld").on('click', function () {
-			var $this = $(this),
-					tld = $this.data('tld');
+			var $this = $(this), tld = $this.data('tld');
 			var $input = $("[data-tld='" + tld + "'][data-year=1]");
 			var first_val = $input.val()
 			if ("" == first_val || " " == first_val) {
@@ -824,8 +797,7 @@ try {
 			return false;
 		});
 		$(".toggle_years").on('click', function () {
-			var $this = $(this),
-					year = $this.data('year');
+			var $this = $(this), year = $this.data('year');
 			var first_val = $($("[data-year='" + year + "']")[1]).val();
 			if ("" == first_val || " " == first_val) {
 				$.each($("[data-year='" + year + "']"), function (k, v) {
@@ -841,10 +813,7 @@ try {
 		var $years = $("[data-year=1]");
 		if ($years.length > 0) {
 			$years.on('keyup', function () {
-				var $t = $(this),
-						tld = $t.data('tld'),
-						$thisTrigger = $(".toggle_tld[data-tld='" + tld + "']"),
-						$action = $('.tldAction[data-tld="' + tld + '"');
+				var $t = $(this), tld = $t.data('tld'), $thisTrigger = $(".toggle_tld[data-tld='" + tld + "']"), $action = $('.tldAction[data-tld="' + tld + '"');
 				if ($t.val() == "") {
 					$thisTrigger.html('Import eNom Pricing');
 					var btnClass = 'btn-default';
@@ -873,8 +842,7 @@ try {
 				val = prompt('Please enter the 1-year price to multiply for this row', 9.99);
 			}
 			$.each($("[data-tld='" + tld + "']"), function (k, v) {
-				var $elem = $(v),
-						cell_val = precise_round(val * $elem.data('year'), 2);
+				var $elem = $(v), cell_val = precise_round(val * $elem.data('year'), 2);
 				$elem.val(cell_val).trigger('keyup');
 			});
 			return false;
@@ -963,11 +931,13 @@ try {
 			});
 			return false;
 		});
-		$("#enom_pro_pricing_table").tableHover({colClass: "hover", ignoreCols: [1]});
-		var $news = $("#enom_pro_changelog"),
-				loadingString = "<h3>Loading Changelog</h3><div class=\"enom_pro_loader\"></div>";
+		$("#enom_pro_pricing_table").tableHover({
+			colClass  : "hover",
+			ignoreCols: [1]
+		});
+		var $news = $("#enom_pro_changelog");
 		if ($news.length > 0) {
-			$news.append(loadingString);
+			$news.append(enom_pro.loadingString);
 			$.ajax({
 				url     : document.location.protocol + "//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=4&callback=?&q=" + encodeURIComponent("http://mycircletree.com/client-area/knowledgebaserss.php?id=43"),
 				dataType: "json",
@@ -975,12 +945,9 @@ try {
 					$news.empty();
 					var str = "";
 					$.each(data.responseData.feed.entries, function (k, entry) {
-						str += "<h4><a target=\"_blank\" href=\"" + entry.link + "\" title=\"View " + entry.title + " on our Website\">"
-						+ entry.title + "</a></h4><p>" +
-						entry.content + "<a class=\"button button-mini\" style=\"float:right;\" target=\"_blank\" href=\"" + entry.link + "\">Read more...</a></p>";
+						str += "<h4><a target=\"_blank\" href=\"" + entry.link + "\" title=\"View " + entry.title + " on our Website\">" + entry.title + "</a></h4><p>" + entry.content + "<a class=\"button button-mini\" style=\"float:right;\" target=\"_blank\" href=\"" + entry.link + "\">Read more...</a></p>";
 					});
-					str += "<a class=\"alignright\" href=\"http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43\" target=\"_blank\">"
-					+ "View Changelog</a>";
+					str += "<a class=\"alignright\" href=\"http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43\" target=\"_blank\">" + "View Changelog</a>";
 					$(str).appendTo($news);
 				}
 			});
@@ -1006,17 +973,14 @@ try {
 								badge += ' current-version';
 								nextIsOlder = true;
 							}
-							var revString = '<span class="' + badge + ' sha">' +
-									value.sha +
-									' <span class="enom-pro-icon-code-fork enom-pro-icon"></span></span>' +
-									'<span class="label label-inverse date">' + value.relative_date + '</span>' +
-									'<span class="betaLogItem">' + value.subject + '</span>';
+							var revString = '<span class="' + badge + ' sha">' + value.sha + ' <span class="enom-pro-icon-code-fork enom-pro-icon"></span></span>' + '<span class="label label-inverse date">' + value.relative_date + '</span>' + '<span class="betaLogItem">' + value.subject + '</span>';
 							$betaLogUL.append('<li class="' + newer + '" data-hash="' + value.sha + '">' + revString + '</li>')
 						});
 					}
 				});
 			});
-		};
+		}
+		;
 		$(".enom_pro_output").on("click", ".enom_stat_button .btn", function () {
 			if ($(this).hasClass("disabled")) {
 				return false;
@@ -1040,19 +1004,19 @@ try {
 				}
 			});
 			return false;
-		}).on('click', '.load_more', function  (){
+		}).on('click', '.load_more', function () {
 			var button = $(this), row = button.closest('tr'), loader = button.closest('td').find('.enom_pro_loader');
 			loader.removeClass('hidden');
 			var ajaxUrl = $(this).attr('href');
 			$.ajax({
 				url    : ajaxUrl,
-				success: function(data) {
+				success: function (data) {
 					$(".domain-widget-response tbody").append(data);
 					button.add(row).hide();
 					$(".ep_tt").tooltip();
 					loader.remove();
 				},
-				error  : function(xhr) {
+				error  : function (xhr) {
 					var errString = '<tr><td colspan="7">' + '<div class="alert alert-danger">' + xhr.responseText + '</div>' + '</td>';
 					$(".domain-widget-response tbody").append(errString);
 					loader.remove();
@@ -1082,9 +1046,7 @@ try {
 			}
 		});
 		$(".filePathToggle").on('click', function () {
-			var $this = $(this),
-					filepath = $this.data('path'),
-					size = filepath.length + 7;
+			var $this = $(this), filepath = $this.data('path'), size = filepath.length + 7;
 			$this.hide();
 			$this.after('<input type="text" name="file[]" onclick="this.select();" size="' + size + '" value="' + filepath + '" />');
 			return false;
@@ -1094,19 +1056,223 @@ try {
 			$betaLog            : jQuery("#enom_pro_beta_changelog"),
 			$upgradeAlert       : jQuery('#upgradeAlert'),
 			$upgradeAlertSidebar: $(".upgradeAlertHidden"),
+			loadingString       : "<div class=\"enom_pro_loader\"></div>",
 			init                : function () {
 				if (this.isUpgradeAlertHidden()) {
 					this.hideUpgradeAlert();
-					//this.hide(this.$upgradeAlert);
 				} else {
 					this.showUpgradeAlert();
-					//this.hide(this.$upgradeAlertSidebar);
 				}
 				this.$upgradeAlert.on('close.bs.alert', function (e) {
 					//Stop Bootstrap from removing it from the DOM
 					e.preventDefault();
 					enom_pro.hideUpgradeAlert();
-				})
+				});
+			},
+			helpCacheKey        : 'enom_pro_help',
+			/**
+			 * Public method for loading the help interface
+			 */
+			initHelpIndex       : function () {
+				this.loadHelpIndex();
+				this.initHelpSearch();
+				this.initHelpDialog();
+				this.initHelpEvents();
+			},
+			$helpDialog         : false,
+			/**
+			 * @access private
+			 */
+			initHelpDialog      : function () {
+				this.$helpDialog = $(".helpDialog");
+				this.$helpDialog.dialog({
+					height  : 'auto',
+					width   : '760px',
+					minWidth: 250,
+					maxWidth: 760,
+					autoOpen: false,
+					modal   : false
+				});
+			},
+			initHelpEvents      : function () {
+				$(".enom_pro_output").on('click', '.helpTrigger', function () {
+					var help_id = $(this).data('help-id');
+						enom_pro.loadHelpIDIntoDialog(help_id);
+					return false;
+				});
+			},
+			loadHelpIDIntoDialog: function (help_id) {
+				var $content = $("#helpDialogContent"),
+						cachedContent = this.getHelpContent(help_id);
+				this.$helpDialog.dialog('open');
+				if (! cachedContent) {
+					$content.html(enom_pro.loadingString);
+					$.ajax({
+						url     : document.location.protocol + "//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=1&callback=?&q=" + encodeURIComponent("http://mycircletree.com/client-area/knowledgebaserss.php?id=" + help_id),
+						dataType: "json",
+						success : function (data) {
+							var str = "", title;
+							$.each(data.responseData.feed.entries, function (k, entry) {
+								title = entry.title;
+								str += "<div class=\"content\" >" + entry.content + "</div>";
+							});
+							cachedContent = {
+								title: title,
+								body : str
+							};
+							enom_pro.setHelpContent(help_id, cachedContent);
+							processHelp(cachedContent);
+						}
+					});
+				} else {
+					//Cached
+					processHelp(cachedContent);
+				}
+				function processHelp (cachedContent) {
+				$content.html(cachedContent.body.split('Â').join(''));
+				enom_pro.$helpDialog
+						.dialog('option', 'title', cachedContent.title);
+				enom_pro.$helpDialog
+						.dialog('option', "position", { my: "center", at: "center", of: window });
+				}
+			},
+			/**
+			 * Gets help content from LocalStorage
+			 * @param id help id key
+			 * @returns {*}
+			 */
+			getHelpContent      : function (id) {
+				var help_key = this.helpCacheKey + id;
+
+				if (this.support.localStorage() && window.localStorage.getItem(help_key)) {
+					return JSON.parse(window.localStorage.getItem(help_key));
+				}
+				return false;
+			},
+			setHelpContent      : function (id, data) {
+				var help_key = this.helpCacheKey + id;
+				if (this.support.localStorage()) {
+					window.localStorage.setItem(help_key, JSON.stringify(data));
+				}
+			},
+			/**
+			 * private method to fetch help
+			 */
+			loadHelpIndex        : function () {
+				var homeHelpKey = 'Home', $searchField = $("#helpSearch"), search = $searchField.val(), doingSearch = false, $homeHelp = $("#homeHelpContent");
+				if (search != "") {
+					doingSearch = true;
+					homeHelpKey += search;
+				}
+				if (enom_pro.getHelpContent(homeHelpKey)) {
+					var str = enom_pro.getHelpContent(homeHelpKey);
+					$homeHelp.empty();
+					$(str).appendTo($homeHelp);
+				} else {
+					$homeHelp.html(enom_pro.loadingString);
+					var feedURL = "http://mycircletree.com/client-area/knowledgebaserss.php?catid=11" + "&rand=" + Math.random(1, 1000);
+					if (doingSearch) {
+						feedURL += "&s=" + search;
+					}
+
+					var url = document.location.protocol + "//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=25&callback=?&q=" + encodeURIComponent(feedURL);
+					$.ajax({
+						url     : url,
+						dataType: "json",
+						success : function (data) {
+							$homeHelp.empty();
+							str = "<ul>";
+							if (data.responseData.feed.entries.length == 0) {
+								str += '<li><div class="alert">No Search Results Found. Please try again.</div></li>'
+							} else {
+								$.each(data.responseData.feed.entries, function (k, entry) {
+									var help_id = enom_pro.getParameterByName('id', entry.link);
+									str += '<li>' +
+									'<h4>' +
+										'<a ' +
+												'href="' + entry.link + '" ' +
+												'class="helpTrigger" ' +
+												'data-help-id="' + help_id +
+										'">' +
+													entry.title +
+										'</a>' +
+									'</h4>' +
+
+									'<p class="snippet">' +
+											entry.contentSnippet.replace('...', '') +
+									'</p>';
+									str += '<a ' +
+														'href="' + entry.link + '" ' +
+														'class="helpTrigger readmore btn btn-sm btn-primary" ' +
+														'data-help-id="' + help_id + '"' +
+													'>' +
+									'Continue reading: ' + entry.title + '</a></li>';
+								});
+							}
+							str += "</ul>";
+							enom_pro.setHelpContent(homeHelpKey, str);
+							$homeHelp.html(str);
+						}
+					});
+				}
+			},
+			initHelpSearch      : function () {
+				var $searchField = $('input[name=s]'), oldSearch = "", searchTimeout = null, $clearSearchButton = $('.searchWrap .enom-pro-icon-cancel-circle');
+				$searchField.on('keyup', function () {
+					var newSearch = $searchField.val();
+					if (oldSearch === newSearch) {
+						return false;
+					}
+					if ($searchField.val().length > 1) {
+						$clearSearchButton.removeClass('hidden');
+						if (searchTimeout != null) {
+							clearTimeout(searchTimeout);
+						}
+						searchTimeout = setTimeout(enom_pro.loadHelpIndex, 500);
+						oldSearch = newSearch;
+					} else if ($searchField.val() == "") {
+						//Restore defaults
+						$clearSearchButton.addClass('hidden');
+						clearTimeout(searchTimeout);
+						enom_pro.loadHelpIndex();
+					}
+				}).on('clearSearch', function () {
+					$searchField.val('');
+					$searchField.trigger('keyup');
+				});
+				$clearSearchButton.on('click', function () {
+					$searchField.trigger('clearSearch');
+					return false;
+				});
+
+			},
+			getHelpCacheCount   : function () {
+				var helpCount = 0;
+				jQuery.each(window.localStorage, function (key, value) {
+					if (typeof key !== "string") {
+						key = window.localStorage.key(key);
+					}
+					if (-1 != key.indexOf(enom_pro.helpCacheKey)) {
+						helpCount++;
+					}
+				});
+				return helpCount;
+			},
+			clearHelpCache      : function () {
+				if (window.localStorage) {
+					var cleared = 0;
+					jQuery.each(window.localStorage, function (key, value) {
+						if (typeof key !== "string") {
+							key = window.localStorage.key(key);
+						}
+						if (null !== key && -1 !== key.indexOf(enom_pro.helpCacheKey)) {
+							cleared++;
+							window.localStorage.removeItem(key);
+						}
+					});
+					return cleared;
+				}
+				return false;
 			},
 			lastSavedTLDPricing : {
 				min_markup_percent      : $('#percentMarkup').val(),
@@ -1151,6 +1317,23 @@ try {
 			},
 			hide                : function ($item) {
 				$item.addClass('hidden').hide();
+			},
+			/**
+			 * Parses a URI for query variables
+			 * @param name GET variable to fetch
+			 * @param url URI to parse
+			 * @returns {string}
+			 */
+			getParameterByName  : function (name, url) {
+				name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+				var regexS = "[\\?&]" + name + "=([^&#]*)";
+				var regex = new RegExp(regexS);
+				var results = regex.exec(url);
+				if (results === null) {
+					return "";
+				} else {
+					return decodeURIComponent(results[1].replace(/\+/g, " "));
+				}
 			},
 			support             : {
 				localStorage: function () {
