@@ -1024,6 +1024,13 @@ try {
 			});
 			return false;
 		});
+		if ($(".doIPFetch").length > 0) {
+			$.getJSON("http://www.telize.com/jsonip?callback=?",
+					function(json) {
+						$(".doIPFetch").html('<input value="' + json.ip + '" onclick="this.select();"/>').removeClass('enom_pro_loader');
+					}
+			);
+		}
 		$(".ep_sortable").sortable({
 			update: function (e, ui) {
 				var $loader = $(".enom_pro_loader");

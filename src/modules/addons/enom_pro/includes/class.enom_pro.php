@@ -163,6 +163,11 @@ class enom_pro {
 		$this->runTransaction( "CheckLogin" );
 	}
 
+	/**
+	 * Is the module running in live or test mode?
+	 * @var bool
+	 */
+	private static $testMode = false;
 	private function get_login_credientials() {
 
 		if ( defined( 'UNIT_TESTS' ) ) {
@@ -184,6 +189,7 @@ class enom_pro {
 		}
 		//Clean up the testmode to a (bool)
 		$live = ( $params['TestMode'] == 'on' ) ? false : true;
+		self::$testMode = ! $live;
 		//Set the API url
 		$this->URL = ( $live ? 'http://reseller.enom.com/interface.asp' : 'http://resellertest.enom.com/interface.asp' );
 		//Build the initial connection test
@@ -221,7 +227,7 @@ class enom_pro {
 	public static function render_admin_errors( array $errors ) {
 
 		$s      = count( $errors ) > 1 ? 's' : '';
-		$string = '<div class="errorbox"><h3>Error' . $s . '</h3>' . PHP_EOL;
+		$string = '<div class="errorbox">' . PHP_EOL;
 		foreach ( $errors as $error ) {
 			$error_code = 0;
 			if ( $error instanceof Exception ) {
@@ -234,23 +240,37 @@ class enom_pro {
 			$string .= '<li>' . $error_msg . '</li>';
 			if ( strstr( $error_msg, "IP" ) ) {
 				//The most common error message is for a non-whitelisted API IP
-				$string .= "<li>You need to whitelist your IP with enom, here's the link for the 
-                    <a target=\"_blank\" href=\"http://www.enom.com/resellers/reseller-testaccount.aspx\">Test API.
-                    </a><br/>
-                    For the Live API, you'll need to open a 
-                    <a target=\"_blank\" href=\"http://www.enom.com/help/default.aspx\">support ticket with enom.
-                    </a></li>";
+				$string .= "<h4>You need to white-list your IP address with eNom.</h4>";
+				if (self::$testMode) {
+					$string .= '<span class="label label-danger">Running in Test Mode</span>';
+					$string .= "
+	                    <a target=\"_blank\" class='btn btn-default btn-xs' href=\"http://www.enom.com/resellers/reseller-testaccount.aspx\">White-list your IP for the Test API.
+	                    </a> ";
+				} else {
+					$string .= '<span class="label label-success">Running in LIVE Mode</span>';
+					$string .= "
+                    For the Live API, you'll need to
+                    <a target=\"_blank\" class='btn btn-default btn-xs' href=\"http://www.enom.com/help/default.aspx\">open a support ticket with enom.
+                    </a>";
+				}
+				$string .= '
+						<div class="enom_pro_output">
+							<div class="alert alert-warning">
+								Current Public IP:
+									<div class="enom_pro_loader doIPFetch">Fetching Remote Ip</div>
+							</div>
+						</div>';
 				if ( isset( $_SERVER['SERVER_ADDR'] ) ) {
-					$string .= '<pre>Current IP Address reported by PHP: ' . $_SERVER['SERVER_ADDR'] . '</pre>';
+					$string .= '<div class="alert alert-info">Current IP Address reported by PHP:
+									<input type="text" name="server_addr" value="'. $_SERVER['SERVER_ADDR'].'"/>
+								</div>';
 				}
 			}
 			if ( strstr( $error_msg, "Bad" ) ) {
 				//The most common error message is for a non-whitelisted API IP
 				$string .= "<li>Check your eNom Login Credentials";
 				$click = "javascript:jQuery('#edit_registrar').trigger('click');return false;";
-				$string .= '
-                        <a href="#" onclick="' . $click . '">Edit Registrar Settings</a>
-                        ';;
+				$string .= '<a href="#" onclick="' . $click . '">Edit Registrar Settings</a>';
 			}
 
 		}
@@ -261,7 +281,7 @@ class enom_pro {
 
 	/**
 	 * Public interface for checking if module is in debug mode
-	 * @return $debug (bool) true for yes, false for no
+	 * @return bool $debug true for yes, false for no
 	 */
 	public static function debug() {
 

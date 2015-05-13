@@ -740,7 +740,10 @@ function enom_pro_output( $vars ) {
 
 				//Run this test to throw an exception sooner
 				//  (before rendering page content)
-				$enom->check_login();
+				if ((isset($_GET) && isset($_GET['view'])) && 'help' !== $_GET['view']) {
+					//Don't run API check on the help page.
+					$enom->check_login();
+				}
 
 				$view   = (string) $_GET['view'];
 				$method = "render_$view";
