@@ -1,10 +1,10 @@
-<div class="well row">
+<div class="well row" id="bulkLeftWrap">
 	<button type="button"
 	        class="close"
 	        data-dismiss="alert"
 	        aria-hidden="true">&uarr;</button>
 
-	<div class="col-lg-6">
+	<div class="col-lg-6" id="bulkPricingImportWrap">
 
 		<h3>Bulk Import</h3>
 
@@ -106,11 +106,11 @@
 			</div>
 
 			<div class="btn-group pull-right">
-				<button type="submit" class="btn btn-primary ep_pop" data-content="Press ENTER in the form above for rapid previewing" title="Helpful Hint" data-placement="auto top" data-container="body">Preview</button>
-				<button type="button" class="btn btn-success savePricing">Save</button>
+				<button type="submit" class="btn btn-primary ep_pop" data-content="Press ENTER in the form above for rapid previewing" title="Helpful Hint" data-placement="auto top" data-container="body">Preview <span class="enom-pro-icon-refresh-alt"></span></button>
+				<button type="button" class="btn btn-success savePricing">Save <span class="enom-pro-icon-checkmark"></span></button>
 
 				<div class="btn-group">
-					<button type="reset" class="btn btn-danger clear_all">Clear</button>
+					<button type="reset" class="btn btn-danger clear_all ep_pop" data-content="Clears the pricing on this page" data-placement="top" data-toggle="popover" data-container="#bulkLeftWrap">Clear <span class="enom-pro-icon-warning"></span></button>
 					<button type="button"
 					        class="btn btn-danger dropdown-toggle"
 					        data-toggle="dropdown">
@@ -126,12 +126,12 @@
 			</div>
 		</form>
 	</div>
-	<div class="col-lg-6">
+	<div class="col-lg-6" id="bulkPricingMetaWrap">
 		<h3>Domain Pricing Meta</h3>
 		Pricing for a total of <?php echo count( $this->getAllDomainsPricing() ) ?> TLDs.
 		<br/>
 		Pricing data last updated <?php echo $this->get_price_cache_date(); ?>
-		<a class="btn btn-default btn-info"
-		   href="<?php echo enom_pro::MODULE_LINK; ?>&action=clear_price_cache">Clear Cache</a>
+		<a class="btn btn-inverse"
+		   href="<?php echo enom_pro::MODULE_LINK; ?>&action=clear_price_cache">Clear Cache <span class="enom-pro-icon-trash"></span></a>
 	</div>
 </div>

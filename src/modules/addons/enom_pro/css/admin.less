@@ -2,7 +2,7 @@
 eNom PRO for WHMCS by Circle Tree, LLC
 Licensed from Orion IP Ventures, LLC
 */
-
+@colorBackground : #fff;
 .clearfix {
 	&:before,
 	&:after {
@@ -78,17 +78,14 @@ Licensed from Orion IP Ventures, LLC
 		margin-bottom: 10px;
 	}
 
-	#homeHelpContent
-	{
+	#homeHelpContent {
 	}
 
-	#homeHelpContent ul
-	{
+	#homeHelpContent ul {
 		padding-left: 0;
 	}
 
-	#homeHelpContent ul li
-	{
+	#homeHelpContent ul li {
 		box-sizing: border-box;
 		width: calc(50% - 5px);
 		float: left;
@@ -100,22 +97,19 @@ Licensed from Orion IP Ventures, LLC
 		margin-right: 5px;
 	}
 
-	.searchWrap
-	{
+	.searchWrap {
 		width: 100%;
 		max-width: 400px;
 		position: relative;
 		display: block;
 	}
 
-	.searchWrap input
-	{
+	.searchWrap input {
 		width: 100%;
 		font-size: 14pt;
 	}
 
-	.searchWrap .enom-pro-icon-cancel-circle
-	{
+	.searchWrap .enom-pro-icon-cancel-circle {
 		/*+placement: anchor-top-right 8px 8px;*/
 		position: absolute;
 		right: 8px;
@@ -520,6 +514,61 @@ Licensed from Orion IP Ventures, LLC
 	#enom_pro_pricing_import_page ul.dropdown-menu.clearDropdown {
 		left: -90px;
 	}
+//Bulk Pricing Turbo Editor
+	.fixedBulk {
+		#bulkRightWrap,
+		#bulkLeftWrap {
+			position: fixed;
+			top: 0;
+			left: 0;
+			height: 100%;
+			z-index: 3;
+			overflow-y: auto;
+		}
+		/* Left hand bulk update */
+		@leftWidth: 25%;
+		@rightWidth: 100% - @leftWidth;
+		#bulkLeftWrap {
+			padding: 3px;
+			width: @leftWidth;
+			margin: 0;
+			border-radius: 0;
+
+			.close {
+				display: none;
+			}
+			#bulkPricingImportWrap {
+				.col-xs-12 {
+					padding: 0;
+				}
+				label[for="percentMarkup"],
+				label[for="preferredPercentMarkup"] {
+					display: none;
+				}
+
+				.pull-right {
+					float: none !important;
+				}
+			}
+			#bulkPricingImportWrap,#bulkPricingMetaWrap {
+				width: 100%;
+				margin: 0;
+				h3, p {
+					display: none;
+				}
+			}
+			#bulkPricingMetaWrap {
+				margin-top: 5px;
+			}
+
+		}
+		//		Right hand bulk
+		#bulkRightWrap {
+			width: @rightWidth;
+			left: @leftWidth;
+			background-color: @colorBackground;
+		}
+	}
 	.ep_sortable TR {
 		cursor: ns-resize;
 	}
@@ -914,6 +963,7 @@ Top level DOM items
 		display: inline;
 	}
 }
+
 #whmcsdevbanner {
 	display: none !important;
 }
@@ -923,6 +973,7 @@ Dialog */
 #helpDialogContent .content ol li {
 	list-style: decimal;
 }
+
 #helpDialogContent .content ol li h1,
 #helpDialogContent .content ol li h2,
 #helpDialogContent .content ol li h3,
