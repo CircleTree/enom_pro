@@ -1076,6 +1076,24 @@ try {
 					enom_pro.hideUpgradeAlert();
 				});
 			},
+			initPricingImport : function  (){
+				//TODO restore / hide based on localStorage
+//				this.showBulkPricingTurboEditor();
+			},
+			showBulkPricingTurboEditor : function  (){
+				$("#enom_pro_pricing_import_page").addClass("fixedBulk");
+				$('html, body').css({
+					'overflow': 'hidden',
+					'height': '100%'
+				});
+			},
+			hideBulkPricingTurboEditor: function  (){
+				$("#enom_pro_pricing_import_page").removeClass("fixedBulk");
+				$('html, body').css({
+					'overflow': 'auto',
+					'height': 'auto'
+				});
+			},
 			helpCacheKey        : 'enom_pro_help',
 			/**
 			 * Public method for loading the help interface

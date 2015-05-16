@@ -633,6 +633,7 @@ class enom_pro {
 	public static function getDefaultCurrencyPrefix() {
 
 		self::getWHMCSCurrencyData();
+		//This is cached
 		$defaultCurrencyPrefix = self::$whmcsCurrencyData['currencies']['currency'][0]['prefix'];
 
 		return $defaultCurrencyPrefix;
