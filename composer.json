@@ -3,6 +3,7 @@
   "description": "eNom PRO for WHMCS",
   "require-dev": {
     "phpunit/phpunit": "~4.4",
+    "alexandresalome/mailcatcher": "~0.2",
     "phing/phing": "2.9.*@dev",
     "phpmd/phpmd": "dev-master",
     "sebastian/phpcpd": "~2.0",

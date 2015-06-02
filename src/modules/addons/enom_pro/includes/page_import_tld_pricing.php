@@ -238,13 +238,16 @@ if ( $this->is_pricing_cached() ) : ?>
 
 								}
 								?>
-								<div class="btn-group tldActions<?php echo $thisTLDError ? ' ep_pop' : ''; ?>"
+						<div class="btn-group tldActions
 									<?php if ( $thisTLDError ) : ?>
+							ep_pop"
 										title="Error from eNom API"
 										data-content="<?php echo $thisTLDError ?>"
-									<?php endif;?>>
-									<div class="btn tldAction <?php echo implode( " ",
-										$btn_classes ) ?> dropdown-toggle"
+							<?php else: ?>
+								"
+							<?php endif;?>
+							>
+							<div class="btn tldAction <?php echo implode(" ", $btn_classes) ?> dropdown-toggle"
 									     data-toggle="dropdown"
 									     data-tld="<?php echo $tld ?>"
 									     <?php if ($isInWHMCS) : ?>data-whmcs="true"<?php endif ?>><?php echo $tld; ?></div>

@@ -200,13 +200,20 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group ssl
 	 */
-	function  test_load_ssl_mock() {
+	function  test_load_ssl_mock($xml_filename = false) {
 
-		$file = dirname( getcwd() ) . '/tests/files/expiring_ssl.xml';
+		if (false === $xml_filename) {
+			$xml_filename = 'expiring_ssl.xml';
+		}
+
+		$file = $this->getTestMockPath() . $xml_filename;
 		$this->e->_load_xml( $file );
 		$resp = $this->e->getExpiringCerts();
 		$this->assertNotEmpty( $resp );
 		$this->assertNotEmpty( $resp[0]['domain'] );
+	}
+	private function getTestMockPath () {
+		return ROOTDIR . "/../tests/files/";
 	}
 
 	/**
@@ -673,23 +680,29 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 */
 	function test_get_expiring_certs_has_StatusID() {
 
-		$file = dirname( getcwd() ) . '/tests/files/expiring_ssl.xml';
-		$this->e->_load_xml( $file );
+		$this->test_load_ssl_mock();
 		$resp = $this->e->getExpiringCerts();
 		$this->assertNotEmpty( $resp );
 		$this->assertNotEmpty( $resp[0]['domain'] );
-		$this->assertNotEmpty( $resp[0]['status_id'] );
+		$this->assertTrue(is_int( $resp[0]['status_id']) );
 	}
 
+	/**
+	 * @group ssl
+	 * @throws WHMCSException
+	 */
 	function test_send_all_ssl_reminders() {
 
 		//Test set up
-		$fileName           = dirname( getcwd() ) . '/tests/files/expiring_ssl_reminders.xml';
+		enom_pro::set_addon_setting( 'ssl_email_days', 30);
+		enom_pro::set_addon_setting('ssl_email_enabled', "on");
+		$fileName           = $this->getTestMockPath() . 'expiring_ssl_new.xml';
 		$file_contents      = file_get_contents( $fileName );
 		$expiry_days_before = enom_pro::get_addon_setting( 'ssl_email_days' );
 		$send_timestamp     = strtotime( "+$expiry_days_before days" );
 		//Replace tag in XML with a relative date for the test
-		$file_contents = str_replace( '{$EXP_DATE}', date( 'm/d/Y', $send_timestamp ), $file_contents );
+		$ssl_expiry_date_formatted = date( 'm/d/Y', $send_timestamp );
+		$file_contents = str_replace( '{$EXP_DATE}', $ssl_expiry_date_formatted, $file_contents );
 		//Write it to a temp file
 		$fileNameTmp = $fileName . '.tmp';
 		file_put_contents( $fileNameTmp, $file_contents );
@@ -717,10 +730,23 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$this->assertContains('success', $new_client);
 		$client_id = $new_client['clientid'];
 
+		$mail = new \Alex\MailCatcher\Client();
+		$mail->purge();
+
 		//Run test
 		$num_sent = $this->e->send_all_ssl_reminder_emails();
 		$this->assertEquals( 3, $num_sent );
+		$this->assertEquals(3, $mail->getMessageCount());
+
+		$messages = $mail->search();
+		$message = $messages[0];
+		/** @var $message Alex\MailCatcher\Message */
+		$this->assertContains($ssl_expiry_date_formatted, $message->getContent());
+		$this->assertSame('SSL Expiring Soon', $message->getSubject());
+
+		//Cleanup
 		unlink( $fileNameTmp );
+		unset($mail);
 
 	}
 	function  testNoWidgetsEnabled(){

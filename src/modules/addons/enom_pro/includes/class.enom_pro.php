@@ -168,6 +168,7 @@ class enom_pro {
 	 * @var bool
 	 */
 	private static $testMode = false;
+
 	private function get_login_credientials() {
 
 		if ( defined( 'UNIT_TESTS' ) ) {
@@ -188,15 +189,15 @@ class enom_pro {
 			// @codeCoverageIgnoreEnd
 		}
 		//Clean up the testmode to a (bool)
-		$live = ( $params['TestMode'] == 'on' ) ? false : true;
+		$live           = ( $params['TestMode'] == 'on' ) ? false : true;
 		self::$testMode = ! $live;
 		//Set the API url
 		$this->URL = ( $live ? 'http://reseller.enom.com/interface.asp' : 'http://resellertest.enom.com/interface.asp' );
 		//Build the initial connection test
 		$this->setParams( array(
-				'uid' => $params['Username'],
-				'pw'  => $params['Password']
-			) );
+			'uid' => $params['Username'],
+			'pw'  => $params['Password']
+		) );
 	}
 
 	/**
@@ -241,7 +242,7 @@ class enom_pro {
 			if ( strstr( $error_msg, "IP" ) ) {
 				//The most common error message is for a non-whitelisted API IP
 				$string .= "<h4>You need to white-list your IP address with eNom.</h4>";
-				if (self::$testMode) {
+				if ( self::$testMode ) {
 					$string .= '<span class="label label-danger">Running in Test Mode</span>';
 					$string .= "
 	                    <a target=\"_blank\" class='btn btn-default btn-xs' href=\"http://www.enom.com/resellers/reseller-testaccount.aspx\">White-list your IP for the Test API.
@@ -262,7 +263,7 @@ class enom_pro {
 						</div>';
 				if ( isset( $_SERVER['SERVER_ADDR'] ) ) {
 					$string .= '<div class="alert alert-info">Current IP Address reported by PHP:
-									<input type="text" name="server_addr" value="'. $_SERVER['SERVER_ADDR'].'"/>
+									<input type="text" name="server_addr" value="' . $_SERVER['SERVER_ADDR'] . '"/>
 								</div>';
 				}
 			}
@@ -417,14 +418,9 @@ class enom_pro {
 			return true;
 		}
 		//Set the command
-		if (
-			! in_array(
-				strtoupper( trim( $command )  ),
-				self::array_to_upper( $this->implemented_commands ) )
-		 &&
-			! defined('UNIT_TESTS')
-		)
-		{
+		if ( ! in_array( strtoupper( trim( $command ) ),
+				self::array_to_upper( $this->implemented_commands ) ) && ! defined( 'UNIT_TESTS' )
+		) {
 			throw new InvalidArgumentException( 'API Method ' . $command . ' not implemented', 400 );
 		}
 		if ( $this->remote_run_number >= $this->api_request_limit ) {
@@ -442,7 +438,7 @@ class enom_pro {
 		if ( function_exists( 'logModuleCall' ) ) {
 			logModuleCall( 'enom_pro', //Module name
 				$this->getParam( 'command' ), //Command
-				$this->parameters, //Parameters 
+				$this->parameters, //request Parameters
 				$this->response, //Response
 				(array) $this->xml, //API Response
 				//Masked Parameters
@@ -580,9 +576,9 @@ class enom_pro {
 
 		try {
 			$this->setParams( array(
-					'TLD'         => $tld,
-					'ProductType' => 10,
-				) );
+				'TLD'         => $tld,
+				'ProductType' => 10,
+			) );
 			if ( $retail ) {
 				$this->runTransaction( 'PE_GetRetailPrice' );
 			} else {
@@ -827,6 +823,7 @@ class enom_pro {
 
 		require_once ENOM_PRO_INCLUDES . 'widget_pending_verification.php';
 	}
+
 	public function render_domain_pending_transfer_widget() {
 
 		require_once ENOM_PRO_INCLUDES . 'widget_domain_pending_transfers.php';
@@ -981,9 +978,9 @@ class enom_pro {
 			return $this->get_cache_data( $this->cache_file_verification_report );
 		}
 		$this->setParams( array(
-			'ReportType' => 31,
-			'Version'    => 1,
-			'Download'   => 'False',
+			'ReportType'      => 31,
+			'Version'         => 1,
+			'Download'        => 'False',
 			'RecordsToReturn' => 9
 		) );
 		$this->runTransaction( 'RPT_GETREPORT' );
@@ -1134,7 +1131,10 @@ class enom_pro {
 	 */
 	public function getExpiringCerts() {
 
-		$this->setParams( array( 'SortBy' => 'Expiration' ) );
+		$this->setParams( array(
+			'SortBy' => 'Expiration',
+			'PagingPageSize' => 250
+		) );
 		$this->runTransaction( 'CertGetCerts' );
 		$return = array();
 		$days   = $this->get_addon_setting( 'ssl_days' );
@@ -1157,7 +1157,7 @@ class enom_pro {
 				$formatted_result = array(
 					'domain'          => (array) $cert->DomainName,
 					'status'          => (string) $cert->CertStatus,
-					'status_id'       => (int) (isset($cert->CertStatusid) ? $cert->CertStatusid : $cert->certstatusid),
+					'status_id'       => (int) ( isset( $cert->CertStatusid ) ? $cert->CertStatusid : 0 ),
 					'expiration_date' => (string) $cert->ExpirationDate,
 					'OrderID'         => (int) $cert->OrderID,
 					'CertID'          => (int) $cert->CertID,
@@ -1380,7 +1380,7 @@ class enom_pro {
 		}
 
 		if ( true === $this->limit || $this->limit >= 100 ) {
-			set_time_limit(0);
+			set_time_limit( 0 );
 			//No limit or gte 100 records 
 			$this->remote_limit = 100;
 			if ( $this->remote_run_number == 0 ) {
@@ -1435,7 +1435,7 @@ class enom_pro {
 		$this->last_result_count    = count( $this->last_result );
 		$this->remote_limit_reached = false;
 
-		if ( $this->last_result_count >= $meta['total_domains'] || 0 == $meta['total_domains']) {
+		if ( $this->last_result_count >= $meta['total_domains'] || 0 == $meta['total_domains'] ) {
 
 			$this->remote_limit_reached = true;
 		}
@@ -1443,8 +1443,8 @@ class enom_pro {
 			$this->remote_limit_reached = true;
 		}
 		if ( is_bool( $this->limit ) && true === $this->limit ) {
-			$this->remote_start         = (int) $this->xml->GetDomains->NextRecords;
-			$this->is_get_all_domains   = true;
+			$this->remote_start       = (int) $this->xml->GetDomains->NextRecords;
+			$this->is_get_all_domains = true;
 		}
 
 		while ( ! $this->remote_limit_reached ) {
@@ -1932,25 +1932,25 @@ class enom_pro {
 				RemoteException::CURL_EXCEPTION );
 		}
 		$get_query = http_build_query( $get );
-		if (strlen($get_query) < 1900) {
-			unset($get_query);
+		if ( strlen( $get_query ) < 1900 ) {
+			unset( $get_query );
 			$result = self::do_curl_get( $url, $get, $options );
 		} else {
-			unset($get_query);
-			$result = self::do_curl_post($url, $get, $options);
+			unset( $get_query );
+			$result = self::do_curl_post( $url, $get, $options );
 		}
 
 		return $result;
 	}
-	private static function do_curl_post ($url,  array $params, array $options = array())
-	{
+
+	private static function do_curl_post( $url, array $params, array $options = array() ) {
+
 		$postData = '';
 		//create name value pairs seperated by &
-		foreach($params as $k => $v)
-		{
-			$postData .= $k . '='.$v.'&';
+		foreach ( $params as $k => $v ) {
+			$postData .= $k . '=' . $v . '&';
 		}
-		rtrim($postData, '&');
+		rtrim( $postData, '&' );
 
 		$defaults = array(
 			CURLOPT_URL            => $url,
@@ -1958,18 +1958,20 @@ class enom_pro {
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_TIMEOUT        => 15,
 			CURLOPT_SSL_VERIFYPEER => false,
-			CURLOPT_POST => count($params),
-			CURLOPT_POSTFIELDS => $postData
+			CURLOPT_POST           => count( $params ),
+			CURLOPT_POSTFIELDS     => $postData
 		);
 
 		$ch = curl_init();
 		curl_setopt_array( $ch, ( $options + $defaults ) );
 
-		$output=curl_exec($ch);
+		$output = curl_exec( $ch );
 
-		curl_close($ch);
+		curl_close( $ch );
+
 		return $output;
 	}
+
 	/**
 	 * cURL get, and decodes JSON response
 	 *
@@ -2120,7 +2122,7 @@ class enom_pro {
 	public function get_upgrade_zip_url() {
 
 		$license = new enom_pro_license();
-		$url = 'http://mycircletree.com/client-area/get_enom_pro.php?key=';
+		$url     = 'http://mycircletree.com/client-area/get_enom_pro.php?key=';
 		$url .= self::get_addon_setting( 'license' );
 		$url .= '&id=' . $license->get_id();
 		if ( enom_pro_license::isBetaOptedIn() ) {
@@ -2245,7 +2247,7 @@ class enom_pro {
 		//Upgrade Core Files
 		$upgrade_files_dir = $upgrade_dir . 'modules/addons/enom_pro/';
 		$objects           = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $upgrade_files_dir,
-				FilesystemIterator::SKIP_DOTS ) );
+			FilesystemIterator::SKIP_DOTS ) );
 
 		//Subfolders to extract into, used for security
 		$core_dirs         = array( 'images', 'includes', 'js', 'css' );
@@ -2302,9 +2304,11 @@ class enom_pro {
 	/**
 	 * Clears memory cache of data
 	 */
-	public function clearXMLCache () {
+	public function clearXMLCache() {
+
 		unset( $this->xml );
 	}
+
 	/**
 	 * Parses eNom SSL cert data to mail merge $smarty values
 	 *
@@ -2344,8 +2348,11 @@ class enom_pro {
 					'customvars'  => base64_encode( serialize( $cert_meta_array ) ),
 				);
 				self::whmcs_api( 'sendemail', $data );
+				$return = true;
+			} else {
+				//TODO log email response disabled?
+				$return = false;
 			}
-			$return = true;
 		} catch ( Exception $e ) {
 			self::log_activity( ENOM_PRO . ': Error Sending SSL Notification: ' . $e->getMessage() );
 		}
@@ -2380,8 +2387,10 @@ class enom_pro {
 					$data['email']    = self::get_addon_setting( 'ssl_ticket_default_email' );
 				}
 				self::whmcs_api( 'openticket', $data );
+				$return = true;
+			} else {
+				//TODO log tickets disabled?
 			}
-			$return = true;
 		} catch ( Exception $e ) {
 			self::log_activity( ENOM_PRO . ': Error Opening SSL Ticket: ' . $e->getMessage() );
 		}
@@ -2412,7 +2421,9 @@ class enom_pro {
 
 		return $response;
 	}
+
 	public $ssl_reminder_cert_status_ids = array(
+		0, //CertID not set
 		4, //Certificate Issued
 		8, //Refunded - Cert Issued
 		13, //Cert Installed (associate with our hosting)
@@ -2433,9 +2444,9 @@ class enom_pro {
 			if ( $this->format_ts( $expiry_timestamp ) == $this->format_ts( $send_timestamp ) ) {
 				//Get client id for $domain
 				$client_id = $this->getClientIdByDomain( reset( $cert['domain'] ) );
-				if ( false !== $client_id && in_array($cert['status_id'], $this->ssl_reminder_cert_status_ids)) {
+				if ( false !== $client_id && in_array( $cert['status_id'], $this->ssl_reminder_cert_status_ids ) ) {
 					//Send Email
-					if (true === $this->send_SSL_reminder_email( $client_id, $cert ) )  {
+					if ( true === $this->send_SSL_reminder_email( $client_id, $cert ) ) {
 						$reminder_count ++;
 					}
 				}
@@ -2721,7 +2732,7 @@ class enom_pro {
 		<a class="btn btn-block btn-warning ep_tt"
 		   title="Running in Beta mode - Please report bugs"
 		   target="_blank"
-		   href="<?php echo self::TICKET_URL?>&subject=<?php echo urlencode( ENOM_PRO . ' Bug Report' ) . '&message=' . self::getSupportMessage(); ?>">
+		   href="<?php echo self::TICKET_URL ?>&subject=<?php echo urlencode( ENOM_PRO . ' Bug Report' ) . '&message=' . self::getSupportMessage(); ?>">
 			<span class="enom-pro-icon enom-pro-icon-support"></span>
 			BETA Mode<span class="enom-pro-icon enom-pro-icon-bug"></span>
 		</a>
@@ -2733,18 +2744,18 @@ class enom_pro {
 		$raw_text = require_once ENOM_PRO_INCLUDES . 'betaSupportMessageText.php';
 
 		return urlencode( str_replace( array(
-				'%VERSION%',
-				'%PHPVERSION%',
-				'%WHMCSVERSION%',
-				'%CURRPAGE%'
+			'%VERSION%',
+			'%PHPVERSION%',
+			'%WHMCSVERSION%',
+			'%CURRPAGE%'
+		),
+			array(
+				ENOM_PRO_VERSION,
+				PHP_VERSION,
+				$GLOBALS['CONFIG']['Version'],
+				$_SERVER['REQUEST_URI']
 			),
-				array(
-					ENOM_PRO_VERSION,
-					PHP_VERSION,
-					$GLOBALS['CONFIG']['Version'],
-					$_SERVER['REQUEST_URI']
-				),
-				$raw_text ) );
+			$raw_text ) );
 	}
 
 	/**
@@ -2789,47 +2800,47 @@ class enom_pro {
 	public static function get_clients() {
 
 		$api_settings = array( 'limitnum' => self::CLIENT_LIST_AJAX_LENGTH );
-		$search = false;
-		if (isset($_GET['q'])) {
-			$search = trim(self::escape(strip_tags($_GET['q'])));
+		$search       = false;
+		if ( isset( $_GET['q'] ) ) {
+			$search = trim( self::escape( strip_tags( $_GET['q'] ) ) );
 		}
-		if (isset($_GET['page'])) {
+		if ( isset( $_GET['page'] ) ) {
 			$page = (int) $_GET['page']; //2
-			$page = ($page <= 1) ? 2 : $page;
+			$page = ( $page <= 1 ) ? 2 : $page;
 			//Convert to a 0 index that whmcs uses for limits
-			$page = $page - 1; // 2 - 1 = 1 * 10 = 10
+			$page        = $page - 1; // 2 - 1 = 1 * 10 = 10
 			$limit_start = $page * self::CLIENT_LIST_AJAX_LENGTH;
 		} else {
 			$limit_start = 0;
 		}
 		$sql = "SELECT SQL_CALC_FOUND_ROWS id, firstname, lastname, companyname FROM tblclients";
-		if ($search) {
+		if ( $search ) {
 			$sql .= " WHERE email LIKE '" . $search . "%' OR firstname LIKE '" . $search . "%' OR lastname LIKE '" . $search . "%' OR companyname LIKE '" . $search . "%'";
 		}
-		$sql .=	" ORDER BY `id` LIMIT " . $limit_start . ", " . (int) self::CLIENT_LIST_AJAX_LENGTH;
-		$result = enom_pro::query($sql);
-		$count = mysql_num_rows($result);
+		$sql .= " ORDER BY `id` LIMIT " . $limit_start . ", " . (int) self::CLIENT_LIST_AJAX_LENGTH;
+		$result = enom_pro::query( $sql );
+		$count  = mysql_num_rows( $result );
 
-		$total_result_count_query = mysql_fetch_array(self::query("SELECT FOUND_ROWS()"));
-		$total_count = $total_result_count_query[0];
-		unset($total_result_count_query);
+		$total_result_count_query = mysql_fetch_array( self::query( "SELECT FOUND_ROWS()" ) );
+		$total_count              = $total_result_count_query[0];
+		unset( $total_result_count_query );
 
 		$clients = array();
-		while ($data = mysql_fetch_array($result)) {
+		while ( $data = mysql_fetch_array( $result ) ) {
 			$clients[] = array(
-				"id" => $data['id'],
-				"firstname" => $data['firstname'],
-				"lastname" => $data['lastname'],
+				"id"          => $data['id'],
+				"firstname"   => $data['firstname'],
+				"lastname"    => $data['lastname'],
 				"companyname" => $data['companyname'],
 			);
 		}
-		$return = array();
-		$return['results'] = array_map(array(__CLASS__, 'whmcs_client_formatter'), $clients);
+		$return                = array();
+		$return['results']     = array_map( array( __CLASS__, 'whmcs_client_formatter' ), $clients );
 		$return['total_count'] = $total_count;
-		$return['count'] = $count;
-		$return['start'] = $limit_start;
+		$return['count']       = $count;
+		$return['start']       = $limit_start;
 
-		if (($return['start'] + $return['count']) < $return['total_count']) {
+		if ( ( $return['start'] + $return['count'] ) < $return['total_count'] ) {
 			$return['more'] = true;
 		} else {
 			$return['more'] = false;
@@ -2843,14 +2854,14 @@ class enom_pro {
 	 *
 	 * @return array
 	 */
-	public static function whmcs_client_formatter ($client)
-	{
+	public static function whmcs_client_formatter( $client ) {
 
 		return array(
-			'id' => $client['id'],
-			'text' => $client['firstname']  . ' ' . $client['lastname'] . (! empty($client['companyname']) ? ' &mdash; ' . $client['companyname'] : '')
+			'id'   => $client['id'],
+			'text' => $client['firstname'] . ' ' . $client['lastname'] . ( ! empty( $client['companyname'] ) ? ' &mdash; ' . $client['companyname'] : '' )
 		);
 	}
+
 	const CLIENT_LIST_AJAX_LENGTH = 10;
 
 	/**
@@ -2865,7 +2876,7 @@ class enom_pro {
 
 		$defaults = array(
 			CURLOPT_URL            => $url . ( strpos( $url,
-					'?' ) === false ? '?' : '' ) . http_build_query($get),
+					'?' ) === false ? '?' : '' ) . http_build_query( $get ),
 			CURLOPT_HEADER         => 0,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_TIMEOUT        => 15,
@@ -2882,5 +2893,5 @@ class enom_pro {
 		curl_close( $ch );
 
 		return $result;
-}
+	}
 }
