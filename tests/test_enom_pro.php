@@ -930,6 +930,9 @@ TAG
 		$this->assertFalse( $this->e->get_clients()['more'] );
 	}
 
+	/**
+	 * @Group slow
+	 */
 	public function testCreateLotsOfEnomDomains() {
 
 		$count = 400;

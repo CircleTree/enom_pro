@@ -606,8 +606,10 @@ class enom_pro_controller {
 
 		if ( isset( $_SERVER['HTTP_ACCEPT_ENCODING'] ) && strstr( $_SERVER['HTTP_ACCEPT_ENCODING'],
 				'gzip' )
+			&& 'on' != strtolower(enom_pro::get_addon_setting('disable_gzip'))
 		) {
 			header( 'Content-Encoding: gzip' );
+//			header('Transfer-Encoding: chunked');
 			$before_gzip      = microtime( true );
 			$compressed       = gzencode( $data, 7 );
 			$after_gzip       = microtime( true );

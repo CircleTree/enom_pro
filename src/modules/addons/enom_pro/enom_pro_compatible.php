@@ -118,6 +118,11 @@ function enom_pro_config() {
 				"Type"         => "yesno",
 				"Description"  => "Help beta test the latest &amp; greatest " . ENOM_PRO . " features."
 			),
+			'disable_gzip'                     => array(
+				'FriendlyName' => "Disable GZip",
+				"Type"         => "yesno",
+				"Description"  => "Disabled GZIP Compression on AJAX Requests. Use if your server already compresses all output."
+			),
 			/****************************
 			 * Import (domains, pricing)
 			 ***************************/
