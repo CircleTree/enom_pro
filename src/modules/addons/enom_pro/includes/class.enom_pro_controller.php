@@ -514,6 +514,12 @@ class enom_pro_controller {
 		}
 	}
 
+	public static function reset_alerts ()
+	{
+		enom_pro::set_addon_setting(self::DISMISSED_ALERTS, array());
+		echo 'Reset';
+	}
+
 	public static function dismiss_alert() {
 
 		echo self::dismissAlert( trim( $_REQUEST['alert'] ) );
