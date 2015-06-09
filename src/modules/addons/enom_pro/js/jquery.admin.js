@@ -1025,11 +1025,9 @@ try {
 			return false;
 		});
 		if ($(".doIPFetch").length > 0) {
-			$.getJSON("http://www.telize.com/jsonip?callback=?",
-					function(json) {
+			$.getJSON("http://www.telize.com/jsonip?callback=?", function (json) {
 						$(".doIPFetch").html('<input value="' + json.ip + '" onclick="this.select();"/>').removeClass('enom_pro_loader');
-					}
-			);
+					});
 		}
 		$(".ep_sortable").sortable({
 			update: function (e, ui) {
@@ -1059,12 +1057,13 @@ try {
 			return false;
 		});
 		enom_pro = $.extend(enom_pro, {
-			upgradeSessionKey   : 'dismissEnomProUpgrade',
-			$betaLog            : jQuery("#enom_pro_beta_changelog"),
-			$upgradeAlert       : jQuery('#upgradeAlert'),
-			$upgradeAlertSidebar: $(".upgradeAlertHidden"),
-			loadingString       : "<div class=\"enom_pro_loader\"></div>",
-			init                : function () {
+			upgradeSessionKey         : 'dismissEnomProUpgrade',
+			$betaLog                  : jQuery("#enom_pro_beta_changelog"),
+			$upgradeAlert             : jQuery('#upgradeAlert'),
+			$upgradeAlertSidebar      : $(".upgradeAlertHidden"),
+			loadingString             : "<div class=\"enom_pro_loader\"></div>",
+			init                      : function () {
+				this.initAjaxHandler();
 				if (this.isUpgradeAlertHidden()) {
 					this.hideUpgradeAlert();
 				} else {
@@ -1076,39 +1075,55 @@ try {
 					enom_pro.hideUpgradeAlert();
 				});
 			},
-			initPricingImport : function  (){
+			initAjaxHandler           : function () {
+				$(".ep_ajax").on('click', function () {
+					var $elem = $(this), origTitle = $elem.text();
+					$elem.addClass('disabled').text('Please wait...');
+					$.ajax({
+						url    : $elem.attr('href'),
+						success: function (message) {
+							$elem.text(message);
+							setTimeout(function  (){
+								$elem.text(origTitle).removeClass('disabled');;
+							}, 2000);
+						}//TODO error callback handling
+					});
+					return false;
+				});
+			},
+			initPricingImport         : function () {
 				//TODO restore / hide based on localStorage
 //				this.showBulkPricingTurboEditor();
 			},
-			showBulkPricingTurboEditor : function  (){
+			showBulkPricingTurboEditor: function () {
 				$("#enom_pro_pricing_import_page").addClass("fixedBulk");
 				$('html, body').css({
 					'overflow': 'hidden',
-					'height': '100%'
+					'height'  : '100%'
 				});
 			},
-			hideBulkPricingTurboEditor: function  (){
+			hideBulkPricingTurboEditor: function () {
 				$("#enom_pro_pricing_import_page").removeClass("fixedBulk");
 				$('html, body').css({
 					'overflow': 'auto',
-					'height': 'auto'
+					'height'  : 'auto'
 				});
 			},
-			helpCacheKey        : 'enom_pro_help',
+			helpCacheKey              : 'enom_pro_help',
 			/**
 			 * Public method for loading the help interface
 			 */
-			initHelpIndex       : function () {
+			initHelpIndex             : function () {
 				this.loadHelpIndex();
 				this.initHelpSearch();
 				this.initHelpDialog();
 				this.initHelpEvents();
 			},
-			$helpDialog         : false,
+			$helpDialog               : false,
 			/**
 			 * @access private
 			 */
-			initHelpDialog      : function () {
+			initHelpDialog            : function () {
 				this.$helpDialog = $(".helpDialog");
 				this.$helpDialog.dialog({
 					height  : 'auto',
@@ -1119,18 +1134,17 @@ try {
 					modal   : false
 				});
 			},
-			initHelpEvents      : function () {
+			initHelpEvents            : function () {
 				$(".enom_pro_output").on('click', '.helpTrigger', function () {
 					var help_id = $(this).data('help-id');
-						enom_pro.loadHelpIDIntoDialog(help_id);
+					enom_pro.loadHelpIDIntoDialog(help_id);
 					return false;
 				});
 			},
-			loadHelpIDIntoDialog: function (help_id) {
-				var $content = $("#helpDialogContent"),
-						cachedContent = this.getHelpContent(help_id);
+			loadHelpIDIntoDialog      : function (help_id) {
+				var $content = $("#helpDialogContent"), cachedContent = this.getHelpContent(help_id);
 				this.$helpDialog.dialog('open');
-				if (! cachedContent) {
+				if (!cachedContent) {
 					$content.html(enom_pro.loadingString);
 					$.ajax({
 						url     : document.location.protocol + "//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=1&callback=?&q=" + encodeURIComponent("http://mycircletree.com/client-area/knowledgebaserss.php?id=" + help_id),
@@ -1153,12 +1167,14 @@ try {
 					//Cached
 					processHelp(cachedContent);
 				}
-				function processHelp (cachedContent) {
-				$content.html(cachedContent.body.split('Â').join(''));
-				enom_pro.$helpDialog
-						.dialog('option', 'title', cachedContent.title);
-				enom_pro.$helpDialog
-						.dialog('option', "position", { my: "center", at: "center", of: window });
+				function processHelp(cachedContent) {
+					$content.html(cachedContent.body.split('Â').join(''));
+					enom_pro.$helpDialog.dialog('option', 'title', cachedContent.title);
+					enom_pro.$helpDialog.dialog('option', "position", {
+								my: "center",
+								at: "center",
+								of: window
+							});
 				}
 			},
 			/**
@@ -1166,7 +1182,7 @@ try {
 			 * @param id help id key
 			 * @returns {*}
 			 */
-			getHelpContent      : function (id) {
+			getHelpContent            : function (id) {
 				var help_key = this.helpCacheKey + id;
 
 				if (this.support.localStorage() && window.localStorage.getItem(help_key)) {
@@ -1174,7 +1190,7 @@ try {
 				}
 				return false;
 			},
-			setHelpContent      : function (id, data) {
+			setHelpContent            : function (id, data) {
 				var help_key = this.helpCacheKey + id;
 				if (this.support.localStorage()) {
 					window.localStorage.setItem(help_key, JSON.stringify(data));
@@ -1183,7 +1199,7 @@ try {
 			/**
 			 * private method to fetch help
 			 */
-			loadHelpIndex        : function () {
+			loadHelpIndex             : function () {
 				var homeHelpKey = 'Home', $searchField = $("#helpSearch"), search = $searchField.val(), doingSearch = false, $homeHelp = $("#homeHelpContent");
 				if (search != "") {
 					doingSearch = true;
@@ -1212,26 +1228,10 @@ try {
 							} else {
 								$.each(data.responseData.feed.entries, function (k, entry) {
 									var help_id = enom_pro.getParameterByName('id', entry.link);
-									str += '<li>' +
-									'<h4>' +
-										'<a ' +
-												'href="' + entry.link + '" ' +
-												'class="helpTrigger" ' +
-												'data-help-id="' + help_id +
-										'">' +
-													entry.title +
-										'</a>' +
-									'</h4>' +
+									str += '<li>' + '<h4>' + '<a ' + 'href="' + entry.link + '" ' + 'class="helpTrigger" ' + 'data-help-id="' + help_id + '">' + entry.title + '</a>' + '</h4>' +
 
-									'<p class="snippet">' +
-											entry.contentSnippet.replace('...', '') +
-									'</p>';
-									str += '<a ' +
-														'href="' + entry.link + '" ' +
-														'class="helpTrigger readmore btn btn-sm btn-primary" ' +
-														'data-help-id="' + help_id + '"' +
-													'>' +
-									'Continue reading: ' + entry.title + '</a></li>';
+									'<p class="snippet">' + entry.contentSnippet.replace('...', '') + '</p>';
+									str += '<a ' + 'href="' + entry.link + '" ' + 'class="helpTrigger readmore btn btn-sm btn-primary" ' + 'data-help-id="' + help_id + '"' + '>' + 'Continue reading: ' + entry.title + '</a></li>';
 								});
 							}
 							str += "</ul>";
@@ -1241,7 +1241,7 @@ try {
 					});
 				}
 			},
-			initHelpSearch      : function () {
+			initHelpSearch            : function () {
 				var $searchField = $('input[name=s]'), oldSearch = "", searchTimeout = null, $clearSearchButton = $('.searchWrap .enom-pro-icon-cancel-circle');
 				$searchField.on('keyup', function () {
 					var newSearch = $searchField.val();
@@ -1271,7 +1271,7 @@ try {
 				});
 
 			},
-			getHelpCacheCount   : function () {
+			getHelpCacheCount         : function () {
 				var helpCount = 0;
 				jQuery.each(window.localStorage, function (key, value) {
 					if (typeof key !== "string") {
@@ -1283,7 +1283,7 @@ try {
 				});
 				return helpCount;
 			},
-			clearHelpCache      : function () {
+			clearHelpCache            : function () {
 				if (window.localStorage) {
 					var cleared = 0;
 					jQuery.each(window.localStorage, function (key, value) {
@@ -1299,7 +1299,7 @@ try {
 				}
 				return false;
 			},
-			lastSavedTLDPricing : {
+			lastSavedTLDPricing       : {
 				min_markup_percent      : $('#percentMarkup').val(),
 				min_markup_whole        : $("#wholeMarkup").val(),
 				preferred_markup_percent: $("#preferredPercentMarkup").val(),
@@ -1310,7 +1310,7 @@ try {
 			/**
 			 * Shows changelog & hides sidebar notification
 			 */
-			showUpgradeAlert    : function () {
+			showUpgradeAlert          : function () {
 				this.deleteHideAlert();
 				this.show(this.$upgradeAlert);
 				this.$betaLog.trigger('ep.load');
@@ -1319,28 +1319,28 @@ try {
 			/**
 			 * Hides the changelog and restores the sidebar notification
 			 */
-			hideUpgradeAlert    : function () {
+			hideUpgradeAlert          : function () {
 				if (this.support.localStorage()) {
 					window.sessionStorage.setItem(this.upgradeSessionKey, true);
 				}
 				this.show(this.$upgradeAlertSidebar);
 				this.hide(this.$upgradeAlert);
 			},
-			deleteHideAlert     : function () {
+			deleteHideAlert           : function () {
 				if (this.support.localStorage()) {
 					window.sessionStorage.removeItem(this.upgradeSessionKey);
 				}
 			},
-			isUpgradeAlertHidden: function () {
+			isUpgradeAlertHidden      : function () {
 				if (!this.support.localStorage()) {
 					return false;
 				}
 				return window.sessionStorage.getItem(this.upgradeSessionKey);
 			},
-			show                : function ($item) {
+			show                      : function ($item) {
 				$item.removeClass('hidden').show();
 			},
-			hide                : function ($item) {
+			hide                      : function ($item) {
 				$item.addClass('hidden').hide();
 			},
 			/**
@@ -1349,7 +1349,7 @@ try {
 			 * @param url URI to parse
 			 * @returns {string}
 			 */
-			getParameterByName  : function (name, url) {
+			getParameterByName        : function (name, url) {
 				name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
 				var regexS = "[\\?&]" + name + "=([^&#]*)";
 				var regex = new RegExp(regexS);
@@ -1360,7 +1360,7 @@ try {
 					return decodeURIComponent(results[1].replace(/\+/g, " "));
 				}
 			},
-			support             : {
+			support                   : {
 				localStorage: function () {
 					try {
 						return 'localStorage' in window && window['localStorage'] !== null;

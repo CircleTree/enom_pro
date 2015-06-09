@@ -706,6 +706,11 @@ function enom_pro_sidebar( $vars ) {
 				Order Install Service
 				<span class="enom-pro-icon enom-pro-icon-secure"></span>
 			</a>
+		<a class="btn btn-default btn-xs btn-block ep_ajax ep_tt"
+		   title="Do you miss the getting started messages? Experience the fun, all over again!"
+		   href="<?php echo enom_pro::MODULE_LINK ?>&action=reset_alerts">
+			Restore Help Messages
+		</a>
 	</div>
 	<p>&nbsp;</p>
 	<?php

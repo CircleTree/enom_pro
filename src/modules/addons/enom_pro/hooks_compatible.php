@@ -234,6 +234,7 @@ function enom_pro_admin_actions() {
 		'save_tld_markup',
 		'get_client_list',
 		'delete_tld',
+		'reset_alerts',
 	);
 	//Only load this hook if an ajax request is being run
 	if ( ! ( isset( $_REQUEST['action'] ) && in_array( $_REQUEST['action'], $enom_actions ) ) ) {
