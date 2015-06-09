@@ -1133,6 +1133,8 @@ class enom_pro {
 
 		$this->setParams( array(
 			'SortBy' => 'Expiration',
+			'SortByDirection' => 'Desc',
+			'ExpirationDateStart' => date('m/d/Y', strtotime('-30 Days')),
 			'PagingPageSize' => 250
 		) );
 		$this->runTransaction( 'CertGetCerts' );
