@@ -8,6 +8,8 @@
  */
 defined( "WHMCS" ) or die( "This file cannot be accessed directly" );
 
+defined( 'ENOM_PRO_ROOT' ) or define( 'ENOM_PRO_ROOT', ROOTDIR . '/modules/addons/enom_pro/' );
+defined( 'ENOM_PRO_INCLUDES' ) or define( 'ENOM_PRO_INCLUDES', ENOM_PRO_ROOT . 'includes/' );
 
 try {
 	require_once ENOM_PRO_ROOT . 'enom_pro_compat_checker.php';
