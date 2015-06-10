@@ -1132,19 +1132,21 @@ class enom_pro {
 	public function getExpiringCerts() {
 
 
+		$ssl_widget_days = (int) enom_pro::get_addon_setting('ssl_days');
 		$ssl_email_days = (int) enom_pro::get_addon_setting('ssl_email_days');
-		//Default to 30 on err / string
-		$ssl_email_days = 0 ? 30 : $ssl_email_days;
+		//Check whichever is greater for the API response limits
+		$ssl_days_to_get = $ssl_email_days > $ssl_widget_days ? $ssl_email_days : $ssl_widget_days;
+		//Add 3 days for buffer / timezone / inclusive vs. exclusive matching.
+		$ssl_days_to_get = 0 ? 33 : ($ssl_days_to_get + 3);
 		$this->setParams( array(
 			'SortBy' => 'Expiration',
 			'SortByDirection' => 'asc',
 			'ExpirationDateStart' => date('m/d/Y', strtotime('-30 Days')),
-			'ExpirationDateEnd' => date('m/d/Y', strtotime("+$ssl_email_days Days")),
+			'ExpirationDateEnd' => date('m/d/Y', strtotime("+$ssl_days_to_get Days")),
 			'PagingPageSize' => 250
 		) );
 		$this->runTransaction( 'CertGetCerts' );
 		$return = array();
-		$days   = $this->get_addon_setting( 'ssl_days' );
 		$hidden = $this->get_addon_setting( 'ssl_hidden' );
 		if ( empty( $hidden ) ) {
 			$hidden = array();
@@ -1157,7 +1159,7 @@ class enom_pro {
 		}
 		foreach ( $this->xml->CertGetCerts->Certs->Cert as $cert ) {
 			$expiring_timestamp = strtotime( $cert->ExpirationDate );
-			$expiry_filter      = ( time() + ( (int) $days * 60 * 60 * 24 ) );
+			$expiry_filter      = ( time() + ( ((int) $ssl_widget_days + 1) * 60 * 60 * 24 ) );
 			if ( $expiring_timestamp < $expiry_filter && ! in_array( (int) $cert->CertID,
 					$hidden )
 			) {
