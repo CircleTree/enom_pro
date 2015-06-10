@@ -1131,10 +1131,15 @@ class enom_pro {
 	 */
 	public function getExpiringCerts() {
 
+
+		$ssl_email_days = (int) enom_pro::get_addon_setting('ssl_email_days');
+		//Default to 30 on err / string
+		$ssl_email_days = 0 ? 30 : $ssl_email_days;
 		$this->setParams( array(
 			'SortBy' => 'Expiration',
-			'SortByDirection' => 'Desc',
+			'SortByDirection' => 'asc',
 			'ExpirationDateStart' => date('m/d/Y', strtotime('-30 Days')),
+			'ExpirationDateEnd' => date('m/d/Y', strtotime("+$ssl_email_days Days")),
 			'PagingPageSize' => 250
 		) );
 		$this->runTransaction( 'CertGetCerts' );
