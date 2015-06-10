@@ -57,11 +57,12 @@ function enom_pro_config() {
 				break;
 		}
 	}
-	$button               = '<a class="btn btn-inverse btn-sm" ' . ' style="color:white;text-decoration:none;display:inline;vertical-align:middle;"' . ' href="' . enom_pro::MODULE_LINK . '" target="_top">Go to @NAME@ &rarr;</a>';
-	$save_button          = array(
+	$save_button_desc = '<input type="submit" name="msave_enom_pro" value="Save Changes" class="btn primary btn-success">';
+	$button               = '<a class="btn btn-inverse btn-sm" ' . ' style="color:white;text-decoration:none;display:inline;vertical-align:middle;"' . ' href="' . enom_pro::MODULE_LINK . '" target="_top">Go to @NAME@ &rarr;</a>' . $save_button_desc;
+	$save_button_row          = array(
 		'FriendlyName' => "Save",
 		"Type"         => "null",
-		"Description"  => '<input type="submit" name="msave_enom_pro" value="Save Changes" class="btn primary btn-success">'
+		"Description"  => $save_button_desc
 	);
 	$support_dept_options = enom_pro::getSupportDepartments();
 	$support_dept_string  = 'Disabled';
@@ -80,7 +81,7 @@ function enom_pro_config() {
 				"Type"         => "null",
 				"Description"  => '<h1 style="margin:0;line-height:1.5;" >' . ENOM_PRO . ' Settings ' . $button . '</h1>'
 			),
-			'save'                     => $save_button,
+			'save'                     => $save_button_row,
 			'license'                  => array(
 				'FriendlyName' => "License Key",
 				"Type"         => "text",
@@ -410,7 +411,7 @@ function enom_pro_config() {
                             and popular words.",
 				"Options"      => "Off,Low,Medium,High"
 			),
-			'save2'                    => $save_button,
+			'save2'                    => $save_button_row,
 			'quicklink2'               => array(
 				'FriendlyName' => "",
 				"Type"         => "null",
