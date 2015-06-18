@@ -38,9 +38,11 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 
 		//Clean up
 		$clients = $this->e->whmcs_api( 'getclients', array( 'search' => $email ) );
-		$this->assertCount( 1, $clients['clients']['client'] );
-		$id = $clients['clients']['client'][0]['id'];
-		$this->e->whmcs_api( 'deleteclient', array( 'clientid' => $id ) );
+		if ($clients['numreturned'] > 0) {
+			$this->assertCount( 1, $clients['clients']['client'] );
+			$id = $clients['clients']['client'][0]['id'];
+			$this->e->whmcs_api( 'deleteclient', array( 'clientid' => $id ) );
+		}
 
 		$data = array(
 			'firstname'   => 'Joe',
@@ -525,9 +527,10 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 
 		$string = enom_pro::render_admin_errors( array( new Exception( 'API IP ERROR' ) ) );
 		$this->assertContains( 'API IP ERROR', $string );
-		$this->assertContains( 'Error', $string );
+		$this->assertContains( 'error', $string );
 		$string2 = enom_pro::render_admin_errors( array( 'err1', 'err2' ) );
-		$this->assertContains( 'Errors', $string2 );
+		$this->assertContains( 'err1', $string2 );
+		$this->assertContains( 'err2', $string2 );
 	}
 
 	/**
@@ -538,10 +541,10 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		try {
 			$this->e->resubmit_locked( '1234' );
 		} catch ( EnomException $e ) {
-
-			enom_pro::render_admin_errors( $e->get_errors() );
+			$string = enom_pro::render_admin_errors( $e->get_errors() );
+			$this->assertContains('error', $string);
 		} catch ( Exception $e ) {
-			echo $e->getMessage();
+			$this->fail('This should throw an EnomException');
 		}
 	}
 
@@ -962,11 +965,45 @@ TAG
 		}
 	}
 
+	/**
+	 * @group ssl
+	 */
+	public function testSSLStatusIDsToSendOn ()
+	{
+		$certificate = array(
+			'status_id' => 8
+		);
+		$this->assertFalse($this->e->willCertificateReminderBeSent($certificate));
+
+		$certificate = array(
+			'status_id' => 4
+		);
+		$this->assertTrue($this->e->willCertificateReminderBeSent($certificate));
+
+		$certificate = array(
+			'status_id' => "4"
+		);
+		$this->assertTrue($this->e->willCertificateReminderBeSent($certificate));
+	}
+
 	public function testSendSSLReminderWWWVsNonWWW ()
 	{
 		$this->e->_load_xml($this->getTestMockPath() . 'expiring_ssl_reminders_www_vs_nonxml.xml');
 		$this->assertSame(1, $this->e->getClientIdByDomain('mycircletree.com'));
 		$this->assertSame(1, $this->e->getClientIdByDomain('www.mycircletree.com'));
+	}
+
+	/**
+	 * @group ssl
+	 */
+	public function testSSLCertStatusIDCaps()
+	{
+		$this->e->_load_xml($this->getTestMockPath() . 'expiring_ssl_ID_cApitAliZation.xml');
+		$certs = $this->e->getExpiringCerts();
+		foreach ($certs as $cert) {
+			$this->assertGreaterThan(0, $cert['status_id']);
+			$this->assertTrue($this->e->willCertificateReminderBeSent($cert));
+		}
 	}
 
 	private function doSSLBatch() {
