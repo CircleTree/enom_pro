@@ -2474,6 +2474,8 @@ class enom_pro {
 	public function getClientIdByDomain( $domain ) {
 
 		$domain = ltrim( $domain, '*.' );
+		//Remove www
+		$domain = preg_replace('#^www\.(.+\.)#i', '$1', $domain);
 		/**
 		 * First, Try Searching by Product
 		 * (Correct enomssl configuration)
@@ -2497,7 +2499,7 @@ class enom_pro {
 		unset( $domains );
 
 		if ( false === $clientIDFromDomain && false === $clientIDFromProduct ) {
-			self::log_activity( ENOM_PRO . ': No Client Domain or Product Found for ' . $domain . ' to send SSL reminder email' );
+			self::log_activity( ENOM_PRO . ': No Client Domain/Product Found for ' . $domain . ' to send SSL reminder email' );
 		} else {
 			if ( true == $clientIDFromProduct ) {
 				return $clientIDFromProduct;

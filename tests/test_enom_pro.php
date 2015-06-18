@@ -200,9 +200,9 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group ssl
 	 */
-	function  test_load_ssl_mock($xml_filename = false) {
+	function  test_load_ssl_mock( $xml_filename = false ) {
 
-		if (false === $xml_filename) {
+		if ( false === $xml_filename ) {
 			$xml_filename = 'expiring_ssl.xml';
 		}
 
@@ -212,7 +212,9 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$this->assertNotEmpty( $resp );
 		$this->assertNotEmpty( $resp[0]['domain'] );
 	}
-	private function getTestMockPath () {
+
+	private function getTestMockPath() {
+
 		return ROOTDIR . "/../tests/files/";
 	}
 
@@ -684,7 +686,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$resp = $this->e->getExpiringCerts();
 		$this->assertNotEmpty( $resp );
 		$this->assertNotEmpty( $resp[0]['domain'] );
-		$this->assertTrue(is_int( $resp[0]['status_id']) );
+		$this->assertTrue( is_int( $resp[0]['status_id'] ) );
 	}
 
 	/**
@@ -694,15 +696,15 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	function test_send_all_ssl_reminders() {
 
 		//Test set up
-		enom_pro::set_addon_setting( 'ssl_email_days', 30);
-		enom_pro::set_addon_setting('ssl_email_enabled', "on");
+		enom_pro::set_addon_setting( 'ssl_email_days', 30 );
+		enom_pro::set_addon_setting( 'ssl_email_enabled', "on" );
 		$fileName           = $this->getTestMockPath() . 'expiring_ssl_new.xml';
 		$file_contents      = file_get_contents( $fileName );
 		$expiry_days_before = enom_pro::get_addon_setting( 'ssl_email_days' );
 		$send_timestamp     = strtotime( "+$expiry_days_before days" );
 		//Replace tag in XML with a relative date for the test
 		$ssl_expiry_date_formatted = date( 'm/d/Y', $send_timestamp );
-		$file_contents = str_replace( '{$EXP_DATE}', $ssl_expiry_date_formatted, $file_contents );
+		$file_contents             = str_replace( '{$EXP_DATE}', $ssl_expiry_date_formatted, $file_contents );
 		//Write it to a temp file
 		$fileNameTmp = $fileName . '.tmp';
 		file_put_contents( $fileNameTmp, $file_contents );
@@ -711,23 +713,23 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 
 		//Make sure WHMCS has matching domains/users
 		//Clean up
-		$old_client = enom_pro::whmcs_api('getclientsdetails', array('email' => 'ssltest@mycircletree.com'));
-		enom_pro::whmcs_api('deleteclient', array('clientid' => $old_client['id']));
+		$old_client = enom_pro::whmcs_api( 'getclientsdetails', array( 'email' => 'ssltest@mycircletree.com' ) );
+		enom_pro::whmcs_api( 'deleteclient', array( 'clientid' => $old_client['id'] ) );
 		//Create new
 		$new_client = enom_pro::whmcs_api( 'addclient',
 			array(
-				'firstname' => "SSL",
-				'lastname'  => "ReminderTest",
-				'email' => 'ssltest@mycircletree.com',
-				'address1' => '123 Any St.',
-				'city' => "Omaha",
-				'state' => "NB",
-				'postcode' => '12345',
-				'country' => 'US',
+				'firstname'   => "SSL",
+				'lastname'    => "ReminderTest",
+				'email'       => 'ssltest@mycircletree.com',
+				'address1'    => '123 Any St.',
+				'city'        => "Omaha",
+				'state'       => "NB",
+				'postcode'    => '12345',
+				'country'     => 'US',
 				'phonenumber' => '123-333-1212',
-				'password2' => '1234'
+				'password2'   => '1234'
 			) );
-		$this->assertContains('success', $new_client);
+		$this->assertContains( 'success', $new_client );
 		$client_id = $new_client['clientid'];
 
 		$mail = new \Alex\MailCatcher\Client();
@@ -736,22 +738,24 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		//Run test
 		$num_sent = $this->e->send_all_ssl_reminder_emails();
 		$this->assertEquals( 3, $num_sent );
-		$this->assertEquals(3, $mail->getMessageCount());
+		$this->assertEquals( 3, $mail->getMessageCount() );
 
 		$messages = $mail->search();
-		$message = $messages[0];
+		$message  = $messages[0];
 		/** @var $message Alex\MailCatcher\Message */
-		$this->assertContains($ssl_expiry_date_formatted, $message->getContent());
-		$this->assertSame('SSL Expiring Soon', $message->getSubject());
+		$this->assertContains( $ssl_expiry_date_formatted, $message->getContent() );
+		$this->assertSame( 'SSL Expiring Soon', $message->getSubject() );
 
 		//Cleanup
 		unlink( $fileNameTmp );
-		unset($mail);
+		unset( $mail );
 
 	}
-	function  testNoWidgetsEnabled(){
+
+	function  testNoWidgetsEnabled() {
+
 		$_SESSION['adminid'] = 1;
-		$this->assertFalse($this->e->areAnyWidgetsEnabled());
+		$this->assertFalse( $this->e->areAnyWidgetsEnabled() );
 	}
 
 	/**
@@ -827,6 +831,9 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 			) );
 	}
 
+	/**
+	 * @group slow
+	 */
 	public function testCreateLotsOfAccounts() {
 
 		$this->markTestSkipped( 'Only run this to batch produce 100k accounts' );
@@ -936,7 +943,6 @@ TAG
 	public function testCreateLotsOfEnomDomains() {
 
 		$count = 400;
-		//		$this->markTestSkipped("Only run this to batch produce $count domains in test account");
 		$loops = $count / 100;
 		set_time_limit( $loops * 20 );
 		for ( $loops; $loops --; ) {
@@ -949,6 +955,37 @@ TAG
 			sleep( 10 );
 		}
 	}
+
+	function testCreateLotsOfEnomSSL (){
+		for ($count = 100; $count--; ) {
+			$this->doSSLBatch();
+		}
+	}
+
+	public function testSendSSLReminderWWWVsNonWWW ()
+	{
+		$this->e->_load_xml($this->getTestMockPath() . 'expiring_ssl_reminders_www_vs_nonxml.xml');
+		$this->assertSame(1, $this->e->getClientIdByDomain('mycircletree.com'));
+		$this->assertSame(1, $this->e->getClientIdByDomain('www.mycircletree.com'));
+	}
+
+	private function doSSLBatch() {
+		$cert_type = array(
+			'Certificate-Comodo-Essential',
+			'Certificate-Comodo-Instant ',
+			'Certificate-GeoTrust-QuickSSL',
+			'Certificate-GeoTrust-TrueBizID',
+			'Certificate-RapidSSL-RapidSSL',
+			'Certificate-VeriSign-Secure-Site',
+		);
+		$service_index = mt_rand(0, (count($cert_type) - 1));
+		if (! isset($cert_type[$service_index])) {
+			$this->fail('$service_index not found in the $cert_type array. Index: ' . $service_index);
+		}
+		$this->e->setParams(array('Service' => $cert_type[$service_index]));
+		$this->e->runTransaction('PurchaseServices');
+	}
+
 
 	private function doDomainBatch() {
 
