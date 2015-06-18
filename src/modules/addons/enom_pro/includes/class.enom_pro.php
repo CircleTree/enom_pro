@@ -2872,7 +2872,7 @@ class enom_pro {
 	/**
 	 * @param $client array data from whmcs api
 	 *
-	 * @return array
+	 * @return array (id, text (formated name + company name if set))
 	 */
 	public static function whmcs_client_formatter( $client ) {
 

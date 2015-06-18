@@ -21,13 +21,20 @@ $expiring_certs = $this->getExpiringCerts(); ?>
 					<?php if ( count( $cert['domain'] ) > 0 && ! empty( $cert['domain'][0] ) ): ?>
 						<?php $clientIdByDomain = $this->getClientIdByDomain( reset( $cert['domain'] ) ); ?>
 						<?php $domainString = rtrim( implode( ', ', array_values( $cert['domain'] ) ), ', ' ); ?>
-						<?php if ( false === $clientIdByDomain ) : ?>
+						<?php if ( false === $clientIdByDomain || false == $this->willCertificateReminderBeSent($cert)) : ?>
 							<p>
 								<span class="label label-danger">
 									<span class="enom-pro-icon enom-pro-icon-verify-alt"></span>
 								</span>
-								SSL Reminder will NOT be sent. No matching product or domain found in WHMCS for:
-								<?php echo $domainString; ?>
+								SSL Reminder will NOT be sent.
+								<?php if (false === $clientIdByDomain) : ?>
+									No matching product or domain found in WHMCS for:
+									<?php echo $domainString; ?>
+								<?php endif;?>
+								
+								<?php if (false ===  $this->willCertificateReminderBeSent($cert)): ?>
+									Invalid Certificate Status to send reminder (<?php echo $cert['status']; ?>. ID-<?php echo $cert['status_id'] ?>).
+								<?php endif;?>
 							</p>
 						<?php else: ?>
 							<p>
