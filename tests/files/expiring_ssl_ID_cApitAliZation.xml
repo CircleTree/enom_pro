@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Fetched via HTTP: https://resellertest.enom.com/interface.asp?command=CertGetcerts&UID=resellid&PW=resellpw&ResponseType=XML&pagingpagesize=10-->
+<interface-response>
+	<CertGetCerts>
+		<Certs>
+			<Cert>
+				<IsExpired>False</IsExpired>
+				<CertID>29036</CertID>
+				<OrderDate>6/2/2015</OrderDate>
+				<ConfigDate></ConfigDate>
+				<DomainName><![CDATA[mycircletree.com]]></DomainName>
+				<ValidityPeriod>12</ValidityPeriod>
+				<RenewalIndicator>False</RenewalIndicator>
+				<ProdType>26</ProdType>
+				<ProdDesc>SSL Certificate - GeoTrust QuickSSL</ProdDesc>
+				<ExpirationDate>{$EXP_DATE}</ExpirationDate>
+				<ServerCount>1</ServerCount>
+				<CertStatus>Processing</CertStatus>
+				<CertStatusID>4</CertStatusID>
+				<OrderID>161857490</OrderID>
+				<DomainCountAllowed></DomainCountAllowed>
+				<ReissueStatus></ReissueStatus>
+			</Cert>
+			<Cert>
+				<IsExpired>False</IsExpired>
+				<CertID>29036</CertID>
+				<OrderDate>6/2/2015</OrderDate>
+				<ConfigDate></ConfigDate>
+				<DomainName><![CDATA[mycircletree.com]]></DomainName>
+				<ValidityPeriod>12</ValidityPeriod>
+				<RenewalIndicator>False</RenewalIndicator>
+				<ProdType>26</ProdType>
+				<ProdDesc>SSL Certificate - GeoTrust QuickSSL</ProdDesc>
+				<ExpirationDate>{$EXP_DATE}</ExpirationDate>
+				<ServerCount>1</ServerCount>
+				<CertStatus>Processing</CertStatus>
+				<CertStatusid>4</CertStatusid>
+				<OrderID>161857490</OrderID>
+				<DomainCountAllowed></DomainCountAllowed>
+				<ReissueStatus></ReissueStatus>
+			</Cert>
+
+			<ProductType>all</ProductType>
+			<StatusID>all</StatusID>
+			<StartPosition>1</StartPosition>
+			<PagingPageSize>10</PagingPageSize>
+			<Count>10</Count>
+			<Sortby></Sortby>
+			<SortByDirection>desc</SortByDirection>
+			<TotalRecords>4059</TotalRecords>
+		</Certs>
+	</CertGetCerts>
+	<TotalCertCount>4059</TotalCertCount>
+	<Command>CERTGETCERTS</Command>
+	<APIType>API.NET</APIType>
+	<Language>eng</Language>
+	<ErrCount>0</ErrCount>
+	<ResponseCount>0</ResponseCount>
+	<MinPeriod>1</MinPeriod>
+	<MaxPeriod>10</MaxPeriod>
+	<Server>sjl0vwresell_t1</Server>
+	<Site>eNom</Site>
+	<IsLockable/>
+	<IsRealTimeTLD/>
+	<TimeDifference>+0.00</TimeDifference>
+	<ExecTime>0.219</ExecTime>
+	<Done>true</Done>
+	<TrackingKey>506f38e5-48a9-4cc8-bb91-f9dd4fb17261</TrackingKey>
+	<RequestDateTime>6/2/2015 2:54:45 PM</RequestDateTime>
+	<debug/>
+</interface-response>

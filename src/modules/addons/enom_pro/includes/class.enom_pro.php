@@ -227,7 +227,6 @@ class enom_pro {
 	 */
 	public static function render_admin_errors( array $errors ) {
 
-		$s      = count( $errors ) > 1 ? 's' : '';
 		$string = '<div class="errorbox">' . PHP_EOL;
 		foreach ( $errors as $error ) {
 			$error_code = 0;
@@ -238,7 +237,7 @@ class enom_pro {
 			} else {
 				throw new InvalidArgumentException( gettype( $error ) . ' is an invalid type for rendering admin errors' );
 			}
-			$string .= '<li>' . $error_msg . '</li>';
+			$string .= '<div class="error_message">'.$error_msg.'</div>' . PHP_EOL;
 			if ( strstr( $error_msg, "IP" ) ) {
 				//The most common error message is for a non-whitelisted API IP
 				$string .= "<h4>You need to white-list your IP address with eNom.</h4>";
@@ -1163,10 +1162,15 @@ class enom_pro {
 			if ( $expiring_timestamp < $expiry_filter && ! in_array( (int) $cert->CertID,
 					$hidden )
 			) {
+				$status_id = isset( $cert->CertStatusid ) ? $cert->CertStatusid : false;
+				if (false === $status_id) {
+					$status_id = isset( $cert->CertStatusID ) ? $cert->CertStatusID : false;
+				}
+				$status_id = (int) $status_id; //Make sure we cast a SimpleXML Element to int.
 				$formatted_result = array(
 					'domain'          => (array) $cert->DomainName,
 					'status'          => (string) $cert->CertStatus,
-					'status_id'       => (int) ( isset( $cert->CertStatusid ) ? $cert->CertStatusid : 0 ),
+					'status_id'       => $status_id,
 					'expiration_date' => (string) $cert->ExpirationDate,
 					'OrderID'         => (int) $cert->OrderID,
 					'CertID'          => (int) $cert->CertID,
@@ -2434,9 +2438,13 @@ class enom_pro {
 	public $ssl_reminder_cert_status_ids = array(
 		0, //CertID not set
 		4, //Certificate Issued
-		8, //Refunded - Cert Issued
+//		8, //Refunded - Cert Issued
 		13, //Cert Installed (associate with our hosting)
 	);
+
+	public function willCertificateReminderBeSent(array $certificate) {
+		return in_array( $certificate['status_id'], $this->ssl_reminder_cert_status_ids );
+	}
 
 	/**
 	 * Sends all reminder emails
@@ -2453,7 +2461,7 @@ class enom_pro {
 			if ( $this->format_ts( $expiry_timestamp ) == $this->format_ts( $send_timestamp ) ) {
 				//Get client id for $domain
 				$client_id = $this->getClientIdByDomain( reset( $cert['domain'] ) );
-				if ( false !== $client_id && in_array( $cert['status_id'], $this->ssl_reminder_cert_status_ids ) ) {
+				if ( false !== $client_id && $this->willCertificateReminderBeSent($cert)) {
 					//Send Email
 					if ( true === $this->send_SSL_reminder_email( $client_id, $cert ) ) {
 						$reminder_count ++;
@@ -2464,6 +2472,7 @@ class enom_pro {
 
 		return $reminder_count;
 	}
+
 
 	/**
 	 * @param string $domain domain name to search WHMCS for
