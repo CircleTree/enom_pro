@@ -2485,14 +2485,20 @@ class enom_pro {
 		$domain = ltrim( $domain, '*.' );
 		//Remove www
 		$domain = preg_replace('#^www\.(.+\.)#i', '$1', $domain);
+
+		$clientIDFromProduct = $clientIDFromDomain = false;
 		/**
 		 * First, Try Searching by Product
 		 * (Correct enomssl configuration)
 		 */
 		$products            = self::whmcs_api( 'getclientsproducts',
 			array( 'domain' => $domain ) );
-		$clientIDFromProduct = $clientIDFromDomain = false;
-		if ( ! empty( $products['products'] ) ) {
+
+		if ( empty( $products['products'] ) ) {
+			//Try prefixing a www in front of the domain
+			$products = self::whmcs_api('getclientsproducts', array('domain' => 'www.' . $domain));
+		}
+		if (! empty( $products['products'] )) {
 			$clientIDFromProduct = (int) $products['products']['product'][0]['clientid'];
 		}
 		unset( $products );
@@ -2502,6 +2508,10 @@ class enom_pro {
 		 */
 		$domains = self::whmcs_api( 'getclientsdomains',
 			array( 'domain' => $domain ) );
+		if ( empty( $domains['domains'] ) ) {
+			//Try prefixing a www in front of the domain
+			$domains = self::whmcs_api('getclientsdomains', array('domain' => 'www.' . $domain));
+		}
 		if ( ! empty( $domains['domains'] ) ) {
 			$clientIDFromDomain = (int) $domains['domains']['domain'][0]['userid'];
 		}
