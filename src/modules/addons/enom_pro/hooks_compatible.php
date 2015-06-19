@@ -398,14 +398,14 @@ function enom_pro_cron() {
 	require_once 'enom_pro.php';
 	$enom = new enom_pro();
 	$lock = $enom->get_addon_setting( 'cron_lock' );
-	if ( empty( $lock ) || false === $lock || $lock !== md5( strrev( $salt ) . date( 'Ymd' ) . $salt ) ) {
+	$new_lock = md5( strrev( $salt ) . date( 'Ymd' ) . $salt );
+	if ( empty( $lock ) || false === $lock || $lock !== $new_lock ) {
 		echo ENOM_PRO . ': Begin CRON' . PHP_EOL;
 		enom_pro::log_activity( ENOM_PRO . ': Begin CRON Job' );
 		$count = $enom->send_all_ssl_reminder_emails();
 		echo ENOM_PRO . ': Sent ' . $count . ' SSL Reminder Email(s)' . PHP_EOL;
 		enom_pro::log_activity( ENOM_PRO . ': End CRON Job. Sent ' . $count . ' SSL Reminder Email(s)' );
 		echo ENOM_PRO . ': END CRON' . PHP_EOL;
-		$new_lock = md5( strrev( $salt ) . date( 'Ymd' ) . $salt );
 		$enom->set_addon_setting( 'cron_lock', $new_lock );
 	} else {
 		$msg = ENOM_PRO . ': Cron Already Ran Once Today';
