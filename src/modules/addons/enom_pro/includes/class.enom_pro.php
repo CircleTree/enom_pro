@@ -2356,7 +2356,6 @@ class enom_pro {
 				//Send to WHOIS
 				$data = array(
 					'id'          => $client_id,
-					'customtype'  => 'general',
 					'messagename' => 'SSL Expiring Soon',
 					'customvars'  => base64_encode( serialize( $cert_meta_array ) ),
 				);
