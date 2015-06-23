@@ -70,6 +70,8 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'spinner') {
 	}
 	die();
 }
+//TODO remove this & verify with WHMCS Beta2+
+// Go to enom_srv.php to throw invalid class exception
 if (! class_exists('WHMCS_ClientArea')) {
 	class WHMCS_ClientArea extends \WHMCS\ClientArea {}
 }

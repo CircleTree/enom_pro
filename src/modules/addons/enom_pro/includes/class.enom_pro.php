@@ -244,7 +244,7 @@ class enom_pro {
 				if ( self::$testMode ) {
 					$string .= '<span class="label label-danger">Running in Test Mode</span>';
 					$string .= "
-	                    <a target=\"_blank\" class='btn btn-default btn-xs' href=\"http://www.enom.com/resellers/reseller-testaccount.aspx\">White-list your IP for the Test API.
+	                    <a target=\"_blank\" class='btn btn-default btn-xs' href=\"http://resellertest.enom.com/resellers/reseller-testaccount.aspx\">White-list your IP for the Test API.
 	                    </a> ";
 				} else {
 					$string .= '<span class="label label-success">Running in LIVE Mode</span>';
