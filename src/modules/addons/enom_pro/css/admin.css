@@ -448,6 +448,9 @@ Licensed from Orion IP Ventures, LLC
   margin: 0;
   width: 100%;
 }
+.enom_pro_output #order_process .row {
+  margin: inherit;
+}
 .enom_pro_output #create_order_dialog .help-block {
   text-align: center;
   font-style: italic;
@@ -771,7 +774,16 @@ Licensed from Orion IP Ventures, LLC
   color: #1b61b5;
 }
 .enom_pro_output .well {
-  overflow: hidden;
+  float: left;
+  width: 100%;
+}
+.enom_pro_output .well:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
 }
 /**
 Top level DOM items
@@ -847,13 +859,4 @@ Dialog */
 #helpDialogContent .content ol li h3,
 #helpDialogContent .content ol li h4 {
   height: inherit;
-}
-
-/**
-Dropdown alignment - Import Pricing
-*/
-.enom_pro_output .well {
-  overflow: hidden;
-  float: left;
-  padding-bottom: 45px;
 }

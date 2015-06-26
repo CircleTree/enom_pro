@@ -488,10 +488,14 @@ Licensed from Orion IP Ventures, LLC
 		padding: 0;
 		margin: 0;
 	}
-	#create_order_dialog #create_order_form #order_process {
+	#create_order_dialog #create_order_form #order_process
+	{
 		padding: 0;
 		margin: 0;
 		width: 100%;
+	}
+	#order_process .row {
+		margin: inherit;
 	}
 	#create_order_dialog .help-block {
 		text-align: center;
@@ -883,7 +887,16 @@ Licensed from Orion IP Ventures, LLC
 	}
 
 	.well {
-		overflow: hidden;
+		float: left;
+		width: 100%;
+	}
+	.well:after {
+			visibility: hidden;
+			display: block;
+			font-size: 0;
+			content: " ";
+			clear: both;
+			height: 0;
 	}
 }
 
