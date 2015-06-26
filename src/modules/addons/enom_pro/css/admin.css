@@ -848,3 +848,12 @@ Dialog */
 #helpDialogContent .content ol li h4 {
   height: inherit;
 }
+
+/**
+Dropdown alignment - Import Pricing
+*/
+.enom_pro_output .well {
+  overflow: hidden;
+  float: left;
+  padding-bottom: 45px;
+}
