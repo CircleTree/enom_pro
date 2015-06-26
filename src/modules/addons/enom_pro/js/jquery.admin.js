@@ -363,6 +363,7 @@ try {
 		});
 		$("#create_order_dialog").dialog({
 			width   : 450,
+			dialogClass: 'enom_pro_output',
 			autoOpen: false
 		});
 		var $importTableForm = $("#import_table_form");

@@ -99,14 +99,13 @@
 
 						<label class="col-xs-6">
 							Client
-<!--							<input type="hidden" value="" name="clientid" id="client_select" style="width: 100%"/>-->
-							<select name="clientid" id="client_select" style="width: 100%">
+							<select name="clientid" id="client_select" style="width: 100%" >
 								<option value="default">Select...</option>
 							</select>
 						</label>
 						<label class="col-xs-4">
 							Years<br/>
-							<select name="regperiod" id="register_years">
+							<select name="regperiod" id="register_years" class="form-control">
 										<?php for ($i = 1; $i <= 10; $i++) {
 												echo '<option value="'.$i.'">'.$i.'</option>';
 											}?>
@@ -115,17 +114,15 @@
 					</div>
 
 					<div class="row">
-						<div class="col-xs-4">
-							<div class="row">
-								<label for="expiresdate" class="col-xs-3">Expires</label>
-								<input id="expiresdate" type="text" name="expiresdatelabel" value="" readonly disabled class="col-xs-3" tabindex="-1"/>
+						<div class="col-xs-12">
+							<div class="form-group">
+								<label for="expiresdate">Expires</label>
+								<input id="expiresdate" type="text" name="expiresdatelabel" value="" readonly disabled class="form-control" tabindex="-1"/>
 								<input type="hidden" name="expiresdate" value="" readonly/>
 							</div>
-						</div>
-						<div class="col-xs-6">
-							<div class="row">
-								<label for="nextduedate" class="col-xs-3">Next Due</label>
-								<input id="nextduedate" type="text" name="nextduedatelabel" value="" readonly disabled class="col-xs-3" tabindex="-1"/>
+							<div class="form-group">
+								<label for="nextduedate">Next Due</label>
+								<input id="nextduedate" type="text" name="nextduedatelabel" value="" readonly disabled class="form-control" tabindex="-1"/>
 								<input type="hidden" name="nextduedate" value="" readonly/>
 							</div>
 						</div>
@@ -138,65 +135,61 @@
 
 						<fieldset class="col-xs-4">
 							<legend>Domain Options</legend>
-							<label for="dnsmanagement" class="btn btn-xs btn-default">DNS Management</label>
-							<input type="checkbox" name="dnsmanagement" id="dnsmanagement" />
+							<div class="checkbox">
 
-							<label for="idprotection" class="btn btn-xs btn-default">ID Protect</label>
+								<label for="dnsmanagement" class="btn btn-xs btn-default">
+								<input type="checkbox" name="dnsmanagement" id="dnsmanagement" />
+									DNS Management
+								</label>
+							</div>
+
+							<div class="checkbox">
+
+							<label for="idprotection" class="btn btn-xs btn-default">
 							<input type="checkbox" name="idprotection" id="idprotection" />
+								ID Protect
+							</label>
+							</div>
 						</fieldset>
 
 						<fieldset class="col-xs-6">
 							<legend>Order Options</legend>
-							<div class="row">
+							<div class="form-group">
 								<label for="payment_gateway" class="col-xs-12">Payment gateway</label>
-								<div class="col-xs-12">
-									<select
-												name="paymentmethod" id="payment_gateway">
+									<select name="paymentmethod" id="payment_gateway" class="form-control">
 														<?php $methods = localapi('getpaymentmethods');
 														foreach ($methods['paymentmethods']['paymentmethod'] as $gateway) {
 																echo '<option value="'.$gateway['module'].'">'.$gateway['displayname'].'</option>';
 														}
 														?>
 									</select>
-								</div>
 							</div>
-							<div class="row">
-								<div class="col-xs-8">
-									<label for="orderemail" class="btn btn-xs btn-default">Send order confirmation email</label>
-								</div>
-								<div class="col-xs-1">
+							<div class="checkbox">
+								<label for="orderemail" class="btn btn-xs btn-default">
 									<input type="checkbox" name="noemail" id="orderemail" />
-								</div>
+									Send order confirmation email
+								</label>
 							</div>
 							<div class="row">
-								<div class="col-xs-8">
+								<div class="checkbox">
 									<label for="generateinvoice" class="btn btn-xs btn-default">
-										Generate Invoice</label>
-								</div>
-								<div class="col-xs-1">
-									<input type="checkbox" name="noinvoice" id="generateinvoice" />
-								</div>
-								<div class="col-xs-12 row">
-									 <div id="invoice_email" style="display: none;">
-										 <div class="col-xs-8">
-											 <label for="noinvoiceemail" class="btn btn-xs btn-default">
-												 Send Invoice Notification Email
-											 </label>
-										 </div>
-										 <div class="col-xs-1">
-											 <input type="checkbox" name="noinvoiceemail" id="noinvoiceemail" />
-										 </div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-xs-8">
-									<label for="free_domain" class="btn btn-xs btn-default">
-										Free Domain
+										<input type="checkbox" name="noinvoice" id="generateinvoice" />
+										Generate Invoice
 									</label>
 								</div>
-								<div class="col-xs-1">
-									<input type="checkbox" name="free_domain" id="free_domain" />
+									 <div id="invoice_email" style="display: none;" class="checkbox">
+										 <label for="noinvoiceemail" class="btn btn-xs btn-default">
+											 <input type="checkbox" name="noinvoiceemail" id="noinvoiceemail" />
+											 Send Invoice Notification Email
+										 </label>
+									</div>
+							</div>
+							<div class="row">
+								<div class="checkbox">
+									<label for="free_domain" class="btn btn-xs btn-default">
+										<input type="checkbox" name="free_domain" id="free_domain" />
+										Free Domain
+									</label>
 								</div>
 							</div>
 						</fieldset>
