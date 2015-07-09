@@ -1,4 +1,7 @@
-<phpunit backupGlobals="true"
+<phpunit
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.5/phpunit.xsd"
+		backupGlobals="true"
          backupStaticAttributes="false"
          cacheTokens="false"
          colors="false"
@@ -15,14 +18,13 @@
          stopOnSkipped="false"
          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
          bootstrap="bootstrap.php"
-         strict="true"
          verbose="true">
 	<testsuites>
 	  <testsuite name="eNom Pro Tests">
 	    <directory suffix=".php">tests/</directory>
+
 	  </testsuite>
 	</testsuites>
-	
 	<!--
 	<groups>
 		<include>
@@ -42,7 +44,7 @@
 		<const name="ENOM_USERNAME" value="circletree" />
 		<const name="ENOM_PASSWORD" value="57rCT9Jk4zZfjcwTJucH" />
 		<const name="WHMCS_API_UN" value="api" />
-		<const name="WHMCS_API_PW" value="1234" />
+		<const name="WHMCS_API_PW" value="12345" />
 		<const name="WHMCS_API_URL" value="http://localhost/whmcs/includes/api.php" />
 	</php>
 </phpunit>
