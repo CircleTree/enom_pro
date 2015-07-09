@@ -42,7 +42,7 @@ class enom_pro_license {
             subject=Product%20Support%20for:'.$this->productname.'.%20License:%20'.$license.'";
 			$return .= '<h2>or, please <a class="btn btn-default" href="' . $support_link . '">
                     open a support ticket</a></h2>';
-			$return .= '<h3>Enter a new License from the <a href="configaddonmods.php">addon page</a></h3>';
+			$return .= '<h3>Enter a new License from the <a href="configaddonmods.php#enom_pro">addon settings page</a></h3>';
 			$return .= '<div class="errorbox"><b>Support Information</b><br/>';
 			$return .= 'License Number: ' . $license . '<br/>';
 			if ( isset( $this->message ) ) {

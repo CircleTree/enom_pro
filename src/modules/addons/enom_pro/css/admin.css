@@ -43,7 +43,7 @@ Licensed from Orion IP Ventures, LLC
   padding: 10px 0;
 }
 .enom_pro_output #enom_pro_admin_widgets {
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 .enom_pro_output #helpWrapper H1,
 .enom_pro_output #helpWrapper H2,

@@ -1,4 +1,7 @@
 ## Dev Setup
+
+1. [Install WHMCS](http://docs.whmcs.com/Installing_WHMCS) 
+	* Make sure to note the MySQL credentials for configuring PHPUnit.xml below
 1. Install Composer Globally
 
   `curl -sS https://getcomposer.org/installer | php`
@@ -25,8 +28,12 @@
 	* Copy phpunit.dist.xml -> phpunit.xml
 	* Specific constants that should be customized:
 		* `WHMCS_API_URL` - Local WHMCS install API URL endpoint (which is located inside /whmcs/includes/api.php)
+		* `MYSQL_HOST`, `MYSQL_PASS`, `MYSQL_USER`, `MYSQL_DB`
+			* Use the same settings as your dev install of WHMCS, reference the /whmcs/configuration.php if necessary
+			* This way you can preview states between the interface and failing tests
 		* `ENOM_PRO_TEMP` - Absolute path to a tmp directory for writing cache files
 		* `WHMCS_API_UN` / `WHMCS_API_PW` - Should be the same API credentials from above
-1. Create 2 dummy support departments
-	* ![Created Departments](http://cl.circletr.ee/image/0n2r171r1Y3X/Image%202015-07-09%20at%208.42.43.png)
+1. Create 2 dummy support departments: <br/>
+![Created Departments](http://cl.circletr.ee/image/0n2r171r1Y3X/Image%202015-07-09%20at%208.42.43.png)
+
 

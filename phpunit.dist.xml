@@ -40,6 +40,10 @@
 	<php>
 		<const name="ENOM_PRO_TEMP" value="/var/tmp/" />
 		<const name="WHMCS" value="TRUE" />
+		<const name="MYSQL_HOST" value="localhost" />
+		<const name="MYSQL_USER" value="root" />
+		<const name="MYSQL_PASS" value="root" />
+		<const name="MYSQL_DB" value="whmcs_v6.release" />
 		<const name="UNIT_TESTS" value="TRUE" />
 		<const name="ENOM_USERNAME" value="circletree" />
 		<const name="ENOM_PASSWORD" value="57rCT9Jk4zZfjcwTJucH" />

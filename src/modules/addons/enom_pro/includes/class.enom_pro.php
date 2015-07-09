@@ -1773,17 +1773,22 @@ class enom_pro {
 		$show_only_imported   = $show_only == 'imported' ? true : false;
 		$return               = array();
 		foreach ( $domains as $key => $domain ) {
+			//TODO refactor this to only SET based on filtering
+			//NOT SET and then based on hard to read logic, UNSET.
+			//TODO SET
 			$return[ $key ] = $domain;
 			$domain_name    = $domain['sld'] . '.' . $domain['tld'];
 			$domain_search  = self::whmcs_api( 'getclientsdomains',
 				array( 'domain' => $domain_name ) );
 			//Domain isn't in WHMCS, and we want to only show imported, unset this result
 			if ( $domain_search['totalresults'] == 0 && $show_only_imported ) {
+				//TODO UNSET 1
 				unset( $return[ $key ] );
 			}
 
 			//Domain is in WHMCS, we want to show only non-imported, do not include in return  
 			if ( $domain_search['totalresults'] == 1 && $show_only_unimported ) {
+				//TODO UNSET 2
 				unset( $return[ $key ] );
 			}
 			//Domain is in whmcs, and not filtered, add client meta
@@ -1799,13 +1804,12 @@ class enom_pro {
 			if ( $domain_search['totalresults'] == 0 && isset( $return[ $key ] ) ) {
 				//we need to remove this result, because of the filter
 				if ( $show_only_imported ) {
+					//TODO UNSET 3
 					unset( $return[ $key ] );
 				}
 			}
 		}
-		if ( true === $limit ) {
-			$return = $return;
-		} else {
+		if ( true !== $limit ) {
 			$return = array_splice( $return, ( $start - 1 ), $limit );
 		}
 
@@ -1824,6 +1828,7 @@ class enom_pro {
 		$response = defined( 'UNIT_TESTS' ) ? self::whmcs_curl( $command,
 			$data ) : localAPI( $command, $data, $adminid );
 		if ( $response['result'] != 'success' ) {
+			//Make sure the localhost API user is set up / whitelisted
 			throw new WHMCSException( $response['message'] );
 		}
 
