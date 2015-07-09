@@ -20,7 +20,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	function test_whmcs_getSupportDepts() {
 
 		$depts = $this->e->getSupportDepartments();
-		$this->assertNotEmpty( $depts );
+		$this->assertNotEmpty( $depts, 'Please create WHMCS support departments in WHMCS');
 		$this->assertArrayHasKey( 1, $depts );
 		$this->assertArrayHasKey( 2, $depts );
 		$this->assertArrayHasKey( 'id', $depts[1] );
