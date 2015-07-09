@@ -78,10 +78,11 @@ Licensed from Orion IP Ventures, LLC
 }
 .enom_pro_output #homeHelpContent ul {
   padding-left: 0;
+  list-style: none;
 }
 .enom_pro_output #homeHelpContent ul li {
   box-sizing: border-box;
-  width: calc(45%);
+  width: 45%;
   float: left;
   padding: 5px;
   border-bottom: 1px solid #DDD;

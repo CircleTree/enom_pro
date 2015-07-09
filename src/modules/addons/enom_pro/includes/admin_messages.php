@@ -36,7 +36,7 @@
 		<?php $license = new enom_pro_license(); ?>
 		<h1>Thank you<?php echo (false !== ($name = $license->getCustomerName()) ? ', '.$name : '');?>, for your support!</h1>
 		<p>We appreciate your support of <?php echo ENOM_PRO; ?>, and hope it continues to provide a valuable service to you.</p>
-		<p>If you're just getting started, please view our comprehensive suite of <a href="<?php echo enom_pro::HELP_URL ?>" target="_blank" >online help articles</a>.</p>
+		<p>If you're just getting started, please view our comprehensive suite of <a href="<?php echo enom_pro::MODULE_LINK ?>&view=help">help articles</a>.</p>
 		<h3>Get Help with Integration/Installation of <?php echo ENOM_PRO; ?></h3>
 			<p>
 				Order our professional installation &amp; Integration service <br/>
@@ -195,7 +195,7 @@ if (
 	</div>
 <?php endif; ?>
 
-<?php if ( ! enom_pro::areAnyWidgetsEnabled() ) : ?>
+<?php if ( ! enom_pro::areAnyWidgetsEnabled() && ! isset($_GET['view'])) : ?>
 	<div class="alert alert-danger">
 		<h3>No widgets enabled</h3>
 		<div class="row">
