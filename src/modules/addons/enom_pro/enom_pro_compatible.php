@@ -28,16 +28,25 @@ require_once ENOM_PRO_INCLUDES . 'class.enom_pro.php';
 require_once ENOM_PRO_INCLUDES . 'class.enom_pro_controller.php';
 require_once ENOM_PRO_INCLUDES . 'class.enom_pro_license.php';
 require_once ENOM_PRO_INCLUDES . 'class.enom_pro_widget.php';
-
+/**
+ * Helper to show a form input for quick-selecting smarty merge fields
+ * @param string $smartyTag the raw string inside of {$smartyTag} == smartyTag
+ *
+ * @return string
+ */
+function enom_pro_smarty_field($smartyTag) {
+	return '<input type="text" onclick="this.select(); return false;" value="{$'.$smartyTag.'}" />';
+}
 /**
  * @return multitype:string multitype:multitype:string  multitype:string number
  * @codeCoverageIgnore
  */
+
 function enom_pro_config() {
 
 	$view         = '';
 	$spinner_help = ' <br/><span class="textred" >
-            Make sure your active cart & domain checker templates have <code>{$namespinner}</code> in them.</span>';
+            Make sure your active cart & domain checker templates have '.enom_pro_smarty_field('namespinner').' in them.</span>';
 	if ( isset( $_GET['view'] ) ) {
 		switch ( $_GET['view'] ) {
 			case 'pricing_import':
@@ -57,8 +66,9 @@ function enom_pro_config() {
 				break;
 		}
 	}
-	$save_button_desc     = '<input type="submit" name="msave_enom_pro" value="Save Changes" class="btn primary btn-success">';
-	$button               = '<a class="btn btn-inverse btn-sm" ' . ' style="color:white;text-decoration:none;display:inline;vertical-align:middle;"' . ' href="' . enom_pro::MODULE_LINK . '" target="_top">Go to @NAME@ &rarr;</a>' . $save_button_desc;
+	$save_button_desc     = '<input type="submit" name="msave_enom_pro" value="Save Changes" class="btn primary btn-success btn-sm">';
+	$button               = '<span class="enom_pro_output"><a class="btn btn-info btn-sm" href="' . enom_pro::MODULE_LINK . '" target="_top">Go to @NAME@ &rarr;</a>';
+	$button .= $save_button_desc . '</span>';
 	$save_button_row      = array(
 		'FriendlyName' => "Save",
 		"Type"         => "null",
@@ -81,7 +91,6 @@ function enom_pro_config() {
 				"Type"         => "null",
 				"Description"  => '<h1 style="margin:0;line-height:1.5;" >' . ENOM_PRO . ' Settings ' . $button . '</h1>'
 			),
-			'save'                   => $save_button_row,
 			'license'                => array(
 				'FriendlyName' => "License Key",
 				"Type"         => "text",
@@ -251,7 +260,10 @@ function enom_pro_config() {
 		'FriendlyName' => "Ticket Message",
 		"Type"         => "textarea",
 		"Default"      => 'We have opened a ticket to renew {$product} for {$domain_name}, which  is set to expire on {$expiry_date}. Our staff will help you get your certificate renewed.',
-		"Description"  => 'Merge fields are: {$product},{$domain_name},{$expiry_date}.',
+		"Description"  => 'Merge fields are: '.
+		                  enom_pro_smarty_field('product') .
+		                  enom_pro_smarty_field('domain_name').
+		                  enom_pro_smarty_field('expiry_date'),
 		'Cols'         => 100
 	),
 			'ssl_ticket_email_enabled' => array(
@@ -411,9 +423,8 @@ function enom_pro_config() {
                             and popular words.",
 		"Options"      => "Off,Low,Medium,High"
 	),
-			'save2'                    => $save_button_row,
 			'quicklink2'               => array(
-		'FriendlyName' => "",
+		'FriendlyName' => "Quick-Links",
 		"Type"         => "null",
 		"Description"  => $button
 	),
