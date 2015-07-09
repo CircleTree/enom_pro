@@ -36,8 +36,8 @@ require_once ENOM_PRO_INCLUDES . 'class.enom_pro_widget.php';
 function enom_pro_config() {
 
 	$view         = '';
-	$spinner_help = " <br/><span class=\"textred\" >
-            Make sure your active cart & domain checker templates have {\$namespinner} in them.</span>";
+	$spinner_help = ' <br/><span class="textred" >
+            Make sure your active cart & domain checker templates have <code>{$namespinner}</code> in them.</span>';
 	if ( isset( $_GET['view'] ) ) {
 		switch ( $_GET['view'] ) {
 			case 'pricing_import':
@@ -789,13 +789,6 @@ function enom_pro_output( $vars ) {
 					<?php enom_pro::render_admin_widget( 'enom_pro_admin_ssl_certs' ); ?>
 				</div>
 			</div>
-			<?php if ( ! enom_pro::areAnyWidgetsEnabled() ) : ?>
-				<div class="alert alert-danger">
-					<h3>No widgets enabled</h3>
-					<img src="../modules/addons/enom_pro/images/admin-roles-list.jpg" height="" width="" alt="" />
-					<img src="../modules/addons/enom_pro/images/admin-roles-widgets.jpg" height="" width="" alt="" />
-				</div>
-			<?php endif; ?>
 		</div>
 	<?php } catch ( EnomException $e ) { ?>
 		<div class="alert alert-danger">

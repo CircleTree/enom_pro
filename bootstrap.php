@@ -2,8 +2,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 ini_set('smtp_port', '1025');
-$resp = mysql_connect('localhost', 'root', 'root');
-mysql_select_db('whmcs_3');
+$resp = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
+mysql_select_db(MYSQL_DB);
 define('BOOTSTRAP', true);
 define('ROOTDIR', realpath(__DIR__) . '/src');
 

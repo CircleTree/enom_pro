@@ -50,7 +50,7 @@
 	</div>
 <?php endif; ?>
 
-<?php //Auto-upgrade manual overwrite files  ?>
+<?php //Auto-upgrade manual overwrite files  //TODO test $_SESSION works properly in WHMCS v6?>
 <?php if ( isset( $_SESSION['manual_files'] ) ) : ?>
 	<?php $fileToolTip = 'Click to view full path'; ?>
 	<?php if ( !empty( $_SESSION['manual_files']['templates'] ) ): ?>
@@ -174,7 +174,9 @@
 	<?php endif;//End Support & updates expired?>
 <?php endif;//End Update is Available?>
 
-<?php if (
+<?php
+//TODO add beta downgrade help text about BETA opt-in
+if (
 					enom_pro_license::is_downgrade_available() &&
 					! enom_pro_controller::isDismissed( 'beta-downgrade' ))  :
 	?>
@@ -193,6 +195,19 @@
 	</div>
 <?php endif; ?>
 
+<?php if ( ! enom_pro::areAnyWidgetsEnabled() ) : ?>
+	<div class="alert alert-danger">
+		<h3>No widgets enabled</h3>
+		<div class="row">
+
+			<a href="configadminroles.php">
+
+				<img src="../modules/addons/enom_pro/images/admin-roles-list.jpg" height="" width="" title="Click to go to Administrator Roles, and edit the role you want to give access to widgets" class="col-md-6 ep_tt img-rounded"/>
+			</a>
+			<img src="../modules/addons/enom_pro/images/admin-roles-widgets.jpg" height="" width="" title="From the edit role screen, you can enable/disable eNom PRO widgets for each role." class="col-md-6 ep_tt img-rounded"/>
+		</div>
+	</div>
+<?php endif; ?>
 
 <?php if (isset($_GET['saved-exchange'])) :?>
 	<div class="alert alert-success slideup fixed">
