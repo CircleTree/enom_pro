@@ -1,4 +1,5 @@
 # eNom PRO for WHMCS <a target='_blank' href='http://ci.mycircletree.com/job/enom_PRO'><img src='http://ci.mycircletree.com/buildStatus/icon?job=enom_PRO' title='Build Status'></a>
+
 ## Dev Setup
 
 1. [Install WHMCS](http://docs.whmcs.com/Installing_WHMCS) 
@@ -18,8 +19,8 @@
 ## WHMCS Dev Setup
 
 1. Create a local API user
-	* Username: api
-	* Password: 12345
+	* Username: `api`
+	* Password: `12345`
 	* White-list your localhost IP address (127.0.0.1, ::1, etc.)
 		* WHMCS Dev -> Admin
 		* Setup -> General Settings
