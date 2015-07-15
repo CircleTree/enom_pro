@@ -8,7 +8,7 @@
 
   `curl -sS https://getcomposer.org/installer | php`
   
-  `mv composer.phar /usr/local/bin/composer`
+  `mv composer.phar /usr/local/bin/comer`
 1. Run composer install from the project root
 1. Run phing to build the working copy `vendor/bin/phing`
 	* add a file watcher to automatically build after changes to the src/ directory tree
