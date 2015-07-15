@@ -1,4 +1,4 @@
-# eNom PRO for WHMCS [![Build Status](http://ci.mycircletree.com/buildStatus/icon?job=enom_PRO)](http://ci.mycircletree.com/job/enom_PRO/)
+# eNom PRO for WHMCS [![Build Status](http://ci.mycircletree.com/buildStatus/icon?job=enom_PRO)](http://ci.mycircletree.com/job/enom_PRO/){:target="_blank"}
 ## Dev Setup
 
 1. [Install WHMCS](http://docs.whmcs.com/Installing_WHMCS) 
