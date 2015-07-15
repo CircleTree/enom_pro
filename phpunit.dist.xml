@@ -40,11 +40,12 @@
 	<php>
 		<const name="ENOM_PRO_TEMP" value="/var/tmp/" />
 		<const name="WHMCS" value="TRUE" />
-		<const name="MYSQL_HOST" value="localhost" />
+		<const name="MYSQL_HOST" value="127.0.0.1" />
 		<const name="MYSQL_USER" value="root" />
 		<const name="MYSQL_PASS" value="root" />
 		<const name="MYSQL_DB" value="whmcs_v6.release" />
 		<const name="UNIT_TESTS" value="TRUE" />
+		<!-- Whitelist IP here: http://resellertest.enom.com/resellers/reseller-testaccount.aspx -->
 		<const name="ENOM_USERNAME" value="circletree" />
 		<const name="ENOM_PASSWORD" value="57rCT9Jk4zZfjcwTJucH" />
 		<const name="WHMCS_API_UN" value="api" />
