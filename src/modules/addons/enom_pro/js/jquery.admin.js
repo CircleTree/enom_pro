@@ -1,6 +1,6 @@
 try {
 	(function (C) {
-		var A = function (Q) {
+		var A           = function (Q) {
 			var S = Q.rows;
 			var K = S.length;
 			var P = [];
@@ -31,7 +31,7 @@ try {
 				}
 			}
 		};
-		var B = function (H) {
+		var B           = function (H) {
 			var E = 0, F, D, G = (H.tHead) ? H.tHead.rows : 0;
 			if (G) {
 				for (F = 0; F < G.length; F++) {
@@ -55,24 +55,24 @@ try {
 		};
 		C.fn.tableHover = function (D) {
 			var E = C.extend({
-				allowHead : true,
-				allowBody : true,
-				allowFoot : true,
-				headRows  : false,
-				bodyRows  : true,
-				footRows  : false,
-				spanRows  : true,
-				headCols  : false,
-				bodyCols  : true,
-				footCols  : false,
-				spanCols  : true,
+				allowHead:  true,
+				allowBody:  true,
+				allowFoot:  true,
+				headRows:   false,
+				bodyRows:   true,
+				footRows:   false,
+				spanRows:   true,
+				headCols:   false,
+				bodyCols:   true,
+				footCols:   false,
+				spanCols:   true,
 				ignoreCols: [],
-				headCells : false,
-				bodyCells : true,
-				footCells : false,
-				rowClass  : "hover",
-				colClass  : "",
-				cellClass : "",
+				headCells:  false,
+				bodyCells:  true,
+				footCells:  false,
+				rowClass:   "hover",
+				colClass:   "",
+				cellClass:  "",
 				clickClass: ""
 			}, D);
 			return this.each(function () {
@@ -207,25 +207,27 @@ try {
 			})
 		}
 	})(jQuery);
-// https://github.com/Foliotek/ajaxq
+	// https://github.com/Foliotek/ajaxq
 
 	(function ($) {
 
-		var queues = {};
+		var queues     = {};
 		var activeReqs = {};
 
-		// Register an $.ajaxq function, which follows the $.ajax interface, but allows a queue name which will force only one request per queue to fire.
+		// Register an $.ajaxq function, which follows the $.ajax interface, but allows a queue name which will force only
+		// one request per queue to fire.
 		$.ajaxq = function (qname, opts) {
 
 			if (typeof opts === "undefined") {
 				throw ("AjaxQ: queue name is not provided");
 			}
 
-			// Will return a Deferred promise object extended with success/error/callback, so that this function matches the interface of $.ajax
+			// Will return a Deferred promise object extended with success/error/callback, so that this function matches the
+			// interface of $.ajax
 			var deferred = $.Deferred(), promise = deferred.promise();
 
-			promise.success = promise.done;
-			promise.error = promise.fail;
+			promise.success  = promise.done;
+			promise.error    = promise.fail;
 			promise.complete = promise.always;
 
 			// Create a deep copy of the arguments, and enqueue this request.
@@ -235,7 +237,8 @@ try {
 				var jqXHR = $.ajax.apply(window, [clonedOptions]);
 
 				// Notify the returned deferred object with the correct context when the jqXHR is done or fails
-				// Note that 'always' will automatically be fired once one of these are called: http://api.jquery.com/category/deferred-object/.
+				// Note that 'always' will automatically be fired once one of these are called:
+				// http://api.jquery.com/category/deferred-object/.
 				jqXHR.done(function () {
 					deferred.resolve.apply(this, arguments);
 				});
@@ -253,8 +256,8 @@ try {
 			// Otherwise, just add this item onto it for later processing.
 			function enqueue(cb) {
 				if (!queues[qname]) {
-					queues[qname] = [];
-					var xhr = cb();
+					queues[qname]     = [];
+					var xhr           = cb();
 					activeReqs[qname] = xhr;
 				} else {
 					queues[qname].push(cb);
@@ -262,14 +265,15 @@ try {
 			}
 
 			// Remove the next callback from the queue and fire it off.
-			// If the queue was empty (this was the last item), delete it from memory so the next one can be instantly processed.
+			// If the queue was empty (this was the last item), delete it from memory so the next one can be instantly
+			// processed.
 			function dequeue() {
 				if (!queues[qname]) {
 					return;
 				}
 				var nextCallback = queues[qname].shift();
 				if (nextCallback) {
-					var xhr = nextCallback();
+					var xhr           = nextCallback();
 					activeReqs[qname] = xhr;
 				} else {
 					delete queues[qname];
@@ -284,16 +288,16 @@ try {
 			$[method] = function (qname, url, data, callback, type) {
 
 				if ($.isFunction(data)) {
-					type = type || callback;
+					type     = type || callback;
 					callback = data;
-					data = undefined;
+					data     = undefined;
 				}
 
 				return $.ajaxq(qname, {
-					type    : method === "postq" ? "post" : "get",
-					url     : url,
-					data    : data,
-					success : callback,
+					type:     method === "postq" ? "post" : "get",
+					url:      url,
+					data:     data,
+					success:  callback,
 					dataType: type
 				});
 			};
@@ -305,28 +309,40 @@ try {
 
 		var isAnyQueueRunning = function () {
 			for (var i in queues) {
-				if (isQueueRunning(i)) return true;
+				if (isQueueRunning(i)) {
+					return true;
+				}
 			}
 			return false;
 		};
 
 		$.ajaxq.isRunning = function (qname) {
-			if (qname) return isQueueRunning(qname); else return isAnyQueueRunning();
+			if (qname) {
+				return isQueueRunning(qname);
+			} else {
+				return isAnyQueueRunning();
+			}
 		};
 
 		$.ajaxq.getActiveRequest = function (qname) {
-			if (!qname) throw ("AjaxQ: queue name is required");
+			if (!qname) {
+				throw ("AjaxQ: queue name is required");
+			}
 
 			return activeReqs[qname];
 		};
 
 		$.ajaxq.abort = function (qname) {
-			if (!qname) throw ("AjaxQ: queue name is required");
+			if (!qname) {
+				throw ("AjaxQ: queue name is required");
+			}
 
 			var current = $.ajaxq.getActiveRequest(qname);
 			delete queues[qname];
 			delete activeReqs[qname];
-			if (current) current.abort();
+			if (current) {
+				current.abort();
+			}
 		};
 
 		$.ajaxq.clear = function (qname) {
@@ -362,15 +378,15 @@ try {
 			}
 		});
 		$("#create_order_dialog").dialog({
-			width   : 450,
+			width:       450,
 			dialogClass: 'enom_pro_output',
-			autoOpen: false
+			autoOpen:    false
 		});
-		var $importTableForm = $("#import_table_form");
+		var $importTableForm  = $("#import_table_form");
 		$importTableForm.on('ajaxComplete', function (e, xhr, settings) {
 			$(".domain_whois").trigger('getwhois');
 		});
-		var whois_cache = Array, localStorage;
+		var whois_cache       = Array, localStorage;
 		if (typeof (window.localStorage) == 'object') {
 			localStorage = window.localStorage;
 		} else {
@@ -399,7 +415,7 @@ try {
 				$dialog.dialog('option', 'title', title);
 			}
 			$dialog.dialog('open');
-			var href = $this.attr('href');
+			var href  = $this.attr('href');
 			if ($this.data('target')) {
 				href = $this.data('target');
 			}
@@ -420,11 +436,11 @@ try {
 		});
 
 		$("#enom_pro_dialog").dialog({
-			width   : 640,
-			height  : 640,
+			width:    640,
+			height:   640,
 			autoOpen: false,
-			modal   : true,
-			close   : function () {
+			modal:    true,
+			close:    function () {
 				if (!$(this).data('no-refresh')) {
 					$("body").addClass('loading').append('<div class="ui-widget-overlay body-loader"></div>');
 					$("#enom_pro_pricing_table input").attr('disabled', true);
@@ -436,12 +452,12 @@ try {
 			$("#enom_pro_dialog").dialog("close");
 		});
 		$importTableForm.on('getwhois', ".domain_whois", function (e) {
-			var $target = $(this), $loader = $target.find('.enom_pro_loader');
+			var $target     = $(this), $loader = $target.find('.enom_pro_loader');
 			var domain_name = $(this).data('domain');
-			var data = false;
+			var data        = false;
 			if (localStorage && localStorage.getItem(domain_name)) {
 				var string = localStorage.getItem(domain_name);
-				data = JSON.parse(string);
+				data       = JSON.parse(string);
 			} else if (whois_cache[domain_name]) {
 				data = whois_cache[domain_name];
 			}
@@ -450,16 +466,16 @@ try {
 				return false;
 			}
 			$.ajaxq('whois', {
-				url       : 'addonmodules.php?module=enom_pro',
-				global    : false,
-				data      : {
+				url:        'addonmodules.php?module=enom_pro',
+				global:     false,
+				data:       {
 					action: 'get_domain_whois',
 					domain: domain_name
 				},
 				beforeSend: function () {
 					$loader.removeClass('hidden');
 				},
-				success   : function (data, xhr) {
+				success:    function (data, xhr) {
 					if (localStorage) {
 						try {
 							var string = JSON.stringify(data);
@@ -472,13 +488,13 @@ try {
 					}
 					do_whois_results($target, data);
 				},
-				complete  : function (xhr) {
+				complete:   function (xhr) {
 					if (xhr.statusText == 'abort') {
 						do_whois_results($target, {"error": "Cancelled"});
 					}
 					$loader.addClass('hidden');
 				},
-				error     : function (xhr) {
+				error:      function (xhr) {
 					var json = false;
 					try {
 						json = $.parseJSON(xhr.responseText)
@@ -504,7 +520,9 @@ try {
 			}
 
 			$("#local_storage").on('refresh', function () {
-				$(this).html('<a class="btn btn-info btn-xs" href="#">' + getLabel() + '<span class="enom-pro-icon enom-pro-icon-trash"></span></a>');
+				$(this).html('<a class="btn btn-info btn-xs" href="#">' +
+						getLabel() +
+						'<span class="enom-pro-icon enom-pro-icon-trash"></span></a>');
 			}).on('click', '.btn', function () {
 				localStorage.clear();
 				$(this).find('a').html(getLabel());
@@ -520,18 +538,19 @@ try {
 				$alert.find('.create_order').data('email', data.email);
 			}
 			var $response = $target.find('.response');
-			var label = data.error || ('Found: ' + data.email);
+			var label     = data.error || ('Found: ' + data.email);
 			$response.html(label);
 			if (!data.error) {
 				$alert.removeClass('alert-danger').addClass('alert-warning');
 				$alert.find('.create_order').removeClass('btn-primary').addClass('btn-success');
 			} else {
-				$('<button class="btn btn-danger"><span class="enom-pro-icon enom-pro-icon-warning"></span> Try Again?</button>').on('click', function () {
-					if (localStorage) {
-						localStorage.removeItem($target.data('domain'));
-					}
-					$(this).addClass('disabled');
-				}).appendTo($response);
+				$('<button class="btn btn-danger"><span class="enom-pro-icon enom-pro-icon-warning"></span> Try Again?</button>').on('click',
+						function () {
+							if (localStorage) {
+								localStorage.removeItem($target.data('domain'));
+							}
+							$(this).addClass('disabled');
+						}).appendTo($response);
 			}
 			$target.find('.enom_pro_loader').addClass('hidden');
 		}
@@ -540,8 +559,8 @@ try {
 		$process.hide(), last_domain = '';
 		//Create Order
 		$importTableForm.on('click', 'a.create_order', function () {
-			var domain_name = $(this).data('domain');
-			last_domain = domain_name;
+			var domain_name   = $(this).data('domain');
+			last_domain       = domain_name;
 			$("#import_next_button").hide();
 			$("#domain_field").add('#domain_field2').val(domain_name);
 			$("#create_order_dialog").dialog('open');
@@ -593,8 +612,8 @@ try {
 			$loader.show();
 			$("#import_next_button").hide();
 			$.ajax({
-				url    : 'addonmodules.php?module=enom_pro',
-				data   : $(this).serialize(),
+				url:     'addonmodules.php?module=enom_pro',
+				data:    $(this).serialize(),
 				success: function (data) {
 					if (data.success) {
 						$process.hide();
@@ -615,14 +634,26 @@ try {
 						});
 						var message = 'Created ' + (data.activated ? 'Active' : 'Pending') + ' Order #';
 						if (data.activated) {
-							message += data.orderid + '<a class="btn btn-xs btn-default" target="_blank" href="clientsdomains.php?domainid=' + data.domainid + '">View Domain</a>';
+							message += data.orderid +
+									'<a class="btn btn-xs btn-default" target="_blank" href="clientsdomains.php?domainid=' +
+									data.domainid +
+									'">View Domain</a>';
 							;
 						} else {
-							message += '<a class="btn btn-xs" target="_blank" href="orders.php?action=view&id=' + data.orderid + '">View Pending Order #' + data.orderid + '</a>';
+							message += '<a class="btn btn-xs" target="_blank" href="orders.php?action=view&id=' +
+									data.orderid +
+									'">View Pending Order #' +
+									data.orderid +
+									'</a>';
 							;
 						}
 						if (data.invoiceid) {
-							message += ' invoice #' + '<a class="btn btn-xs btn-default" target="_blank" href="invoices.php?action=edit&id=' + data.invoiceid + '">' + data.invoiceid + '</a>';
+							message += ' invoice #' +
+									'<a class="btn btn-xs btn-default" target="_blank" href="invoices.php?action=edit&id=' +
+									data.invoiceid +
+									'">' +
+									data.invoiceid +
+									'</a>';
 						}
 
 						$message.html(message);
@@ -635,7 +666,7 @@ try {
 					$loader.hide();
 					$message.slideDown();
 				},
-				error  : function (xhr, text) {
+				error:   function (xhr, text) {
 					$loader.hide();
 					$message.addClass('alert-danger').html('WHMCS Error: ' + xhr.responseText).slideDown();
 					$process.slideDown();
@@ -649,21 +680,21 @@ try {
 			$(".enom_pro_loader").not('.small').removeClass('hidden');
 			$("#domain_caches").hide();
 			$.ajax({
-				url       : 'addonmodules.php?module=enom_pro',
-				data      : $(this).serialize(),
+				url:        'addonmodules.php?module=enom_pro',
+				data:       $(this).serialize(),
 				beforeSend: function () {
 					$("#import_ajax_messages").addClass('hidden');
 				},
-				success   : function (data) {
+				success:    function (data) {
 
 					$("#domains_target").html(data.html);
 					$(".domains_cache_time").html(data.cache_date);
 
 				},
-				error     : function (jqXHR, status) {
+				error:      function (jqXHR, status) {
 					$("#import_ajax_messages").html("Error: " + jqXHR.responseText).removeClass('hidden');
 				},
-				complete  : function () {
+				complete:   function () {
 					$(".enom_pro_loader").addClass('hidden');
 					$("#domain_caches").show();
 				}
@@ -673,24 +704,24 @@ try {
 		if (typeof(jQuery.fn.select2) == 'function') {
 			$("#client_select").select2({
 				ajax: {
-					url           : enom_pro.adminurl + '&action=get_client_list',
-					dataType      : 'json',
-					delay         : 250,
-					data          : function (params) {
+					url:            enom_pro.adminurl + '&action=get_client_list',
+					dataType:       'json',
+					delay:          250,
+					data:           function (params) {
 						return {
-							q   : params.term,
+							q:    params.term,
 							page: params.page
 						};
 					},
 					processResults: function (data, page) {
 						return {
-							results   : data.results,
+							results:    data.results,
 							pagination: {
 								more: data.more
 							}
 						};
 					},
-					cache         : true
+					cache:          true
 				}
 			});
 		}
@@ -721,12 +752,12 @@ try {
 				return false;
 			} else if (e.type == 'save') {
 				var data = {
-					min_markup_percent      : $('#percentMarkup').val(),
-					min_markup_whole        : $("#wholeMarkup").val(),
+					min_markup_percent:       $('#percentMarkup').val(),
+					min_markup_whole:         $("#wholeMarkup").val(),
 					preferred_markup_percent: $("#preferredPercentMarkup").val(),
-					preferred_markup_whole  : $("#preferredWholeMarkup").val(),
-					round_to                : $("#roundTo").val(),
-					overwrite_whmcs         : ("on" === $("#overWriteWHMCS:checked").val() ? 'true' : 'false')
+					preferred_markup_whole:   $("#preferredWholeMarkup").val(),
+					round_to:                 $("#roundTo").val(),
+					overwrite_whmcs:          ("on" === $("#overWriteWHMCS:checked").val() ? 'true' : 'false')
 				};
 				//Check if data has changed
 				if (JSON.stringify(data) === JSON.stringify(enom_pro.lastSavedTLDPricing)) {
@@ -736,12 +767,17 @@ try {
 				enom_pro.lastSavedTLDPricing = data;
 				//Do AJAX Save here
 				$.ajax({
-					url : 'addonmodules.php?module=enom_pro',
+					url:  'addonmodules.php?module=enom_pro',
 					data: $.extend({}, data, {action: 'save_tld_markup'})
 				})
 			} else if (e.type == 'recalculate') {
-				var markup = parseFloat($("#percentMarkup").val()) || 0, wholeMarkup = parseFloat($("#wholeMarkup").val()) || 0, round = parseFloat($("#roundTo").val()) || false, preferredMarkup = parseFloat($("#preferredPercentMarkup").val()) || 0, preferredWholeMarkup = parseFloat($("#preferredWholeMarkup").val()) || 0, doRound = (round == -1) ? false : true, //Kept ternary operator for readability
-						newPriceDouble = 0.00;
+				var markup                      = parseFloat($("#percentMarkup").val()) ||
+								0, wholeMarkup          = parseFloat($("#wholeMarkup").val()) ||
+								0, round                = parseFloat($("#roundTo").val()) ||
+								false, preferredMarkup  = parseFloat($("#preferredPercentMarkup").val()) ||
+								0, preferredWholeMarkup = parseFloat($("#preferredWholeMarkup").val()) || 0, doRound = (round ==
+						-1) ? false : true, //Kept ternary operator for readability
+						newPriceDouble              = 0.00;
 				if ($('#overWriteWHMCS').prop('checked')) {
 					var $elems = jQuery('[data-price]');
 				} else {
@@ -749,13 +785,13 @@ try {
 				}
 				$elems.each(function () {
 					//If min. is lt preferred, use preferred, else use minimum
-					var $elem = $(this), price = parseFloat($elem.data('price'));
-					var newMinPrice = price * ( 1 + (markup / 100)) + wholeMarkup;
+					var $elem             = $(this), price = parseFloat($elem.data('price'));
+					var newMinPrice       = price * ( 1 + (markup / 100)) + wholeMarkup;
 					var newPreferredPrice = price * ( 1 + (preferredMarkup / 100)) + preferredWholeMarkup;
 					var newMinPriceDouble = (newMinPrice < newPreferredPrice) ? newPreferredPrice : newMinPrice;
-					newMinPriceDouble = Math.ceil(newMinPriceDouble * 100) / 100;
-					var newPriceString = newMinPriceDouble.toFixed(2);
-					var priceArray = newPriceString.split("."), thisDollarAmount = parseFloat(priceArray[0]), thisCentAmount = parseFloat(priceArray[1]);
+					newMinPriceDouble     = Math.ceil(newMinPriceDouble * 100) / 100;
+					var newPriceString    = newMinPriceDouble.toFixed(2);
+					var priceArray        = newPriceString.split("."), thisDollarAmount = parseFloat(priceArray[0]), thisCentAmount = parseFloat(priceArray[1]);
 					//Is Rounding enabled?
 					if (doRound) {
 						if (thisCentAmount >= round) {
@@ -780,9 +816,9 @@ try {
 			return false;
 		});
 		$(".toggle_tld").on('click', function () {
-			var $this = $(this), tld = $this.data('tld'),
-					$input = $("[data-tld='" + tld + "'][data-year=1]"),
-					first_val = $input.val();
+			var $this                         = $(this), tld = $this.data('tld'), $input = $("[data-tld='" +
+					tld +
+					"'][data-year=1]"), first_val = $input.val();
 			if ("" == first_val || " " == first_val) {
 				//Reset
 				$.each($("[data-tld='" + tld + "']"), function (k, v) {
@@ -797,10 +833,12 @@ try {
 			$input.trigger('keyup');//Trigger our button handler
 			return false;
 		});
-		var $years = $("[data-year=1]");
+		var $years     = $("[data-year=1]");
 		if ($years.length > 0) {
 			$years.on('keyup', function () {
-				var $t = $(this), tld = $t.data('tld'), $thisTrigger = $(".toggle_tld[data-tld='" + tld + "']"), $action = $('.tldAction[data-tld="' + tld + '"');
+				var $t             = $(this), tld = $t.data('tld'), $thisTrigger = $(".toggle_tld[data-tld='" +
+						tld +
+						"']"), $action = $('.tldAction[data-tld="' + tld + '"');
 				if ($t.val() == "") {
 					$thisTrigger.html('Import eNom Pricing');
 					var btnClass = 'btn-default';
@@ -868,20 +906,20 @@ try {
 			return false;
 		});
 		$("[data-alert]").tooltip({
-			title    : 'Never show this message',
+			title:     'Never show this message',
 			container: 'body',
 			placement: 'left'
 		}).closest('.alert').on('close.bs.alert', function () {
-			var $alert = $(this).find('[data-alert]');
-			var alertID = $alert.data('alert');
+			var $alert    = $(this).find('[data-alert]');
+			var alertID   = $alert.data('alert');
 			$alert.tooltip('hide');
 			var alertData = {
 				action: 'dismiss_alert',
-				alert : alertID
+				alert:  alertID
 			};
 			$.ajax({
-				url    : 'addonmodules.php?module=enom_pro',
-				data   : alertData,
+				url:     'addonmodules.php?module=enom_pro',
+				data:    alertData,
 				success: function () {
 
 				}
@@ -906,12 +944,12 @@ try {
 		$("#per_page_form").on('submit change', function () {
 			var $loader = $('.enom_pro_loader');
 			$.ajax({
-				url       : 'addonmodules.php?module=enom_pro',
-				data      : $(this).serialize(),
+				url:        'addonmodules.php?module=enom_pro',
+				data:       $(this).serialize(),
 				beforeSend: function () {
 					$loader.removeClass('hidden');
 				},
-				success   : function () {
+				success:    function () {
 					$("input[name=start]").val(1);
 					$importTableForm.trigger('submit');
 				}
@@ -919,22 +957,36 @@ try {
 			return false;
 		});
 		$("#enom_pro_pricing_table").tableHover({
-			colClass  : "hover",
+			colClass:   "hover",
 			ignoreCols: [1]
 		});
-		var $news = $("#enom_pro_changelog");
+		var $news      = $("#enom_pro_changelog");
 		if ($news.length > 0) {
 			$news.append(enom_pro.loadingString);
 			$.ajax({
-				url     : document.location.protocol + "//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=4&callback=?&q=" + encodeURIComponent("http://mycircletree.com/client-area/knowledgebaserss.php?id=43"),
+				url:      document.location.protocol +
+									"//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=4&callback=?&q=" +
+									encodeURIComponent("http://mycircletree.com/client-area/knowledgebaserss.php?id=43"),
 				dataType: "json",
-				success : function (data) {
+				success:  function (data) {
 					$news.empty();
 					var str = "";
 					$.each(data.responseData.feed.entries, function (k, entry) {
-						str += "<h4><a target=\"_blank\" href=\"" + entry.link + "\" title=\"View " + entry.title + " on our Website\">" + entry.title + "</a></h4><p>" + entry.content + "<a class=\"button button-mini\" style=\"float:right;\" target=\"_blank\" href=\"" + entry.link + "\">Read more...</a></p>";
+						str += "<h4><a target=\"_blank\" href=\"" +
+								entry.link +
+								"\" title=\"View " +
+								entry.title +
+								" on our Website\">" +
+								entry.title +
+								"</a></h4><p>" +
+								entry.content +
+								"<a class=\"button button-mini\" style=\"float:right;\" target=\"_blank\" href=\"" +
+								entry.link +
+								"\">Read more...</a></p>";
 					});
-					str += "<a class=\"alignright\" href=\"http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43\" target=\"_blank\">" + "View Changelog</a>";
+					str +=
+							"<a class=\"alignright\" href=\"http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43\" target=\"_blank\">" +
+							"View Changelog</a>";
 					$(str).appendTo($news);
 				}
 			});
@@ -944,9 +996,9 @@ try {
 			$betaLog.on('ep.load', function () {
 				var $betaLogUL = $("<ul></ul>");
 				$.ajax({
-					data    : {action: 'get_beta_log'},
+					data:     {action: 'get_beta_log'},
 					dataType: 'json',
-					success : function (data) {
+					success:  function (data) {
 						$betaLog.empty();
 						$betaLogUL.appendTo($betaLog);
 						var newer = 'newer', nextIsOlder = false;
@@ -960,7 +1012,17 @@ try {
 								badge += ' current-version';
 								nextIsOlder = true;
 							}
-							var revString = '<span class="' + badge + ' sha">' + value.sha + ' <span class="enom-pro-icon-code-fork enom-pro-icon"></span></span>' + '<span class="label label-inverse date">' + value.relative_date + '</span>' + '<span class="betaLogItem">' + value.subject + '</span>';
+							var revString = '<span class="' +
+									badge +
+									' sha">' +
+									value.sha +
+									' <span class="enom-pro-icon-code-fork enom-pro-icon"></span></span>' +
+									'<span class="label label-inverse date">' +
+									value.relative_date +
+									'</span>' +
+									'<span class="betaLogItem">' +
+									value.subject +
+									'</span>';
 							$betaLogUL.append('<li class="' + newer + '" data-hash="' + value.sha + '">' + revString + '</li>')
 						});
 					}
@@ -979,32 +1041,36 @@ try {
 			var loader = $(this).closest(".enom_stat_button").find(".enom_pro_loader");
 			loader.removeClass('hidden');
 			$.ajax({
-				url     : $(this).attr("href"),
-				success : function (data) {
+				url:      $(this).attr("href"),
+				success:  function (data) {
 					$("#enom_pro_" + tab).html(data);
 				},
 				complete: function () {
 					loader.addClass('hidden');
 				},
-				error   : function (xhr) {
+				error:    function (xhr) {
 					alert(xhr.responseText);
 				}
 			});
 			return false;
 		}).on('click', '.load_more', function () {
-			var button = $(this), row = button.closest('tr'), loader = button.closest('td').find('.enom_pro_loader');
+			var button  = $(this), row = button.closest('tr'), loader = button.closest('td').find('.enom_pro_loader');
 			loader.removeClass('hidden');
 			var ajaxUrl = $(this).attr('href');
 			$.ajax({
-				url    : ajaxUrl,
+				url:     ajaxUrl,
 				success: function (data) {
 					$(".domain-widget-response tbody").append(data);
 					button.add(row).hide();
 					$(".ep_tt").tooltip();
 					loader.remove();
 				},
-				error  : function (xhr) {
-					var errString = '<tr><td colspan="7">' + '<div class="alert alert-danger">' + xhr.responseText + '</div>' + '</td>';
+				error:   function (xhr) {
+					var errString = '<tr><td colspan="7">' +
+							'<div class="alert alert-danger">' +
+							xhr.responseText +
+							'</div>' +
+							'</td>';
 					$(".domain-widget-response tbody").append(errString);
 					loader.remove();
 				}
@@ -1013,22 +1079,24 @@ try {
 		});
 		if ($(".doIPFetch").length > 0) {
 			$.getJSON("http://www.telize.com/jsonip?callback=?", function (json) {
-						$(".doIPFetch").html('<input value="' + json.ip + '" onclick="this.select();"/>').removeClass('enom_pro_loader');
-					});
+				$(".doIPFetch").html('<input value="' +
+						json.ip +
+						'" onclick="this.select();"/>').removeClass('enom_pro_loader');
+			});
 		}
 		$(".ep_sortable").sortable({
 			update: function (e, ui) {
 				var $loader = $(".enom_pro_loader");
 				$loader.removeClass('hidden');
-				var sorted = $(this).sortable('toArray');
+				var sorted  = $(this).sortable('toArray');
 				if (sortTldXHR) {
 					sortTldXHR.abort();
 				}
 				sortTldXHR = $.ajax({
-					url    : 'addonmodules.php?module=enom_pro',
-					data   : {
+					url:     'addonmodules.php?module=enom_pro',
+					data:    {
 						'action': 'sort_domains',
-						'order' : sorted
+						'order':  sorted
 					},
 					success: function () {
 						$loader.addClass('hidden');
@@ -1040,16 +1108,20 @@ try {
 		$(".filePathToggle").on('click', function () {
 			var $this = $(this), filepath = $this.data('path'), size = filepath.length + 7;
 			$this.hide();
-			$this.after('<input type="text" name="file[]" onclick="this.select();" size="' + size + '" value="' + filepath + '" />');
+			$this.after('<input type="text" name="file[]" onclick="this.select();" size="' +
+					size +
+					'" value="' +
+					filepath +
+					'" />');
 			return false;
 		});
-		enom_pro = $.extend(enom_pro, {
-			upgradeSessionKey         : 'dismissEnomProUpgrade',
-			$betaLog                  : jQuery("#enom_pro_beta_changelog"),
-			$upgradeAlert             : jQuery('#upgradeAlert'),
-			$upgradeAlertSidebar      : $(".upgradeAlertHidden"),
-			loadingString             : "<div class=\"enom_pro_loader\"></div>",
-			init                      : function () {
+		enom_pro     = $.extend(enom_pro, {
+			upgradeSessionKey:          'dismissEnomProUpgrade',
+			$betaLog:                   jQuery("#enom_pro_beta_changelog"),
+			$upgradeAlert:              jQuery('#upgradeAlert'),
+			$upgradeAlertSidebar:       $(".upgradeAlertHidden"),
+			loadingString:              "<div class=\"enom_pro_loader\"></div>",
+			init:                       function () {
 				this.initAjaxHandler();
 				if (this.isUpgradeAlertHidden()) {
 					this.hideUpgradeAlert();
@@ -1062,15 +1134,15 @@ try {
 					enom_pro.hideUpgradeAlert();
 				});
 			},
-			initAjaxHandler           : function () {
+			initAjaxHandler:            function () {
 				$(".ep_ajax").on('click', function () {
 					var $elem = $(this), origTitle = $elem.text();
 					$elem.addClass('disabled').text('Please wait...');
 					$.ajax({
-						url    : $elem.attr('href'),
+						url:     $elem.attr('href'),
 						success: function (message) {
 							$elem.text(message);
-							setTimeout(function  (){
+							setTimeout(function () {
 								$elem.text(origTitle).removeClass('disabled');
 							}, 2000);
 						}//TODO error callback handling
@@ -1078,74 +1150,76 @@ try {
 					return false;
 				});
 			},
-			initPricingImport         : function () {
+			initPricingImport:          function () {
 				//TODO restore / hide based on localStorage
-					$('.dropdown-toggle').dropdown();
-//				this.showBulkPricingTurboEditor();
+				$('.dropdown-toggle').dropdown();
+				//				this.showBulkPricingTurboEditor();
 			},
 			showBulkPricingTurboEditor: function () {
 				$("#enom_pro_pricing_import_page").addClass("fixedBulk");
 				$('html, body').css({
 					'overflow': 'hidden',
-					'height'  : '100%'
+					'height':   '100%'
 				});
 			},
 			hideBulkPricingTurboEditor: function () {
 				$("#enom_pro_pricing_import_page").removeClass("fixedBulk");
 				$('html, body').css({
 					'overflow': 'auto',
-					'height'  : 'auto'
+					'height':   'auto'
 				});
 			},
-			helpCacheKey              : 'enom_pro_help',
+			helpCacheKey:               'enom_pro_help',
 			/**
 			 * Public method for loading the help interface
 			 */
-			initHelpIndex             : function () {
+			initHelpIndex:              function () {
 				this.loadHelpIndex();
 				this.initHelpSearch();
 				this.initHelpDialog();
 				this.initHelpEvents();
 			},
-			$helpDialog               : false,
+			$helpDialog:                false,
 			/**
 			 * @access private
 			 */
-			initHelpDialog            : function () {
+			initHelpDialog:             function () {
 				this.$helpDialog = $(".helpDialog");
 				this.$helpDialog.dialog({
-					height  : 'auto',
-					width   : '760px',
+					height:   'auto',
+					width:    '760px',
 					minWidth: 250,
 					maxWidth: 760,
 					autoOpen: false,
-					modal   : false
+					modal:    false
 				});
 			},
-			initHelpEvents            : function () {
+			initHelpEvents:             function () {
 				$(".enom_pro_output").on('click', '.helpTrigger', function () {
 					var help_id = $(this).data('help-id');
 					enom_pro.loadHelpIDIntoDialog(help_id);
 					return false;
 				});
 			},
-			loadHelpIDIntoDialog      : function (help_id) {
+			loadHelpIDIntoDialog:       function (help_id) {
 				var $content = $("#helpDialogContent"), cachedContent = this.getHelpContent(help_id);
 				this.$helpDialog.dialog('open');
 				if (!cachedContent) {
 					$content.html(enom_pro.loadingString);
 					$.ajax({
-						url     : document.location.protocol + "//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=1&callback=?&q=" + encodeURIComponent("http://mycircletree.com/client-area/knowledgebaserss.php?id=" + help_id),
+						url:      document.location.protocol +
+											"//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=1&callback=?&q=" +
+											encodeURIComponent("http://mycircletree.com/client-area/knowledgebaserss.php?id=" + help_id),
 						dataType: "json",
-						success : function (data) {
-							var str = "", title;
+						success:  function (data) {
+							var str       = "", title;
 							$.each(data.responseData.feed.entries, function (k, entry) {
 								title = entry.title;
 								str += "<div class=\"content\" >" + entry.content + "</div>";
 							});
 							cachedContent = {
 								title: title,
-								body : str
+								body:  str
 							};
 							enom_pro.setHelpContent(help_id, cachedContent);
 							processHelp(cachedContent);
@@ -1159,10 +1233,10 @@ try {
 					$content.html(cachedContent.body.split('Â').join(''));
 					enom_pro.$helpDialog.dialog('option', 'title', cachedContent.title);
 					enom_pro.$helpDialog.dialog('option', "position", {
-								my: "center",
-								at: "center",
-								of: window
-							});
+						my: "center",
+						at: "center",
+						of: window
+					});
 				}
 			},
 			/**
@@ -1170,7 +1244,7 @@ try {
 			 * @param id help id key
 			 * @returns {*}
 			 */
-			getHelpContent            : function (id) {
+			getHelpContent:             function (id) {
 				var help_key = this.helpCacheKey + id;
 
 				if (this.support.localStorage() && window.localStorage.getItem(help_key)) {
@@ -1178,7 +1252,7 @@ try {
 				}
 				return false;
 			},
-			setHelpContent            : function (id, data) {
+			setHelpContent:             function (id, data) {
 				var help_key = this.helpCacheKey + id;
 				if (this.support.localStorage()) {
 					window.localStorage.setItem(help_key, JSON.stringify(data));
@@ -1187,7 +1261,7 @@ try {
 			/**
 			 * private method to fetch help
 			 */
-			loadHelpIndex             : function () {
+			loadHelpIndex:              function () {
 
 				var homeHelpKey = 'Home', $searchField = $("#helpSearch"), search = $searchField.val(), doingSearch = false, $homeHelp = $("#homeHelpContent");
 				if (search != "") {
@@ -1200,16 +1274,20 @@ try {
 					$(str).appendTo($homeHelp);
 				} else {
 					$homeHelp.html(enom_pro.loadingString);
-					var feedURL = "http://mycircletree.com/client-area/knowledgebaserss.php?catid=11" + "&rand=" + Math.random(1, 1000);
+					var feedURL = "http://mycircletree.com/client-area/knowledgebaserss.php?catid=11" +
+							"&rand=" +
+							Math.random(1, 1000);
 					if (doingSearch) {
 						feedURL += "&s=" + search;
 					}
 
-					var url = document.location.protocol + "//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=25&callback=?&q=" + encodeURIComponent(feedURL);
+					var url = document.location.protocol +
+							"//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=25&callback=?&q=" +
+							encodeURIComponent(feedURL);
 					$.ajax({
-						url     : url,
+						url:      url,
 						dataType: "json",
-						success : function (data) {
+						success:  function (data) {
 							$homeHelp.empty();
 							str = "<ul>";
 							if (data.responseData.feed.entries.length == 0) {
@@ -1217,10 +1295,35 @@ try {
 							} else {
 								$.each(data.responseData.feed.entries, function (k, entry) {
 									var help_id = enom_pro.getParameterByName('id', entry.link);
-									str += '<li>' + '<h4>' + '<a ' + 'href="' + entry.link + '" ' + 'class="helpTrigger" ' + 'data-help-id="' + help_id + '">' + entry.title + '</a>' + '</h4>' +
+									str += '<li>' +
+											'<h4>' +
+											'<a ' +
+											'href="' +
+											entry.link +
+											'" ' +
+											'class="helpTrigger" ' +
+											'data-help-id="' +
+											help_id +
+											'">' +
+											entry.title +
+											'</a>' +
+											'</h4>' +
 
-									'<p class="snippet">' + entry.contentSnippet.replace('...', '') + '</p>';
-									str += '<a ' + 'href="' + entry.link + '" ' + 'class="helpTrigger readmore btn btn-sm btn-primary" ' + 'data-help-id="' + help_id + '"' + '>' + 'Continue reading: ' + entry.title + '</a></li>';
+											'<p class="snippet">' +
+											entry.contentSnippet.replace('...', '') +
+											'</p>';
+									str += '<a ' +
+											'href="' +
+											entry.link +
+											'" ' +
+											'class="helpTrigger readmore btn btn-sm btn-primary" ' +
+											'data-help-id="' +
+											help_id +
+											'"' +
+											'>' +
+											'Continue reading: ' +
+											entry.title +
+											'</a></li>';
 								});
 							}
 							str += "</ul>";
@@ -1230,7 +1333,7 @@ try {
 					});
 				}
 			},
-			initHelpSearch            : function () {
+			initHelpSearch:             function () {
 				var $searchField = $('input[name=s]'), oldSearch = "", searchTimeout = null, $clearSearchButton = $('.searchWrap .enom-pro-icon-cancel-circle');
 				$searchField.on('keyup', function () {
 					var newSearch = $searchField.val();
@@ -1243,7 +1346,7 @@ try {
 							clearTimeout(searchTimeout);
 						}
 						searchTimeout = setTimeout(enom_pro.loadHelpIndex, 500);
-						oldSearch = newSearch;
+						oldSearch     = newSearch;
 					} else if ($searchField.val() == "") {
 						//Restore defaults
 						$clearSearchButton.addClass('hidden');
@@ -1260,7 +1363,7 @@ try {
 				});
 
 			},
-			getHelpCacheCount         : function () {
+			getHelpCacheCount:          function () {
 				var helpCount = 0;
 				jQuery.each(window.localStorage, function (key, value) {
 					if (typeof key !== "string") {
@@ -1272,7 +1375,7 @@ try {
 				});
 				return helpCount;
 			},
-			clearHelpCache            : function () {
+			clearHelpCache:             function () {
 				if (window.localStorage) {
 					var cleared = 0;
 					jQuery.each(window.localStorage, function (key, value) {
@@ -1288,18 +1391,18 @@ try {
 				}
 				return false;
 			},
-			lastSavedTLDPricing       : {
-				min_markup_percent      : $('#percentMarkup').val(),
-				min_markup_whole        : $("#wholeMarkup").val(),
+			lastSavedTLDPricing:        {
+				min_markup_percent:       $('#percentMarkup').val(),
+				min_markup_whole:         $("#wholeMarkup").val(),
 				preferred_markup_percent: $("#preferredPercentMarkup").val(),
-				preferred_markup_whole  : $("#preferredWholeMarkup").val(),
-				round_to                : $("#roundTo").val(),
-				overwrite_whmcs         : ("on" === $("#overWriteWHMCS:checked").val() ? 'true' : 'false')
+				preferred_markup_whole:   $("#preferredWholeMarkup").val(),
+				round_to:                 $("#roundTo").val(),
+				overwrite_whmcs:          ("on" === $("#overWriteWHMCS:checked").val() ? 'true' : 'false')
 			},
 			/**
 			 * Shows changelog & hides sidebar notification
 			 */
-			showUpgradeAlert          : function () {
+			showUpgradeAlert:           function () {
 				this.deleteHideAlert();
 				this.show(this.$upgradeAlert);
 				this.$betaLog.trigger('ep.load');
@@ -1308,28 +1411,28 @@ try {
 			/**
 			 * Hides the changelog and restores the sidebar notification
 			 */
-			hideUpgradeAlert          : function () {
+			hideUpgradeAlert:           function () {
 				if (this.support.localStorage()) {
 					window.sessionStorage.setItem(this.upgradeSessionKey, true);
 				}
 				this.show(this.$upgradeAlertSidebar);
 				this.hide(this.$upgradeAlert);
 			},
-			deleteHideAlert           : function () {
+			deleteHideAlert:            function () {
 				if (this.support.localStorage()) {
 					window.sessionStorage.removeItem(this.upgradeSessionKey);
 				}
 			},
-			isUpgradeAlertHidden      : function () {
+			isUpgradeAlertHidden:       function () {
 				if (!this.support.localStorage()) {
 					return false;
 				}
 				return window.sessionStorage.getItem(this.upgradeSessionKey);
 			},
-			show                      : function ($item) {
+			show:                       function ($item) {
 				$item.removeClass('hidden').show();
 			},
-			hide                      : function ($item) {
+			hide:                       function ($item) {
 				$item.addClass('hidden').hide();
 			},
 			/**
@@ -1338,10 +1441,10 @@ try {
 			 * @param url URI to parse
 			 * @returns {string}
 			 */
-			getParameterByName        : function (name, url) {
-				name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-				var regexS = "[\\?&]" + name + "=([^&#]*)";
-				var regex = new RegExp(regexS);
+			getParameterByName:         function (name, url) {
+				name        = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+				var regexS  = "[\\?&]" + name + "=([^&#]*)";
+				var regex   = new RegExp(regexS);
 				var results = regex.exec(url);
 				if (results === null) {
 					return "";
@@ -1349,7 +1452,7 @@ try {
 					return decodeURIComponent(results[1].replace(/\+/g, " "));
 				}
 			},
-			support                   : {
+			support:                    {
 				localStorage: function () {
 					try {
 						return 'localStorage' in window && window['localStorage'] !== null;
