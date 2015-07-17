@@ -166,7 +166,7 @@ if ( $this->is_pricing_cached() ) : ?>
 				<input type="hidden" name="module" value="enom_pro" />
 				<input type="hidden" name="view" value="pricing_import" />
 
-				<div class="input-group input-group-lg<?php isset( $_GET['s'] ) ? ' has-success' : ''; ?>">
+				<div class="input-group <?php isset( $_GET['s'] ) ? ' has-success' : ''; ?>">
 					<p class="input-group-addon">.</p>
 					<input type="search" name="s" value="<?php echo isset( $_GET['s'] ) ? htmlentities( strip_tags( $_GET['s'] ) ) : ''; ?>" class="form-control" placeholder="tld" />
 			<span class="input-group-btn">
@@ -190,11 +190,6 @@ if ( $this->is_pricing_cached() ) : ?>
 					</script>
 				<?php endif; ?>
 			</form>
-			<?php pager( count( $allDomainsPricing ),
-				'pricing_import',
-				false,
-				$per_page,
-				'#enom_pro_pricing_table' ); ?>
 			<form method="POST"
 			      action="<?php echo $_SERVER['PHP_SELF']; ?>?module=enom_pro&view=pricing_import"
 			      id="enom_pro_pricing_import">
@@ -213,7 +208,8 @@ if ( $this->is_pricing_cached() ) : ?>
 								enom_pro::get_addon_setting( 'pricing_years' ),
 								'' ) ) as $key => $year
 						) : ?>
-							<th colspan="1"><?php echo $year; ?> Year<?php if ( $year > 1 ): ?>s<?php endif; ?>
+							<th colspan="1">
+								<?php echo $year; ?> Year<?php if ( $year > 1 ): ?>s<?php endif; ?>
 							</th>
 						<?php endforeach; ?>
 					</tr>
@@ -247,11 +243,11 @@ if ( $this->is_pricing_cached() ) : ?>
 								"
 							<?php endif;?>
 							>
-							<div class="btn tldAction <?php echo implode(" ", $btn_classes) ?> dropdown-toggle"
-									     data-toggle="dropdown"
-									     data-tld="<?php echo $tld ?>"
-									     <?php if ($isInWHMCS) : ?>data-whmcs="true"<?php endif ?>><?php echo $tld; ?></div>
-									<ul class="dropdown-menu" role="menu">
+							<div class="btn tldAction dropdown-toggle <?php echo implode(" ", $btn_classes) ?>" data-tld="<?php echo $tld ?>"<?php if ($isInWHMCS) : ?> data-whmcs="true"<?php endif; ?> data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<?php echo $tld; ?>
+								<span class="caret"></span>
+					        </div>
+									<ul class="dropdown-menu">
 										<?php if ( $isInWHMCS ) : ?>
 											<li>
 												<a target="_blank" class="ep_lightbox"
@@ -260,22 +256,29 @@ if ( $this->is_pricing_cached() ) : ?>
 												   data-title="Pricing for .<?php echo $tld; ?>"
 												   href="configdomains.php?action=editpricing&id=<?php echo $whmcs_id; ?>">Edit WHMCS Pricing</a>
 											</li>
-											<li><a href="#"
-											       data-tld="<?php echo $tld ?>"
-											       class="delete_tld">
-													Delete Pricing from WHMCS</a></li>
+											<li>
+												<a href="#"
+												       data-tld="<?php echo $tld ?>"
+												       class="delete_tld">
+														Delete Pricing from WHMCS
+												</a>
+											</li>
 											<li class="divider"></li>
 										<?php endif; ?>
 										<li>
 											<a href="#"
 											   data-tld="<?php echo $tld ?>"
-											   class="toggle_tld"
-												>Import eNom Pricing</a>
+											   class="toggle_tld">
+											   Import eNom Pricing
+										   </a>
 										</li>
-										<li><a href="#"
+										<li>
+											<a href="#"
 										       data-tld="<?php echo $tld ?>"
-										       class="mult_row"
-												>Multiply 1-year price for Row</a></li>
+										       class="mult_row">
+										        Multiply 1-year price for Row
+									        </a>
+								        </li>
 									</ul>
 								</div>
 							</td>
@@ -347,7 +350,7 @@ if ( $this->is_pricing_cached() ) : ?>
 				$(".pager a").on('click', function () {
 					var unsaved = false, $link = $(this);
 					$('.myPrice').each(function (k, v) {
-						$input = $(v);
+						var $input = $(v);
 						if ($input.val() != '') {
 							//Value is not blank
 							if ($input.val() != $input.data('whmcs')) {
@@ -361,7 +364,7 @@ if ( $this->is_pricing_cached() ) : ?>
 						}
 					});
 					if (unsaved) {
-						var ans = confirm('You have unsaved changes. \n\n Save them before going to the next page?')
+						var ans = confirm('You have unsaved changes. \n\n Save them before going to the next page?');
 						if (ans) {
 							$("input[name=start]").val($link.data('start'));
 							$("#enom_pro_pricing_import").trigger('submit');
