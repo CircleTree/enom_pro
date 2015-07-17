@@ -780,9 +780,9 @@ try {
 			return false;
 		});
 		$(".toggle_tld").on('click', function () {
-			var $this = $(this), tld = $this.data('tld');
-			var $input = $("[data-tld='" + tld + "'][data-year=1]");
-			var first_val = $input.val()
+			var $this = $(this), tld = $this.data('tld'),
+					$input = $("[data-tld='" + tld + "'][data-year=1]"),
+					first_val = $input.val();
 			if ("" == first_val || " " == first_val) {
 				//Reset
 				$.each($("[data-tld='" + tld + "']"), function (k, v) {
@@ -795,20 +795,6 @@ try {
 				});
 			}
 			$input.trigger('keyup');//Trigger our button handler
-			return false;
-		});
-		$(".toggle_years").on('click', function () {
-			var $this = $(this), year = $this.data('year');
-			var first_val = $($("[data-year='" + year + "']")[1]).val();
-			if ("" == first_val || " " == first_val) {
-				$.each($("[data-year='" + year + "']"), function (k, v) {
-					$(v).val($(v).data('price'));
-				});
-			} else {
-				$.each($("[data-year='" + year + "']"), function (k, v) {
-					$(v).val('');
-				});
-			}
 			return false;
 		});
 		var $years = $("[data-year=1]");
@@ -1085,7 +1071,7 @@ try {
 						success: function (message) {
 							$elem.text(message);
 							setTimeout(function  (){
-								$elem.text(origTitle).removeClass('disabled');;
+								$elem.text(origTitle).removeClass('disabled');
 							}, 2000);
 						}//TODO error callback handling
 					});
@@ -1094,6 +1080,7 @@ try {
 			},
 			initPricingImport         : function () {
 				//TODO restore / hide based on localStorage
+					$('.dropdown-toggle').dropdown();
 //				this.showBulkPricingTurboEditor();
 			},
 			showBulkPricingTurboEditor: function () {
@@ -1201,6 +1188,7 @@ try {
 			 * private method to fetch help
 			 */
 			loadHelpIndex             : function () {
+
 				var homeHelpKey = 'Home', $searchField = $("#helpSearch"), search = $searchField.val(), doingSearch = false, $homeHelp = $("#homeHelpContent");
 				if (search != "") {
 					doingSearch = true;

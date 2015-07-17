@@ -248,13 +248,13 @@
 				<phingcall target="do-bootstrap-build"/>
 			</then>
 			<else>
-				<echo message="wrong branch ${branch}"/>
+				<echo message="wrong branch ${branch} \n git checkout eNom-pro"/>
 			</else>
 		</if>
 		<phingcall target="local"/>
 	</target>
 	<target name="do-bootstrap-build">
-		<exec command="grunt less copy" dir="../bootstrap/" logoutput="true"/>
+		<exec command="grunt dist-js dist-css" dir="../bootstrap/" logoutput="true"/>
 		<phingcall target="bootstrap-copy"/>
 	</target>
 	<target name="bootstrap-copy">
@@ -263,23 +263,16 @@
 							value="${project.basedir}/src/modules/addons/enom_pro/"/>
 		<property name="bs-css-file" value="${bs-copy-dir}css/bootstrap.min.css"/>
 		<delete file="${bs-css-file}" failonerror="false"/>
+		<property name="bs-js-file" value="${bs-copy-dir}js/bootstrap.min.js"/>
+		<delete file="${bs-js-file}" failonerror="false"/>
 		<echo>Concatenating bootstrap files into bootstrap.min.css</echo>
 		<append destFile="${bs-css-file}">
 			<filelist dir="${bs-dir}css/" files="bootstrap.min.css bootstrap-theme.min.css"/>
 		</append>
-		<!--
-
-		<copy file="${bs-dir}css/bootstrap.min.css"
-					tofile="${bs-copy-dir}css/bootstrap.min.css"
-					overwrite="true"/>
-		<copy file="${bs-dir}css/bootstrap-theme.min.css"
-					tofile="${bs-copy-dir}css/bootstrap-theme.min.css"
-					overwrite="true"/>
-					-->
+		<echo>Copying bootstrap.min.js</echo>
 		<copy file="${bs-dir}js/bootstrap.min.js"
 					tofile="${bs-copy-dir}js/bootstrap.min.js"
 					overwrite="true"/>
-
 	</target>
 	<!-- Replaces version.xml -->
 	<target name="replace-version">
