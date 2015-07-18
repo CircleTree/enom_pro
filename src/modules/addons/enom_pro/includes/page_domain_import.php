@@ -216,3 +216,8 @@
     </table>
     <div class="enom_pro_loader hidden" id="loader_bottom"></div>
 </div>
+<script>
+	jQuery(function($) {
+		enom_pro.initDomainImport();
+	});
+</script>
