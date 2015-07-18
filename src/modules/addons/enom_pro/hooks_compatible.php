@@ -186,7 +186,7 @@ function enom_pro_admin_head_output() {
 			<?php //Don't include these on the admin roles page to prevent unintended conflicts / regressions ?>
 			<?php if ( isset( $_GET['view'] ) && 'domain_import' == $_GET['view'] ) : ?>
 				<link rel="stylesheet" href="../modules/addons/enom_pro/css/select2.min.css" />
-				<script src="../modules/addons/enom_pro/js/select2.full.min.js"></script>
+
 			<?php endif; ?>
 		<?php endif; ?>
 		<?php
@@ -235,6 +235,7 @@ function enom_pro_admin_actions() {
 		'get_client_list',
 		'delete_tld',
 		'reset_alerts',
+		'get_javascript'
 	);
 	//Only load this hook if an ajax request is being run
 	if ( ! ( isset( $_REQUEST['action'] ) && in_array( $_REQUEST['action'], $enom_actions ) ) ) {

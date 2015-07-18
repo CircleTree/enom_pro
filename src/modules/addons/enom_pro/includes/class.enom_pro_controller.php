@@ -728,6 +728,17 @@ class enom_pro_controller {
 		echo json_encode( $formatted );
 	}
 
+	protected function get_javascript () {
+		header('Content-Type: application/json');
+
+		$fileName = filter_var($_GET['script'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH);
+		$jsFilePath = ENOM_PRO_ROOT . 'js/' . $fileName;
+		if (! file_exists($jsFilePath)) {
+			throw new Exception("Error loading JS File");
+		}
+		echo file_get_contents( $jsFilePath );
+	}
+
 	protected function get_client_list() {
 
 		$this->send_json( enom_pro::get_clients() );
