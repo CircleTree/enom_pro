@@ -857,6 +857,9 @@ Top level DOM items
 #content_container .fieldarea .enom_pro_output .enom_pro_widget_title {
   display: inline;
 }
+#sidebar .enom_pro_output .upgradeAlertHidden a {
+  box-sizing: border-box;
+}
 #whmcsdevbanner {
   display: none !important;
 }
