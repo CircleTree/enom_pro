@@ -88,7 +88,10 @@ class enom_pro {
 		'PE_GetProductPrice',
 		'PE_GetRetailPrice',
 		'RPT_GetReport',
-		'RAA_ResendNotification'
+		'RAA_ResendNotification',
+		'AddBulkDomains',
+		'PurchaseServices',
+		'RefillAccount'
 	);
 	/**
 	 * All domains cache file path
@@ -417,9 +420,8 @@ class enom_pro {
 			return true;
 		}
 		//Set the command
-		if ( ! in_array( strtoupper( trim( $command ) ),
-				self::array_to_upper( $this->implemented_commands ) ) && ! defined( 'UNIT_TESTS' )
-		) {
+		// if (! in_array( strtoupper( trim( $command ) ), self::array_to_upper( $this->implemented_commands ) ) && ! defined( 'UNIT_TESTS' )) {
+		if (! in_array( strtoupper( trim( $command ) ), self::array_to_upper( $this->implemented_commands ) )) {
 			throw new InvalidArgumentException( 'API Method ' . $command . ' not implemented', 400 );
 		}
 		if ( $this->remote_run_number >= $this->api_request_limit ) {
@@ -429,7 +431,8 @@ class enom_pro {
 
 
 		//Save the cURL response
-		$this->response = $this->curl_get( $this->URL, $this->getParams() );
+		$url = $this->URL;
+		$this->response = $this->curl_get( $url, $this->getParams() );
 		//Parse the XML
 		$this->load_xml( $this->response );
 		// @codeCoverageIgnoreStart
@@ -1765,10 +1768,14 @@ class enom_pro {
 	public function getDomainsWithClients(
 		$limit = 30,
 		$start = 1,
-		$show_only = false
+		$show_only = false,
+		$test_env = false
 	) {
 
 		$domains              = $this->getDomains( true, $start );
+		if($test_env) {
+			$domains = array_splice( $domains, 0, 200 );
+		}
 		$show_only_unimported = $show_only == 'unimported' ? true : false;
 		$show_only_imported   = $show_only == 'imported' ? true : false;
 		$return               = array();

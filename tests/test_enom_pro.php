@@ -7,13 +7,70 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @var enom_pro $e
 	 */
 	private $e;
+	// ** AR: adding data to share between tests - see setUp()
+	protected static $testData;
 
 	function  setUp() {
 
 		$this->e = new enom_pro();
+
+		// ** AR: tests require client volume - slow down total test time
+		//        not a problem to run, skip for fast test run
+		self::$testData['testClientVol'] = true;
+
+		// ** AR: 100k test - completed successful run.
+		//        do not run unless necessary
+		self::$testData['testClient100k'] = false;
+
+		// ** AR: purchase test - do not run on regular basis
+		//        there are several issues with the test
+		//        
+		//        1. The run will enlarge domain list and slow down test performance
+		//           for getDomainsWithClients() routine
+		//        2. The run will decrease balance, I did not find a way to increase
+		//           it using API calls. The balance issue will affect some other tests
+		//        3. Test volume issue for test_getAllDomains() and test_meta_equals_domains_list()
+		//           see comments below
+		//        
+		//        There is an API method to refill balance, but it requires SSL call
+		//        and we still have a problem with monthly limit for refill
+		//        
+		//        I implemented HTTPS call on the top of our API calls, but I had some
+		//        problems with protocol and since we have monthly limit, I gave it up
+		//        and removed my changes. The only way I found to increase balance is
+		//        to reset it manually to $5000
+		//
+		//        I successfully ran the test
+		self::$testData['testPurchase'] = false;
+
+		// ** AR: okay to run, but serious slow down.
+		//        Not a performance issue since we go through huge domain list and
+		//        for each item we make API call. We can change the code, but I assume
+		//        this happens only with testing data, real account should not have
+		//        10K domains. We have to deside.
+		//
+		//        I added testing parameter to the routine so we limit domain list
+		//        to first 200 records.
+		self::$testData['testDomainsWithClients'] = true;
+
+		// ** AR: just my local issue since I changed MailCatcher code on
+		//        my local and my SMTP is not real
+		self::$testData['realSMTP'] = true;
+
+		self::$testData['clientEmail'] = 'awef@af.co';
+		self::$testData['testCompany'] = 'Test Company';
+		self::$testData['testEmail'] = 'test%d@test.com';
+
 		parent::setUp();
 	}
 
+	// ** AR: preparation for test, we can make some assert calls if we want
+	function test_whmcs_resetData() {
+		$this->test_whmcs_removeTestData();
+		if(self::$testData['testClientVol']) {
+			$this->add_test_clients();
+		}
+	}
 	/**
 	 * @group whmcs
 	 */
@@ -35,7 +92,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 */
 	function test_whmcs_create_acct() {
 
-		$email = 'awef@af.co';
+		$email = self::$testData['clientEmail'];
 
 		//Clean up
 		$clients = $this->e->whmcs_api( 'getclients', array( 'search' => $email ) );
@@ -68,9 +125,15 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	function  test_getAllDomains() {
 
 		$this->e->clear_domains_cache();
-		$this->e->override_request_limit( 25 );
+		// ** AR: see my comment regarding self::$testData['testPurchase'] above
+		//       I changed initial 25 to 30, but if we run more purchase tests
+		//       we'll have to either increase again or change internal routine
+		//
+		//       I did not find a way to remove listed domains even manually
+		$this->e->override_request_limit( 30 );
 		$domains = $this->e->getDomains( true );
-		$this->assertCount( $this->e->getListMeta()['total_domains'], $domains );
+		$tmp = $this->e->getListMeta();
+		$this->assertCount( $tmp['total_domains'], $domains );
 		$ids = array();
 		foreach ( $domains as $key => $domain ) {
 			if ( ! isset( $ids[ $domain['id'] ] ) ) {
@@ -96,6 +159,8 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 */
 	function  test_meta_equals_domains_list() {
 
+		// ** AR: same issue as for test_getAllDomains()
+		$this->e->override_request_limit( 30 );
 		$domains = $this->e->getDomains( true );
 		$meta    = $this->e->getListMeta();
 		$this->assertEquals( $meta['total_domains'], count( $domains ) );
@@ -142,7 +207,10 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	function  test_getAllImportedDomains() {
 
 		$this->markTestIncomplete( 'different ways we track imported vs. whmcs statuses' );
-		$imported = $this->e->getDomainsWithClients( 100, 0, 'imported' );
+		if(!self::$testData['testDomainsWithClients']) {
+			$this->markTestSkipped( 'low performance routine' );
+		}
+		$imported = $this->e->getDomainsWithClients( 100, 0, 'imported', true );
 		$domains  = enom_pro::whmcs_api( 'getclientsdomains', array() );
 		$total    = 0;
 		foreach ( $domains['domains']['domain'] as $domain ) {
@@ -227,7 +295,10 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	function  test_getDomains_withClients_show_only_imported() {
 		//TODO fixme fix domain filter test
 		$this->markTestIncomplete('TODO why is this hanging?');
-		$imported = $this->e->getDomainsWithClients( 1, 1, 'imported' );
+		if(!self::$testData['testDomainsWithClients']) {
+			$this->markTestSkipped( 'low performance routine' );
+		}
+		$imported = $this->e->getDomainsWithClients( 1, 1, 'imported', true );
 		$this->assertCount( 1, $imported, 'make sure there is one imported domain in whmcs db' );
 		$this->assertArrayHasKey( 'client', $imported[0] );
 	}
@@ -255,13 +326,15 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group domains
 	 */
 	function  test_get_imported_pagination() {
-
-		$count = $this->e->getDomainsWithClients( 5, 0, 'imported' );
+		if(!self::$testData['testDomainsWithClients']) {
+			$this->markTestSkipped( 'low performance routine' );
+		}
+		$count = $this->e->getDomainsWithClients( 5, 0, 'imported', true );
 		if ( count( $count ) < 2 ) {
 			$this->markTestSkipped( 'Need more imported domains to test pagination' );
 		}
-		$page1 = $this->e->getDomainsWithClients( 1, 1, 'imported' );
-		$page2 = $this->e->getDomainsWithClients( 1, 2, 'imported' );
+		$page1 = $this->e->getDomainsWithClients( 1, 1, 'imported', true );
+		$page2 = $this->e->getDomainsWithClients( 1, 2, 'imported', true );
 		$this->assertNotEquals( $page1, $page2 );
 	}
 
@@ -325,9 +398,11 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group domains
 	 */
 	function  test_getDomains_show_unimported() {
-
-		$hidden = $this->e->getDomainsWithClients( 10, 1, $show_only = 'unimported' );
-		$this->e->getDomainsWithClients( 3, 1, true );
+		if(!self::$testData['testDomainsWithClients']) {
+			$this->markTestSkipped( 'low performance routine' );
+		}
+		$hidden = $this->e->getDomainsWithClients( 10, 1, $show_only = 'unimported', true );
+		$this->e->getDomainsWithClients( 3, 1, true, true );
 		$this->assertArrayNotHasKey( 'client', $hidden[0] );
 	}
 
@@ -344,9 +419,11 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group domains
 	 */
 	function  test_getDomains_withClients() {
-
+		if(!self::$testData['testDomainsWithClients']) {
+			$this->markTestSkipped( 'low performance routine' );
+		}
 		$limit = 3;
-		$total = $this->e->getDomainsWithClients( $limit, 1 );
+		$total = $this->e->getDomainsWithClients( $limit, 1, false, true );
 		$this->assertCount( $limit, $total );
 	}
 
@@ -579,14 +656,24 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	}
 
 	function test_open_ssl_ticket() {
+		$email = self::$testData['clientEmail'];
+		$id = false;
 
-		$this->e->send_SSL_reminder_email( 1,
+		$clients = $this->e->whmcs_api( 'getclients', array( 'search' => $email ) );
+		if ($clients['numreturned'] > 0) {
+			$id = $clients['clients']['client'][0]['id'];
+		}
+
+		if (!$id) {
+			$this->markTestSkipped( 'client not found' );
+		}
+		$this->e->send_SSL_reminder_email( $id,
 			array(
 				'expiration_date' => date( 'y-m-d' ),
 				'domain'          => array( 'unittests.com', 'www.unittests.com' ),
 				'desc'            => 'Super SSL'
 			) );
-		$tickets = $this->e->whmcs_api( 'gettickets', array( 'clientid' => 1 ) );
+		$tickets = $this->e->whmcs_api( 'gettickets', array( 'clientid' => $id ) );
 		$this->assertNotEmpty( $tickets );
 		$this->assertGreaterThanOrEqual( 1, $tickets['totalresults'] );
 	}
@@ -700,10 +787,11 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 */
 	function test_send_all_ssl_reminders() {
 
-		//Test set up
+		$this->create_client_order();
+		// $this->markTestIncomplete( 'searching for client by domain using WHMCS API - cannot expect result. Must add an order for domain' );
 		enom_pro::set_addon_setting( 'ssl_email_days', 30 );
 		enom_pro::set_addon_setting( 'ssl_email_enabled', "on" );
-		$fileName           = $this->getTestMockPath() . 'expiring_ssl_new.xml';
+		$fileName           = $this->getTestMockPath() . 'expiring_ssl_reminders.xml';
 		$file_contents      = file_get_contents( $fileName );
 		$expiry_days_before = enom_pro::get_addon_setting( 'ssl_email_days' );
 		$send_timestamp     = strtotime( "+$expiry_days_before days" );
@@ -716,40 +804,21 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		//Load mock in our class
 		$this->e->_load_xml( $fileNameTmp );
 
-		//Make sure WHMCS has matching domains/users
-		//Clean up
-		$old_client = enom_pro::whmcs_api( 'getclientsdetails', array( 'email' => 'ssltest@mycircletree.com' ) );
-		enom_pro::whmcs_api( 'deleteclient', array( 'clientid' => $old_client['id'] ) );
-		//Create new
-		$new_client = enom_pro::whmcs_api( 'addclient',
-			array(
-				'firstname'   => "SSL",
-				'lastname'    => "ReminderTest",
-				'email'       => 'ssltest@mycircletree.com',
-				'address1'    => '123 Any St.',
-				'city'        => "Omaha",
-				'state'       => "NB",
-				'postcode'    => '12345',
-				'country'     => 'US',
-				'phonenumber' => '123-333-1212',
-				'password2'   => '1234'
-			) );
-		$this->assertContains( 'success', $new_client );
-		$client_id = $new_client['clientid'];
-
 		$mail = new \Alex\MailCatcher\Client();
 		$mail->purge();
 
 		//Run test
 		$num_sent = $this->e->send_all_ssl_reminder_emails();
 		$this->assertEquals( 3, $num_sent );
-		$this->assertEquals( 3, $mail->getMessageCount() );
+		if(self::$testData['realSMTP']) {
+			$this->assertEquals( 3, $mail->getMessageCount() );
 
-		$messages = $mail->search();
-		$message  = $messages[0];
-		/** @var $message Alex\MailCatcher\Message */
-		$this->assertContains( $ssl_expiry_date_formatted, $message->getContent() );
-		$this->assertSame( 'SSL Expiring Soon', $message->getSubject() );
+			$messages = $mail->search();
+			$message  = $messages[0];
+			/** @var $message Alex\MailCatcher\Message */
+			$this->assertContains( $ssl_expiry_date_formatted, $message->getContent() );
+			$this->assertSame( 'SSL Expiring Soon', $message->getSubject() );
+		}
 
 		//Cleanup
 		unlink( $fileNameTmp );
@@ -768,7 +837,6 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group remote
 	 */
 	function  test_invalid_api_command() {
-
 		$this->e->runTransaction( 'blarf' );
 	}
 
@@ -809,8 +877,10 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group ssl
 	 */
 	public function testGetClientByProduct() {
+		// $this->markTestSkipped( "Must create a client and an order, load XML won't return client id. See comment to test_send_all_ssl_reminders() and testGetClientByProduct()" );
 
 		$this->test_load_ssl_mock();
+		$this->create_client_order();
 		$id = $this->e->getClientIdByDomain( 'mycircletree.com' );
 		$this->assertNotEmpty( $id );
 	}
@@ -819,20 +889,27 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group ssl
 	 */
 	public function testGetClientByDomain() {
+		// $this->markTestSkipped( "Must create a client and an order, load XML won't return client id. See comment to test_send_all_ssl_reminders() and testGetClientByDomain()" );
 
 		$this->test_load_ssl_mock();
+		$this->create_client_order(array('domain' => 'testing-domain.com'));
 		$id = $this->e->getClientIdByDomain( 'testing-domain.com' );
 		$this->assertNotEmpty( $id );
 	}
 
 	public function testSendEmailToCustomAddy() {
+		// $this->markTestSkipped( "Must create a client first" );
+
+		$clientorder = $this->create_client_order(array('client_only' => true));
+		$clientID = $clientorder['clientID'];
 
 		$this->e->whmcs_api( 'sendemail',
 			array(
-				'id'          => 0,
+				'id'          => $clientID,
 				'customtype'  => 'general',
 				'messagename' => 'SSL Expiring Soon',
-
+				'customsubject' => 'SSL Expiring Soon Subj',
+				'custommessage' => 'SSL Expiring Soon Msg'
 			) );
 	}
 
@@ -841,10 +918,13 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 */
 	public function testCreateLotsOfAccounts() {
 
-		$this->markTestSkipped( 'Only run this to batch produce 100k accounts' );
+		if(!self::$testData['testClient100k']) {
+			$this->markTestSkipped( 'Only run this to batch produce 100k accounts' );
+		}
 		$sql = 'DELETE FROM `tblclients` WHERE `companyname` = "AUTO ACCOUNT"';
 		mysql_query( $sql );
-		$before = mysql_fetch_assoc( mysql_query( 'SELECT count(*) AS count FROM `tblclients`' ) )['count'];
+		$tmp = mysql_fetch_assoc( mysql_query( 'SELECT count(*) AS count FROM `tblclients`' ) );
+		$before = $tmp['count'];
 		$i      = 0;
 		$create = 100 * 1000;
 		set_time_limit( 600 );
@@ -867,7 +947,8 @@ INSERT INTO `tblclients` (`firstname`, `lastname`, `companyname`) VALUES
 TAG
 		          . $values;
 		mysql_query( $sql );
-		$after = mysql_fetch_assoc( mysql_query( 'SELECT count(*) AS count FROM `tblclients`' ) )['count'];
+		$tmp = mysql_fetch_assoc( mysql_query( 'SELECT count(*) AS count FROM `tblclients`' ) );
+		$after = $tmp['count'];
 		$this->assertEquals( $create, ( $after - $before ) );
 	}
 
@@ -875,11 +956,16 @@ TAG
 	 * @group whmcs
 	 */
 	public function testUnlimitedClients() {
+		if(!self::$testData['testClientVol']) {
+			$this->markTestSkipped( 'test client vol off' );
+		}
 
 		enom_pro::set_addon_setting( 'client_limit', 'Unlimited' );
-		$this->assertCount( enom_pro::CLIENT_LIST_AJAX_LENGTH, $this->e->get_clients()['results'] );
+		$tmp = $this->e->get_clients();
+		$this->assertCount( enom_pro::CLIENT_LIST_AJAX_LENGTH, $tmp['results'] );
 		enom_pro::set_addon_setting( 'client_limit', '500' );
-		$this->assertCount( enom_pro::CLIENT_LIST_AJAX_LENGTH, $this->e->get_clients()['results'] );
+		$tmp = $this->e->get_clients();
+		$this->assertCount( enom_pro::CLIENT_LIST_AJAX_LENGTH, $tmp['results'] );
 
 	}
 
@@ -888,14 +974,25 @@ TAG
 	 */
 	public function testSearchClients() {
 
-		$_GET['q'] = 'AUTO ACCOUNT';
-		$this->assertEquals( ( 100 * 1000 ), $this->e->get_clients()['total_count'] );
+		if(self::$testData['testClient100k']) {
+			$_GET['q'] = 'AUTO ACCOUNT';
+			$tmp = $this->e->get_clients();
+			$this->assertEquals( ( 100 * 1000 ), $tmp['total_count'] );
+		}
 		//Make sure a search doesn't affect paging
-		$this->assertEquals( 0, $this->e->get_clients()['start'] );
-		$this->assertEquals( enom_pro::CLIENT_LIST_AJAX_LENGTH, $this->e->get_clients()['count'] );
+		if(!self::$testData['testClientVol']) {
+			$this->markTestSkipped( 'test client vol off' );
+		}
+		$tmp = $this->e->get_clients();
+		$this->assertEquals( 0, $tmp['start'] );
+		$tmp = $this->e->get_clients();
+		$this->assertEquals( enom_pro::CLIENT_LIST_AJAX_LENGTH, $tmp['count'] );
 	}
 
 	public function testGetClientsWithPaging() {
+		if(!self::$testData['testClientVol']) {
+			$this->markTestSkipped( 'test client vol off' );
+		}
 
 		//Select 2 default to page 1 being the 1st ajax request
 		$_GET['page'] = 2;
@@ -923,9 +1020,13 @@ TAG
 	 * @group whmcs
 	 */
 	public function testInvalidPageReturnsResults() {
+		if(!self::$testData['testClientVol']) {
+			$this->markTestSkipped( 'test client vol off' );
+		}
 
 		$_GET['page'] = 0;
 		$clients      = $this->e->get_clients();
+		// var_dump($clients);
 		$this->assertArrayHasKey( 'results', $clients );
 		$this->assertTrue( $clients['more'] );
 	}
@@ -934,24 +1035,29 @@ TAG
 	 * @group whmcs
 	 */
 	public function testEndOfListReturnsNoMoreResults() {
+		if(!self::$testData['testClientVol']) {
+			$this->markTestSkipped( 'test client vol off' );
+		}
 
-		$total_count = (int) $this->e->get_clients()['total_count'];
+		$tmp = $this->e->get_clients();
+		$total_count = (int) $tmp['total_count'];
 		$page        = ceil( $total_count / enom_pro::CLIENT_LIST_AJAX_LENGTH );
 		$this->assertGreaterThan( 5, $page );
 		$_GET['page'] = $page;
-		$this->assertFalse( $this->e->get_clients()['more'] );
+		$tmp = $this->e->get_clients();
+		$this->assertFalse( $tmp['more'] );
 	}
 
 	/**
 	 * @Group slow
 	 */
 	public function testCreateLotsOfEnomDomains() {
-
 		$count = 400;
 		$loops = $count / 100;
 		set_time_limit( $loops * 20 );
 		for ( $loops; $loops --; ) {
 			$this->e->clearXMLCache();
+			// var_dump($this->e->getAvailableBalance());
 			$balance = preg_replace( "/[^0-9]/", "", $this->e->getAvailableBalance() );
 			if ( ( 100 * 8.95 ) > $balance ) {
 				$this->fail( 'Balance too low: ' . $balance );
@@ -961,8 +1067,15 @@ TAG
 		}
 	}
 
-	function testCreateLotsOfEnomSSL (){
-		for ($count = 100; $count--; ) {
+	function testCreateLotsOfEnomSSL () {
+		// ** AR: see my comment above regarding purchase test
+		if(!self::$testData['testPurchase']) {
+			$this->markTestSkipped( 'need balance refill' );
+		}
+		// $this->markTestIncomplete( 'refill balance' );
+		$this->e->override_request_limit( 30 );
+		// ** AR: changed initial 100 to 30 due to serious balance decrease
+		for ($count = 30; $count--; ) {
 			$this->doSSLBatch();
 		}
 	}
@@ -990,9 +1103,13 @@ TAG
 
 	public function testSendSSLReminderWWWVsNonWWW ()
 	{
+		// $this->markTestIncomplete( 'client id is auto incremented and cannot be 1, must fix testing' );
+
 		$this->e->_load_xml($this->getTestMockPath() . 'expiring_ssl_reminders_www_vs_nonxml.xml');
-		$this->assertSame(1, $this->e->getClientIdByDomain('mycircletree.com'));
-		$this->assertSame(1, $this->e->getClientIdByDomain('www.mycircletree.com'));
+		$clientorder = $this->create_client_order();
+		$clientID = $clientorder['clientID'];
+		$this->assertSame($clientID, $this->e->getClientIdByDomain('mycircletree.com'));
+		$this->assertSame($clientID, $this->e->getClientIdByDomain('www.mycircletree.com'));
 	}
 
 	/**
@@ -1006,6 +1123,46 @@ TAG
 			$this->assertGreaterThan(0, $cert['status_id']);
 			$this->assertTrue($this->e->willCertificateReminderBeSent($cert));
 		}
+	}
+
+	// ** AR: data removal after the test. We can add more assert calls
+	public function test_whmcs_removeTestData() {
+		// ** AR: must remove all clients with domain, possibly need to
+		//        add more domains
+		$clientID = $this->e->getClientIdByDomain( 'mycircletree.com' );
+		while($clientID) {
+			$this->e->whmcs_api( 'deleteclient', array( 'clientid' => $clientID ) );
+			$clientID = $this->e->getClientIdByDomain( 'mycircletree.com' );
+		}
+		if(self::$testData['testClientVol']) {
+			$this->remove_test_clients();
+		}
+	}
+
+	// ** AR: refill balance call. I removed my HTTPS implementation from enom_pro class
+	//        (see the reason under my comment to purchase tests), so this function is
+	//        not in use
+	//
+	//        The second runTransaction() paramter is supposed to instruct the class routine
+	//        to use SSL
+	private function addTestBalance() {
+		$params = array(
+			'CCAmount'        => '1000',
+			'CCType'          => 'MasterCard',
+			'CCName'          => 'JohnDoe',
+			'CCNumber'        => '5215521552155215',
+			'CCMonth'         => '02',
+			'CCYear'          => sprintf("%d", intval(date("Y")) + 3),
+			'cvv2'            => '200',
+			'ccaddress'       => '100 Main St.',
+			'CCStateProvince' => 'WA',
+			'cczip'           => '99999',
+			'debit'           => 'true',
+			'CCCountry'       => 'us',
+			'CCPhone'         => '+1.5555559999'
+		);
+		$this->e->setParams($params);
+		$this->e->runTransaction('RefillAccount', true);
 	}
 
 	private function doSSLBatch() {
@@ -1066,6 +1223,148 @@ TAG
 		} catch ( Exception $e ) {
 			echo $e->getMessage() . PHP_EOL;
 			echo $e->getTraceAsString();
+		}
+	}
+
+	// ** AR: create client and order for it for successful getClientIdByDomain() call
+	//        unfortunately I did not find a way to create product group and payment gateway
+	//        using API, so those must be created manually.
+	//
+	//        The payment must be paypal and the product group must be id 1
+	private function create_client_order($settings = array()) {
+		$gid = "1";
+		$searchProd = "test client product";
+		$searchGateway = "paypal";
+		$domain = isset($settings['domain']) ? $settings['domain'] : 'mycircletree.com';
+
+		$retVal = array();
+		//Make sure WHMCS has matching domains/users
+		//Clean up
+		$clients = enom_pro::whmcs_api( 'getclients', array( 'search' => "ssltest@mycircletree.com" ) );
+		if ($clients['numreturned'] > 0) {
+			$old_client = enom_pro::whmcs_api( 'getclientsdetails', array( 'email' => 'ssltest@mycircletree.com' ) );
+			enom_pro::whmcs_api( 'deleteclient', array( 'clientid' => $old_client['id'] ) );
+		}
+		//Create new
+		$new_client = enom_pro::whmcs_api( 'addclient',
+			array(
+				'firstname'   => "SSL",
+				'lastname'    => "ReminderTest",
+				'email'       => 'ssltest@mycircletree.com',
+				'address1'    => '123 Any St.',
+				'city'        => "Omaha",
+				'state'       => "NB",
+				'postcode'    => '12345',
+				'country'     => 'US',
+				'phonenumber' => '123-333-1212',
+				'password2'   => '1234'
+			) );
+		$this->assertContains( 'success', $new_client );
+		$client_id = $new_client['clientid'];
+		$retVal['clientID'] = $client_id;
+
+		if(isset($settings['client_only']) && $settings['client_only']) {
+			return $retVal;
+		}
+
+		$gatewayList = enom_pro::whmcs_api( 'getpaymentmethods', array() );
+		$gateway = false;
+		if(isset($gatewayList['paymentmethods']['paymentmethod'])) {
+			foreach($gatewayList['paymentmethods']['paymentmethod'] as $val) {
+				if(strcasecmp($val['module'], $searchGateway) == 0) {
+					$gateway = true;
+				}
+			}
+		}
+
+		if(!$gateway) {
+			$this->fail( 'paypal must be added as an active payment gateway');
+		}
+
+		$productList = enom_pro::whmcs_api( 'getproducts',
+			array(
+				'gid'   => $gid
+			) );
+		$prodID = false;
+		if(isset($productList['products']['product'])) {
+			$prodID = "none";
+			foreach($productList['products']['product'] as $val) {
+				if($val['name'] == $searchProd) {
+					$prodID = $val['pid'];
+				}
+			}
+		}
+		
+		if($prodID == "none") {
+			$prodID = false;
+			$newProduct = enom_pro::whmcs_api( 'addproduct',
+				array(
+					'type'    => "hostingaccount",
+					'gid'     => $gid,
+					'name'    => $searchProd,
+					'paytype' => 'free'
+				) );
+			if($newProduct['result'] == "success") {
+				$prodID = $newProduct['pid'];
+			}
+		}
+
+		//Test set up
+		if(!$prodID) {
+			$this->fail( 'cannot use a product - create product group with id 1');
+		}
+
+		$new_order = enom_pro::whmcs_api( 'addorder',
+			array(
+				'clientid'      => $client_id,
+				'pid'           => $prodID,
+				'domain'        => $domain,
+				'paymentmethod' => 'paypal',
+			) );
+		$this->assertContains( 'success', $new_order );
+
+		return $retVal;
+	}
+
+	// ** AR: adding clients for tests with large client volume requirement
+	private function add_test_clients($num = 60) {
+
+		$this->remove_test_clients();
+
+		set_time_limit( 600 );
+		$compName = self::$testData['testCompany'];
+
+		$count = $num;
+		while($count--) {
+			$email = sprintf(self::$testData['testEmail'], $count);
+			$data = array(
+				'firstname'   => 'Joe',
+				'lastname'    => 'Doe',
+				'email' => $email,
+				'companyname' => $compName,
+				'address1'    => '123 a street',
+				'city'        => 'omaha',
+				'state'       => 'NB',
+				'postcode'    => '12345',
+				'phonenumber' => '123-456-7890',
+				'country'     => 'US',
+			);
+			$this->e->whmcs_api( 'addclient', $data );
+		}
+
+	}
+
+	// ** AR: removing clients added for client volume tests
+	private function remove_test_clients() {
+
+		set_time_limit( 600 );
+		$compName = self::$testData['testCompany'];
+
+		$clients = $this->e->whmcs_api( 'getclients', array( 'search' => $compName ) );
+		while ($clients['numreturned'] > 0) {
+			$id = $clients['clients']['client'][0]['id'];
+			$this->e->whmcs_api( 'deleteclient', array( 'clientid' => $id ) );
+			$clients = $this->e->whmcs_api( 'getclients', array( 'search' => $compName ) );
 		}
 	}
 
