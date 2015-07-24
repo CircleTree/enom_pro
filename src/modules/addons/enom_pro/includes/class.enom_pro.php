@@ -1760,6 +1760,7 @@ class enom_pro {
 	 * @param int|true          $limit true to get all, number to limit
 	 * @param int|number        $start default 1
 	 * @param bool|false|string $show_only imported, un-imported, defaults to false to not filter results
+	 * @param bool              $test_env
 	 *
 	 * @return array $domains with client key with client details
 	 *  array( domain...details, 'client' => array());
@@ -1774,6 +1775,7 @@ class enom_pro {
 
 		$domains              = $this->getDomains( true, $start );
 		if($test_env) {
+			//TODO: Why is this flag necessary? I'm not a big fan of polluting the function signature with a test dependency. The constant UNIT_TESTS is defined by the PHPUnit configuration.xml, I'd be open to other less intrusive options, as well.
 			$domains = array_splice( $domains, 0, 200 );
 		}
 		$show_only_unimported = $show_only == 'unimported' ? true : false;
