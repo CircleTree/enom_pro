@@ -162,8 +162,8 @@ class enom_pro {
 	 * Checks login credentials
 	 */
 	public function check_login() {
-
 		$this->runTransaction( "CheckLogin" );
+		return true;
 	}
 
 	/**
@@ -1132,8 +1132,6 @@ class enom_pro {
 	 * @return array domain, status, expiration_date, desc, status_id
 	 */
 	public function getExpiringCerts() {
-
-
 		$ssl_widget_days = (int) enom_pro::get_addon_setting('ssl_days');
 		$ssl_email_days = (int) enom_pro::get_addon_setting('ssl_email_days');
 		//Check whichever is greater for the API response limits

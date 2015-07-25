@@ -19,8 +19,9 @@ passthru( $create_sh );
 unset($create_query, $drop_query, $drop_sh, $create_sh, $drop_query, $create_query);
 
 echo 'Importing whmcs_v6.sql' . PHP_EOL;
-passthru( 'mysql --user=' . MYSQL_USER . ' --password=' . MYSQL_PASS . ' ' . MYSQL_DB . ' < tests/files/whmcs_v6.sql' );
-echo 'Database reset to known state' . PHP_EOL;
+$cwd = dirname(__FILE__);
+passthru( 'mysql --user=' . MYSQL_USER . ' --password=' . MYSQL_PASS . ' ' . MYSQL_DB . ' < '.$cwd.'/tests/files/whmcs_v6.sql' );
+echo 'Done. Database reset to known state' . PHP_EOL;
 
 $resp = mysql_connect( MYSQL_HOST, MYSQL_USER, MYSQL_PASS );
 mysql_select_db( MYSQL_DB );
