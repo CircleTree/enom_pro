@@ -10,9 +10,11 @@
     <orderEntry type="module-library">
       <library name="PHP">
         <CLASSES>
+          <root url="file://$MODULE_DIR$/../whmcs_hook_mocks" />
           <root url="file:///Applications/MAMP/Library/bin" />
         </CLASSES>
         <SOURCES>
+          <root url="file://$MODULE_DIR$/../whmcs_hook_mocks" />
           <root url="file:///Applications/MAMP/Library/bin" />
         </SOURCES>
       </library>
