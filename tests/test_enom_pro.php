@@ -49,7 +49,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		//        this happens only with testing data, real account should not have
 		//        10K domains. We have to deside.
 		/*
-		Bob - some accounts do have that many, but the actual unit tests don't (As far as I know)
+		TODO - some accounts do have that many, but the actual unit tests don't (As far as I know)
 			don't need to run with that many domains. The main purpose of thoses tests
 		was to programatically reproduce edge cases for actual clients with that many domains,
 		so that I could develop/test the ajax based filtering
@@ -58,11 +58,12 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		//
 		//        I added testing parameter to the routine so we limit domain list
 		//        to first 200 records.
-		// Bob - See https://github.com/CircleTree/enom_pro/commit/50cfa31b6115b02c6aac09a628450e77f1a816f7
+		// TODO - See https://github.com/CircleTree/enom_pro/commit/50cfa31b6115b02c6aac09a628450e77f1a816f7
 		self::$testData['testDomainsWithClients'] = true;
 
 		// ** AR: just my local issue since I changed MailCatcher code on
 		//        my local and my SMTP is not real
+		//TODO this can be refactored, either using the ini_set in the bootstrap.php, or by adding a port 1025 probe / test in the bootstrap, and defining a constant
 		self::$testData['realSMTP'] = true;
 
 		self::$testData['clientEmail'] = 'awef@af.co';
@@ -77,10 +78,11 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group
 	 */
 	function test_whmcs_resetData() {
+		$this->markTestSkipped('Not sure this 67 second test is needed now with the bootstrap.php resetting the database to the last dumped state');
 		$this->test_whmcs_removeTestData();
 		if(self::$testData['testClientVol']) {
-			//This could be skipped/included based on PHPUnit's @group annotation
-			//not sure we need a defined variable in the test file itself
+			//TODO This could be skipped/included based on PHPUnit's @group annotation
+			//pretty sure we don't need a defined variable in the test file itself
 			$this->add_test_clients();
 		}
 	}
@@ -675,7 +677,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		}
 
 		if (!$id) {
-			$this->markTestSkipped( 'client not found' );
+			$this->fail( 'test client not found with email: ' . $email);
 		}
 		$this->e->send_SSL_reminder_email( $id,
 			array(
