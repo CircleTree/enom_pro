@@ -684,32 +684,15 @@ class enom_pro {
 	public function getAllDomainsPricing( $retail = false ) {
 
 		if ( $this->is_pricing_cached() ) {
-			//Just-in-time currency conversion
-			//This way exchange rates can be updated
-			//without having to fetch pricing again from eNom
-
-			$cache_data = $this->get_cache_data( $this->cache_file_all_prices );
-			if ( $this->isCustomExchangeRate() ) {
-				$rate = $this->getCustomExchangeRate();
-			} else {
-				$rate = $this->get_exchange_rate_from_USD_to( $this->getDefaultCurrencyCode() );
-			}
-			$domainsCached = $cache_data['data'];
-
-			if ( $this->isNonUSDinWHMCS() ) {
-				foreach ( $domainsCached as $tld => $cachedDomainData ) {
-					$convertedPrice                 = $domainsCached[ $tld ]['price'] * $rate;
-					$domainsCached[ $tld ]['price'] = $convertedPrice;
-				}
-			}
-
-			return $domainsCached;
+			//Just in time currency conversion for cached data
+			return $this->convertTLDPricing();
 		}
 		$allTLDs = $this->getTLDs();
 		if ( false !== ( $cache_data = $this->get_cache_data( $this->cache_file_all_prices ) ) ) {
 			//Cached, but not complete.
 			$tld     = $cache_data['next_tld'];
 			$thisTLD = $cache_data['data'];
+			unset($cache_data);
 		} else {
 			//Nothing cached, start with first TLD
 			$thisTLD = array();
@@ -718,15 +701,21 @@ class enom_pro {
 		$tldsPerStep  = 5;
 		$thisTLDIndex = array_search( $tld, $allTLDs );
 		$nextTLDIndex = $thisTLDIndex + $tldsPerStep;
-		$thisBatch    = array_slice( $allTLDs, $thisTLDIndex, $nextTLDIndex );
-		foreach ( $thisBatch as $index => $thisBatchTLD ) {
-			$pricingData              = $this->getDomainPricing( $thisBatchTLD, $retail );
-			$thisTLD[ $thisBatchTLD ] = $pricingData;
-		}
 		$nextTLD = false;
 		if ( isset( $allTLDs[ $nextTLDIndex ] ) ) {
 			$nextTLD = $allTLDs[ $nextTLDIndex ];
 		}
+		$allTLDsCount = count($allTLDs);
+
+		$thisBatch    = array_slice( $allTLDs, $thisTLDIndex, $nextTLDIndex );
+		unset($allTLDs);
+
+		foreach ( $thisBatch as $index => $thisBatchTLD ) {
+			$pricingData              = $this->getDomainPricing( $thisBatchTLD, $retail );
+			$thisTLD[ $thisBatchTLD ] = $pricingData;
+			unset($pricingData);
+		}
+
 		if ( count( $thisTLD ) > 0 ) {
 			$cached = array(
 				'data'    => $thisTLD,
@@ -745,7 +734,7 @@ class enom_pro {
 		return array(
 			'tld'    => $tld,
 			'loaded' => $thisTLDIndex,
-			'total'  => count( $allTLDs )
+			'total'  => $allTLDsCount
 		);
 	}
 
@@ -2936,5 +2925,28 @@ class enom_pro {
 		curl_close( $ch );
 
 		return $result;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	private function convertTLDPricing() {
+
+		$cache_data = $this->get_cache_data( $this->cache_file_all_prices );
+		if ( $this->isCustomExchangeRate() ) {
+			$rate = $this->getCustomExchangeRate();
+		} else {
+			$rate = $this->get_exchange_rate_from_USD_to( $this->getDefaultCurrencyCode() );
+		}
+		$domainsCached = $cache_data['data'];
+
+		if ( $this->isNonUSDinWHMCS() ) {
+			foreach ( $domainsCached as $tld => $cachedDomainData ) {
+				$convertedPrice                 = $domainsCached[ $tld ]['price'] * $rate;
+				$domainsCached[ $tld ]['price'] = $convertedPrice;
+			}
+		}
+
+		return $domainsCached;
 	}
 }
