@@ -1409,10 +1409,11 @@ TAG
 
 		set_time_limit( 600 );
 		$compName = self::$testData['testCompany'];
-
+		$last_id = mysql_fetch_array(mysql_query('SELECT max(`id`) FROM `tblclients`'));
+		$last_id = reset($last_id);
 		$count = $num;
 		while ( $count -- ) {
-			$email = sprintf( self::$testData['testEmail'], $count );
+			$email = sprintf( self::$testData['testEmail'], $last_id );
 			$data  = array(
 				'firstname'   => 'Joe',
 				'lastname'    => 'Doe',
@@ -1426,6 +1427,7 @@ TAG
 				'country'     => 'US',
 			);
 			$this->e->whmcs_api( 'addclient', $data );
+			$last_id++;
 		}
 
 	}
