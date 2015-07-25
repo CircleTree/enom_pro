@@ -1309,40 +1309,72 @@
       <identifier-quote-string>`</identifier-quote-string>
     </database-info>
     <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper"/>
-    <schema name="" catalog="whmcs_v6"/>
-    <table name="tblaccounts" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="userid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
+    <schema name="" catalog="whmcs_v6.release"/>
+    <table name="mod_enom_pro" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="local" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="mod_onlinenic" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="domain" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="lockstatus" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6" def="MA=="/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="domainid" unique="false" columns="domain"/>
+    </table>
+    <table name="tblaccounts" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="userid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="currency" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="gateway" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
       <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="amountin" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
       <column name="fees" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
       <column name="amountout" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
+      <column name="rate" sqlType="DECIMAL" precision="10" scale="5" nullable="false" jdbcType="3" def="MS4wMDAwMA=="/>
       <column name="transid" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="invoiceid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="invoiceid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="refundid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="date" unique="false" columns="date"/>
+      <index name="invoiceid" unique="false" columns="invoiceid"/>
+      <index name="transid" unique="false" columns="transid"/>
+      <index name="userid" unique="false" columns="userid"/>
     </table>
-    <table name="tblactivitylog" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblactivitylog" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="user" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="userid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="ipaddr" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="userid" unique="false" columns="userid"/>
     </table>
-    <table name="tbladdons" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tbladdonmodules" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="module" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="setting" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="value" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+    </table>
+    <table name="tbladdons" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="packages" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="recurring" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
-      <column name="setupfee" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
       <column name="billingcycle" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="tax" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="showorder" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="downloads" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="autoactivate" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="suspendproduct" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="welcomeemail" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="weight" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="name" unique="false" columns="name"/>
     </table>
-    <table name="tbladminlog" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tbladminlog" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="adminusername" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="logintime" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <column name="logouttime" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
@@ -1350,106 +1382,199 @@
       <column name="sessionid" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="lastvisit" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="logouttime" unique="false" columns="logouttime"/>
     </table>
-    <table name="tbladmins" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tbladminperms" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="roleid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="permid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <index name="roleid_permid" unique="false" columns="roleid,permid"/>
+    </table>
+    <table name="tbladminroles" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="widgets" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="systememails" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="accountemails" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="supportemails" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="tbladmins" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="roleid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="username" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="password" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="passwordhash" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="authmodule" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="authdata" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="firstname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="lastname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="email" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="userlevel" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="signature" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="notes" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="template" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="language" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="disabled" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="loginattempts" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="supportdepts" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="ticketnotifications" sqlType="VARCHAR" precision="2" scale="0" nullable="false" jdbcType="12"/>
-      <column name="ordernotifications" sqlType="VARCHAR" precision="2" scale="0" nullable="false" jdbcType="12"/>
+      <column name="ticketnotifications" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="homewidgets" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="username" unique="false" columns="username"/>
+    </table>
+    <table name="tbladminsecurityquestions" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="question" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tblaffiliates" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblaffiliates" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="date" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
-      <column name="clientid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
+      <column name="clientid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="visitors" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="paytype" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="payamount" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="onetime" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="balance" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
       <column name="withdrawn" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
-      <primary-key name="PRIMARY" columns="id"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <index name="affiliateid" unique="false" columns="id"/>
+      <index name="clientid" unique="false" columns="clientid"/>
     </table>
-    <table name="tblaffiliatesaccounts" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="affiliateid" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="domain" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="package" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="billingcycle" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="regdate" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
-      <column name="amount" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
-      <column name="commission" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+    <table name="tblaffiliatesaccounts" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="affiliateid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="relid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="lastpaid" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91" def="JzAwMDAtMDAtMDAn"/>
-      <column name="relid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="affiliateid" unique="false" columns="affiliateid"/>
     </table>
-    <table name="tblaffiliateshistory" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="affiliateid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+    <table name="tblaffiliateshistory" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="affiliateid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="date" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <column name="affaccid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="amount" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="affiliateid" unique="false" columns="affiliateid"/>
     </table>
-    <table name="tblannouncements" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="date" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+    <table name="tblaffiliatespending" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="affaccid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="amount" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="clearingdate" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="clearingdate" unique="false" columns="clearingdate"/>
+    </table>
+    <table name="tblaffiliateswithdrawals" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="affiliateid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="date" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="amount" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="affiliateid" unique="false" columns="affiliateid"/>
+    </table>
+    <table name="tblannouncements" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
       <column name="title" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="announcement" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="published" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="published" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="parentid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="language" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="date" unique="false" columns="date"/>
     </table>
-    <table name="tblbannedemails" schema="" catalog="whmcs_v6" type="TABLE">
+    <table name="tblbannedemails" schema="" catalog="whmcs_v6.release" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="domain" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="count" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="count" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="domain" unique="false" columns="domain"/>
     </table>
-    <table name="tblbannedips" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblbannedips" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="ip" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="reason" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="expires" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="ip" unique="false" columns="ip"/>
     </table>
-    <table name="tblbrowserlinks" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblbillableitems" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="userid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="hours" sqlType="DECIMAL" precision="5" scale="1" nullable="false" jdbcType="3"/>
+      <column name="amount" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="recur" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="recurcycle" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="recurfor" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="invoiceaction" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="duedate" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="invoicecount" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="tblbrowserlinks" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="url" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="name" unique="false" columns="name"/>
     </table>
-    <table name="tblcalendar" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblbundles" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="validfrom" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="validuntil" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="uses" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="maxuses" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="itemdata" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="allowpromo" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="showgroup" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="gid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="displayprice" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="sortorder" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="tblcalendar" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="title" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="desc" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="day" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="month" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="year" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="startt1" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="startt2" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="endt1" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="endt2" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="start" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="end" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="allday" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="adminid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="recurid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tblcancelrequests" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblcancelrequests" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
-      <column name="relid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
+      <column name="relid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="reason" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="type" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="serviceid" unique="false" columns="relid"/>
+    </table>
+    <table name="tblclientgroups" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="groupname" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="groupcolour" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="discountpercent" sqlType="DECIMAL UNSIGNED" precision="10" scale="2" nullable="true" jdbcType="3" def="MC4wMA=="/>
+      <column name="susptermexempt" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="separateinvoices" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tblclients" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblclients" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="firstname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="lastname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="companyname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
@@ -1462,67 +1587,164 @@
       <column name="country" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="phonenumber" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="password" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="authmodule" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="authdata" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="currency" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="defaultgateway" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="credit" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
-      <column name="taxexempt" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="taxexempt" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="latefeeoveride" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="overideduenotices" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="separateinvoices" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="disableautocc" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="datecreated" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <column name="notes" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="billingcid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="securityqid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="securityqans" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="groupid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="cardtype" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="cardlastfour" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="cardnum" sqlType="BLOB" precision="65535" scale="0" nullable="false" jdbcType="-4"/>
       <column name="startdate" sqlType="BLOB" precision="65535" scale="0" nullable="false" jdbcType="-4"/>
       <column name="expdate" sqlType="BLOB" precision="65535" scale="0" nullable="false" jdbcType="-4"/>
       <column name="issuenumber" sqlType="BLOB" precision="65535" scale="0" nullable="false" jdbcType="-4"/>
+      <column name="bankname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="banktype" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="bankcode" sqlType="BLOB" precision="65535" scale="0" nullable="false" jdbcType="-4"/>
+      <column name="bankacct" sqlType="BLOB" precision="65535" scale="0" nullable="false" jdbcType="-4"/>
+      <column name="gatewayid" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="lastlogin" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
       <column name="ip" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="host" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="status" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="status" sqlType="ENUM" precision="8" scale="0" nullable="false" jdbcType="1" def="J0FjdGl2ZSc="/>
       <column name="language" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="pwresetkey" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="emailoptout" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="overrideautoclose" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="pwresetexpiry" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="email" unique="false" columns="email"/>
+      <index name="firstname_lastname" unique="false" columns="firstname,lastname"/>
+    </table>
+    <table name="tblclientsfiles" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="userid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="title" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="filename" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="adminonly" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="dateadded" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tblconfiguration" schema="" catalog="whmcs_v6" type="TABLE">
+    <table name="tblconfiguration" schema="" catalog="whmcs_v6.release" type="TABLE">
       <column name="setting" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="value" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <index name="setting" unique="false" columns="setting"/>
     </table>
-    <table name="tblcredit" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="clientid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+    <table name="tblcontacts" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="userid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="firstname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="lastname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="companyname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="email" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="address1" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="address2" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="city" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="state" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="postcode" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="country" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="phonenumber" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="subaccount" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="password" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="permissions" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="domainemails" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="generalemails" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="invoiceemails" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="productemails" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="supportemails" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="affiliateemails" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="pwresetkey" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="pwresetexpiry" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="email" unique="false" columns="email"/>
+      <index name="userid_firstname_lastname" unique="false" columns="userid,firstname,lastname"/>
+    </table>
+    <table name="tblcredit" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="clientid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="date" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="amount" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="relid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tblcustomfields" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblcurrencies" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="code" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="prefix" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="suffix" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="format" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="rate" sqlType="DECIMAL" precision="10" scale="5" nullable="false" jdbcType="3" def="MS4wMDAwMA=="/>
+      <column name="default" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="tblcustomfields" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="type" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="relid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
-      <column name="num" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="relid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <column name="fieldname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="fieldtype" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="fieldoptions" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="regexpr" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="adminonly" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="required" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="showorder" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="showinvoice" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="sortorder" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="serviceid" unique="false" columns="relid"/>
     </table>
-    <table name="tblcustomfieldsvalues" schema="" catalog="whmcs_v6" type="TABLE">
+    <table name="tblcustomfieldsvalues" schema="" catalog="whmcs_v6.release" type="TABLE">
       <column name="fieldid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="relid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="relid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="value" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <index name="fieldid_relid" unique="false" columns="fieldid,relid"/>
     </table>
-    <table name="tbldomainpricing" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tbldomainpricing" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="extension" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="registrationperiod" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
-      <column name="register" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
-      <column name="transfer" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
-      <column name="renew" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="dnsmanagement" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="emailforwarding" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="idprotection" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="eppcode" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="autoreg" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="order" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="extension_registrationperiod" unique="false" columns="extension"/>
+      <index name="order" unique="false" columns="order"/>
     </table>
-    <table name="tbldomains" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="userid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
+    <table name="tbldomainreminders" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="domain_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="date" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="recipients" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="type" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="days_before_expiry" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="tbldomains" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="userid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="orderid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="type" sqlType="ENUM" precision="9" scale="0" nullable="false" jdbcType="1"/>
       <column name="registrationdate" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <column name="domain" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="firstpaymentamount" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
@@ -1531,100 +1753,146 @@
       <column name="registrationperiod" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MQ=="/>
       <column name="expirydate" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
       <column name="subscriptionid" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="status" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="promoid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="status" sqlType="ENUM" precision="16" scale="0" nullable="false" jdbcType="1" def="J1BlbmRpbmcn"/>
       <column name="nextduedate" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91" def="JzAwMDAtMDAtMDAn"/>
       <column name="nextinvoicedate" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <column name="additionalnotes" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="paymentmethod" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="urlforwarding" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="emailforwarding" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="dnsmanagement" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="emailforwarding" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="idprotection" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="donotrenew" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="reminders" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="synced" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="domain" unique="false" columns="domain"/>
+      <index name="orderid" unique="false" columns="orderid"/>
+      <index name="status" unique="false" columns="status"/>
+      <index name="userid" unique="false" columns="userid"/>
     </table>
-    <table name="tbldomainsadditionalfields" schema="" catalog="whmcs_v6" type="TABLE">
+    <table name="tbldomainsadditionalfields" schema="" catalog="whmcs_v6.release" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="domainid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="domainid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="value" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="domainid" unique="false" columns="domainid"/>
     </table>
-    <table name="tbldownloadcats" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tbldownloadcats" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="parentid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="hidden" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="hidden" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="parentid" unique="false" columns="parentid"/>
     </table>
-    <table name="tbldownloads" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tbldownloads" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="category" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="type" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="category" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="title" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="downloads" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <column name="location" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="clientsonly" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="clientsonly" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="hidden" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="productdownload" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="downloads" unique="false" columns="downloads"/>
+      <index name="title" unique="false" columns="title"/>
+    </table>
+    <table name="tblemailmarketer" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="type" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="settings" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="disable" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="marketing" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tblemails" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="userid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
+    <table name="tblemails" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="userid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="subject" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="message" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="to" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="cc" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="bcc" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="userid" unique="false" columns="userid"/>
     </table>
-    <table name="tblemailtemplates" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblemailtemplates" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="type" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="subject" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="message" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="attachments" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="fromname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="fromemail" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="disabled" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="custom" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="disabled" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="custom" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="language" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="copyto" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="plaintext" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="name" unique="false" columns="name"/>
+      <index name="type" unique="false" columns="type"/>
     </table>
-    <table name="tblfraud" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblfraud" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="fraud" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="setting" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="value" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="fraud" unique="false" columns="fraud"/>
     </table>
-    <table name="tblgatewaylog" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblgatewaylog" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <column name="gateway" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="data" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="result" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tblhosting" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="userid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
+    <table name="tblhosting" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="userid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="orderid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="packageid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="server" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="regdate" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <column name="domain" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="server" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="paymentmethod" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="firstpaymentamount" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
       <column name="amount" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
       <column name="billingcycle" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="nextduedate" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
       <column name="nextinvoicedate" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
-      <column name="domainstatus" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="domainstatus" sqlType="ENUM" precision="10" scale="0" nullable="false" jdbcType="1"/>
       <column name="username" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="password" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="notes" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="subscriptionid" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="packageid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
-      <column name="overideautosuspend" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="promoid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="suspendreason" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="overideautosuspend" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="overidesuspenduntil" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <column name="dedicatedip" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="assignedips" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="rootpassword" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="ns1" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="ns2" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="diskusage" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
@@ -1632,37 +1900,56 @@
       <column name="bwusage" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <column name="bwlimit" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <column name="lastupdate" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="domain" unique="false" columns="domain"/>
+      <index name="domainstatus" unique="false" columns="domainstatus"/>
+      <index name="orderid" unique="false" columns="orderid"/>
+      <index name="productid" unique="false" columns="packageid"/>
+      <index name="serverid" unique="false" columns="server"/>
+      <index name="serviceid" unique="false" columns="id"/>
+      <index name="userid" unique="false" columns="userid"/>
     </table>
-    <table name="tblhostingaddons" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblhostingaddons" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="orderid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="hostingid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
+      <column name="hostingid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="addonid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="setupfee" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
       <column name="recurring" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
       <column name="billingcycle" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="status" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="tax" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="status" sqlType="ENUM" precision="10" scale="0" nullable="false" jdbcType="1" def="J1BlbmRpbmcn"/>
       <column name="regdate" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91" def="JzAwMDAtMDAtMDAn"/>
       <column name="nextduedate" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
       <column name="nextinvoicedate" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <column name="paymentmethod" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="subscriptionid" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="notes" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="name" unique="false" columns="name"/>
+      <index name="orderid" unique="false" columns="orderid"/>
+      <index name="serviceid" unique="false" columns="hostingid"/>
+      <index name="status" unique="false" columns="status"/>
     </table>
-    <table name="tblhostingconfigoptions" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="relid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
-      <column name="configid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
-      <column name="optionid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
+    <table name="tblhostingconfigoptions" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="relid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="configid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="optionid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="qty" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="relid_configid" unique="false" columns="relid,configid"/>
     </table>
-    <table name="tblinvoiceitems" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="invoiceid" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="userid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
-      <column name="type" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="relid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
+    <table name="tblinvoiceitems" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="invoiceid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="userid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="type" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
+      <column name="relid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="amount" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
       <column name="taxed" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -1670,132 +1957,258 @@
       <column name="paymentmethod" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="notes" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="invoiceid" unique="false" columns="invoiceid"/>
+      <index name="userid" unique="false" columns="userid,type,relid"/>
     </table>
-    <table name="tblinvoices" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblinvoices" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="userid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="invoicenum" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="date" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
       <column name="duedate" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
       <column name="datepaid" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
-      <column name="userid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
       <column name="subtotal" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
       <column name="credit" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
       <column name="tax" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="tax2" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
       <column name="total" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
       <column name="taxrate" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="taxrate2" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
       <column name="status" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="randomstring" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="paymentmethod" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="notes" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="status" unique="false" columns="status"/>
+      <index name="userid" unique="false" columns="userid"/>
     </table>
-    <table name="tblknowledgebase" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="category" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+    <table name="tblknowledgebase" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="title" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="article" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="views" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <column name="useful" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <column name="votes" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <column name="private" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="order" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="parentid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="language" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tblknowledgebasecats" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblknowledgebasecats" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="parentid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="hidden" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="catid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="language" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="name" unique="false" columns="name"/>
+      <index name="parentid" unique="false" columns="parentid"/>
+    </table>
+    <table name="tblknowledgebaselinks" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="categoryid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="articleid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+    </table>
+    <table name="tblknowledgebasetags" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="articleid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="tag" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tblorders" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="ordernum" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
-      <column name="userid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+    <table name="tbllinks" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="link" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="clicks" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="conversions" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="name" unique="false" columns="name"/>
+    </table>
+    <table name="tblmodulelog" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
-      <column name="hostingid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="domainids" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="addonids" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="upgradeids" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="domaintype" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="module" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="action" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="request" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="response" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="arrdata" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="tblnetworkissues" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="title" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="type" sqlType="ENUM" precision="7" scale="0" nullable="false" jdbcType="1"/>
+      <column name="affecting" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="server" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="priority" sqlType="ENUM" precision="9" scale="0" nullable="false" jdbcType="1"/>
+      <column name="startdate" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="enddate" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="status" sqlType="ENUM" precision="13" scale="0" nullable="false" jdbcType="1"/>
+      <column name="lastupdate" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="tblnotes" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="userid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="adminid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="modified" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="note" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="sticky" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="userid" unique="false" columns="userid"/>
+    </table>
+    <table name="tblorders" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="ordernum" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="userid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="contactid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="nameservers" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="transfersecret" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="renewals" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="promocode" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="promotype" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="promovalue" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="orderdata" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="amount" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
       <column name="paymentmethod" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="invoiceid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="invoiceid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <column name="status" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="ipaddress" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="fraudmodule" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="fraudoutput" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="notes" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="contactid" unique="false" columns="contactid"/>
+      <index name="date" unique="false" columns="date"/>
+      <index name="ordernum" unique="false" columns="ordernum"/>
+      <index name="userid" unique="false" columns="userid"/>
+    </table>
+    <table name="tblorderstatuses" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="title" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="color" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="showpending" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="showactive" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="showcancelled" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="sortorder" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tblpaymentgateways" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblpaymentgateways" schema="" catalog="whmcs_v6.release" type="TABLE">
       <column name="gateway" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="type" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="setting" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="value" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="size" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
-      <column name="notes" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="order" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <index name="gateway_setting" unique="false" columns="gateway,setting"/>
+      <index name="setting_value" unique="false" columns="setting,value"/>
+    </table>
+    <table name="tblpricing" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="type" sqlType="ENUM" precision="14" scale="0" nullable="false" jdbcType="1"/>
+      <column name="currency" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="relid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="msetupfee" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="qsetupfee" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="ssetupfee" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="asetupfee" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="bsetupfee" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="tsetupfee" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="monthly" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="quarterly" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="semiannually" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="annually" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="biennially" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="triennially" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tblproductconfigoptions" schema="" catalog="whmcs_v6" type="TABLE">
+    <table name="tblproduct_downloads" schema="" catalog="whmcs_v6.release" type="TABLE">
       <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="productid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
+      <column name="product_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="download_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="tblproduct_downloads_download_id_index" unique="false" columns="download_id"/>
+      <index name="tblproduct_downloads_product_id_index" unique="false" columns="product_id"/>
+    </table>
+    <table name="tblproduct_upgrade_products" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="product_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="upgrade_product_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="tblproduct_upgrade_products_product_id_index" unique="false" columns="product_id"/>
+      <index name="tblproduct_upgrade_products_upgrade_product_id_index" unique="false" columns="upgrade_product_id"/>
+    </table>
+    <table name="tblproductconfiggroups" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="tblproductconfiglinks" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="gid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="pid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+    </table>
+    <table name="tblproductconfigoptions" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="gid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <column name="optionname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="optiontype" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="qtyminimum" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="qtymaximum" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="order" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="hidden" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="productid" unique="false" columns="gid"/>
     </table>
-    <table name="tblproductconfigoptionssub" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="configid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
+    <table name="tblproductconfigoptionssub" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="configid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="optionname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="price" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
+      <column name="sortorder" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="hidden" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="configid" unique="false" columns="configid"/>
     </table>
-    <table name="tblproductgroups" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblproductgroups" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="orderfrmtpl" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="disabledgateways" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="hidden" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="hidden" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="order" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="order" unique="false" columns="order"/>
     </table>
-    <table name="tblproducts" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblproducts" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="type" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="gid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="gid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="hidden" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="showdomainoptions" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="hidden" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="showdomainoptions" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="welcomeemail" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
-      <column name="stockcontrol" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="qty" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="proratabilling" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="stockcontrol" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="qty" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="proratabilling" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="proratadate" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="proratachargenextmonth" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="paytype" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="msetupfee" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
-      <column name="qsetupfee" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
-      <column name="ssetupfee" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
-      <column name="asetupfee" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
-      <column name="bsetupfee" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
-      <column name="monthly" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
-      <column name="quarterly" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
-      <column name="semiannual" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
-      <column name="annual" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
-      <column name="biennial" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="allowqty" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="subdomain" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="autosetup" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="servertype" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="defaultserver" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="servergroup" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="configoption1" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="configoption2" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="configoption3" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
@@ -1823,128 +2236,187 @@
       <column name="freedomain" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="freedomainpaymentterms" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="freedomaintlds" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="upgradepackages" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="configoptionsupgrade" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="recurringcycles" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="autoterminatedays" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="autoterminateemail" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="configoptionsupgrade" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="billingcycleupgrade" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="tax" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="affiliateonetime" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="upgradeemail" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="overagesenabled" sqlType="VARCHAR" precision="10" scale="0" nullable="false" jdbcType="12"/>
+      <column name="overagesdisklimit" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="overagesbwlimit" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="overagesdiskprice" sqlType="DECIMAL" precision="6" scale="4" nullable="false" jdbcType="3"/>
+      <column name="overagesbwprice" sqlType="DECIMAL" precision="6" scale="4" nullable="false" jdbcType="3"/>
+      <column name="tax" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="affiliateonetime" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="affiliatepaytype" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="affiliatepayamount" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="order" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="retired" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="gid" unique="false" columns="gid"/>
+      <index name="name" unique="false" columns="name"/>
     </table>
-    <table name="tblpromotions" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="item" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="type" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+    <table name="tblpromotions" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="code" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="discount" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="type" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="recurring" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="value" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
+      <column name="cycles" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="appliesto" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="requires" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="requiresexisting" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="startdate" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <column name="expirationdate" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
-      <column name="packages" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="addons" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="maxuses" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <column name="uses" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
-      <column name="appliesto" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="lifetimepromo" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="applyonce" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="newsignups" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="existingclient" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="onceperclient" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="recurfor" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="upgrades" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="upgradeconfig" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="notes" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="code" unique="false" columns="code"/>
+    </table>
+    <table name="tblquoteitems" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="quoteid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="quantity" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="unitprice" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="discount" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="taxable" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tblregistrars" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblquotes" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="subject" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="stage" sqlType="ENUM" precision="9" scale="0" nullable="false" jdbcType="1"/>
+      <column name="validuntil" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="userid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="firstname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="lastname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="companyname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="email" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="address1" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="address2" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="city" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="state" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="postcode" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="country" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="phonenumber" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="currency" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="subtotal" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="tax1" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="tax2" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="total" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="proposal" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="customernotes" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="adminnotes" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="datecreated" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="lastmodified" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="datesent" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="dateaccepted" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="tblregistrars" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="registrar" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="setting" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="value" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="registrar_setting" unique="false" columns="registrar,setting"/>
     </table>
-    <table name="tblreselleraccountsetup" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="packageid" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="resnumlimit" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="resnumlimitamt" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="rsnumlimitenabled" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="reslimit" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="resreslimit" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="rslimit-disk" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="rsolimit-disk" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="rslimit-bw" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="rsolimit-bw" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-list-accts" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-show-bandwidth" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-create-acct" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-edit-account" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-suspend-acct" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-kill-acct" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-upgrade-account" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-limit-bandwidth" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-edit-mx" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-frontpage" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-mod-subdomains" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-passwd" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-quota" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-res-cart" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-ssl-gencrt" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-ssl" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-demo-setup" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-rearrange-accts" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-clustering" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-create-dns" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-edit-dns" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-park-dns" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-kill-dns" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-add-pkg" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-edit-pkg" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-add-pkg-shell" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-allow-unlimited-disk-pkgs" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-allow-unlimited-pkgs" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-add-pkg-ip" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-allow-addoncreate" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-allow-parkedcreate" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-onlyselfandglobalpkgs" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-disallow-shell" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-all" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-stats" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-status" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-restart" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-mailcheck" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-resftp" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="acl-news" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+    <table name="tblservergroups" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="filltype" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tblservers" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblservergroupsrel" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="groupid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="serverid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+    </table>
+    <table name="tblservers" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="ipaddress" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="assignedips" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="hostname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="monthlycost" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
       <column name="noc" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="statusaddress" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="primarynameserver" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="primarynameserverip" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="secondarynameserver" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="secondarynameserverip" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="nameserver1" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="nameserver1ip" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="nameserver2" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="nameserver2ip" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="nameserver3" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="nameserver3ip" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="nameserver4" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="nameserver4ip" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="nameserver5" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="nameserver5ip" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="maxaccounts" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <column name="type" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="username" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="password" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="accesshash" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="secure" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="active" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="port" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="active" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="disabled" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tbltax" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblserversssoperms" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="server_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="role_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="tblsslorders" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="userid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="serviceid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="remoteid" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="module" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="certtype" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="configdata" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="completiondate" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="status" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="tbltax" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="level" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="state" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="country" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="taxrate" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="state_country" unique="false" columns="state,country"/>
     </table>
-    <table name="tblticketbreaklines" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblticketbreaklines" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="breakline" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tblticketdepartments" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblticketdepartments" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="email" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="clientsonly" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="piperepliesonly" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="noautoresponder" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="hidden" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="order" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="host" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
@@ -1952,15 +2424,42 @@
       <column name="login" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="password" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="name" unique="false" columns="name"/>
     </table>
-    <table name="tblticketlog" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
-      <column name="tid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="action" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+    <table name="tblticketescalations" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="departments" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="statuses" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="priorities" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="timeelapsed" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="newdepartment" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="newpriority" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="newstatus" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="flagto" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="notify" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="addreply" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tblticketmaillog" schema="" catalog="whmcs_v6" type="TABLE">
+    <table name="tblticketfeedback" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="ticketid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="adminid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="rating" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="comments" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="datetime" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="ip" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="tblticketlog" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="tid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="action" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="tid" unique="false" columns="tid"/>
+    </table>
+    <table name="tblticketmaillog" schema="" catalog="whmcs_v6.release" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="to" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
@@ -1971,78 +2470,157 @@
       <column name="status" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tblticketnotes" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblticketnotes" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="ticketid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="admin" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <column name="message" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="ticketid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="ticketid_date" unique="false" columns="ticketid,date"/>
     </table>
-    <table name="tblticketpredefinedcats" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="parentid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+    <table name="tblticketpredefinedcats" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="parentid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="parentid_name" unique="false" columns="parentid,name"/>
     </table>
-    <table name="tblticketpredefinedreplies" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="catid" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+    <table name="tblticketpredefinedreplies" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="catid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="reply" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
-    <table name="tblticketreplies" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="tid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="userid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+    <table name="tblticketreplies" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="tid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="userid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="contactid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="email" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="message" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="admin" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="attachment" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="rating" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="tid_date" unique="false" columns="tid,date"/>
     </table>
-    <table name="tbltickets" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="tid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
-      <column name="did" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAw"/>
-      <column name="userid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" def="MDAwMDAwMDAwMA=="/>
+    <table name="tbltickets" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="tid" sqlType="VARCHAR" precision="128" scale="0" nullable="true" jdbcType="12"/>
+      <column name="did" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="userid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="contactid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="email" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="cc" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="c" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <column name="title" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="message" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="status" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="status" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
       <column name="urgency" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="admin" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="attachment" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="lastreply" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="flag" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="clientunread" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="adminunread" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="adminunread" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="replyingadmin" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="replyingtime" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="service" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="date" unique="false" columns="date"/>
+      <index name="did" unique="false" columns="did"/>
+      <index name="status" unique="false" columns="status"/>
+      <index name="tid_c" unique="false" columns="tid,c"/>
+      <index name="userid" unique="false" columns="userid"/>
     </table>
-    <table name="tblticketspamfilters" schema="" catalog="whmcs_v6" type="TABLE">
+    <table name="tblticketspamfilters" schema="" catalog="whmcs_v6.release" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="type" sqlType="ENUM" precision="7" scale="0" nullable="false" jdbcType="1"/>
       <column name="content" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="type" unique="false" columns="type"/>
     </table>
-    <table name="tbltodolist" schema="" catalog="whmcs_v6" type="TABLE">
+    <table name="tblticketstatuses" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="title" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="color" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="sortorder" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="showactive" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="showawaiting" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="autoclose" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="tbltickettags" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="ticketid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="tag" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="tbltld_categories" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="category" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="is_primary" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6" def="MA=="/>
+      <column name="display_order" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="tbltld_category_pivot" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="tld_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="category_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="tbltld_category_pivot_category_id_index" unique="false" columns="category_id"/>
+      <index name="tbltld_category_pivot_tld_id_index" unique="false" columns="tld_id"/>
+    </table>
+    <table name="tbltlds" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="tld" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="tbltodolist" schema="" catalog="whmcs_v6.release" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="date" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <column name="title" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
-      <column name="admin" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="admin" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <column name="status" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="duedate" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="duedate" unique="false" columns="duedate"/>
     </table>
-    <table name="tblupgrades" schema="" catalog="whmcs_v6" type="TABLE">
+    <table name="tbltransientdata" schema="" catalog="whmcs_v6.release" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="1024" scale="0" nullable="false" jdbcType="12"/>
+      <column name="data" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="expires" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="name" unique="false" columns="name"/>
+    </table>
+    <table name="tblupdatehistory" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="admin_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="original_version" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="new_version" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="success" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="message" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="tblupgrades" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="orderid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="type" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="date" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <column name="relid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -2053,9 +2631,11 @@
       <column name="status" sqlType="ENUM" precision="9" scale="0" nullable="false" jdbcType="1" def="J1BlbmRpbmcn"/>
       <column name="paid" sqlType="ENUM" precision="2" scale="0" nullable="false" jdbcType="1" def="J04n"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <index name="orderid" unique="false" columns="orderid"/>
+      <index name="serviceid" unique="false" columns="relid"/>
     </table>
-    <table name="tblwhoislog" schema="" catalog="whmcs_v6" type="TABLE">
-      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="tblwhoislog" schema="" catalog="whmcs_v6.release" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="domain" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="ip" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
