@@ -48,9 +48,17 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		//        for each item we make API call. We can change the code, but I assume
 		//        this happens only with testing data, real account should not have
 		//        10K domains. We have to deside.
+		/*
+		Bob - some accounts do have that many, but the actual unit tests don't (As far as I know)
+			don't need to run with that many domains. The main purpose of thoses tests
+		was to programatically reproduce edge cases for actual clients with that many domains,
+		so that I could develop/test the ajax based filtering
+		*/
+
 		//
 		//        I added testing parameter to the routine so we limit domain list
 		//        to first 200 records.
+		// Bob - See https://github.com/CircleTree/enom_pro/commit/50cfa31b6115b02c6aac09a628450e77f1a816f7
 		self::$testData['testDomainsWithClients'] = true;
 
 		// ** AR: just my local issue since I changed MailCatcher code on
@@ -65,9 +73,14 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	}
 
 	// ** AR: preparation for test, we can make some assert calls if we want
+	/**
+	 * @group
+	 */
 	function test_whmcs_resetData() {
 		$this->test_whmcs_removeTestData();
 		if(self::$testData['testClientVol']) {
+			//This could be skipped/included based on PHPUnit's @group annotation
+			//not sure we need a defined variable in the test file itself
 			$this->add_test_clients();
 		}
 	}
@@ -324,14 +337,13 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @group domains
+	 * @group slow
 	 */
 	function  test_get_imported_pagination() {
-		if(!self::$testData['testDomainsWithClients']) {
-			$this->markTestSkipped( 'low performance routine' );
-		}
-		$count = $this->e->getDomainsWithClients( 5, 0, 'imported', true );
+		$count = $this->e->getDomainsWithClients( 5, 1, 'imported', true );
 		if ( count( $count ) < 2 ) {
-			$this->markTestSkipped( 'Need more imported domains to test pagination' );
+			//TODO mock these orders for testing the filters
+			$this->fail( 'Need more imported domains to test pagination' );
 		}
 		$page1 = $this->e->getDomainsWithClients( 1, 1, 'imported', true );
 		$page2 = $this->e->getDomainsWithClients( 1, 2, 'imported', true );
@@ -417,11 +429,9 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @group domains
+	 * @group slow
 	 */
 	function  test_getDomains_withClients() {
-		if(!self::$testData['testDomainsWithClients']) {
-			$this->markTestSkipped( 'low performance routine' );
-		}
 		$limit = 3;
 		$total = $this->e->getDomainsWithClients( $limit, 1, false, true );
 		$this->assertCount( $limit, $total );
@@ -675,6 +685,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 			) );
 		$tickets = $this->e->whmcs_api( 'gettickets', array( 'clientid' => $id ) );
 		$this->assertNotEmpty( $tickets );
+		//TODO Failed asserting that '0' is equal to 1 or is greater than 1.
 		$this->assertGreaterThanOrEqual( 1, $tickets['totalresults'] );
 	}
 
@@ -786,9 +797,8 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @throws WHMCSException
 	 */
 	function test_send_all_ssl_reminders() {
-
+		//TODO add bootstrap.php mailcatcher test?
 		$this->create_client_order();
-		// $this->markTestIncomplete( 'searching for client by domain using WHMCS API - cannot expect result. Must add an order for domain' );
 		enom_pro::set_addon_setting( 'ssl_email_days', 30 );
 		enom_pro::set_addon_setting( 'ssl_email_enabled', "on" );
 		$fileName           = $this->getTestMockPath() . 'expiring_ssl_reminders.xml';
@@ -829,6 +839,9 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	function  testNoWidgetsEnabled() {
 
 		$_SESSION['adminid'] = 1;
+
+		//TODO reset the widget state before running this test
+		//
 		$this->assertFalse( $this->e->areAnyWidgetsEnabled() );
 	}
 
@@ -1049,7 +1062,7 @@ TAG
 	}
 
 	/**
-	 * @Group slow
+	 * @group slow
 	 */
 	public function testCreateLotsOfEnomDomains() {
 		$count = 400;
@@ -1103,8 +1116,7 @@ TAG
 
 	public function testSendSSLReminderWWWVsNonWWW ()
 	{
-		// $this->markTestIncomplete( 'client id is auto incremented and cannot be 1, must fix testing' );
-
+		//TODO please feel free to delete (and not just comment out) old code - that's why we have a VCS (git)
 		$this->e->_load_xml($this->getTestMockPath() . 'expiring_ssl_reminders_www_vs_nonxml.xml');
 		$clientorder = $this->create_client_order();
 		$clientID = $clientorder['clientID'];
@@ -1127,6 +1139,8 @@ TAG
 
 	// ** AR: data removal after the test. We can add more assert calls
 	public function test_whmcs_removeTestData() {
+		//TODO override the tearDownAfterClass() method
+//		$this->markTestIncomplete('Needs to be refactored to either be a tearDown() or renamed as a private helper function - not sure why this is called in test_whmcs_resetData() - slow on my machine ~ 64 seconds');
 		// ** AR: must remove all clients with domain, possibly need to
 		//        add more domains
 		$clientID = $this->e->getClientIdByDomain( 'mycircletree.com' );
@@ -1229,6 +1243,8 @@ TAG
 	// ** AR: create client and order for it for successful getClientIdByDomain() call
 	//        unfortunately I did not find a way to create product group and payment gateway
 	//        using API, so those must be created manually.
+//	 TODO - we can either mock them in the database dump,
+// or use a MySQL call to insert the two values (my preference, less fragile than having to re-dump an entire db)
 	//
 	//        The payment must be paypal and the product group must be id 1
 	private function create_client_order($settings = array()) {
@@ -1294,7 +1310,7 @@ TAG
 				}
 			}
 		}
-		
+
 		if($prodID == "none") {
 			$prodID = false;
 			$newProduct = enom_pro::whmcs_api( 'addproduct',
@@ -1313,6 +1329,7 @@ TAG
 		if(!$prodID) {
 			$this->fail( 'cannot use a product - create product group with id 1');
 		}
+		//TODO extract these helpers to also allow creating a new domain order @see test_enom_pro::test_get_imported_pagination()
 
 		$new_order = enom_pro::whmcs_api( 'addorder',
 			array(
