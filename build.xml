@@ -50,6 +50,7 @@
 	</fileset>
 	<target name="clean" description="Cleans up the build directory">
 		<delete dir="${build_temp_dir}"/>
+		<mkdir dir="${build_temp_dir}"/>
 		<mkdir dir="${encoded}"/>
 		<mkdir dir="${encoded_prep}"/>
 	</target>

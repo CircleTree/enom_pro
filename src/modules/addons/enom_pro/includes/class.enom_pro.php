@@ -1394,7 +1394,6 @@ class enom_pro {
 		if ( true === $this->limit && $this->get_domains_cache() ) {
 			return $this->get_domains_cache();
 		}
-
 		if ( true === $this->limit || $this->limit >= 100 ) {
 			set_time_limit( 0 );
 			//No limit or gte 100 records 
@@ -1776,7 +1775,7 @@ class enom_pro {
 		$domains              = $this->getDomains( true, $start );
 		if($test_env) {
 			//TODO: Why is this flag necessary? I'm not a big fan of polluting the function signature with a test dependency. The constant UNIT_TESTS is defined by the PHPUnit configuration.xml, I'd be open to other less intrusive options, as well.
-			$domains = array_splice( $domains, 0, 200 );
+			$domains = array_splice( $domains, 0, min($limit, 200) );
 		}
 		$show_only_unimported = $show_only == 'unimported' ? true : false;
 		$show_only_imported   = $show_only == 'imported' ? true : false;
@@ -1787,6 +1786,9 @@ class enom_pro {
 			//TODO SET
 			$return[ $key ] = $domain;
 			$domain_name    = $domain['sld'] . '.' . $domain['tld'];
+			//TODO extract this method into a testable interface for searching for client domains
+			//TODO re-use the tested interface for other 'getclientsdomains' calls
+			//TODO use exception handling to streamline logic
 			$domain_search  = self::whmcs_api( 'getclientsdomains',
 				array( 'domain' => $domain_name ) );
 			//Domain isn't in WHMCS, and we want to only show imported, unset this result
