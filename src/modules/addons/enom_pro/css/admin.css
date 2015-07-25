@@ -11,7 +11,7 @@ Licensed from Orion IP Ventures, LLC
   clear: both;
 }
 .enom_pro_output {
-  min-height: 900px;
+  box-sizing: border-box;
   /**
 	Icons
 	*/
@@ -42,9 +42,6 @@ Licensed from Orion IP Ventures, LLC
 }
 .enom_pro_output .inline-wrap {
   padding: 10px 0;
-}
-.enom_pro_output #enom_pro_admin_widgets {
-  overflow: hidden;
 }
 .enom_pro_output #helpWrapper H1,
 .enom_pro_output #helpWrapper H2,
