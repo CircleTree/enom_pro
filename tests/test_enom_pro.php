@@ -490,7 +490,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @depends test_set_SRV()
+	 * @depends test_set_SRV
 	 * @group srv
 	 */
 	function  test_get_SRV() {
@@ -687,7 +687,6 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 			) );
 		$tickets = $this->e->whmcs_api( 'gettickets', array( 'clientid' => $id ) );
 		$this->assertNotEmpty( $tickets );
-		//TODO Failed asserting that '0' is equal to 1 or is greater than 1.
 		$this->assertGreaterThanOrEqual( 1, $tickets['totalresults'] );
 	}
 
