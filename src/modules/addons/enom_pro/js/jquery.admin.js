@@ -651,8 +651,10 @@ try {
 						$target.find('.enom_pro_loader').addClass('hidden');
 					}
 
-					var $message = $("#ajax_messages"), $process = $("#order_process");
-					$process.hide(), last_domain = '';
+					var $message = $("#ajax_messages"),
+							$process = $("#order_process"),
+							last_domain = '';
+							$process.hide();
 					//Create Order
 					$importTableForm.on('click', 'a.create_order', function () {
 						var domain_name   = $(this).data('domain');
@@ -675,8 +677,8 @@ try {
 						$("[name=nextduedatelabel]").val($button.data('nextduedatelabel'));
 						$("[name=expiresdate]").val($button.data('expiresdate'));
 						$("[name=expiresdatelabel]").val($button.data('expiresdatelabel'));
-						toggle_checkbox($("#idprotection"), (id_protect == 1 ? true : false));
-						toggle_checkbox($("#dnsmanagement"), (dns == 1 ? true : false));
+						toggle_checkbox($("#idprotection"), (id_protect == 1));
+						toggle_checkbox($("#dnsmanagement"), (dns == 1));
 						if (autorenew == 1) {
 							$("#auto-renew-warning").show();
 						} else {
@@ -714,34 +716,19 @@ try {
 								if (data.success) {
 									$process.hide();
 									$message.addClass('alert-success');
-									$importTableForm.trigger('submit').on('ajaxComplete', function () {
-										var $new_elem = $("[data-domain='" + last_domain + "']").closest('.alert');
-										$new_elem.removeClass('alert-success');
-										setTimeout(function () {
-											$new_elem.addClass('alert-success');
-										}, 250);
-										setTimeout(function () {
-											$new_elem.removeClass('alert-success');
-										}, 500);
-										setTimeout(function () {
-											$new_elem.addClass('alert-success');
-										}, 750);
-										$("#import_next_button").show();
-									});
+									$importTableForm.trigger('submit');
 									var message = 'Created ' + (data.activated ? 'Active' : 'Pending') + ' Order #';
 									if (data.activated) {
 										message += data.orderid +
 												'<a class="btn btn-xs btn-default" target="_blank" href="clientsdomains.php?domainid=' +
 												data.domainid +
 												'">View Domain</a>';
-										;
 									} else {
 										message += '<a class="btn btn-xs" target="_blank" href="orders.php?action=view&id=' +
 												data.orderid +
 												'">View Pending Order #' +
 												data.orderid +
 												'</a>';
-										;
 									}
 									if (data.invoiceid) {
 										message += ' invoice #' +
@@ -782,7 +769,7 @@ try {
 								$("#import_ajax_messages").addClass('hidden');
 							},
 							success:    function (data) {
-
+								$("#import_next_button").show();
 								$("#domains_target").html(data.html);
 								$(".domains_cache_time").html(data.cache_date);
 
