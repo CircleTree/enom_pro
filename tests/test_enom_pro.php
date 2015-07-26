@@ -287,7 +287,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 			$this->markTestIncomplete( 'No domains in WHMCS to test from' );
 		}
 		$total    = 0;
-		$imported = $this->e->getDomainsWithClients( 200, 1, 'imported', true );
+		$imported = $this->e->getDomainsWithClients( 200, 1, 'imported' );
 		foreach ( $domains['domains']['domain'] as $domain ) {
 			if ( 'enom' == $domain['registrar'] && 'Active' == $domain['status'] ) {
 				$total ++;
@@ -312,8 +312,8 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 */
 	function  test_get_domains_show_un_imported() {
 
-		$hidden = $this->e->getDomainsWithClients( 10, 1, $show_only = 'unimported', true );
-		$this->e->getDomainsWithClients( 3, 1, true, true );
+		$hidden = $this->e->getDomainsWithClients( 10, 1, $show_only = 'unimported' );
+		$this->e->getDomainsWithClients( 3, 1, true );
 		$this->assertArrayNotHasKey( 'client', $hidden[0] );
 	}
 
@@ -342,12 +342,12 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 */
 	function  test_get_imported_pagination() {
 
-		$count = $this->e->getDomainsWithClients( 5, 1, 'imported', true );
+		$count = $this->e->getDomainsWithClients( 5, 1, 'imported' );
 		if ( count( $count ) < 2 ) {
 			$this->fail( 'Database dump lacks orders. Go to eNom pro, and run a few domain imports, then run db_dump.sh to capture the schema' );
 		}
-		$page1 = $this->e->getDomainsWithClients( 1, 1, 'imported', true );
-		$page2 = $this->e->getDomainsWithClients( 1, 2, 'imported', true );
+		$page1 = $this->e->getDomainsWithClients( 1, 1, 'imported' );
+		$page2 = $this->e->getDomainsWithClients( 1, 2, 'imported' );
 		$this->assertNotEquals( $page1, $page2 );
 	}
 
@@ -435,7 +435,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	function  test_get_3_Domains_with_Clients() {
 
 		$limit = 3;
-		$total = $this->e->getDomainsWithClients( $limit, 1, false, true );
+		$total = $this->e->getDomainsWithClients( $limit, 1 );
 		$this->assertCount( $limit, $total );
 	}
 
