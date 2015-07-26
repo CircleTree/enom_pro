@@ -30,13 +30,16 @@ require_once ENOM_PRO_INCLUDES . 'class.enom_pro_license.php';
 require_once ENOM_PRO_INCLUDES . 'class.enom_pro_widget.php';
 /**
  * Helper to show a form input for quick-selecting smarty merge fields
+ *
  * @param string $smartyTag the raw string inside of {$smartyTag} == smartyTag
  *
  * @return string
  */
-function enom_pro_smarty_field($smartyTag) {
-	return '<input type="text" onclick="this.select(); return false;" value="{$'.$smartyTag.'}" />';
+function enom_pro_smarty_field( $smartyTag ) {
+
+	return '<input type="text" onclick="this.select(); return false;" value="{$' . $smartyTag . '}" />';
 }
+
 /**
  * @return multitype:string multitype:multitype:string  multitype:string number
  * @codeCoverageIgnore
@@ -46,7 +49,7 @@ function enom_pro_config() {
 
 	$view         = '';
 	$spinner_help = ' <br/><span class="textred" >
-            Make sure your active cart & domain checker templates have '.enom_pro_smarty_field('namespinner').' in them.</span>';
+            Make sure your active cart & domain checker templates have ' . enom_pro_smarty_field( 'namespinner' ) . ' in them.</span>';
 	if ( isset( $_GET['view'] ) ) {
 		switch ( $_GET['view'] ) {
 			case 'pricing_import':
@@ -66,8 +69,8 @@ function enom_pro_config() {
 				break;
 		}
 	}
-	$save_button_desc     = '<input type="submit" name="msave_enom_pro" value="Save Changes" class="btn primary btn-success btn-sm">';
-	$button               = '<span class="enom_pro_output"><a class="btn btn-info btn-sm" href="' . enom_pro::MODULE_LINK . '" target="_top">Go to @NAME@ &rarr;</a>';
+	$save_button_desc = '<input type="submit" name="msave_enom_pro" value="Save Changes" class="btn primary btn-success btn-sm">';
+	$button           = '<span class="enom_pro_output"><a class="btn btn-info btn-sm" href="' . enom_pro::MODULE_LINK . '" target="_top">Go to @NAME@ &rarr;</a>';
 	$button .= $save_button_desc . '</span>';
 	$save_button_row      = array(
 		'FriendlyName' => "Save",
@@ -86,49 +89,49 @@ function enom_pro_config() {
 		'description' => 'Shows eNom Balance and active Transfers on the admin homepage in widgets.
             Adds a clientarea page that displays active transfers to clients.',
 		'fields'      => array(
-			'quicklink'              => array(
+			'quicklink'                => array(
 				'FriendlyName' => "",
 				"Type"         => "null",
 				"Description"  => '<h1 style="margin:0;line-height:1.5;" >' . ENOM_PRO . ' Settings ' . $button . '</h1>'
 			),
-			'license'                => array(
+			'license'                  => array(
 				'FriendlyName' => "License Key",
 				"Type"         => "text",
 				"Size"         => "30"
 			),
-			'api_request_limit'      => array(
+			'api_request_limit'        => array(
 				'FriendlyName' => "API Limit",
 				"Type"         => "dropdown",
 				"Options"      => "5,10,25,50,75,100,200,500,1000",
 				"Default"      => "10",
 				"Description"  => "Limit Number of remote API requests. IE - 5 * 100 = 500 domains"
 			),
-			'client_limit'           => array(
+			'client_limit'             => array(
 				'FriendlyName' => "Client List Limit",
 				"Type"         => "dropdown",
 				"Options"      => "50,250,500,1000,10000,Unlimited",
 				"Default"      => "Unlimited",
 				"Description"  => "Limit size of new order client list"
 			),
-			'balance_warning'        => array(
+			'balance_warning'          => array(
 				'FriendlyName' => "Credit Balance Warning Threshold",
 				"Type"         => "dropdown",
 				"Options"      => "Off,10,25,50,100,150,200,500,1000,5000",
 				"Default"      => "50",
 				"Description"  => "Turns the Credit Balance Widget into a RED flashing warning indicator"
 			),
-			'debug'                  => array(
+			'debug'                    => array(
 				'FriendlyName' => "Debug Mode",
 				"Type"         => "yesno",
 				"Description"  => "Enable debug messages on frontend. Used for troubleshooting the namespinner,
                              for example."
 			),
-			'beta'                   => array(
+			'beta'                     => array(
 				'FriendlyName' => "Beta Opt-In",
 				"Type"         => "yesno",
 				"Description"  => "Help beta test the latest &amp; greatest " . ENOM_PRO . " features."
 			),
-			'disable_gzip'           => array(
+			'disable_gzip'             => array(
 				'FriendlyName' => "Disable GZip",
 				"Type"         => "yesno",
 				"Description"  => "Disabled GZIP Compression on AJAX Requests. Use if your server already compresses all output."
@@ -136,26 +139,26 @@ function enom_pro_config() {
 			/****************************
 			 * Import (domains, pricing)
 			 ***************************/
-			'import_section'         => array(
+			'import_section'           => array(
 				'FriendlyName' => '',
 				"Type"         => "null",
 				'default'      => true,
 				"Description"  => '<h1 style="line-height:1.1;margin:0;" >Import Options ' . $button . '</h1>'
 			),
-			'import_per_page'        => array(
+			'import_per_page'          => array(
 				'FriendlyName' => "Show",
 				"Type"         => "dropdown",
 				"Options"      => "5,10,25,50,75,100,250",
 				"Default"      => "25",
 				"Description"  => "Results per-page on the Domain Import Page"
 			),
-			'auto_activate'          => array(
+			'auto_activate'            => array(
 				'FriendlyName' => "Automatically Activate Orders on Import",
 				"Type"         => "yesno",
 				"Description"  => "Set imported orders to active and eNom registrar",
 				"Default"      => "on"
 			),
-			'next_due_date'          => array(
+			'next_due_date'            => array(
 				'FriendlyName' => "Next Due Date",
 				"Type"         => "dropdown",
 				"Options"      => "Expiration Date,-1 Day,-3 Days,-5 Days,-7 Days,-14 Days",
@@ -163,7 +166,7 @@ function enom_pro_config() {
 				"Description"  => "Set active, imported domain next billing due date, relative to # of days BEFORE expiration. <br/>
                                     <b>Auto-Activation, above, must be enabled for this to function.</b>"
 			),
-			'pricing_years'          => array(
+			'pricing_years'            => array(
 				'FriendlyName' => "Import TLD Pricing Max Years",
 				"Type"         => "dropdown",
 				"Options"      => "1,2,3,4,5,6,7,8,9,10",
@@ -171,34 +174,34 @@ function enom_pro_config() {
 				"Description"  => "Limit the maximum number of years to import TLD pricing for.
                                 <em>Speeds Up the Import Process if you only offer registrations up to 3 years, for example.</em>"
 			),
-			'pricing_per_page'       => array(
+			'pricing_per_page'         => array(
 				'FriendlyName' => "Show",
 				"Type"         => "dropdown",
 				"Options"      => "5,10,25,50,75,100,250,500",
 				"Default"      => "25",
 				"Description"  => "Results per-page on the TLD Pricing Import Page"
 			),
-			'pricing_retail'         => array(
+			'pricing_retail'           => array(
 				'FriendlyName' => "Retail Pricing ",
 				"Type"         => "yesno",
 				'default'      => false,
 				"Description"  => "Use your eNom Retail Pricing. Un-check to use wholesale pricing (Your Cost)"
 			),
-			'exchange_rate_provider' => array(
+			'exchange_rate_provider'   => array(
 				'FriendlyName' => "Exchange Rate Data Provider",
 				"Type"         => "dropdown",
 				"Options"      => "google,currency-api",
 				"Default"      => "google",
 				"Description"  => "Choose where to fetch currency data from"
 			),
-			'custom-exchange-rate'   => array(
+			'custom-exchange-rate'     => array(
 				'FriendlyName' => "Custom Exchange Rate",
 				"Type"         => "text",
 				"Default"      => null,
 				"Description"  => 'Override the remote API exchange rate for your own',
 				'Size'         => 8
 			),
-			'exchange-rate-api-key'  => array(
+			'exchange-rate-api-key'    => array(
 				'FriendlyName' => "Exchange Rate API Key",
 				"Type"         => "text",
 				"Default"      => null,
@@ -208,13 +211,13 @@ function enom_pro_config() {
 			/****************************
 			 * SSL
 			 ***************************/
-			'ssl_section'            => array(
+			'ssl_section'              => array(
 				'FriendlyName' => '',
 				"Type"         => "null",
 				'default'      => true,
 				"Description"  => '<h1 style="line-height:1.1;margin:0;" >SSL Reminder Options ' . $button . '</h1>'
 			),
-			'ssl_days'               => array(
+			'ssl_days'                 => array(
 				'FriendlyName' => "Widget Expiring SSL Days",
 				"Type"         => "text",
 				"Size"         => 3,
@@ -222,212 +225,209 @@ function enom_pro_config() {
 				"Description"  => "Number of days before SSL Certificate Expiration to show in Widget"
 			),
 			'ssl_email_enabled'        => array(
-		'FriendlyName' => "Enable SSL Reminder Email",
-		"Type"         => "yesno",
-		'default'      => true,
-		"Description"  => enom_pro::is_ssl_email_installed() > 0 ? '<a class="btn btn-block btn-default" href="configemailtemplates.php?action=edit&id=' . enom_pro::is_ssl_email_installed() . '">Edit SSL Email</a>' : '<a class="btn btn-block btn-default" href="' . enom_pro::MODULE_LINK . '&action=install_ssl_template">Install SSL Email</a>'
-	),
+				'FriendlyName' => "Enable SSL Reminder Email",
+				"Type"         => "yesno",
+				'default'      => true,
+				"Description"  => enom_pro::is_ssl_email_installed() > 0 ? '<a class="btn btn-block btn-default" href="configemailtemplates.php?action=edit&id=' . enom_pro::is_ssl_email_installed() . '">Edit SSL Email</a>' : '<a class="btn btn-block btn-default" href="' . enom_pro::MODULE_LINK . '&action=install_ssl_template">Install SSL Email</a>'
+			),
 			'ssl_email_days'           => array(
-		'FriendlyName' => "Expiring SSL Reminder Days",
-		"Type"         => "text",
-		"Size"         => 3,
-		"Default"      => "30",
-		"Description"  => "Number of days before sending the SSL Certificate Expiration email, or opening a support ticket for client. (Or, both)."
-	),
+				'FriendlyName' => "Expiring SSL Reminder Days",
+				"Type"         => "text",
+				"Size"         => 3,
+				"Default"      => "30",
+				"Description"  => "Number of days before sending the SSL Certificate Expiration email, or opening a support ticket for client. (Or, both)."
+			),
 			'ssl_open_ticket'          => array(
-		'FriendlyName' => "Open a ticket on SSL reminder in this department",
-		"Type"         => "dropdown",
-		"Options"      => $support_dept_string,
-		"Size"         => 60,
-		"Default"      => "Disabled",
-		"Description"  => "Opens a support ticket in the selected department when an SSL certificate is due for renewal."
-	),
+				'FriendlyName' => "Open a ticket on SSL reminder in this department",
+				"Type"         => "dropdown",
+				"Options"      => $support_dept_string,
+				"Size"         => 60,
+				"Default"      => "Disabled",
+				"Description"  => "Opens a support ticket in the selected department when an SSL certificate is due for renewal."
+			),
 			'ssl_ticket_priority'      => array(
-		'FriendlyName' => "Ticket Priority",
-		"Type"         => "dropdown",
-		"Options"      => 'Low,Medium,High',
-		"Default"      => "Low",
-		"Description"  => ""
-	),
+				'FriendlyName' => "Ticket Priority",
+				"Type"         => "dropdown",
+				"Options"      => 'Low,Medium,High',
+				"Default"      => "Low",
+				"Description"  => ""
+			),
 			'ssl_ticket_subject'       => array(
-		'FriendlyName' => "Ticket Subject",
-		"Type"         => "text",
-		"Default"      => 'Expiring SSL Certificate',
-		"Description"  => '',
-		'Size'         => 60
-	),
+				'FriendlyName' => "Ticket Subject",
+				"Type"         => "text",
+				"Default"      => 'Expiring SSL Certificate',
+				"Description"  => '',
+				'Size'         => 60
+			),
 			'ssl_ticket_message'       => array(
-		'FriendlyName' => "Ticket Message",
-		"Type"         => "textarea",
-		"Default"      => 'We have opened a ticket to renew {$product} for {$domain_name}, which  is set to expire on {$expiry_date}. Our staff will help you get your certificate renewed.',
-		"Description"  => 'Merge fields are: '.
-		                  enom_pro_smarty_field('product') .
-		                  enom_pro_smarty_field('domain_name').
-		                  enom_pro_smarty_field('expiry_date'),
-		'Cols'         => 100
-	),
+				'FriendlyName' => "Ticket Message",
+				"Type"         => "textarea",
+				"Default"      => 'We have opened a ticket to renew {$product} for {$domain_name}, which  is set to expire on {$expiry_date}. Our staff will help you get your certificate renewed.',
+				"Description"  => 'Merge fields are: ' . enom_pro_smarty_field( 'product' ) . enom_pro_smarty_field( 'domain_name' ) . enom_pro_smarty_field( 'expiry_date' ),
+				'Cols'         => 100
+			),
 			'ssl_ticket_email_enabled' => array(
-		'FriendlyName' => "Send ticket opened email",
-		"Type"         => "yesno",
-		'default'      => false,
-		"Description"  => "In addition to the SSL Reminder Email from " . ENOM_PRO . ", also send the client a message about this ticket being opened."
-	),
+				'FriendlyName' => "Send ticket opened email",
+				"Type"         => "yesno",
+				'default'      => false,
+				"Description"  => "In addition to the SSL Reminder Email from " . ENOM_PRO . ", also send the client a message about this ticket being opened."
+			),
 			'ssl_ticket_default_name'  => array(
-		'FriendlyName' => "Ticket Default Name",
-		"Type"         => "text",
-		"Default"      => '',
-		"Description"  => 'If no client is found, open a ticket using this default name.<br/> <b>Leave blank to disable</b>',
-		'Size'         => 60
-	),
+				'FriendlyName' => "Ticket Default Name",
+				"Type"         => "text",
+				"Default"      => '',
+				"Description"  => 'If no client is found, open a ticket using this default name.<br/> <b>Leave blank to disable</b>',
+				'Size'         => 60
+			),
 			'ssl_ticket_default_email' => array(
-		'FriendlyName' => "Ticket Default Email",
-		"Type"         => "text",
-		"Default"      => '',
-		"Description"  => 'If no client is found, open a ticket using this default email address.',
-		'Size'         => 60
-	),
+				'FriendlyName' => "Ticket Default Email",
+				"Type"         => "text",
+				"Default"      => '',
+				"Description"  => 'If no client is found, open a ticket using this default email address.',
+				'Size'         => 60
+			),
 			/****************************
 			 * NameSpinner
 			 ***************************/
 			'spinner_section'          => array(
-		'type'        => null,
-		'Description' => '<h1 style="line-height:1.1;margin:0;" >NameSpinner Options ' . $button . '</h1>'
-	),
+				'type'        => null,
+				'Description' => '<h1 style="line-height:1.1;margin:0;" >NameSpinner Options ' . $button . '</h1>'
+			),
 			'spinner_results'          => array(
-		'FriendlyName' => "Namespinner Results",
-		"Type"         => "text",
-		"Default"      => 10,
-		"Description"  => "Max Number of namespinner results to show" . $spinner_help,
-		'Size'         => 10
-	),
+				'FriendlyName' => "Namespinner Results",
+				"Type"         => "text",
+				"Default"      => 10,
+				"Description"  => "Max Number of namespinner results to show" . $spinner_help,
+				'Size'         => 10
+			),
 			'spinner_columns'          => array(
-		'FriendlyName' => "Namespinner Columns",
-		"Type"         => "dropdown",
-		"Options"      => "1,2,3,4",
-		"Default"      => "3",
-		"Description"  => "Number of columns to display results in.
+				'FriendlyName' => "Namespinner Columns",
+				"Type"         => "dropdown",
+				"Options"      => "1,2,3,4",
+				"Default"      => "3",
+				"Description"  => "Number of columns to display results in.
                             Make sure it is divisible by the # of results above to make nice columns.",
-		'Size'         => 10
-	),
+				'Size'         => 10
+			),
 			'spinner_sortby'           => array(
-		'FriendlyName' => "Sort Results",
-		"Type"         => "dropdown",
-		"Options"      => "score,domain",
-		"Default"      => "score",
-		"Description"  => "Sort namespinner results by score or domain name"
-	),
+				'FriendlyName' => "Sort Results",
+				"Type"         => "dropdown",
+				"Options"      => "score,domain",
+				"Default"      => "score",
+				"Description"  => "Sort namespinner results by score or domain name"
+			),
 			'spinner_sort_order'       => array(
-		'FriendlyName' => "Sort Order",
-		"Type"         => "dropdown",
-		"Options"      => "Ascending,Descending",
-		"Default"      => "Descending",
-		"Description"  => "Sort order for results"
-	),
+				'FriendlyName' => "Sort Order",
+				"Type"         => "dropdown",
+				"Options"      => "Ascending,Descending",
+				"Default"      => "Descending",
+				"Description"  => "Sort order for results"
+			),
 			'spinner_checkout'         => array(
-		'FriendlyName' => "Show Add to Cart Button?",
-		"Type"         => "yesno",
-		"Description"  => "Display checkout button at the bottom of namespinner results"
-	),
+				'FriendlyName' => "Show Add to Cart Button?",
+				"Type"         => "yesno",
+				"Description"  => "Display checkout button at the bottom of namespinner results"
+			),
 			'cart_css_class'           => array(
-		'FriendlyName' => "Cart CSS Class",
-		"Type"         => "dropdown",
-		"Options"      => "btn,btn-primary,button,custom",
-		"Default"      => "btn-primary",
-		"Description"  => "Customize the Add to Cart button by CSS class"
-	),
+				'FriendlyName' => "Cart CSS Class",
+				"Type"         => "dropdown",
+				"Options"      => "btn,btn-primary,button,custom",
+				"Default"      => "btn-primary",
+				"Description"  => "Customize the Add to Cart button by CSS class"
+			),
 			'custom_cart_css_class'    => array(
-		'FriendlyName' => "Cart CSS Class",
-		"Type"         => "text",
-		"Description"  => "Add a custom cart CSS class"
-	),
+				'FriendlyName' => "Cart CSS Class",
+				"Type"         => "text",
+				"Description"  => "Add a custom cart CSS class"
+			),
 			'spinner_css'              => array(
-		'FriendlyName' => "Style Spinner?",
-		"Type"         => "yesno",
-		"Description"  => "Include Namespinner CSS File"
-	),
+				'FriendlyName' => "Style Spinner?",
+				"Type"         => "yesno",
+				"Description"  => "Include Namespinner CSS File"
+			),
 			'spinner_animation'        => array(
-		'FriendlyName' => "Namespinner Result Animation Speed",
-		"Type"         => "dropdown",
-		"Default"      => "Medium",
-		"Options"      => "Off,Slow,Medium,Fast",
-		"Description"  => "Speed of the NameSpinner Results Animation",
-		'Size'         => 10
-	),
+				'FriendlyName' => "Namespinner Result Animation Speed",
+				"Type"         => "dropdown",
+				"Default"      => "Medium",
+				"Options"      => "Off,Slow,Medium,Fast",
+				"Description"  => "Speed of the NameSpinner Results Animation",
+				'Size'         => 10
+			),
 			'spinner_com'              => array(
-		'FriendlyName' => ".com",
-		"Type"         => "yesno",
-		"Description"  => "Display .com namespinner results"
-	),
+				'FriendlyName' => ".com",
+				"Type"         => "yesno",
+				"Description"  => "Display .com namespinner results"
+			),
 			'spinner_net'              => array(
-		'FriendlyName' => ".net",
-		"Type"         => "yesno",
-		"Description"  => "Display .net namespinner results"
-	),
+				'FriendlyName' => ".net",
+				"Type"         => "yesno",
+				"Description"  => "Display .net namespinner results"
+			),
 			'spinner_tv'               => array(
-		'FriendlyName' => ".tv",
-		"Type"         => "yesno",
-		"Description"  => "Display .tv namespinner results"
-	),
+				'FriendlyName' => ".tv",
+				"Type"         => "yesno",
+				"Description"  => "Display .tv namespinner results"
+			),
 			'spinner_cc'               => array(
-		'FriendlyName' => ".cc",
-		"Type"         => "yesno",
-		"Description"  => "Display .cc namespinner results"
-	),
+				'FriendlyName' => ".cc",
+				"Type"         => "yesno",
+				"Description"  => "Display .cc namespinner results"
+			),
 			'spinner_hyphens'          => array(
-		'FriendlyName' => "Hyphens",
-		"Type"         => "yesno",
-		"Description"  => "Use hyphens (-) in namespinner results"
-	),
+				'FriendlyName' => "Hyphens",
+				"Type"         => "yesno",
+				"Description"  => "Use hyphens (-) in namespinner results"
+			),
 			'spinner_numbers'          => array(
-		'FriendlyName' => "Numbers",
-		"Type"         => "yesno",
-		"Description"  => "Use numbers in namespinner results"
-	),
+				'FriendlyName' => "Numbers",
+				"Type"         => "yesno",
+				"Description"  => "Use numbers in namespinner results"
+			),
 			'spinner_sensitive'        => array(
-		'FriendlyName' => "Block sensitive content",
-		"Type"         => "yesno",
-		"Description"  => "Block sensitive content"
-	),
+				'FriendlyName' => "Block sensitive content",
+				"Type"         => "yesno",
+				"Description"  => "Block sensitive content"
+			),
 			'spinner_basic'            => array(
-		'FriendlyName' => "Basic Results",
-		"Type"         => "dropdown",
-		"Default"      => "Medium",
-		"Description"  => "Higher values return suggestions that are built by
+				'FriendlyName' => "Basic Results",
+				"Type"         => "dropdown",
+				"Default"      => "Medium",
+				"Description"  => "Higher values return suggestions that are built by
                             adding prefixes, suffixes, and words to the original input",
-		"Options"      => "Off,Low,Medium,High"
-	),
+				"Options"      => "Off,Low,Medium,High"
+			),
 			'spinner_related'          => array(
-		'FriendlyName' => "Related Results",
-		"Type"         => "dropdown",
-		"Default"      => "High",
-		"Description"  => "Higher values return domain names by interpreting the input semantically
+				'FriendlyName' => "Related Results",
+				"Type"         => "dropdown",
+				"Default"      => "High",
+				"Description"  => "Higher values return domain names by interpreting the input semantically
                             and construct suggestions with a similar meaning.<br/>
                             <b>Related=High will find terms that are synonyms of your input.</b>",
-		"Options"      => "Off,Low,Medium,High"
-	),
+				"Options"      => "Off,Low,Medium,High"
+			),
 			'spinner_similiar'         => array(
-		'FriendlyName' => "Similiar Results",
-		"Type"         => "dropdown",
-		"Default"      => "Medium",
-		"Description"  => "Higher values return suggestions that are similar to the customer's input,
+				'FriendlyName' => "Similiar Results",
+				"Type"         => "dropdown",
+				"Default"      => "Medium",
+				"Description"  => "Higher values return suggestions that are similar to the customer's input,
                             but not necessarily in meaning.<br/>
                             <b>Similar=High will generate more creative terms, with a slightly looser 
                             relationship to your input, than Related=High.</b>",
-		"Options"      => "Off,Low,Medium,High"
-	),
+				"Options"      => "Off,Low,Medium,High"
+			),
 			'spinner_topical'          => array(
-		'FriendlyName' => "Topical Results",
-		"Type"         => "dropdown",
-		"Default"      => "High",
-		"Description"  => "Higher values return suggestions that reflect current topics
+				'FriendlyName' => "Topical Results",
+				"Type"         => "dropdown",
+				"Default"      => "High",
+				"Description"  => "Higher values return suggestions that reflect current topics
                             and popular words.",
-		"Options"      => "Off,Low,Medium,High"
-	),
+				"Options"      => "Off,Low,Medium,High"
+			),
 			'quicklink2'               => array(
-		'FriendlyName' => "Quick-Links",
-		"Type"         => "null",
-		"Description"  => $button
-	),
+				'FriendlyName' => "Quick-Links",
+				"Type"         => "null",
+				"Description"  => $button
+			),
 		)
 	);
 
@@ -569,9 +569,9 @@ function enom_pro_sidebar( $vars ) {
 					<span class="label label-primary">NEW!</span>
 				</a>
 			</li>
-			<li>
-				<?php $id = enom_pro::is_ssl_email_installed(); ?>
-				<?php if ( $id > 0 ) : ?>
+			<?php $id = enom_pro::is_ssl_email_installed(); ?>
+			<?php if ( $id > 0 ) : ?>
+				<li>
 					<a class="btn btn-default btn-block ep_lightbox"
 					   id="edit_ssl_sidebar"
 					   title="Edit SSL Reminder Email"
@@ -580,15 +580,19 @@ function enom_pro_sidebar( $vars ) {
 					   href="configemailtemplates.php?action=edit&id=<?php echo $id ?>">
 						<span class="enom-pro-icon enom-pro-icon-mail-send"></span>
 						Edit SSL Email</a>
+				</li>
+				<li>
 					<a class="btn btn-default btn-block" href="<?php echo enom_pro::MODULE_LINK ?>&view=send_ssl_test">
 						Preview SSL Emails
 						<span class="label label-primary">NEW!</span>
 					</a>
-				<?php else: ?>
+				</li>
+			<?php else: ?>
+				<li>
 					<a class="btn btn-block btn-default"
 					   href="<?php echo enom_pro::MODULE_LINK ?>&action=install_ssl_template">Install SSL Email</a>
-				<?php endif; ?>
-			</li>
+				</li>
+			<?php endif; ?>
 			<li>
 				<a class="btn btn-block btn-default"
 				   title="<?php echo ENOM_PRO; ?> Help"
@@ -597,11 +601,6 @@ function enom_pro_sidebar( $vars ) {
 					Online Help
 				</a>
 			</li>
-			<?php if ( enom_pro_license::isBetaOptedIn() ) : ?>
-				<li>
-					<?php enom_pro::getBetaReportLink(); ?>
-				</li>
-			<?php endif; ?>
 			<li>
 				<a class="btn btn-block btn-default ep_lightbox"
 				   data-width="90%"
@@ -611,6 +610,11 @@ function enom_pro_sidebar( $vars ) {
 					Settings
 				</a>
 			</li>
+			<?php if ( enom_pro_license::isBetaOptedIn() ) : ?>
+				<li>
+					<?php enom_pro::getBetaReportLink(); ?>
+				</li>
+			<?php endif; ?>
 		</ul>
 
 		<span class="header"><?php echo ENOM_PRO; ?> Helpful Links</span>
@@ -777,13 +781,14 @@ function enom_pro_output( $vars ) {
 				$enom->getAvailableBalance();
 			}
 			?>
-			<div class="well">
+			<div class="well well-sm">
 				<h3>Welcome to eNom PRO!</h3>
 				<a class="btn btn-success large"
 				   href="<?php echo enom_pro::MODULE_LINK . '&view=domain_import' ?>">Import
-					Domains</a>
+					Domains <span class="enom-pro-icon enom-pro-icon-domains"></span></a>
 				<a class="btn btn-success large"
-				   href="<?php echo enom_pro::MODULE_LINK . '&view=pricing_import' ?>">Import TLD Pricing</a>
+				   href="<?php echo enom_pro::MODULE_LINK . '&view=pricing_import' ?>">Import TLD Pricing
+					<span class="enom-pro-icon enom-pro-icon-tag"></span></a>
 				<a class="btn btn-danger large"
 				   href="<?php echo enom_pro::MODULE_LINK . '&view=help' ?>">View Help
 					<span class="enom-pro-icon enom-pro-icon-question"></span></a>
@@ -811,8 +816,8 @@ function enom_pro_output( $vars ) {
 			<h2>Error</h2>
 			<?php echo $e->getMessage(); ?>
 		</div>
-	<?php
+		<?php
 	} //End Final Exception Catch
 	?>
-<?php
+	<?php
 }

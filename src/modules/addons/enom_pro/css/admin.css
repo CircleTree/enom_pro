@@ -785,6 +785,9 @@ Licensed from Orion IP Ventures, LLC
   float: left;
   width: 100%;
 }
+.enom_pro_output .well h3 {
+  margin: 0;
+}
 .enom_pro_output .well:after {
   visibility: hidden;
   display: block;
