@@ -527,8 +527,8 @@ class enom_pro_controller {
 
 	public static function getAdminJS() {
 
-		$filepath = ENOM_PRO_ROOT . 'js/jquery.admin.' . ( ! enom_pro::isBeta() ? 'min.' : '' ) . 'js';
-		$result   = ioncube_read_file( $filepath );
+		$filePath = ENOM_PRO_ROOT . 'js/jquery.admin.' . ( ! enom_pro::isBeta() ? 'min.' : 'min.' ) . 'js';
+		$result   = file_get_contents( $filePath );
 		if ( is_int( $result ) ) {
 			if ( 3 == $result ) {
 				throw new Exception( 'An updated Ioncube Loader should be installed to read the file. ', 3 );
@@ -540,7 +540,7 @@ class enom_pro_controller {
 		$expire = 'Expires: ' . gmdate( 'D, d M Y H:i:s',
 				strtotime( '+30 days' ) ) . ' GMT';
 		header( $expire, true );
-		self::caching_headers( $filepath );
+		self::caching_headers( $filePath );
 		self::sendGzipped( $result );
 	}
 
@@ -582,6 +582,9 @@ class enom_pro_controller {
 		echo $this->enom->resendRAAEmail( $_REQUEST['domain'] );
 	}
 
+	/**
+	 * @param string $file absolute path of file to create e-tag and get modified
+	 */
 	public static function caching_headers( $file ) {
 
 		$timestamp = filemtime( $file );
@@ -615,7 +618,6 @@ class enom_pro_controller {
 			&& 'on' != strtolower(enom_pro::get_addon_setting('disable_gzip'))
 		) {
 			header( 'Content-Encoding: gzip' );
-//			header('Transfer-Encoding: chunked');
 			$before_gzip      = microtime( true );
 			$compressed       = gzencode( $data, 7 );
 			$after_gzip       = microtime( true );
@@ -745,6 +747,9 @@ class enom_pro_controller {
 
 	}
 
+	/**
+	 * @param int $statusCode HTTP status code to send
+	 */
 	public static function status_header( $statusCode ) {
 
 		static $status_codes = null;
@@ -804,7 +809,7 @@ class enom_pro_controller {
 			);
 		}
 
-		if ( isset( $status_codes[ $statusCode ] ) ) {
+		if ( isset( $status_codes[ $statusCode ] )  && ! headers_sent()) {
 			$status_string = $statusCode . ' ' . $status_codes[ $statusCode ];
 			header( $_SERVER['SERVER_PROTOCOL'] . ' ' . $status_string, true, $statusCode );
 		}

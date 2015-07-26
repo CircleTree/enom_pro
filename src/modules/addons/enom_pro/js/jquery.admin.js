@@ -28,15 +28,15 @@ try {
 			autoOpen:    false
 		});
 		$("#enom_pro_dialog").dialog({
-			width:    640,
-			height:   640,
-			autoOpen: false,
+			width:       640,
+			height:      640,
+			autoOpen:    false,
 			dialogClass: 'enom_pro_output',
-			modal:    true,
-			close:    function () {
+			modal:       true,
+			close:       function () {
 				if (!$(this).data('no-refresh')) {
 					$("body").addClass('loading').append('<div class="ui-widget-overlay body-loader"></div>');
-					$("#enom_pro_pricing_table input").attr('disabled', true);
+					$("#enom_pro_pricing_table").find("input").attr('disabled', true);
 					window.location.reload();
 				}
 			}
@@ -85,7 +85,7 @@ try {
 				$dialog.data('no-refresh', false);
 			}
 			var $enomProDialogIFrame = $("#enom_pro_dialog_iframe");
-			$enomProDialogIFrame.attr('src', href).on('load', function  (){
+			$enomProDialogIFrame.attr('src', href).on('load', function () {
 				$enomProDialogIFrame.contents().find('#whmcsdevbanner').remove();
 			});
 			return false;
@@ -95,12 +95,6 @@ try {
 			$("#enom_pro_dialog").dialog("close");
 		});
 
-		$("#search_form").on('submit', function () {
-			var search = $(this).find('input[name=s][type=text]').val();
-			$("input[name=s][type=hidden]").val(search);
-			$importTableForm.trigger('submit');
-			return false;
-		});
 		$(".clearTLDSearch").on('click', function () {
 			var $form = $(this).closest('form');
 			$form.find('input[name=s]').val('').removeAttr('name');
@@ -145,8 +139,7 @@ try {
 								0, wholeMarkup          = parseFloat($("#wholeMarkup").val()) ||
 								0, round                = parseFloat($("#roundTo").val()) ||
 								false, preferredMarkup  = parseFloat($("#preferredPercentMarkup").val()) ||
-								0, preferredWholeMarkup = parseFloat($("#preferredWholeMarkup").val()) || 0, doRound = (round ==
-						-1) ? false : true, //Kept ternary operator for readability
+								0, preferredWholeMarkup = parseFloat($("#preferredWholeMarkup").val()) || 0, doRound = (round != -1),
 						newPriceDouble              = 0.00;
 				if ($('#overWriteWHMCS').prop('checked')) {
 					var $elems = jQuery('[data-price]');
@@ -258,23 +251,10 @@ try {
 		});
 		$(".deleteFromWHMCS").on("click", function () {
 			$(".delete_tld").trigger("click");
-			$(".clearDropdown").dropdown('toggle')
+			$(".clearDropdown").dropdown('toggle');
 			return false;
 		});
-		$("#domains_target").on("click", ".pagination A", function () {
-			if ($.ajaxq.isRunning('whois')) {
-				var abort = confirm('This will abort fetching WHOIS results\n\nContinue?');
-				if (abort) {
-					$.ajaxq.abort('whois');
-				} else {
-					return false;
-				}
-			}
-			var start = $(this).data('start');
-			$("input[name=start]").val(start);
-			$importTableForm.trigger('submit');
-			return false;
-		});
+
 		$("[data-alert]").tooltip({
 			title:     'Never show this message',
 			container: 'body',
@@ -296,12 +276,7 @@ try {
 			});
 		});
 
-		$("#filter_form").on('submit change', function () {
-			$("input[name=start]").val(1);
-			$("input[name=show_only]").val($(this).find('select').val());
-			$importTableForm.trigger('submit');
-			return false;
-		});
+
 		var slide_time = $(".slideup").data('timeout');
 		if (!slide_time) {
 			slide_time = 2000;
@@ -311,22 +286,6 @@ try {
 		setTimeout(function () {
 			$(".slideup").slideUp(1000);
 		}, slide_time);
-		$("#per_page_form").on('submit change', function () {
-			var $loader = $('.enom_pro_loader');
-			$.ajax({
-				url:        'addonmodules.php?module=enom_pro',
-				data:       $(this).serialize(),
-				beforeSend: function () {
-					$loader.removeClass('hidden');
-				},
-				success:    function () {
-					$("input[name=start]").val(1);
-					$importTableForm.trigger('submit');
-				}
-			});
-			return false;
-		});
-
 		var $news = $("#enom_pro_changelog");
 		if ($news.length > 0) {
 			$news.append(enom_pro.loadingString);
@@ -338,6 +297,7 @@ try {
 				success:  function (data) {
 					$news.empty();
 					var str = "";
+					/** @namespace data.responseData.feed.entries */
 					$.each(data.responseData.feed.entries, function (k, entry) {
 						str += "<h4><a target=\"_blank\" href=\"" +
 								entry.link +
@@ -375,6 +335,9 @@ try {
 							if (nextIsOlder) {
 								newer = 'older';
 							}
+							/** @namespace value.sha */
+							/** @namespace value.relative_date */
+							/** @namespace value.subject */
 							if (enom_pro.version.search(value.sha) > -1) {
 								badge += ' current-version';
 								nextIsOlder = true;
@@ -396,7 +359,7 @@ try {
 				});
 			});
 		}
-		;
+
 		$(".enom_pro_output").on("click", ".enom_stat_button .btn", function () {
 			if ($(this).hasClass("disabled")) {
 				return false;
@@ -446,6 +409,7 @@ try {
 		});
 		if ($(".doIPFetch").length > 0) {
 			$.getJSON("http://www.telize.com/jsonip?callback=?", function (json) {
+				/** @namespace json.ip */
 				$(".doIPFetch").html('<input value="' +
 						json.ip +
 						'" onclick="this.select();"/>').removeClass('enom_pro_loader');
@@ -533,21 +497,61 @@ try {
 
 			initDomainImport:           function () {
 				this.ajaxLoadJS('jquery.ajaxq.js').done(function () {
+
 					/**
 					 * Domain import page
 					 */
-					var $importTableForm  = $("#import_table_form");
-					$importTableForm.on('ajaxComplete', function (e, xhr, settings) {
+					var $importTableForm  = $("#import_table_form"), whois_cache = Array, localStorage;
+					$importTableForm.on('ajaxComplete', function () {
 						$(".domain_whois").trigger('getwhois');
 					});
-					var whois_cache       = Array, localStorage;
 					if (typeof (window.localStorage) == 'object') {
 						localStorage = window.localStorage;
 					} else {
 						localStorage = false;
 					}
-
-					$importTableForm.on('getwhois', ".domain_whois", function (e) {
+					$("#search_form").on('submit', function () {
+						var search = $(this).find('input[name=s][type=text]').val();
+						$("input[name=s][type=hidden]").val(search);
+						$importTableForm.trigger('submit');
+						return false;
+					});
+					$("#filter_form").on('submit change', function () {
+						$("input[name=start]").val(1);
+						$("input[name=show_only]").val($(this).find('select').val());
+						$importTableForm.trigger('submit');
+						return false;
+					});
+					$("#per_page_form").on('submit change', function () {
+						var $loader = $('.enom_pro_loader');
+						$.ajax({
+							url:        'addonmodules.php?module=enom_pro',
+							data:       $(this).serialize(),
+							beforeSend: function () {
+								$loader.removeClass('hidden');
+							},
+							success:    function () {
+								$("input[name=start]").val(1);
+								$importTableForm.trigger('submit');
+							}
+						});
+						return false;
+					});
+					$("#domains_target").on("click", ".pagination A", function () {
+						if ($.ajaxq.isRunning('whois')) {
+							var abort = confirm('This will abort fetching WHOIS results\n\nContinue?');
+							if (abort) {
+								$.ajaxq.abort('whois');
+							} else {
+								return false;
+							}
+						}
+						var start = $(this).data('start');
+						$("input[name=start]").val(start);
+						$importTableForm.trigger('submit');
+						return false;
+					});
+					$importTableForm.on('getwhois', ".domain_whois", function () {
 						var $target     = $(this), $loader = $target.find('.enom_pro_loader');
 						var domain_name = $(this).data('domain');
 						var data        = false;
@@ -571,7 +575,7 @@ try {
 							beforeSend: function () {
 								$loader.removeClass('hidden');
 							},
-							success:    function (data, xhr) {
+							success:    function (data) {
 								if (localStorage) {
 									try {
 										var string = JSON.stringify(data);
@@ -603,8 +607,7 @@ try {
 							}
 						});
 					});
-					window.onbeforeunload = function (e) {
-						var incomplete = 0;
+					window.onbeforeunload = function () {
 						if (jQuery.ajaxq.isRunning('whois')) {
 							return 'Fetching WHOIS still in progress\nAbort?';
 						}
@@ -651,10 +654,8 @@ try {
 						$target.find('.enom_pro_loader').addClass('hidden');
 					}
 
-					var $message = $("#ajax_messages"),
-							$process = $("#order_process"),
-							last_domain = '';
-							$process.hide();
+					var $message = $("#ajax_messages"), $process = $("#order_process"), last_domain = '';
+					$process.hide();
 					//Create Order
 					$importTableForm.on('click', 'a.create_order', function () {
 						var domain_name   = $(this).data('domain');
@@ -717,8 +718,11 @@ try {
 									$process.hide();
 									$message.addClass('alert-success');
 									$importTableForm.trigger('submit');
+									/** @namespace data.activated */
 									var message = 'Created ' + (data.activated ? 'Active' : 'Pending') + ' Order #';
 									if (data.activated) {
+										/** @namespace data.domainid */
+										/** @namespace data.orderid */
 										message += data.orderid +
 												'<a class="btn btn-xs btn-default" target="_blank" href="clientsdomains.php?domainid=' +
 												data.domainid +
@@ -730,6 +734,7 @@ try {
 												data.orderid +
 												'</a>';
 									}
+									/** @namespace data.invoiceid */
 									if (data.invoiceid) {
 										message += ' invoice #' +
 												'<a class="btn btn-xs btn-default" target="_blank" href="invoices.php?action=edit&id=' +
@@ -771,6 +776,7 @@ try {
 							success:    function (data) {
 								$("#import_next_button").show();
 								$("#domains_target").html(data.html);
+								/** @namespace data.cache_date */
 								$(".domains_cache_time").html(data.cache_date);
 
 							},
@@ -850,13 +856,13 @@ try {
 			initHelpDialog:             function () {
 				this.$helpDialog = $(".helpDialog");
 				this.$helpDialog.dialog({
-					height:   'auto',
-					width:    '760px',
+					height:      'auto',
+					width:       '760px',
 					dialogClass: 'enom_pro_output',
-					minWidth: 250,
-					maxWidth: 760,
-					autoOpen: false,
-					modal:    false
+					minWidth:    250,
+					maxWidth:    760,
+					autoOpen:    false,
+					modal:       false
 				});
 			},
 			initHelpEvents:             function () {
@@ -960,6 +966,7 @@ try {
 							} else {
 								$.each(data.responseData.feed.entries, function (k, entry) {
 									var help_id = enom_pro.getParameterByName('id', entry.link);
+									/** @namespace entry.contentSnippet */
 									str += '<li>' +
 											'<h4>' +
 											'<a ' +

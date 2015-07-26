@@ -146,6 +146,7 @@
 	<target name="replace">
 		<!--<delete dir="${build_temp_dir}"/>-->
 		<!--<mkdir dir="build/encoded_prep/"/>-->
+		<!--suppress PhingDomInspection -->
 		<filesync
 				sourceDir="src/"
 				destinationDir="build/encoded_prep/"
@@ -158,9 +159,12 @@
 		<exec
 				command="java -jar ${yui.jarfile} -v -o ${encoded_prep}/modules/addons/enom_pro/css/admin.min.css ${src_dir}modules/addons/enom_pro/css/admin.css"
 				checkreturn="true" passthru="true"/>
-		<echo>minify jquery.admin.js</echo>
+		<property name="jquery.minify.cmd" value="java -jar ${yui.jarfile} -v -o ${encoded_prep}/modules/addons/enom_pro/js/jquery.admin.min.js ${src_dir}modules/addons/enom_pro/js/jquery.admin.js" />
+		<echo>minify jquery.admin.js
+			cmd$: ${jquery.minify.cmd}
+		</echo>
 		<exec
-				command="java -jar ${yui.jarfile} -v -o ${encoded_prep}/modules/addons/enom_pro/js/jquery.admin.min.js ${src_dir}modules/addons/enom_pro/js/jquery.admin.js"
+				command="${jquery.minify.cmd}"
 				checkreturn="true" passthru="true"/>
 		<echo>delete old minify files</echo>
 		<delete
