@@ -162,7 +162,9 @@ class enom_pro {
 	 * Checks login credentials
 	 */
 	public function check_login() {
+
 		$this->runTransaction( "CheckLogin" );
+
 		return true;
 	}
 
@@ -240,7 +242,7 @@ class enom_pro {
 			} else {
 				throw new InvalidArgumentException( gettype( $error ) . ' is an invalid type for rendering admin errors' );
 			}
-			$string .= '<div class="error_message">'.$error_msg.'</div>' . PHP_EOL;
+			$string .= '<div class="error_message">' . $error_msg . '</div>' . PHP_EOL;
 			if ( strstr( $error_msg, "IP" ) ) {
 				//The most common error message is for a non-whitelisted API IP
 				$string .= "<h4>You need to white-list your IP address with eNom.</h4>";
@@ -421,7 +423,7 @@ class enom_pro {
 		}
 		//Set the command
 		// if (! in_array( strtoupper( trim( $command ) ), self::array_to_upper( $this->implemented_commands ) ) && ! defined( 'UNIT_TESTS' )) {
-		if (! in_array( strtoupper( trim( $command ) ), self::array_to_upper( $this->implemented_commands ) )) {
+		if ( ! in_array( strtoupper( trim( $command ) ), self::array_to_upper( $this->implemented_commands ) ) ) {
 			throw new InvalidArgumentException( 'API Method ' . $command . ' not implemented', 400 );
 		}
 		if ( $this->remote_run_number >= $this->api_request_limit ) {
@@ -431,7 +433,7 @@ class enom_pro {
 
 
 		//Save the cURL response
-		$url = $this->URL;
+		$url            = $this->URL;
 		$this->response = $this->curl_get( $url, $this->getParams() );
 		//Parse the XML
 		$this->load_xml( $this->response );
@@ -692,7 +694,7 @@ class enom_pro {
 			//Cached, but not complete.
 			$tld     = $cache_data['next_tld'];
 			$thisTLD = $cache_data['data'];
-			unset($cache_data);
+			unset( $cache_data );
 		} else {
 			//Nothing cached, start with first TLD
 			$thisTLD = array();
@@ -701,19 +703,19 @@ class enom_pro {
 		$tldsPerStep  = 5;
 		$thisTLDIndex = array_search( $tld, $allTLDs );
 		$nextTLDIndex = $thisTLDIndex + $tldsPerStep;
-		$nextTLD = false;
+		$nextTLD      = false;
 		if ( isset( $allTLDs[ $nextTLDIndex ] ) ) {
 			$nextTLD = $allTLDs[ $nextTLDIndex ];
 		}
-		$allTLDsCount = count($allTLDs);
+		$allTLDsCount = count( $allTLDs );
 
-		$thisBatch    = array_slice( $allTLDs, $thisTLDIndex, $nextTLDIndex );
-		unset($allTLDs);
+		$thisBatch = array_slice( $allTLDs, $thisTLDIndex, $nextTLDIndex );
+		unset( $allTLDs );
 
 		foreach ( $thisBatch as $index => $thisBatchTLD ) {
 			$pricingData              = $this->getDomainPricing( $thisBatchTLD, $retail );
 			$thisTLD[ $thisBatchTLD ] = $pricingData;
-			unset($pricingData);
+			unset( $pricingData );
 		}
 
 		if ( count( $thisTLD ) > 0 ) {
@@ -1121,18 +1123,19 @@ class enom_pro {
 	 * @return array domain, status, expiration_date, desc, status_id
 	 */
 	public function getExpiringCerts() {
-		$ssl_widget_days = (int) enom_pro::get_addon_setting('ssl_days');
-		$ssl_email_days = (int) enom_pro::get_addon_setting('ssl_email_days');
+
+		$ssl_widget_days = (int) enom_pro::get_addon_setting( 'ssl_days' );
+		$ssl_email_days  = (int) enom_pro::get_addon_setting( 'ssl_email_days' );
 		//Check whichever is greater for the API response limits
 		$ssl_days_to_get = $ssl_email_days > $ssl_widget_days ? $ssl_email_days : $ssl_widget_days;
 		//Add 3 days for buffer / timezone / inclusive vs. exclusive matching.
-		$ssl_days_to_get = 0 ? 33 : ($ssl_days_to_get + 3);
+		$ssl_days_to_get = 0 ? 33 : ( $ssl_days_to_get + 3 );
 		$this->setParams( array(
-			'SortBy' => 'Expiration',
-			'SortByDirection' => 'asc',
-			'ExpirationDateStart' => date('m/d/Y', strtotime('-30 Days')),
-			'ExpirationDateEnd' => date('m/d/Y', strtotime("+$ssl_days_to_get Days")),
-			'PagingPageSize' => 250
+			'SortBy'              => 'Expiration',
+			'SortByDirection'     => 'asc',
+			'ExpirationDateStart' => date( 'm/d/Y', strtotime( '-30 Days' ) ),
+			'ExpirationDateEnd'   => date( 'm/d/Y', strtotime( "+$ssl_days_to_get Days" ) ),
+			'PagingPageSize'      => 250
 		) );
 		$this->runTransaction( 'CertGetCerts' );
 		$return = array();
@@ -1148,15 +1151,15 @@ class enom_pro {
 		}
 		foreach ( $this->xml->CertGetCerts->Certs->Cert as $cert ) {
 			$expiring_timestamp = strtotime( $cert->ExpirationDate );
-			$expiry_filter      = ( time() + ( ((int) $ssl_widget_days + 1) * 60 * 60 * 24 ) );
+			$expiry_filter      = ( time() + ( ( (int) $ssl_widget_days + 1 ) * 60 * 60 * 24 ) );
 			if ( $expiring_timestamp < $expiry_filter && ! in_array( (int) $cert->CertID,
 					$hidden )
 			) {
 				$status_id = isset( $cert->CertStatusid ) ? $cert->CertStatusid : false;
-				if (false === $status_id) {
+				if ( false === $status_id ) {
 					$status_id = isset( $cert->CertStatusID ) ? $cert->CertStatusID : false;
 				}
-				$status_id = (int) $status_id; //Make sure we cast a SimpleXML Element to int.
+				$status_id        = (int) $status_id; //Make sure we cast a SimpleXML Element to int.
 				$formatted_result = array(
 					'domain'          => (array) $cert->DomainName,
 					'status'          => (string) $cert->CertStatus,
@@ -1599,8 +1602,7 @@ class enom_pro {
 
 		$currency_code = strtoupper( $currency_code );
 		$cached        = $this->get_cache_data( $this->cache_file_exchange_rate );
-		if ( $cached && ( $cached['to'] == $currency_code ) && ( isset( $cached['provider'] ) && ( $this->getExchangeRateProvider() == $cached['provider'] ) )
-		) {
+		if ( $cached && ( $cached['to'] == $currency_code ) && ( isset( $cached['provider'] ) && ( $this->getExchangeRateProvider() == $cached['provider'] ) ) ) {
 			return $cached['rate'];
 		}
 
@@ -1740,13 +1742,14 @@ class enom_pro {
 		return $return;
 	}
 
+	private $whmcsClientDomains = array();
+
 	/**
-	 * Gets domains with assocaited whmcs clients
+	 * Gets domains with associated WHMCS clients
 	 *
 	 * @param int|true          $limit true to get all, number to limit
 	 * @param int|number        $start default 1
 	 * @param bool|false|string $show_only imported, un-imported, defaults to false to not filter results
-	 * @param bool              $test_env
 	 *
 	 * @return array $domains with client key with client details
 	 *  array( domain...details, 'client' => array());
@@ -1755,56 +1758,43 @@ class enom_pro {
 	public function getDomainsWithClients(
 		$limit = 30,
 		$start = 1,
-		$show_only = false,
-		$test_env = false
+		$show_only = false
 	) {
 
 		$domains              = $this->getDomains( true, $start );
-		if($test_env) {
-			//TODO: Why is this flag necessary? I'm not a big fan of polluting the function signature with a test dependency. The constant UNIT_TESTS is defined by the PHPUnit configuration.xml, I'd be open to other less intrusive options, as well.
-			$domains = array_splice( $domains, 0, min($limit, 200) );
-		}
 		$show_only_unimported = $show_only == 'unimported' ? true : false;
 		$show_only_imported   = $show_only == 'imported' ? true : false;
 		$return               = array();
+		if ( $show_only_unimported || $show_only_imported ) {
+			//Only cache if used
+			$this->fetchWHMCSDomains( count( $domains ) );
+		}
 		foreach ( $domains as $key => $domain ) {
-			//TODO refactor this to only SET based on filtering
-			//NOT SET and then based on hard to read logic, UNSET.
-			//TODO SET
-			$return[ $key ] = $domain;
-			$domain_name    = $domain['sld'] . '.' . $domain['tld'];
-			//TODO extract this method into a testable interface for searching for client domains
-			//TODO re-use the tested interface for other 'getclientsdomains' calls
-			//TODO use exception handling to streamline logic
-			$domain_search  = self::whmcs_api( 'getclientsdomains',
-				array( 'domain' => $domain_name ) );
-			//Domain isn't in WHMCS, and we want to only show imported, unset this result
-			if ( $domain_search['totalresults'] == 0 && $show_only_imported ) {
-				//TODO UNSET 1
-				unset( $return[ $key ] );
+			$domain_name = $domain['sld'] . '.' . $domain['tld'];
+			$domainIsInWHMCS = array_key_exists( $domain_name, $this->whmcsClientDomains );
+			if ( $show_only_imported ) {
+				//Only show imported domains
+				if ( $domainIsInWHMCS ) {
+					$return[ $key ] = $domain;
+				}
+			} elseif ( $show_only_unimported ) {
+				//Only show un-imported domains
+				if ( ! $domainIsInWHMCS ) {
+					$return[ $key ] = $domain;
+				}
+			} else {
+				//Show all
+				$return[ $key ] = $domain;
 			}
 
-			//Domain is in WHMCS, we want to show only non-imported, do not include in return  
-			if ( $domain_search['totalresults'] == 1 && $show_only_unimported ) {
-				//TODO UNSET 2
-				unset( $return[ $key ] );
-			}
 			//Domain is in whmcs, and not filtered, add client meta
-			if ( $domain_search['totalresults'] == 1 && isset( $return[ $key ] ) ) {
+			if ( $domainIsInWHMCS && isset( $return[ $key ] ) ) {
 				//If we get here, we can add the client details
-				$whmcs_domain               = $domain_search['domains']['domain'][0];
+				$whmcs_domain               = $this->whmcsClientDomains[$domain_name];
 				$return[ $key ]['whmcs_id'] = $whmcs_domain['id'];
 
 				$return[ $key ]['client'] = self::whmcs_api( 'getclientsdetails',
 					array( 'clientid' => $whmcs_domain['userid'] ) );
-			}
-			//No search results & result hasn't been filtered
-			if ( $domain_search['totalresults'] == 0 && isset( $return[ $key ] ) ) {
-				//we need to remove this result, because of the filter
-				if ( $show_only_imported ) {
-					//TODO UNSET 3
-					unset( $return[ $key ] );
-				}
 			}
 		}
 		if ( true !== $limit ) {
@@ -2440,11 +2430,12 @@ class enom_pro {
 	public $ssl_reminder_cert_status_ids = array(
 		0, //CertID not set
 		4, //Certificate Issued
-//		8, //Refunded - Cert Issued
+		//		8, //Refunded - Cert Issued
 		13, //Cert Installed (associate with our hosting)
 	);
 
-	public function willCertificateReminderBeSent(array $certificate) {
+	public function willCertificateReminderBeSent( array $certificate ) {
+
 		return in_array( $certificate['status_id'], $this->ssl_reminder_cert_status_ids );
 	}
 
@@ -2463,7 +2454,7 @@ class enom_pro {
 			if ( $this->format_ts( $expiry_timestamp ) == $this->format_ts( $send_timestamp ) ) {
 				//Get client id for $domain
 				$client_id = $this->getClientIdByDomain( reset( $cert['domain'] ) );
-				if ( false !== $client_id && $this->willCertificateReminderBeSent($cert)) {
+				if ( false !== $client_id && $this->willCertificateReminderBeSent( $cert ) ) {
 					//Send Email
 					if ( true === $this->send_SSL_reminder_email( $client_id, $cert ) ) {
 						$reminder_count ++;
@@ -2486,21 +2477,21 @@ class enom_pro {
 
 		$domain = ltrim( $domain, '*.' );
 		//Remove www
-		$domain = preg_replace('#^www\.(.+\.)#i', '$1', $domain);
+		$domain = preg_replace( '#^www\.(.+\.)#i', '$1', $domain );
 
 		$clientIDFromProduct = $clientIDFromDomain = false;
 		/**
 		 * First, Try Searching by Product
 		 * (Correct enomssl configuration)
 		 */
-		$products            = self::whmcs_api( 'getclientsproducts',
+		$products = self::whmcs_api( 'getclientsproducts',
 			array( 'domain' => $domain ) );
 
 		if ( empty( $products['products'] ) ) {
 			//Try prefixing a www in front of the domain
-			$products = self::whmcs_api('getclientsproducts', array('domain' => 'www.' . $domain));
+			$products = self::whmcs_api( 'getclientsproducts', array( 'domain' => 'www.' . $domain ) );
 		}
-		if (! empty( $products['products'] )) {
+		if ( ! empty( $products['products'] ) ) {
 			$clientIDFromProduct = (int) $products['products']['product'][0]['clientid'];
 		}
 		unset( $products );
@@ -2512,7 +2503,7 @@ class enom_pro {
 			array( 'domain' => $domain ) );
 		if ( empty( $domains['domains'] ) ) {
 			//Try prefixing a www in front of the domain
-			$domains = self::whmcs_api('getclientsdomains', array('domain' => 'www.' . $domain));
+			$domains = self::whmcs_api( 'getclientsdomains', array( 'domain' => 'www.' . $domain ) );
 		}
 		if ( ! empty( $domains['domains'] ) ) {
 			$clientIDFromDomain = (int) $domains['domains']['domain'][0]['userid'];
@@ -2769,7 +2760,7 @@ class enom_pro {
 			<span class="enom-pro-icon enom-pro-icon-support"></span>
 			BETA Mode<span class="enom-pro-icon enom-pro-icon-bug"></span>
 		</a>
-	<?php
+		<?php
 	}
 
 	public static function getSupportMessage() {
@@ -2949,5 +2940,37 @@ class enom_pro {
 		}
 
 		return $domainsCached;
+	}
+
+	/**
+	 * @param int $domain_limit
+	 *
+	 * @throws WHMCSException
+	 */
+	private function fetchWHMCSDomains( $domain_limit ) {
+
+		$this->whmcsClientDomains = self::whmcs_api( 'getclientsdomains',
+			array(
+				'limitnum' => $domain_limit
+			) );
+		if ( $this->whmcsClientDomains['totalresults'] != $this->whmcsClientDomains['numreturned'] ) {
+			throw new WHMCSException( sprintf( 'Invalid result numbers. WHMCS said there are %d domains, but only returned %d',
+				$this->whmcsClientDomains['totalresults'],
+				$this->whmcsClientDomains['numreturned'] ) );
+		}
+		$result = array();
+		foreach ( $this->whmcsClientDomains['domains']['domain'] as $whmcs_domain ) {
+			if ( $whmcs_domain['registrar'] != 'enom' ) {
+				//Filter out domains from other registrars
+				continue;
+			}
+			$result[ $whmcs_domain['domainname'] ] = array(
+				'id'      => $whmcs_domain['id'],
+				'userid'  => $whmcs_domain['userid'],
+				'orderid' => $whmcs_domain['orderid'],
+				'domain'  => $whmcs_domain['domainname'],
+			);
+		}
+		$this->whmcsClientDomains = $result;
 	}
 }
