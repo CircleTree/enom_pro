@@ -2763,6 +2763,7 @@ class enom_pro {
 		?>
 		<a class="btn btn-block btn-warning ep_tt"
 		   title="Running in Beta mode - Please report bugs"
+		   data-placement="right"
 		   target="_blank"
 		   href="<?php echo self::TICKET_URL ?>&subject=<?php echo urlencode( ENOM_PRO . ' Bug Report' ) . '&message=' . self::getSupportMessage(); ?>">
 			<span class="enom-pro-icon enom-pro-icon-support"></span>

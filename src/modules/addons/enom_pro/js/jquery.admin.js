@@ -47,7 +47,7 @@ try {
 		 */
 		$('.ep_tt').tooltip({
 			container: 'body',
-			placement: 'auto top'
+			placement: $(this).data('placement') && 'auto top'
 		});
 		if (typeof(jQuery.fn.popover) == "function") {
 			$(".ep_pop").popover({
@@ -84,7 +84,10 @@ try {
 			} else {
 				$dialog.data('no-refresh', false);
 			}
-			$("#enom_pro_dialog_iframe").attr('src', href);
+			var $enomProDialogIFrame = $("#enom_pro_dialog_iframe");
+			$enomProDialogIFrame.attr('src', href).on('load', function  (){
+				$enomProDialogIFrame.contents().find('#whmcsdevbanner').remove();
+			});
 			return false;
 		});
 
