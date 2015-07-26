@@ -217,31 +217,11 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$this->assertFalse( $this->e->cache_file_is_older_than( $filepath, '-1 Day' ) );
 	}
 
-	/**
-	 * @group domains
-	 * @group slow
-	 */
-	function  test_get_imported_domains() {
-
-		$this->create_client_order();
-		$domains = enom_pro::whmcs_api( 'getclientsdomains', array() );
-		if ( 0 == $domains['totalresults'] ) {
-			$this->markTestIncomplete( 'No domains in WHMCS to test from' );
-		}
-		$total    = 0;
-		$imported = $this->e->getDomainsWithClients( 100, 0, 'imported', true );
-		foreach ( $domains['domains']['domain'] as $domain ) {
-			if ( 'enom' == $domain['registrar'] && 'Active' == $domain['status'] ) {
-				$total ++;
-			}
-		}
-		$this->assertEquals( $total, count( $imported ) );
-	}
 
 	/**
 	 * @group tlds
 	 */
-	function  test_get_TLDs() {
+	function  test_get_tlds() {
 
 		$tlds = $this->e->getTLDs();
 		$this->assertTrue( is_array( $tlds ) );
@@ -298,12 +278,31 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @group domains
+	 * @group slow
 	 */
-	function  test_get_Domains_show_imported() {
+	function  test_get_imported_domains() {
 
-		//TODO fix domain filter test performance - taking a very long time to filter an in-memory list.
-		$this->markTestIncomplete( 'TODO why is this hanging?' );
-		$imported = $this->e->getDomainsWithClients( 1, 1, 'imported', true );
+		$domains = enom_pro::whmcs_api( 'getclientsdomains', array() );
+		if ( 0 == $domains['totalresults'] ) {
+			$this->markTestIncomplete( 'No domains in WHMCS to test from' );
+		}
+		$total    = 0;
+		$imported = $this->e->getDomainsWithClients( 200, 1, 'imported', true );
+		foreach ( $domains['domains']['domain'] as $domain ) {
+			if ( 'enom' == $domain['registrar'] && 'Active' == $domain['status'] ) {
+				$total ++;
+			}
+		}
+		$this->assertEquals( $total, count( $imported ) );
+	}
+
+	/**
+	 * @group domains
+	 */
+	function  test_get_domains_show_imported() {
+
+		//Test that a longer list returns the correct limit
+		$imported = $this->e->getDomainsWithClients( 1, 1, 'imported' );
 		$this->assertCount( 1, $imported, 'make sure there is one imported domain in whmcs db' );
 		$this->assertArrayHasKey( 'client', $imported[0] );
 	}
@@ -311,11 +310,8 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group domains
 	 */
-	function  test_get_Domains_show_un_imported() {
+	function  test_get_domains_show_un_imported() {
 
-		if ( ! self::$testData['testDomainsWithClients'] ) {
-			$this->markTestSkipped( 'low performance routine' );
-		}
 		$hidden = $this->e->getDomainsWithClients( 10, 1, $show_only = 'unimported', true );
 		$this->e->getDomainsWithClients( 3, 1, true, true );
 		$this->assertArrayNotHasKey( 'client', $hidden[0] );
@@ -348,8 +344,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 
 		$count = $this->e->getDomainsWithClients( 5, 1, 'imported', true );
 		if ( count( $count ) < 2 ) {
-			//TODO mock these orders for testing the filters
-			$this->fail( 'Need more imported domains to test pagination' );
+			$this->fail( 'Database dump lacks orders. Go to eNom pro, and run a few domain imports, then run db_dump.sh to capture the schema' );
 		}
 		$page1 = $this->e->getDomainsWithClients( 1, 1, 'imported', true );
 		$page2 = $this->e->getDomainsWithClients( 1, 2, 'imported', true );
@@ -394,7 +389,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	function  test_resend_activation() {
 
 		$domains      = $this->e->getTransfers();
-		$first_result = @$domains[0];
+		$first_result = reset( $domains );
 		if ( empty( $first_result ) ) {
 			//TODO add mock transfer test set up
 			$this->markTestSkipped( 'No pending transfers in WHMCS. Add one' );
@@ -408,7 +403,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group transfers
 	 * @expectedException EnomException
 	 */
-	function  test_resubmit_locked_throws_EnomException() {
+	function  test_resubmit_locked_throws_enom_exception() {
 
 		$this->e->resubmit_locked( '123' );
 	}
@@ -1538,6 +1533,6 @@ TAG
 		}
 
 		return $gateway;
-}
+	}
 
 }
