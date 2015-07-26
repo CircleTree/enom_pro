@@ -913,7 +913,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 */
 	function  test_remote_curl_fail() {
 
-		$this->e->curl_get( '404.php', array() );
+		$this->e->curl_get( '', array() );
 	}
 
 	/**
@@ -941,6 +941,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @group ssl
+	 * @group remote
 	 */
 	public function test_Get_Client_By_Product() {
 
