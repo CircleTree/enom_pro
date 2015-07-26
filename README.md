@@ -8,8 +8,8 @@
 
   `curl -sS https://getcomposer.org/installer | php`
   
-  `mv composer.phar /usr/local/bin/comer`
-1. Run composer install from the project root
+  `mv composer.phar /usr/local/bin/composer`
+1. Run `composer install` from the project root
 1. Run phing to build the working copy `vendor/bin/phing`
 	* add a file watcher to automatically build after changes to the src/ directory tree
 1. Symlink build/encoded_prep/modules/addons/enom_pro to the whmcs/modules/addons/enom_pro directory tree
@@ -35,7 +35,26 @@
 			* This way you can preview states between the interface and failing tests
 		* `ENOM_PRO_TEMP` - Absolute path to a tmp directory for writing cache files
 		* `WHMCS_API_UN` / `WHMCS_API_PW` - Should be the same API credentials from above
-1. Create 2 dummy support departments: <br/>
-![Created Departments](http://cl.circletr.ee/image/0n2r171r1Y3X/Image%202015-07-09%20at%208.42.43.png)
+
+### Running tests
+ * Run the tests from the project root: `vendor/bin/phpunit -c phpunit.dist.xml`
+ * To exclude groups, use `vendor/bin/phpunit -c phpunit.dist.xml --exclude-group slow`
+ * To view groups use: `vendor/bin/phpunit --list-groups`
+     - __nogroup__
+     - domains
+     - namespinner
+     - pricing
+     - remote
+     - settings
+     - slow
+     - srv
+     - ssl
+     - stats
+     - tests
+     - tlds
+     - transfers
+     - views
+     - whmcs
+     - whois
 
 

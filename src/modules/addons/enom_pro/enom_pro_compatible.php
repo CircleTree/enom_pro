@@ -41,15 +41,15 @@ function enom_pro_smarty_field( $smartyTag ) {
 }
 
 /**
- * @return multitype:string multitype:multitype:string  multitype:string number
+ * @return array
  * @codeCoverageIgnore
  */
 
 function enom_pro_config() {
 
 	$view         = '';
-	$spinner_help = ' <br/><span class="textred" >
-            Make sure your active cart & domain checker templates have ' . enom_pro_smarty_field( 'namespinner' ) . ' in them.</span>';
+	$spinner_help = '<br/><span class="textred" >';
+	$spinner_help .= 'Make sure your active cart & domain checker templates have ' . enom_pro_smarty_field( 'namespinner' ) . ' in them.</span>';
 	if ( isset( $_GET['view'] ) ) {
 		switch ( $_GET['view'] ) {
 			case 'pricing_import':
@@ -73,9 +73,9 @@ function enom_pro_config() {
 	$button           = '<span class="enom_pro_output"><a class="btn btn-info btn-sm" href="' . enom_pro::MODULE_LINK . '" target="_top">Go to @NAME@ &rarr;</a>';
 	$button .= $save_button_desc . '</span>';
 	$save_button_row      = array(
-		'FriendlyName' => "Save",
-		"Type"         => "null",
-		"Description"  => $save_button_desc
+		'FriendlyName' => 'Save',
+		'Type'         => 'null',
+		'Description'  => $save_button_desc,
 	);
 	$support_dept_options = enom_pro::getSupportDepartments();
 	$support_dept_string  = 'Disabled';

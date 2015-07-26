@@ -7,26 +7,31 @@ $query_format = "mysql --user=%s --password=%s -e '%s'";
 
 echo 'Resetting test database...' . PHP_EOL;
 $drop_query = 'drop database if exists `' . MYSQL_DB . '`';
-$drop_sh = sprintf($query_format, MYSQL_USER, MYSQL_PASS, $drop_query);
+$drop_sh    = sprintf( $query_format, MYSQL_USER, MYSQL_PASS, $drop_query );
 echo $drop_sh . PHP_EOL;
 passthru( $drop_sh );
 
 $create_query = 'create database `' . MYSQL_DB . '`';
-$create_sh = sprintf($query_format, MYSQL_USER, MYSQL_PASS, $create_query);
+$create_sh    = sprintf( $query_format, MYSQL_USER, MYSQL_PASS, $create_query );
 echo $create_sh . PHP_EOL;
 passthru( $create_sh );
 //Clean up
-unset($create_query, $drop_query, $drop_sh, $create_sh, $drop_query, $create_query);
+unset( $create_query, $drop_query, $drop_sh, $create_sh, $drop_query, $create_query );
 
 echo 'Importing whmcs_v6.sql' . PHP_EOL;
-$cwd = dirname(__FILE__);
-passthru( 'mysql --user=' . MYSQL_USER . ' --password=' . MYSQL_PASS . ' ' . MYSQL_DB . ' < '.$cwd.'/tests/files/whmcs_v6.sql' );
+$cwd = dirname( __FILE__ );
+passthru( 'mysql --user=' . MYSQL_USER . ' --password=' . MYSQL_PASS . ' ' . MYSQL_DB . ' < ' . $cwd . '/tests/files/whmcs_v6.sql' );
 echo 'Done. Database reset to known state' . PHP_EOL;
+
+if ( $argc > 2 ) {
+	//Short init to keep db_reset DRY
+	die;
+}
 
 $resp = mysql_connect( MYSQL_HOST, MYSQL_USER, MYSQL_PASS );
 mysql_select_db( MYSQL_DB );
-if (mysql_error($resp)) {
-	die(mysql_error($resp));
+if ( mysql_error( $resp ) ) {
+	die( mysql_error( $resp ) );
 }
 define( 'BOOTSTRAP', true );
 define( 'ROOTDIR', realpath( __DIR__ ) . '/src' );
