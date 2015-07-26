@@ -1,6 +1,9 @@
 <?php
 
 
+/**
+ * Class test_enom_pro
+ */
 class test_enom_pro extends PHPUnit_Framework_TestCase {
 
 	protected static $testData;
@@ -220,11 +223,15 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 */
 	function  test_get_imported_domains() {
 
-		$imported = $this->e->getDomainsWithClients( 100, 0, 'imported', true );
-		$domains  = enom_pro::whmcs_api( 'getclientsdomains', array() );
+		$this->create_client_order();
+		$domains = enom_pro::whmcs_api( 'getclientsdomains', array() );
+		if ( 0 == $domains['totalresults'] ) {
+			$this->markTestIncomplete( 'No domains in WHMCS to test from' );
+		}
 		$total    = 0;
+		$imported = $this->e->getDomainsWithClients( 100, 0, 'imported', true );
 		foreach ( $domains['domains']['domain'] as $domain ) {
-			if ( $domain['registrar'] == 'enom' && $domain['status'] == 'Active' ) {
+			if ( 'enom' == $domain['registrar'] && 'Active' == $domain['status'] ) {
 				$total ++;
 			}
 		}
@@ -1297,13 +1304,15 @@ TAG
 		}
 	}
 
-	// ** AR: create client and order for it for successful getClientIdByDomain() call
-	//        unfortunately I did not find a way to create product group and payment gateway
-	//        using API, so those must be created manually.
-	//	 TODO - we can either mock them in the database dump - see bootstrap.php
-	// or use a MySQL call to insert the two values (my preference, less fragile than having to re-dump an entire db)
-	//
-	//        The payment must be paypal and the product group must be id 1
+	//	 TODO - we can either mock them in the database dump - see bootstrap.php, or use a MySQL call to insert the two values (my preference, less fragile than having to re-dump an entire db)
+	/**
+	 * TODO write doc blocks
+	 *
+	 * @param array $settings
+	 *
+	 * @return array
+	 * @throws WHMCSException
+	 */
 	private function create_client_order( $settings = array() ) {
 
 		$gid           = "1";
@@ -1331,7 +1340,8 @@ TAG
 				'postcode'    => '12345',
 				'country'     => 'US',
 				'phonenumber' => '123-333-1212',
-				'password2'   => '1234'
+				'password2'   => '1234',
+				'noemail'     => true,
 			) );
 		$this->assertContains( 'success', $new_client );
 		$client_id          = $new_client['clientid'];
@@ -1341,19 +1351,7 @@ TAG
 			return $retVal;
 		}
 
-		$gatewayList = enom_pro::whmcs_api( 'getpaymentmethods', array() );
-		$gateway     = false;
-		if ( isset( $gatewayList['paymentmethods']['paymentmethod'] ) ) {
-			foreach ( $gatewayList['paymentmethods']['paymentmethod'] as $val ) {
-				if ( strcasecmp( $val['module'], $searchGateway ) == 0 ) {
-					$gateway = true;
-				}
-			}
-		}
-
-		if ( ! $gateway ) {
-			$this->fail( 'paypal must be added as an active payment gateway' );
-		}
+		$this->checkPaymentGateway( $searchGateway );
 
 		$productList = enom_pro::whmcs_api( 'getproducts',
 			array(
@@ -1410,9 +1408,9 @@ TAG
 
 		set_time_limit( 600 );
 		$compName = self::$testData['testCompany'];
-		$last_id = mysql_fetch_array(mysql_query('SELECT max(`id`) FROM `tblclients`'));
-		$last_id = reset($last_id);
-		$count = $num;
+		$last_id  = mysql_fetch_array( mysql_query( 'SELECT max(`id`) FROM `tblclients`' ) );
+		$last_id  = reset( $last_id );
+		$count    = $num;
 		while ( $count -- ) {
 			$email = sprintf( self::$testData['testEmail'], $last_id );
 			$data  = array(
@@ -1428,7 +1426,7 @@ TAG
 				'country'     => 'US',
 			);
 			$this->e->whmcs_api( 'addclient', $data );
-			$last_id++;
+			$last_id ++;
 		}
 
 	}
@@ -1516,5 +1514,30 @@ TAG
 		$file = $this->getTestMockPath() . $xml_filename;
 		$this->e->_load_xml( $file );
 	}
+
+	/**
+	 * @param $searchGateway
+	 *
+	 * @return mixed
+	 * @throws WHMCSException
+	 */
+	private function checkPaymentGateway( $searchGateway ) {
+
+		$gatewayList = enom_pro::whmcs_api( 'getpaymentmethods', array() );
+		$gateway     = false;
+		if ( isset( $gatewayList['paymentmethods']['paymentmethod'] ) ) {
+			foreach ( $gatewayList['paymentmethods']['paymentmethod'] as $val ) {
+				if ( strcasecmp( $val['module'], $searchGateway ) == 0 ) {
+					$gateway = true;
+				}
+			}
+		}
+
+		if ( ! $gateway ) {
+			$this->fail( "Please add {$searchGateway} as an active payment gateway" );
+		}
+
+		return $gateway;
+}
 
 }
