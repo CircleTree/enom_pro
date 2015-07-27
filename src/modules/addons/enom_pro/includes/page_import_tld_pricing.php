@@ -408,7 +408,8 @@ if ( $this->is_pricing_cached() ) : ?>
 		<?php endif; ?>
 		<button class="btn btn-danger btn-block stopPriceBatch">Cancel</button>
 	</div>
-	<script>
+	<!--suppress MagicNumberJS -->
+<script>
 		var bulkPricingAJAX, aborted = false;
 		jQuery(function ($) {
 			var $cancelButton = $(".stopPriceBatch"), $title = $(".loadingPricingTitle"), $loader = $(".enom_pro_loader");
