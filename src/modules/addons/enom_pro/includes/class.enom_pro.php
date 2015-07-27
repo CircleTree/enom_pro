@@ -569,6 +569,80 @@ class enom_pro {
 	}
 
 	/**
+	 * Saves TLDS for stateful importing
+	 *
+	 * @param array $tlds
+	 * @param bool  $merge should the current set be merged with $tlds? Defaults to true, used internally
+	 */
+	public function save_tlds( array $tlds = array(), $merge = true ) {
+
+		$tlds = array_map( 'strtolower', $tlds );
+		$tlds = array_map( 'trim', $tlds );
+		$tlds = array_map( array( __CLASS__, 'ltrim_dot' ), $tlds );
+		if ( $merge ) {
+			$tlds = array_merge( $tlds, $this->get_saved_tlds() );
+		}
+		$tlds = array_unique( $tlds );
+		$this->set_addon_setting( 'saved_tlds', array_values( $tlds ) );
+	}
+
+	/**
+	 * array_map callback for removing the . prefix from tlds
+	 *
+	 * @param $value
+	 *
+	 * @return string
+	 */
+	private static function ltrim_dot( $value ) {
+
+		return ltrim( $value, '.' );
+	}
+
+	/**
+	 * Gets saved TLDS
+	 * @return array
+	 */
+	public function get_saved_tlds() {
+
+		$got_saved_tlds = $this->get_addon_setting( 'saved_tlds' );
+		if ( empty( $got_saved_tlds ) ) {
+			$got_saved_tlds = array();
+		}
+
+		return $got_saved_tlds;
+	}
+
+	/**
+	 * Deletes saved TLDs
+	 * @param array $tlds
+	 */
+	public function delete_saved_tlds( array $tlds = array() ) {
+
+		$current = $this->get_saved_tlds();
+		if ( ! empty( $current ) ) {
+			foreach ( $tlds as $key => $deleted_tld ) {
+				$delete_key = array_search( $deleted_tld, $current );
+				if ( false !== $delete_key ) {
+					unset( $current[ $delete_key ] );
+				}
+			}
+			$this->save_tlds( $current, false );
+		}
+	}
+
+	/**
+	 * @param string $tld tld to check for
+	 *
+	 * @return bool
+	 */
+	public function is_tld_saved( $tld ) {
+
+		$tlds = $this->get_saved_tlds();
+
+		return in_array( $tld, $tlds );
+	}
+
+	/**
 	 * Gets domain pricing from eNom
 	 *
 	 * @param string $tld com, co.uk, etc. Does NOT include leading . (optional) defaults to .com
@@ -1770,7 +1844,7 @@ class enom_pro {
 			$this->fetchWHMCSDomains( count( $domains ) );
 		}
 		foreach ( $domains as $key => $domain ) {
-			$domain_name = $domain['sld'] . '.' . $domain['tld'];
+			$domain_name     = $domain['sld'] . '.' . $domain['tld'];
 			$domainIsInWHMCS = array_key_exists( $domain_name, $this->whmcsClientDomains );
 			if ( $show_only_imported ) {
 				//Only show imported domains
@@ -1790,7 +1864,7 @@ class enom_pro {
 			//Domain is in whmcs, and not filtered, add client meta
 			if ( $domainIsInWHMCS && isset( $return[ $key ] ) ) {
 				//If we get here, we can add the client details
-				$whmcs_domain               = $this->whmcsClientDomains[$domain_name];
+				$whmcs_domain               = $this->whmcsClientDomains[ $domain_name ];
 				$return[ $key ]['whmcs_id'] = $whmcs_domain['id'];
 
 				$return[ $key ]['client'] = self::whmcs_api( 'getclientsdetails',
@@ -2083,6 +2157,7 @@ class enom_pro {
 
 		return mysql_real_escape_string( $string );
 	}
+
 
 	/**
 	 * Query wrapper for handling errors
@@ -2777,7 +2852,7 @@ class enom_pro {
 				ENOM_PRO_VERSION,
 				PHP_VERSION,
 				$GLOBALS['CONFIG']['Version'],
-				str_replace('&amp;', '&', $_SERVER['REQUEST_URI'])
+				str_replace( '&amp;', '&', $_SERVER['REQUEST_URI'] )
 			),
 			$raw_text ) );
 	}

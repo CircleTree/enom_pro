@@ -223,15 +223,6 @@ try {
 				}
 			});
 		}
-		$('.tldAction').on('click', function() {
-			var $check = $(this).find('input');
-			if ($check.prop('checked')) {
-				$check.prop('checked', false);
-			} else {
-				$check.prop('checked', true);
-			}
-		});
-
 		$(".delete_tld").on('click', function () {
 			var $this = $(this);
 			$("[data-tld='" + $this.data('tld') + "']").val('-1.00').trigger('keyup');
@@ -494,10 +485,51 @@ try {
 					return false;
 				});
 			},
+			/**
+			 * @property
+			 */
+			pricingImportSaveTimeout : 0,
+			/**
+			 * @constant int SAVE_INTERVAL How long to wait after a key-press before sending result to server
+			 */
+			SAVE_INTERVAL : 500,
+			/**
+			 * @constant int SAVE_INTERVAL_CLICK How long to wait after a click before sending result to server
+			 */
+			SAVE_INTERVAL_CLICK : 750,
+			/**
+			 * TLD Pricing Import Page
+			 */
 			initPricingImport:    function () {
 				$('.dropdown-toggle').dropdown();
 				//TODO restore / hide based on localStorage
 				//				this.showBulkPricingTurboEditor();
+
+				$('.tldAction').on('click', function() {
+					var $check = $(this).closest('td').find('input');
+					if ($check.prop('checked')) {
+						$check.trigger('click');
+					} else {
+						$check.trigger('click');
+					}
+				});
+
+				$('.toggleAllTLDCheckboxes').on('click', function() {
+					var $toggler = $(this);
+					if ($toggler.data('checked')) {
+						//Last click was to check all
+						//This click will un-check all
+						$('.tldCheck:checked').trigger('click');
+						$toggler.data('checked', false);
+					} else {
+						//Last click was to un-check all
+						//This click will check all
+						$('.tldCheck:not(":checked")').trigger('click');
+						$toggler.data('checked', true);
+					}
+					return false;
+				});
+
 				this.ajaxLoadJS('jquery.tableHover.js').done(function () {
 					$("#enom_pro_pricing_table").tableHover({
 						colClass:   "hover",
@@ -506,14 +538,37 @@ try {
 				}).fail(function (xhr) {
 					console.error('Error loading JS:' + xhr.responseText);
 				});
+				this.ajaxLoadJS('jquery.ajaxq.js').done(function() {
+					$('.tldCheck').on('change', function () {
+						clearTimeout(enom_pro.pricingImportSaveTimeout);
+						$.ajaxq.abort('tldCheck');
+						enom_pro.pricingImportSaveTimeout = setTimeout(function() {
+							var  tldsCSV = '';//Store tlds in a CSV to save on our max_input_variables
+							$.each($('.tldCheck'), function(key, value) {
+								var $tldCheck = $(value),
+										checked = $tldCheck.prop('checked') ? '1' : '0';
+								tldsCSV += $tldCheck.prop('name') + ';' + checked + ',';
+							});
+							$.ajaxq('tldCheck', {
+								url:        enom_pro.adminurl,
+								global:     false,
+								data:       {
+									action: 'save_import_tlds',
+									tlds: tldsCSV
+								}
+							});
+						}, enom_pro.SAVE_INTERVAL_CLICK);
+					});
+				}).fail(function(xhr) {
+					console.error('Error loading JS:' + xhr.responseText);
+				});
 			},
-
+			/**
+			 * Domain import page
+			 */
 			initDomainImport:           function () {
 				this.ajaxLoadJS('jquery.ajaxq.js').done(function () {
 
-					/**
-					 * Domain import page
-					 */
 					var $importTableForm = $("#import_table_form"), whois_cache = Array, localStorage;
 					$importTableForm.on('ajaxComplete', function () {
 						$(".domain_whois").trigger('getwhois');
