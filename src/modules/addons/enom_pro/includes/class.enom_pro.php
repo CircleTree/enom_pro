@@ -2777,7 +2777,7 @@ class enom_pro {
 				ENOM_PRO_VERSION,
 				PHP_VERSION,
 				$GLOBALS['CONFIG']['Version'],
-				$_SERVER['REQUEST_URI']
+				str_replace('&amp;', '&', $_SERVER['REQUEST_URI'])
 			),
 			$raw_text ) );
 	}
