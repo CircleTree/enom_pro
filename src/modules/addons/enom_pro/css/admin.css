@@ -329,8 +329,8 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output .slideup.fixed {
   position: fixed;
   left: 45%;
-  left: calc(-100%);
   top: 0;
+  display: block;
   width: 300px;
   z-index: 10;
 }
