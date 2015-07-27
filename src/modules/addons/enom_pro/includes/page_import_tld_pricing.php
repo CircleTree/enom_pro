@@ -233,7 +233,7 @@ if ( $this->is_pricing_cached() ) : ?>
 
 								}
 								?>
-								<input type="checkbox" class="tldCheck" name="<?php echo $tld ?>" />
+								<input type="checkbox" class="tldCheck" name="<?php echo $tld ?>"<?php echo $this->is_tld_saved($tld) ? ' checked' : ''; ?> />
 
 								<div class="<?php echo implode( ' ',
 									$action_classes ); ?>" <?php if ( $thisTLDError ) : ?> title="Error from eNom API" data-content="<?php echo $thisTLDError ?>" <?php endif; ?>>

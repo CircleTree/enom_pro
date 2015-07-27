@@ -141,15 +141,11 @@ try {
 						preferredMarkup      = parseFloat($("#preferredPercentMarkup").val()) || 0,
 						preferredWholeMarkup = parseFloat($("#preferredWholeMarkup").val()) || 0,
 						doRound              = (round != -1),
-						newPriceDouble       = 0;
-				if ($('#overWriteWHMCS').prop('checked')) {
-					var $elems = jQuery('[data-price]');
-				} else {
-					var $elems = jQuery('[data-price]').not('[data-whmcs]');
-				}
-				$elems.each(function () {
+						newPriceDouble       = 0,
+						$elems = enom_pro.getTLDInputSet();
+				$.each($elems, function (k, value) {
 					//If min. is lt preferred, use preferred, else use minimum
-					var $elem             = $(this),
+					var $elem             = $(value),
 							price             = parseFloat($elem.data('price')),
 							newMinPrice       = price * ( 1 + (markup / 100)) + wholeMarkup,
 							newPreferredPrice = price * ( 1 + (preferredMarkup / 100)) + preferredWholeMarkup,
@@ -451,12 +447,12 @@ try {
 			return false;
 		});
 		enom_pro = $.extend(enom_pro, {
-			upgradeSessionKey:    'dismissEnomProUpgrade',
-			$betaLog:             jQuery("#enom_pro_beta_changelog"),
-			$upgradeAlert:        jQuery('#upgradeAlert'),
-			$upgradeAlertSidebar: $(".upgradeAlertHidden"),
-			loadingString:        "<div class=\"enom_pro_loader\"></div>",
-			init:                 function () {
+			upgradeSessionKey:          'dismissEnomProUpgrade',
+			$betaLog:                   jQuery("#enom_pro_beta_changelog"),
+			$upgradeAlert:              jQuery('#upgradeAlert'),
+			$upgradeAlertSidebar:       $(".upgradeAlertHidden"),
+			loadingString:              "<div class=\"enom_pro_loader\"></div>",
+			init:                       function () {
 				this.initAjaxHandler();
 				if (this.isUpgradeAlertHidden()) {
 					this.hideUpgradeAlert();
@@ -469,7 +465,7 @@ try {
 					enom_pro.hideUpgradeAlert();
 				});
 			},
-			initAjaxHandler:      function () {
+			initAjaxHandler:            function () {
 				$(".ep_ajax").on('click', function () {
 					var $elem = $(this), origTitle = $elem.text();
 					$elem.addClass('disabled').text('Please wait...');
@@ -486,26 +482,41 @@ try {
 				});
 			},
 			/**
+			 * Filters the TLD pricing import view result set
+			 * @returns {Array}
+			 */
+			getTLDInputSet:             function () {
+				var checks   = $(".tldCheck").filter(':checked'),
+						inputSet = [];
+				$.each(checks, function (k, v) {
+					var tld     = $(v).prop('name'),
+							filter = $('#overWriteWHMCS').prop('checked') ? ', [data-whmcs]' : '',
+							$inputs = $("[data-tld='" + tld + "']").filter(':not(a, .btn' + filter + ')');
+					inputSet = $.merge(inputSet, $inputs);
+				});
+				return inputSet;
+			},
+			/**
 			 * @property
 			 */
-			pricingImportSaveTimeout : 0,
+			pricingImportSaveTimeout:   0,
 			/**
 			 * @constant int SAVE_INTERVAL How long to wait after a key-press before sending result to server
 			 */
-			SAVE_INTERVAL : 500,
+			SAVE_INTERVAL:              500,
 			/**
 			 * @constant int SAVE_INTERVAL_CLICK How long to wait after a click before sending result to server
 			 */
-			SAVE_INTERVAL_CLICK : 750,
+			SAVE_INTERVAL_CLICK:        750,
 			/**
 			 * TLD Pricing Import Page
 			 */
-			initPricingImport:    function () {
+			initPricingImport:          function () {
 				$('.dropdown-toggle').dropdown();
 				//TODO restore / hide based on localStorage
 				//				this.showBulkPricingTurboEditor();
 
-				$('.tldAction').on('click', function() {
+				$('.tldAction').on('click', function () {
 					var $check = $(this).closest('td').find('input');
 					if ($check.prop('checked')) {
 						$check.trigger('click');
@@ -514,7 +525,7 @@ try {
 					}
 				});
 
-				$('.toggleAllTLDCheckboxes').on('click', function() {
+				$('.toggleAllTLDCheckboxes').on('click', function () {
 					var $toggler = $(this);
 					if ($toggler.data('checked')) {
 						//Last click was to check all
@@ -538,28 +549,28 @@ try {
 				}).fail(function (xhr) {
 					console.error('Error loading JS:' + xhr.responseText);
 				});
-				this.ajaxLoadJS('jquery.ajaxq.js').done(function() {
+				this.ajaxLoadJS('jquery.ajaxq.js').done(function () {
 					$('.tldCheck').on('change', function () {
 						clearTimeout(enom_pro.pricingImportSaveTimeout);
 						$.ajaxq.abort('tldCheck');
-						enom_pro.pricingImportSaveTimeout = setTimeout(function() {
-							var  tldsCSV = '';//Store tlds in a CSV to save on our max_input_variables
-							$.each($('.tldCheck'), function(key, value) {
+						enom_pro.pricingImportSaveTimeout = setTimeout(function () {
+							var tldsCSV = '';//Store tlds in a CSV to save on our max_input_variables
+							$.each($('.tldCheck'), function (key, value) {
 								var $tldCheck = $(value),
-										checked = $tldCheck.prop('checked') ? '1' : '0';
+										checked   = $tldCheck.prop('checked') ? '1' : '0';
 								tldsCSV += $tldCheck.prop('name') + ';' + checked + ',';
 							});
 							$.ajaxq('tldCheck', {
-								url:        enom_pro.adminurl,
-								global:     false,
-								data:       {
+								url:    enom_pro.adminurl,
+								global: false,
+								data:   {
 									action: 'save_import_tlds',
-									tlds: tldsCSV
+									tlds:   tldsCSV
 								}
 							});
 						}, enom_pro.SAVE_INTERVAL_CLICK);
 					});
-				}).fail(function(xhr) {
+				}).fail(function (xhr) {
 					console.error('Error loading JS:' + xhr.responseText);
 				});
 			},
