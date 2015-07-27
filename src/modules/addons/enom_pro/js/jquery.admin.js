@@ -199,9 +199,7 @@ try {
 		var $years     = $("[data-year=1]");
 		if ($years.length > 0) {
 			$years.on('keyup', function () {
-				var $t             = $(this), tld = $t.data('tld'), $thisTrigger = $(".toggle_tld[data-tld='" +
-						tld +
-						"']"), $action = $('.tldAction[data-tld="' + tld + '"');
+				var $t             = $(this), tld = $t.data('tld'), $thisTrigger = $(".toggle_tld[data-tld='" + tld + "']"), $action = $('.tldAction[data-tld="' + tld + '"]');
 				if ($t.val() == "") {
 					$thisTrigger.html('Import eNom Pricing');
 					var btnClass = 'btn-default';
