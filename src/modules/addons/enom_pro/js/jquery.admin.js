@@ -68,7 +68,7 @@ try {
 				$dialog.dialog('option', 'title', title);
 			}
 			$dialog.dialog('open');
-			var href  = $this.attr('href');
+			var href = $this.attr('href');
 			if ($this.data('target')) {
 				href = $this.data('target');
 			}
@@ -135,12 +135,13 @@ try {
 					data: $.extend({}, data, {action: 'save_tld_markup'})
 				})
 			} else if (e.type == 'recalculate') {
-				var markup                      = parseFloat($("#percentMarkup").val()) ||
-								0, wholeMarkup          = parseFloat($("#wholeMarkup").val()) ||
-								0, round                = parseFloat($("#roundTo").val()) ||
-								false, preferredMarkup  = parseFloat($("#preferredPercentMarkup").val()) ||
-								0, preferredWholeMarkup = parseFloat($("#preferredWholeMarkup").val()) || 0, doRound = (round != -1),
-						newPriceDouble              = 0.00;
+				var markup               = parseFloat($("#percentMarkup").val()) || 0,
+						wholeMarkup          = parseFloat($("#wholeMarkup").val()) || 0,
+						round                = parseFloat($("#roundTo").val()) || false,
+						preferredMarkup      = parseFloat($("#preferredPercentMarkup").val()) || 0,
+						preferredWholeMarkup = parseFloat($("#preferredWholeMarkup").val()) || 0,
+						doRound              = (round != -1),
+						newPriceDouble       = 0;
 				if ($('#overWriteWHMCS').prop('checked')) {
 					var $elems = jQuery('[data-price]');
 				} else {
@@ -148,13 +149,16 @@ try {
 				}
 				$elems.each(function () {
 					//If min. is lt preferred, use preferred, else use minimum
-					var $elem             = $(this), price = parseFloat($elem.data('price'));
-					var newMinPrice       = price * ( 1 + (markup / 100)) + wholeMarkup;
-					var newPreferredPrice = price * ( 1 + (preferredMarkup / 100)) + preferredWholeMarkup;
-					var newMinPriceDouble = (newMinPrice < newPreferredPrice) ? newPreferredPrice : newMinPrice;
-					newMinPriceDouble     = Math.ceil(newMinPriceDouble * 100) / 100;
-					var newPriceString    = newMinPriceDouble.toFixed(2);
-					var priceArray        = newPriceString.split("."), thisDollarAmount = parseFloat(priceArray[0]), thisCentAmount = parseFloat(priceArray[1]);
+					var $elem             = $(this),
+							price             = parseFloat($elem.data('price')),
+							newMinPrice       = price * ( 1 + (markup / 100)) + wholeMarkup,
+							newPreferredPrice = price * ( 1 + (preferredMarkup / 100)) + preferredWholeMarkup,
+							newMinPriceDouble = (newMinPrice < newPreferredPrice) ? newPreferredPrice : newMinPrice;
+					newMinPriceDouble = Math.ceil(newMinPriceDouble * 100) / 100;
+					var newPriceString   = newMinPriceDouble.toFixed(2),
+							priceArray       = newPriceString.split("."),
+							thisDollarAmount = parseFloat(priceArray[0]),
+							thisCentAmount   = parseFloat(priceArray[1]);
 					//Is Rounding enabled?
 					if (doRound) {
 						if (thisCentAmount >= round) {
@@ -179,11 +183,12 @@ try {
 			return false;
 		});
 		$(".toggle_tld").on('click', function () {
-			var $this                         = $(this), tld = $this.data('tld'), $input = $("[data-tld='" +
-					tld +
-					"'][data-year=1]"), first_val = $input.val();
+			var $this     = $(this),
+					tld       = $this.data('tld'),
+					$input    = $("[data-tld='" + tld + "'][data-year=1]"),
+					first_val = $input.val();
 			if ("" == first_val || " " == first_val) {
-				//Reset
+				//Reset to defaul
 				$.each($("[data-tld='" + tld + "']"), function (k, v) {
 					$(v).val($(v).data('price'));
 				});
@@ -196,10 +201,13 @@ try {
 			$input.trigger('keyup');//Trigger our button handler
 			return false;
 		});
-		var $years     = $("[data-year=1]");
+		var $years = $("[data-year=1]");
 		if ($years.length > 0) {
 			$years.on('keyup', function () {
-				var $t             = $(this), tld = $t.data('tld'), $thisTrigger = $(".toggle_tld[data-tld='" + tld + "']"), $action = $('.tldAction[data-tld="' + tld + '"]');
+				var $t           = $(this),
+						tld          = $t.data('tld'),
+						$thisTrigger = $(".toggle_tld[data-tld='" + tld + "']"),
+						$action      = $('.tldAction[data-tld="' + tld + '"]');
 				if ($t.val() == "") {
 					$thisTrigger.html('Import eNom Pricing');
 					var btnClass = 'btn-default';
@@ -215,6 +223,9 @@ try {
 				}
 			});
 		}
+		$('.tldAction').on('click', function() {
+			$(this).find('input').prop('checked', true);
+		});
 
 		$(".delete_tld").on('click', function () {
 			var $this = $(this);
@@ -236,7 +247,7 @@ try {
 		$("#enom_pro_pricing_import").on('submit', function () {
 			$("input", '#enom_pro_pricing_import').each(function (k, v) {
 				var val = $(v).val();
-				if (val == '0.00' || val == "" || parseInt(val) == 0) {
+				if (val == '0.00' || val == "" || parseInt(val) === 0) {
 					$(v).removeAttr('value').removeAttr('name');
 				}
 			});
@@ -258,8 +269,8 @@ try {
 			container: 'body',
 			placement: 'left'
 		}).closest('.alert').on('close.bs.alert', function () {
-			var $alert    = $(this).find('[data-alert]');
-			var alertID   = $alert.data('alert');
+			var $alert = $(this).find('[data-alert]');
+			var alertID = $alert.data('alert');
 			$alert.tooltip('hide');
 			var alertData = {
 				action: 'dismiss_alert',
@@ -273,7 +284,6 @@ try {
 				}
 			});
 		});
-
 
 		var slide_time = $(".slideup").data('timeout');
 		if (!slide_time) {
@@ -382,7 +392,7 @@ try {
 			});
 			return false;
 		}).on('click', '.load_more', function () {
-			var button  = $(this), row = button.closest('tr'), loader = button.closest('td').find('.enom_pro_loader');
+			var button = $(this), row = button.closest('tr'), loader = button.closest('td').find('.enom_pro_loader');
 			loader.removeClass('hidden');
 			var ajaxUrl = $(this).attr('href');
 			$.ajax({
@@ -409,15 +419,15 @@ try {
 			$.getJSON("http://www.telize.com/jsonip?callback=?", function (json) {
 				/** @namespace json.ip */
 				$(".doIPFetch").html('<input value="' +
-						json.ip +
-						'" onclick="this.select();"/>').removeClass('enom_pro_loader');
+														 json.ip +
+														 '" onclick="this.select();"/>').removeClass('enom_pro_loader');
 			});
 		}
 		$(".ep_sortable").sortable({
 			update: function (e, ui) {
 				var $loader = $(".enom_pro_loader");
 				$loader.removeClass('hidden');
-				var sorted  = $(this).sortable('toArray');
+				var sorted = $(this).sortable('toArray');
 				if (sortTldXHR) {
 					sortTldXHR.abort();
 				}
@@ -438,13 +448,13 @@ try {
 			var $this = $(this), filepath = $this.data('path'), size = filepath.length + 7;
 			$this.hide();
 			$this.after('<input type="text" name="file[]" onclick="this.select();" size="' +
-					size +
-					'" value="' +
-					filepath +
-					'" />');
+									size +
+									'" value="' +
+									filepath +
+									'" />');
 			return false;
 		});
-		enom_pro     = $.extend(enom_pro, {
+		enom_pro = $.extend(enom_pro, {
 			upgradeSessionKey:    'dismissEnomProUpgrade',
 			$betaLog:             jQuery("#enom_pro_beta_changelog"),
 			$upgradeAlert:        jQuery('#upgradeAlert'),
@@ -499,7 +509,7 @@ try {
 					/**
 					 * Domain import page
 					 */
-					var $importTableForm  = $("#import_table_form"), whois_cache = Array, localStorage;
+					var $importTableForm = $("#import_table_form"), whois_cache = Array, localStorage;
 					$importTableForm.on('ajaxComplete', function () {
 						$(".domain_whois").trigger('getwhois');
 					});
@@ -550,12 +560,12 @@ try {
 						return false;
 					});
 					$importTableForm.on('getwhois', ".domain_whois", function () {
-						var $target     = $(this), $loader = $target.find('.enom_pro_loader');
+						var $target = $(this), $loader = $target.find('.enom_pro_loader');
 						var domain_name = $(this).data('domain');
-						var data        = false;
+						var data = false;
 						if (localStorage && localStorage.getItem(domain_name)) {
 							var string = localStorage.getItem(domain_name);
-							data       = JSON.parse(string);
+							data = JSON.parse(string);
 						} else if (whois_cache[domain_name]) {
 							data = whois_cache[domain_name];
 						}
@@ -618,8 +628,8 @@ try {
 
 						$("#local_storage").on('refresh', function () {
 							$(this).html('<a class="btn btn-info btn-xs" href="#">' +
-									getLabel() +
-									'<span class="enom-pro-icon enom-pro-icon-trash"></span></a>');
+													 getLabel() +
+													 '<span class="enom-pro-icon enom-pro-icon-trash"></span></a>');
 						}).on('click', '.btn', function () {
 							localStorage.clear();
 							$(this).find('a').html(getLabel());
@@ -635,19 +645,19 @@ try {
 							$alert.find('.create_order').data('email', data.email);
 						}
 						var $response = $target.find('.response');
-						var label     = data.error || ('Found: ' + data.email);
+						var label = data.error || ('Found: ' + data.email);
 						$response.html(label);
 						if (!data.error) {
 							$alert.removeClass('alert-danger').addClass('alert-warning');
 							$alert.find('.create_order').removeClass('btn-primary').addClass('btn-success');
 						} else {
 							$('<button class="btn btn-danger"><span class="enom-pro-icon enom-pro-icon-warning"></span> Try Again?</button>').on('click',
-									function () {
-										if (localStorage) {
-											localStorage.removeItem($target.data('domain'));
-										}
-										$(this).addClass('disabled');
-									}).appendTo($response);
+																																																																	 function () {
+																																																																		 if (localStorage) {
+																																																																			 localStorage.removeItem($target.data('domain'));
+																																																																		 }
+																																																																		 $(this).addClass('disabled');
+																																																																	 }).appendTo($response);
 						}
 						$target.find('.enom_pro_loader').addClass('hidden');
 					}
@@ -656,8 +666,8 @@ try {
 					$process.hide();
 					//Create Order
 					$importTableForm.on('click', 'a.create_order', function () {
-						var domain_name   = $(this).data('domain');
-						last_domain       = domain_name;
+						var domain_name = $(this).data('domain');
+						last_domain = domain_name;
 						$("#import_next_button").hide();
 						$("#domain_field").add('#domain_field2').val(domain_name);
 						$("#create_order_dialog").dialog('open');
@@ -881,7 +891,7 @@ try {
 											encodeURIComponent("http://mycircletree.com/client-area/knowledgebaserss.php?id=" + help_id),
 						dataType: "json",
 						success:  function (data) {
-							var str       = "", title;
+							var str = "", title;
 							$.each(data.responseData.feed.entries, function (k, entry) {
 								title = entry.title;
 								str += "<div class=\"content\" >" + entry.content + "</div>";
@@ -1016,7 +1026,7 @@ try {
 							clearTimeout(searchTimeout);
 						}
 						searchTimeout = setTimeout(enom_pro.loadHelpIndex, 500);
-						oldSearch     = newSearch;
+						oldSearch = newSearch;
 					} else if ($searchField.val() == "") {
 						//Restore defaults
 						$clearSearchButton.addClass('hidden');
@@ -1112,9 +1122,9 @@ try {
 			 * @returns {string}
 			 */
 			getParameterByName:         function (name, url) {
-				name        = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-				var regexS  = "[\\?&]" + name + "=([^&#]*)";
-				var regex   = new RegExp(regexS);
+				name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+				var regexS = "[\\?&]" + name + "=([^&#]*)";
+				var regex = new RegExp(regexS);
 				var results = regex.exec(url);
 				if (results === null) {
 					return "";

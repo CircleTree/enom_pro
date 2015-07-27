@@ -12,8 +12,7 @@ if ( $this->is_pricing_cached() ) : ?>
 	<div id="enom_pro_pricing_import_page">
 		<?php $allDomainsPricing = $this->getAllDomainsPricing(); ?>
 		<?php $per_page = enom_pro::get_addon_setting( 'pricing_per_page' ); ?>
-		<?php if ( isset( $_GET['cleared'] ) || isset( $_GET['new'] ) || isset( $_GET['updated'] ) || isset( $_GET['deleted'] ) || isset( $_GET['exchange'] ) || isset( $_GET['nochange'] )
-		) :
+		<?php if ( isset( $_GET['cleared'] ) || isset( $_GET['new'] ) || isset( $_GET['updated'] ) || isset( $_GET['deleted'] ) || isset( $_GET['exchange'] ) || isset( $_GET['nochange'] ) ) :
 			?>
 			<div class="slideup fixed" data-timeout="3">
 				<?php if ( isset( $_GET['cleared'] ) ) : ?>
@@ -223,30 +222,30 @@ if ( $this->is_pricing_cached() ) : ?>
 						<tr>
 							<td>
 								<?php
-								$btn_classes  = array();
-								$thisTLDError = false;
+								$btn_classes      = $action_classes = array();
+								$action_classes[] = 'btn-group';
+								$action_classes[] = 'tldActions';
+								$thisTLDError     = false;
 								if ( isset( $domainPriceData['error'] ) ) {
-									$thisTLDError  = $domainPriceData['error'];
-									$btn_classes[] = 'btn-warning';
-									$btn_classes[] = 'disabled';
+									$thisTLDError     = $domainPriceData['error'];
+									$btn_classes[]    = 'btn-warning';
+									$btn_classes[]    = 'disabled';
+									$action_classes[] = 'ep_pop';
+
 								} else {
 									$btn_classes[] = $isInWHMCS ? 'btn-success' : 'btn-default';
 
 								}
 								?>
-						<div class="btn-group tldActions
-									<?php if ( $thisTLDError ) : ?>
-							ep_pop"
-										title="Error from eNom API"
-										data-content="<?php echo $thisTLDError ?>"
-							<?php else: ?>
-								"
-							<?php endif;?>
-							>
-							<div class="btn tldAction dropdown-toggle <?php echo implode(" ", $btn_classes) ?>" data-tld="<?php echo $tld ?>"<?php if ($isInWHMCS) : ?> data-whmcs="true"<?php endif; ?> data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<?php echo $tld; ?>
-								<span class="caret"></span>
-					        </div>
+								<div class="<?php echo implode( ' ', $action_classes ); ?>" <?php if ( $thisTLDError ) : ?> title="Error from eNom API" data-content="<?php echo $thisTLDError ?>" <?php endif; ?>>
+									<div class="btn tldAction <?php echo implode( " ",$btn_classes ) ?>" data-tld="<?php echo $tld ?>"<?php if ( $isInWHMCS ) : ?> data-whmcs="true"<?php endif; ?> data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<input type="checkbox" name="tlds[<?php echo $tld ?>]" />
+										<?php echo $tld; ?>
+									</div>
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<span class="caret"></span>
+										<span class="sr-only">Toggle Dropdown</span>
+									</button>
 									<ul class="dropdown-menu">
 										<?php if ( $isInWHMCS ) : ?>
 											<li>
@@ -258,27 +257,27 @@ if ( $this->is_pricing_cached() ) : ?>
 											</li>
 											<li>
 												<a href="#"
-												       data-tld="<?php echo $tld ?>"
-												       class="delete_tld">
-														Delete Pricing from WHMCS
+												   data-tld="<?php echo $tld ?>"
+												   class="delete_tld">
+													Delete Pricing from WHMCS
 												</a>
 											</li>
 											<li class="divider"></li>
-										<?php endif; ?>
+										<?php endif; //TODO remove this? ?>
 										<li>
 											<a href="#"
 											   data-tld="<?php echo $tld ?>"
 											   class="toggle_tld">
-											   Import eNom Pricing
-										   </a>
+												Import eNom Pricing
+											</a>
 										</li>
 										<li>
 											<a href="#"
-										       data-tld="<?php echo $tld ?>"
-										       class="mult_row">
-										        Multiply 1-year price for Row
-									        </a>
-								        </li>
+											   data-tld="<?php echo $tld ?>"
+											   class="mult_row">
+												Multiply 1-year price for Row
+											</a>
+										</li>
 									</ul>
 								</div>
 							</td>
@@ -300,7 +299,7 @@ if ( $this->is_pricing_cached() ) : ?>
 								$class               = '';
 								if ( $whmcs_price && $whmcs_price > 0 ) {
 									$class = 'has-success';
-								} elseif ( $whmcs_price && $whmcs_price == 0 ) {
+								} elseif ( $whmcs_price && 0 == $whmcs_price ) {
 									$class = 'has-warning';
 								}
 								if ( $notEnabledForPeriod ) {
@@ -409,7 +408,7 @@ if ( $this->is_pricing_cached() ) : ?>
 		<button class="btn btn-danger btn-block stopPriceBatch">Cancel</button>
 	</div>
 	<!--suppress MagicNumberJS -->
-<script>
+	<script>
 		var bulkPricingAJAX, aborted = false;
 		jQuery(function ($) {
 			var $cancelButton = $(".stopPriceBatch"), $title = $(".loadingPricingTitle"), $loader = $(".enom_pro_loader");
@@ -419,7 +418,7 @@ if ( $this->is_pricing_cached() ) : ?>
 					return false;
 				}
 				bulkPricingAJAX = $.ajax({
-					url    : '<?php echo enom_pro::MODULE_LINK; ?>&action=get_pricing_data',
+					url:     '<?php echo enom_pro::MODULE_LINK; ?>&action=get_pricing_data',
 					success: function (data) {
 						if (data == 'success') {
 							$title.html('Import Complete. Reloading...');
@@ -433,11 +432,13 @@ if ( $this->is_pricing_cached() ) : ?>
 							/** @namespace data.total */
 							var percent = Math.round((data.loaded / data.total) * 100);
 							$loader.hide();
-							$(".progress-bar").css('width', percent + '%').html(percent + "% Complete").attr('aria-valuenow', percent);
+							$(".progress-bar").css('width', percent + '%').html(percent +
+							                                                    "% Complete").attr('aria-valuenow',
+							                                                                       percent);
 							$(".loadedTLD").html('Loaded pricing for: ' + data.tld);
 						}
 					},
-					error  : function (xhr) {
+					error:   function (xhr) {
 						$title.removeClass('alert-warning');
 						if (xhr.statusText == 'abort') {
 							$title.html('Process Cancelled').addClass('alert-success');
@@ -455,7 +456,9 @@ if ( $this->is_pricing_cached() ) : ?>
 
 			doPriceBatch();
 			$cancelButton.on('click', function () {
-				var ans = confirm('This will abort fetching the current pricing from eNom. \n\n' + 'You can restart the process later at the same point by simply coming back to this page.', "Are you sure?")
+				var ans = confirm('This will abort fetching the current pricing from eNom. \n\n' +
+				                  'You can restart the process later at the same point by simply coming back to this page.',
+				                  "Are you sure?")
 				if (ans) {
 					aborted = true;
 					bulkPricingAJAX.abort();
