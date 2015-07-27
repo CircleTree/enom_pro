@@ -1,5 +1,6 @@
 <?php
 require_once ENOM_PRO_INCLUDES . 'pager.php';
+$pricing_years_array = array_keys( array_fill( 1, enom_pro::get_addon_setting( 'pricing_years' ), '' ) );
 /**
  * @var $this enom_pro
  */
@@ -155,9 +156,7 @@ if ( $this->is_pricing_cached() ) : ?>
 				$allDomainsPricing = $allDomainsSearched;
 			}
 		}
-		$domains = array_slice( $allDomainsPricing,
-			$offset,
-			$per_page ); ?>
+		$domains = array_slice( $allDomainsPricing, $offset, $per_page ); ?>
 		<div id="bulkRightWrap">
 
 			<form method="GET" id="tldSearchForm">
@@ -165,7 +164,7 @@ if ( $this->is_pricing_cached() ) : ?>
 				<input type="hidden" name="module" value="enom_pro" />
 				<input type="hidden" name="view" value="pricing_import" />
 
-				<div class="input-group <?php isset( $_GET['s'] ) ? ' has-success' : ''; ?>">
+				<div class="input-group <?php echo isset( $_GET['s'] ) ? ' has-success' : ''; ?>">
 					<p class="input-group-addon">.</p>
 					<input type="search" name="s" value="<?php echo isset( $_GET['s'] ) ? htmlentities( strip_tags( $_GET['s'] ) ) : ''; ?>" class="form-control" placeholder="tld" />
 			<span class="input-group-btn">
@@ -178,7 +177,7 @@ if ( $this->is_pricing_cached() ) : ?>
 				<?php if ( isset( $_GET['s'] ) ) : ?>
 					<?php if ( empty( $allDomainsSearched ) ): ?>
 					<div class="alert alert-warning"><h4>No search results. Displaying all TLDs.</h4></div>
-				<?php else: ?>
+				<?php else : ?>
 					<div class="alert alert-success">Found <?php echo count( $allDomainsSearched ) ?> search results</div>
 				<?php endif; ?>
 					<script>
@@ -200,13 +199,10 @@ if ( $this->is_pricing_cached() ) : ?>
 				       id="enom_pro_pricing_table">
 					<tr>
 						<th>
-							Actions
+							<button class="btn btn-default btn-xs ep_tt toggleAllTLDCheckboxes" title="Toggle All"><span class="enom-pro-icon enom-pro-icon-checkmark"></span> </button>
+							 Actions
 						</th>
-						<?php foreach (
-							array_keys( array_fill( 1,
-								enom_pro::get_addon_setting( 'pricing_years' ),
-								'' ) ) as $key => $year
-						) : ?>
+						<?php foreach ( $pricing_years_array as $key => $year ) : ?>
 							<th colspan="1">
 								<?php echo $year; ?> Year<?php if ( $year > 1 ): ?>s<?php endif; ?>
 							</th>
@@ -237,9 +233,12 @@ if ( $this->is_pricing_cached() ) : ?>
 
 								}
 								?>
-								<div class="<?php echo implode( ' ', $action_classes ); ?>" <?php if ( $thisTLDError ) : ?> title="Error from eNom API" data-content="<?php echo $thisTLDError ?>" <?php endif; ?>>
-									<div class="btn tldAction <?php echo implode( " ",$btn_classes ) ?>" data-tld="<?php echo $tld ?>"<?php if ( $isInWHMCS ) : ?> data-whmcs="true"<?php endif; ?> data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<input type="checkbox" name="tlds[<?php echo $tld ?>]" />
+								<input type="checkbox" class="tldCheck" name="<?php echo $tld ?>" />
+
+								<div class="<?php echo implode( ' ',
+									$action_classes ); ?>" <?php if ( $thisTLDError ) : ?> title="Error from eNom API" data-content="<?php echo $thisTLDError ?>" <?php endif; ?>>
+									<div class="btn tldAction <?php echo implode( " ",
+										$btn_classes ) ?>" data-tld="<?php echo $tld ?>"<?php if ( $isInWHMCS ) : ?> data-whmcs="true"<?php endif; ?> data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										.<?php echo $tld; ?>
 									</div>
 									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -263,7 +262,8 @@ if ( $this->is_pricing_cached() ) : ?>
 												</a>
 											</li>
 											<li class="divider"></li>
-										<?php endif; //TODO remove this? ?>
+										<?php endif; //TODO remove this?
+										?>
 										<li>
 											<a href="#"
 											   data-tld="<?php echo $tld ?>"
@@ -282,9 +282,7 @@ if ( $this->is_pricing_cached() ) : ?>
 								</div>
 							</td>
 							<?php foreach (
-								array_keys( array_fill( 1,
-									enom_pro::get_addon_setting( 'pricing_years' ),
-									'' ) ) as $key => $year
+								$pricing_years_array as $key => $year
 							) : ?>
 								<?php
 								$rawEnomPrice        = number_format( ( $domainPriceData['price'] * $year ),
