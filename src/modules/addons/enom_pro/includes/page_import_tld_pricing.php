@@ -239,8 +239,8 @@ if ( $this->is_pricing_cached() ) : ?>
 								?>
 								<div class="<?php echo implode( ' ', $action_classes ); ?>" <?php if ( $thisTLDError ) : ?> title="Error from eNom API" data-content="<?php echo $thisTLDError ?>" <?php endif; ?>>
 									<div class="btn tldAction <?php echo implode( " ",$btn_classes ) ?>" data-tld="<?php echo $tld ?>"<?php if ( $isInWHMCS ) : ?> data-whmcs="true"<?php endif; ?> data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<input type="checkbox" name="tlds[<?php echo $tld ?>]" />
-										<?php echo $tld; ?>
+								<input type="checkbox" name="tlds[<?php echo $tld ?>]" />
+										.<?php echo $tld; ?>
 									</div>
 									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<span class="caret"></span>

@@ -224,7 +224,12 @@ try {
 			});
 		}
 		$('.tldAction').on('click', function() {
-			$(this).find('input').prop('checked', true);
+			var $check = $(this).find('input');
+			if ($check.prop('checked')) {
+				$check.prop('checked', false);
+			} else {
+				$check.prop('checked', true);
+			}
 		});
 
 		$(".delete_tld").on('click', function () {
