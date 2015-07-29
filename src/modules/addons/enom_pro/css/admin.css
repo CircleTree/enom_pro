@@ -251,9 +251,21 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output a.btn-danger,
 .enom_pro_output a.btn-info,
 .enom_pro_output a.btn-inverse,
-.enom_pro_output a.btn-warning {
-  color: #FFFFFF;
+.enom_pro_output a.btn-warning,
+.enom_pro_output a.btn-primary:hover,
+.enom_pro_output a.btn-danger:hover,
+.enom_pro_output a.btn-info:hover,
+.enom_pro_output a.btn-inverse:hover,
+.enom_pro_output a.btn-warning:hover {
+  color: #EEEEEE;
   text-decoration: none;
+}
+.enom_pro_output a.btn-primary:active,
+.enom_pro_output a.btn-danger:active,
+.enom_pro_output a.btn-info:active,
+.enom_pro_output a.btn-inverse:active,
+.enom_pro_output a.btn-warning:active {
+  text-shadow: 1px 1px 2px #000;
 }
 .enom_pro_output #meta td {
   vertical-align: top;
