@@ -1,5 +1,4 @@
 try {
-
 	function precise_round(num, decimals) {
 		return Math.round(num * Math.pow(10, decimals)) / Math.pow(10, decimals);
 	}
@@ -142,7 +141,7 @@ try {
 						preferredWholeMarkup = parseFloat($("#preferredWholeMarkup").val()) || 0,
 						doRound              = (round != -1),
 						newPriceDouble       = 0,
-						$elems = enom_pro.getTLDInputSet();
+						$elems               = enom_pro.getTLDInputSet();
 				$.each($elems, function (k, value) {
 					//If min. is lt preferred, use preferred, else use minimum
 					var $elem             = $(value),
@@ -490,7 +489,7 @@ try {
 						inputSet = [];
 				$.each(checks, function (k, v) {
 					var tld     = $(v).prop('name'),
-							filter = $('#overWriteWHMCS').prop('checked') ? ', [data-whmcs]' : '',
+							filter  = $('#overWriteWHMCS').prop('checked') ? ', [data-whmcs]' : '',
 							$inputs = $("[data-tld='" + tld + "']").filter(':not(a, .btn' + filter + ')');
 					inputSet = $.merge(inputSet, $inputs);
 				});
@@ -508,13 +507,28 @@ try {
 			 * @constant int SAVE_INTERVAL_CLICK How long to wait after a click before sending result to server
 			 */
 			SAVE_INTERVAL_CLICK:        750,
+			openBulkPricingEditor: function () {
+				this.showBulkPricingTurboEditor();
+				this.setLocalStorage('openBulkPricingEditor', true);
+			},
+			closeBulkPricingEditor: function () {
+				this.hideBulkPricingTurboEditor();
+				this.setLocalStorage('openBulkPricingEditor', false);
+			},
 			/**
 			 * TLD Pricing Import Page
 			 */
 			initPricingImport:          function () {
+				this.getLocalStorage('openBulkPricingEditor') === 'true' ? this.showBulkPricingTurboEditor() : null;
+				$('.close-bulk-editor').on('click', function() {
+					enom_pro.closeBulkPricingEditor();
+				});
+				$('.open-bulk-editor').on('click', function() {
+					enom_pro.openBulkPricingEditor();
+					return false;
+				});
 				$('.dropdown-toggle').dropdown();
 				//TODO restore / hide based on localStorage
-				//				this.showBulkPricingTurboEditor();
 
 				$('.tldAction').on('click', function () {
 					var $check = $(this).closest('td').find('input');
@@ -1203,7 +1217,51 @@ try {
 					return decodeURIComponent(results[1].replace(/\+/g, " "));
 				}
 			},
+			/**
+			 * @constant
+			 */
+			LOCAL_STORAGE_PREFIX:       'enom_pro_',
+			/**
+			 * Gets an item from local storage if supported
+			 * @param key
+			 * @returns {boolean} false of failure
+			 */
+			getLocalStorage:            function (key) {
+				if (this.support.localStorage()) {
+					return window.localStorage.getItem(this.getLocalStorageKey(key));
+				}
+				return false;
+			},
+			/**
+			 *
+			 * @param key
+			 * @param value
+			 * @returns {boolean} true on set, false on fail
+			 */
+			setLocalStorage:            function (key, value) {
+				if (this.support.localStorage()) {
+					window.localStorage.setItem(this.getLocalStorageKey(key), value);
+					return true;
+				}
+				return false;
+			},
+			/**
+			 * @private
+			 * @param unPrefixedKey {string}
+			 * @returns {string}
+			 */
+			getLocalStorageKey:         function (unPrefixedKey) {
+				return this.LOCAL_STORAGE_PREFIX + unPrefixedKey;
+			},
+			/**
+			 * Simple feature detection
+			 * @property
+			 */
 			support:                    {
+				/**
+				 * @method localStorage
+				 * @returns {boolean}
+				 */
 				localStorage: function () {
 					try {
 						return 'localStorage' in window && window['localStorage'] !== null;
@@ -1212,10 +1270,10 @@ try {
 					}
 				}
 			}
+
 		});
 		enom_pro.init();
 	}); //end jQuery Ready
 } catch (err) {
 	alert('Enom PRO JS Error: ' + err);
-
 }

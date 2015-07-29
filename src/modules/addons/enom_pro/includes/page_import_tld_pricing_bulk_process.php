@@ -1,14 +1,8 @@
 <div class="well row" id="bulkLeftWrap">
-	<button type="button"
-	        class="close"
-	        data-dismiss="alert"
-	        aria-hidden="true">&uarr;</button>
-
 	<div class="col-lg-6" id="bulkPricingImportWrap">
+		<div class="enom-pro-icon enom-pro-icon-cancel-circle close-bulk-editor" title="Close Bulk Pricing editor"></div>
 
-		<h3>Bulk Import</h3>
-
-		<p>Import all TLDs on this page</p>
+		<h3 class="hidden-turbo"><span class="btn btn-primary btn-lg open-bulk-editor"><span class="enom-pro-icon enom-pro-icon-tag"></span> Bulk Import <span class="badge">New!</span></h3>
 
 		<form class="bulkImport form-inline"
 		      role="form"
@@ -17,7 +11,7 @@
 			<div class="form-group col-xs-12">
 				<h5 class="ep_pop" title="Minimum Markup" data-placement="auto top" data-content="Enter the minimum acceptable markup. Use this to cover credit card processing fees, for example.">Minimum Markup</h5>
 				<div class="input-group">
-					<label for="percentMarkup" class="input-group-addon">Markup</label>
+					<label for="percentMarkup" class="input-group-addon hidden-turbo">Markup</label>
 					<input type="number"
 					       min="0"
 					       step="0.01"
@@ -47,7 +41,7 @@
 			<div class="form-group col-xs-12">
 				<h5 class="ep_pop" title="Preferred Markup" data-placement="auto top" data-content="The Markup you'd like to make, while still being protected from under-selling.">Preferred Markup</h5>
 				<div class="input-group">
-					<label for="preferredPercentMarkup" class="input-group-addon">Markup</label>
+					<label for="preferredPercentMarkup" class="input-group-addon hidden-turbo">Markup</label>
 					<input type="number"
 					       min="0"
 					       max="500"
@@ -128,7 +122,7 @@
 		</form>
 	</div>
 	<div class="col-lg-6" id="bulkPricingMetaWrap">
-		<h3>Domain Pricing Meta</h3>
+		<h3 class="hidden-turbo">Domain Pricing Meta</h3>
 		Pricing for a total of <?php echo count( $this->getAllDomainsPricing() ) ?> TLDs.
 		<br/>
 		Pricing data last updated <?php echo $this->get_price_cache_date(); ?>

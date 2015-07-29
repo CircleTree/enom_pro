@@ -160,7 +160,7 @@ if ( $this->is_pricing_cached() ) : ?>
 		<div id="bulkRightWrap">
 
 			<form method="GET" id="tldSearchForm">
-				<h4>Search</h4>
+				<h4 class="hidden-turbo">Search</h4>
 				<input type="hidden" name="module" value="enom_pro" />
 				<input type="hidden" name="view" value="pricing_import" />
 

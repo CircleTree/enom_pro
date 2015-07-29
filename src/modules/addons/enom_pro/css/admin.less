@@ -538,6 +538,9 @@ Licensed from Orion IP Ventures, LLC
 			text-align: center;
 		}
 	}
+	.close-bulk-editor {
+		display: none;
+	}
 	//Bulk Pricing Turbo Editor
 	.fixedBulk {
 		#bulkRightWrap,
@@ -548,6 +551,16 @@ Licensed from Orion IP Ventures, LLC
 			height: 100%;
 			z-index: 3;
 			overflow-y: auto;
+			.hidden-turbo {
+				display: none;
+			}
+		}
+		.close-bulk-editor {
+			display: block;
+			position: absolute;
+			top: 2.5px;
+			right: 5px;
+			font-size: 24pt;
 		}
 		/* Left hand bulk update */
 		@leftWidth: 25%;
@@ -558,18 +571,10 @@ Licensed from Orion IP Ventures, LLC
 			margin: 0;
 			border-radius: 0;
 
-			.close {
-				display: none;
-			}
 			#bulkPricingImportWrap {
 				.col-xs-12 {
 					padding: 0;
 				}
-				label[for="percentMarkup"],
-				label[for="preferredPercentMarkup"] {
-					display: none;
-				}
-
 				.pull-right {
 					float: none !important;
 				}
@@ -577,9 +582,6 @@ Licensed from Orion IP Ventures, LLC
 			#bulkPricingImportWrap, #bulkPricingMetaWrap {
 				width: 100%;
 				margin: 0;
-				h3, p {
-					display: none;
-				}
 			}
 			#bulkPricingMetaWrap {
 				margin-top: 5px;

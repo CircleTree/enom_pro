@@ -483,6 +483,9 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output #enom_pro_pricing_import_page nav {
   text-align: center;
 }
+.enom_pro_output .close-bulk-editor {
+  display: none;
+}
 .enom_pro_output .fixedBulk {
   /* Left hand bulk update */
 }
@@ -495,21 +498,25 @@ Licensed from Orion IP Ventures, LLC
   z-index: 3;
   overflow-y: auto;
 }
+.enom_pro_output .fixedBulk #bulkRightWrap .hidden-turbo,
+.enom_pro_output .fixedBulk #bulkLeftWrap .hidden-turbo {
+  display: none;
+}
+.enom_pro_output .fixedBulk .close-bulk-editor {
+  display: block;
+  position: absolute;
+  top: 2.5px;
+  right: 5px;
+  font-size: 24pt;
+}
 .enom_pro_output .fixedBulk #bulkLeftWrap {
   padding: 3px;
   width: 25%;
   margin: 0;
   border-radius: 0;
 }
-.enom_pro_output .fixedBulk #bulkLeftWrap .close {
-  display: none;
-}
 .enom_pro_output .fixedBulk #bulkLeftWrap #bulkPricingImportWrap .col-xs-12 {
   padding: 0;
-}
-.enom_pro_output .fixedBulk #bulkLeftWrap #bulkPricingImportWrap label[for="percentMarkup"],
-.enom_pro_output .fixedBulk #bulkLeftWrap #bulkPricingImportWrap label[for="preferredPercentMarkup"] {
-  display: none;
 }
 .enom_pro_output .fixedBulk #bulkLeftWrap #bulkPricingImportWrap .pull-right {
   float: none !important;
@@ -518,12 +525,6 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output .fixedBulk #bulkLeftWrap #bulkPricingMetaWrap {
   width: 100%;
   margin: 0;
-}
-.enom_pro_output .fixedBulk #bulkLeftWrap #bulkPricingImportWrap h3,
-.enom_pro_output .fixedBulk #bulkLeftWrap #bulkPricingMetaWrap h3,
-.enom_pro_output .fixedBulk #bulkLeftWrap #bulkPricingImportWrap p,
-.enom_pro_output .fixedBulk #bulkLeftWrap #bulkPricingMetaWrap p {
-  display: none;
 }
 .enom_pro_output .fixedBulk #bulkLeftWrap #bulkPricingMetaWrap {
   margin-top: 5px;
