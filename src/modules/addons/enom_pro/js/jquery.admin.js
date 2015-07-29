@@ -516,6 +516,27 @@ try {
 				this.hideBulkPricingTurboEditor();
 				this.setLocalStorage('openBulkPricingEditor', false);
 			},
+			showBulkPricingTurboEditor: function () {
+				$(window).on('keyup.ep', function(e){
+					if (27 == e.keyCode) {
+						//Press ESC to close the editor
+						enom_pro.closeBulkPricingEditor();
+					}
+				});
+				$("#enom_pro_pricing_import_page").addClass("fixedBulk");
+				$('html, body').css({
+					'overflow': 'hidden',
+					'height':   '100%'
+				});
+			},
+			hideBulkPricingTurboEditor: function () {
+				$(window).off('keyup.ep');//remove ESC to close the editor
+				$("#enom_pro_pricing_import_page").removeClass("fixedBulk");
+				$('html, body').css({
+					'overflow': 'auto',
+					'height':   'auto'
+				});
+			},
 			/**
 			 * TLD Pricing Import Page
 			 */
@@ -920,20 +941,6 @@ try {
 			ajaxLoadJS:                 function (script) {
 				var url = enom_pro.adminurl + '&action=get_javascript&script=' + script;
 				return $.getScript(url);
-			},
-			showBulkPricingTurboEditor: function () {
-				$("#enom_pro_pricing_import_page").addClass("fixedBulk");
-				$('html, body').css({
-					'overflow': 'hidden',
-					'height':   '100%'
-				});
-			},
-			hideBulkPricingTurboEditor: function () {
-				$("#enom_pro_pricing_import_page").removeClass("fixedBulk");
-				$('html, body').css({
-					'overflow': 'auto',
-					'height':   'auto'
-				});
 			},
 			helpCacheKey:               'enom_pro_help',
 			/**
