@@ -131,6 +131,21 @@ if ( $this->is_pricing_cached() ) : ?>
 			</div>
 		<?php endif; ?>
 
+		<?php if ( ! enom_pro_controller::isDismissed( 'tld-turbo-editor' ) ) : ?>
+			<div class="alert alert-success fade in">
+				<button type="button"
+				        class="close"
+				        data-dismiss="alert"
+				        data-alert="tld-turbo-editor"
+				        aria-hidden="true">&times;</button>
+				<h3><span class="label label-success">NEW!</span> &mdash; Streamlined TLD Pricing Import</h3>
+
+				<div class="row">
+					<img src="../modules/addons/enom_pro/images/tld-turbo-editor.jpg" title="Click Bulk Import to view the new streamlined pricing importer" class="col-md-6 img-rounded img-responsive" style="max-height: 360px;" />
+					<p class="col-md-6">Try it out yourself, click on the <span class="btn btn-primary btn-xs open-bulk-editor"><span class="enom-pro-icon enom-pro-icon-tag"></span> Bulk Import</span> button down below</p>
+				</div>
+			</div>
+		<?php endif; ?>
 
 
 		<?php require_once ENOM_PRO_INCLUDES . 'page_import_tld_pricing_currency_conversion.php'; ?>
@@ -224,7 +239,7 @@ if ( $this->is_pricing_cached() ) : ?>
 							<td class="tldActionsTD">
 								<?php
 								$btn_classes      = $action_classes = array();
-								$btn_classes[] = 'btn-xs';
+								$btn_classes[]    = 'btn-xs';
 								$action_classes[] = 'btn-group';
 								$action_classes[] = 'tldActions';
 								$thisTLDError     = false;
