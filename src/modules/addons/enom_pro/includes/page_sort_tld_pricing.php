@@ -68,28 +68,30 @@ $result = mysql_query( 'SELECT * FROM `tbldomainpricing` ORDER BY `order` ASC' )
 		<form method="get" action="<?php echo enom_pro::MODULE_LINK ?>" class="form-inline row">
 			<input type="hidden" name="action" value="sort_domains" />
 
-			<div class="radio radio-inline col-xs-1">
-				<label>
+			<div class="radio radio-inline col-xs-2">
+				<label title="Sort alphabetically, from A-Z" class="ep_tt col-xs-6">
 					<input type="radio" name="order" value="asc" checked />
 					<span class="enom-pro-icon enom-pro-icon-sort-by-alpha" title="A-Z"></span>
 				</label>
-			</div>
-			<div class="radio radio-inline col-xs-1">
-				<label>
+				<label title="Sort reverse alphabetically, from Z-A" class="ep_tt col-xs-6">
 					<input type="radio" name="order" value="desc" />
 					<span class="enom-pro-icon enom-pro-icon-sort-by-alpha-alt" title="Z-A"></span>
 				</label>
 			</div>
 
 			<fieldset name="Ignore" title="Ignore" class="col-xs-2">
-				<legend>Keep these at the top:</legend>
+				<h6>Keep these at the top of the list:</h6>
 				<input type="checkbox" name="ignore[.com]" id="ignoreCOM" checked />
 				<label for="ignoreCOM">.com</label>
 
 				<input type="checkbox" name="ignore[.net]" id="ignoreNET" checked />
 				<label for="ignoreNET">.net</label>
 			</fieldset>
-			<input type="submit" class="btn btn-primary col-xs-2 col-xs-push-1" value="Save new order" />
+			<div class="col-xs-12">
+				<input type="submit" class="btn btn-danger col-xs-3" value="Re-Sort All TLDs" />
+				<span class="clearfix"></span>
+				<span class="col-xs-3 text-center text-danger">This will re-sort ALL tlds. The drag &amp; drop interface saves automatically after each sort.</span>
+			</div>
 		</form>
 
 	</div>
