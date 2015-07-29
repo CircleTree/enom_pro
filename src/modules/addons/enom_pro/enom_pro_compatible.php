@@ -551,7 +551,7 @@ function enom_pro_sidebar( $vars ) {
 				<a class="btn btn-block btn-default"
 				   href="<?php echo enom_pro::MODULE_LINK; ?>&view=pricing_import">
 					<span class="enom-pro-icon enom-pro-icon-tag"></span>
-					Import Pricing</a>
+					Import TLD Pricing <span class="label label-info">3.0</span></a>
 			</li>
 			<li>
 				<a class="btn btn-block btn-default"
@@ -594,11 +594,11 @@ function enom_pro_sidebar( $vars ) {
 				</li>
 			<?php endif; ?>
 			<li>
-				<a class="btn btn-block btn-default"
-				   title="<?php echo ENOM_PRO; ?> Help"
+				<a class="btn btn-block btn-default ep_tt"
+				   title="<?php echo ENOM_PRO; ?> Help - Directly in your WHMCS"
 				   href="<?php echo enom_pro::MODULE_LINK ?>&view=help">
 					<span class="enom-pro-icon enom-pro-icon-question"></span>
-					Online Help
+					Help <span class="label label-primary">NEW!</span>
 				</a>
 			</li>
 			<li>
