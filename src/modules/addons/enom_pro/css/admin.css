@@ -540,6 +540,7 @@ Licensed from Orion IP Ventures, LLC
   font-size: 24pt;
 }
 .enom_pro_output .fixedBulk #bulkLeftWrap {
+  background-color: #EEEEEE;
   padding: 3px;
   width: 25%;
   margin: 0;
@@ -838,21 +839,6 @@ Licensed from Orion IP Ventures, LLC
 }
 .enom_pro_output .enom-pro-icon-domains {
   color: #1b61b5;
-}
-.enom_pro_output .well {
-  float: left;
-  width: 100%;
-}
-.enom_pro_output .well h3 {
-  margin: 0;
-}
-.enom_pro_output .well:after {
-  visibility: hidden;
-  display: block;
-  font-size: 0;
-  content: " ";
-  clear: both;
-  height: 0;
 }
 /**
 Top level DOM items
