@@ -96,5 +96,7 @@ $result = mysql_query( 'SELECT * FROM `tbldomainpricing` ORDER BY `order` ASC' )
 
 	</div>
 <?php else: ?>
-	<h1>No pricing data found in WHMCS</h1>
+	<div class="alert alert-warning">
+		<h1>No pricing data found in WHMCS</h1>
+	</div>
 <?php endif; ?>

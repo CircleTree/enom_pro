@@ -104,28 +104,25 @@ Licensed from Orion IP Ventures, LLC
 		margin-bottom: 10px;
 	}
 
+	#enom_pro_help_page {
+		min-height: 600px;
+	}
 	#homeHelpContent {
-	}
-
-	//#enom_pro_admin_widgets {
-	//	.homewidget, .col-xs-6 {
-	//		box-sizing: border-box;
-	//	}
-	//}
-	#homeHelpContent ul {
-		padding-left: 0;
-	}
-
-	#homeHelpContent ul li {
-		box-sizing: border-box;
-		width: calc(50% - 5px);
-		float: left;
-		padding: 5px;
-		border-bottom: 1px solid #DDD;
-		border-right: 1px solid #E9E9E9;
-		background-color: #F7FCFE;
-		margin-bottom: 6px;
-		margin-right: 5px;
+		ul {
+			padding-left: 0;
+			list-style: none;
+			li {
+				box-sizing: border-box;
+				width: calc(50% - 5px);
+				float: left;
+				padding: 5px;
+				border-bottom: 1px solid #DDD;
+				border-right: 1px solid #E9E9E9;
+				background-color: #F7FCFE;
+				margin-bottom: 6px;
+				margin-right: 5px;
+			}
+		}
 	}
 
 	.searchWrap {
@@ -1084,14 +1081,27 @@ Top level DOM items
 }
 
 /**
-Dialog */
-#helpDialogContent .content ol li {
-	list-style: decimal;
-}
-
-#helpDialogContent .content ol li h1,
-#helpDialogContent .content ol li h2,
-#helpDialogContent .content ol li h3,
-#helpDialogContent .content ol li h4 {
-	height: inherit;
+Help Dialog */
+#helpDialogContent {
+	overflow-y: auto;
+	overflow-x: hidden;
+	width: 100%;
+	.content {
+		li {
+			font-size: 1.2rem;
+		}
+		ol li {
+			list-style: decimal;
+		}
+	}
+	h1,
+	h2,
+	h3,
+	h4 {
+		height: inherit;
+		line-height: 1.3rem;
+		font-size: 1.3rem;
+		margin: 0 0 .5rem 0;
+		border-bottom: 1px solid #dddddd;
+	}
 }

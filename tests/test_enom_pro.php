@@ -111,7 +111,6 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	}
 
 
-
 	/**
 	 * @throws WHMCSException
 	 */
@@ -307,6 +306,22 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$imported = $this->e->getDomainsWithClients( 1, 1, 'imported' );
 		$this->assertCount( 1, $imported, 'make sure there is one imported domain in whmcs db' );
 		$this->assertArrayHasKey( 'client', $imported[0] );
+	}
+
+	/**
+	 * @group domains
+	 */
+	function  test_get_domains_show_all() {
+
+		//Fetch the full list of domains with clients to compare against
+		$all      = $this->e->getDomainsWithClients( true, 1 );
+		//Fetch the filtered client-only list
+		$imported = $this->e->getDomainsWithClients( true, 1, 'imported' );
+		//The full ($all) list does NOT contain the same results as $imported
+		$this->assertArraySubset( $imported,
+			$all,
+			false,
+			'running enom_pro::getDomainsWithClients(true, 1) with no filters does not return the imported client records seen from enom_pro::getDomainsWithClients( true, 1, "imported")' );
 	}
 
 	/**
@@ -1237,92 +1252,104 @@ TAG
 	 * @group tlds
 	 */
 	public function test_save_tlds() {
-		$tlds = array('foo', 'bar', 'baz');
-		$this->e->save_tlds($tlds);
+
+		$tlds = array( 'foo', 'bar', 'baz' );
+		$this->e->save_tlds( $tlds );
 	}
 
 	/**
 	 * @group tlds
 	 */
-	public function test_get_saved_tlds () {
-		$this->e->set_addon_setting('saved_tlds', array());
-		$tlds = array('bam', 'baz', 'foobar');
-		$this->e->save_tlds($tlds);
-		$this->assertEquals($tlds, $this->e->get_saved_tlds());
-	}
-	/**
-	 * @group tlds
-	 */
-	public function test_saved_tlds_trimmed () {
-		$this->e->set_addon_setting('saved_tlds', array());
-		$tlds = array( ' bam ', 'baz', 'foobar   ' );
-		$expect = array( 'bam', 'baz', 'foobar' );
-		$this->e->save_tlds($tlds);
-		$this->assertEquals($expect, $this->e->get_saved_tlds());
-	}
-	/**
-	 * @group tlds
-	 */
-	public function test_saved_tlds_strtolower () {
-		$this->e->set_addon_setting('saved_tlds', array());
-		$tlds = array( 'bAm', 'Baz', 'FOobAr' );
-		$expect = array( 'bam', 'baz', 'foobar' );
-		$this->e->save_tlds($tlds);
-		$this->assertEquals($expect, $this->e->get_saved_tlds());
+	public function test_get_saved_tlds() {
+
+		$this->e->set_addon_setting( 'saved_tlds', array() );
+		$tlds = array( 'bam', 'baz', 'foobar' );
+		$this->e->save_tlds( $tlds );
+		$this->assertEquals( $tlds, $this->e->get_saved_tlds() );
 	}
 
 	/**
 	 * @group tlds
 	 */
-	public function test_saved_tlds_unique () {
-		$this->e->set_addon_setting('saved_tlds', array());
-		$tlds = array('bam', 'baz', 'foobar', 'bam', 'baz');
-		$this->e->save_tlds($tlds);
-		$tlds_unique = array_unique($tlds);
-		$this->assertEquals($tlds_unique, $this->e->get_saved_tlds());
+	public function test_saved_tlds_trimmed() {
+
+		$this->e->set_addon_setting( 'saved_tlds', array() );
+		$tlds   = array( ' bam ', 'baz', 'foobar   ' );
+		$expect = array( 'bam', 'baz', 'foobar' );
+		$this->e->save_tlds( $tlds );
+		$this->assertEquals( $expect, $this->e->get_saved_tlds() );
 	}
+
+	/**
+	 * @group tlds
+	 */
+	public function test_saved_tlds_strtolower() {
+
+		$this->e->set_addon_setting( 'saved_tlds', array() );
+		$tlds   = array( 'bAm', 'Baz', 'FOobAr' );
+		$expect = array( 'bam', 'baz', 'foobar' );
+		$this->e->save_tlds( $tlds );
+		$this->assertEquals( $expect, $this->e->get_saved_tlds() );
+	}
+
+	/**
+	 * @group tlds
+	 */
+	public function test_saved_tlds_unique() {
+
+		$this->e->set_addon_setting( 'saved_tlds', array() );
+		$tlds = array( 'bam', 'baz', 'foobar', 'bam', 'baz' );
+		$this->e->save_tlds( $tlds );
+		$tlds_unique = array_unique( $tlds );
+		$this->assertEquals( $tlds_unique, $this->e->get_saved_tlds() );
+	}
+
 	/**
 	 * @group tlds
 	 */
 	public function test_saved_tlds_get_appended() {
-		$this->e->set_addon_setting('saved_tlds', array());
-		$tlds1 = array('bam', 'baz', 'foobar');
-		$this->e->save_tlds($tlds1);
-		$tlds2 = array('co.bam', 'in.baz', 'my.foobar');
-		$this->e->save_tlds($tlds2);
-		$tlds_total = array_merge($tlds2, $tlds1);
-		$this->assertEquals($tlds_total, $this->e->get_saved_tlds());
+
+		$this->e->set_addon_setting( 'saved_tlds', array() );
+		$tlds1 = array( 'bam', 'baz', 'foobar' );
+		$this->e->save_tlds( $tlds1 );
+		$tlds2 = array( 'co.bam', 'in.baz', 'my.foobar' );
+		$this->e->save_tlds( $tlds2 );
+		$tlds_total = array_merge( $tlds2, $tlds1 );
+		$this->assertEquals( $tlds_total, $this->e->get_saved_tlds() );
 	}
 
 	/**
 	 * @group tlds
 	 */
-	public function test_delete_saved_tlds () {
-		$this->e->set_addon_setting('saved_tlds', array());
-		$tlds1 = array('bam', 'baz', 'foobar');
-		$this->e->save_tlds($tlds1);
-		$this->e->delete_saved_tlds(array('bam', 'foobar'));
-		$this->assertEquals(array('baz'), $this->e->get_saved_tlds());
+	public function test_delete_saved_tlds() {
+
+		$this->e->set_addon_setting( 'saved_tlds', array() );
+		$tlds1 = array( 'bam', 'baz', 'foobar' );
+		$this->e->save_tlds( $tlds1 );
+		$this->e->delete_saved_tlds( array( 'bam', 'foobar' ) );
+		$this->assertEquals( array( 'baz' ), $this->e->get_saved_tlds() );
 	}
 
 
 	/**
 	 * @group tlds
 	 */
-	public function test_is_tld_saved () {
-		$this->e->save_tlds(array('com'));
-		$this->assertTrue($this->e->is_tld_saved('com'));
-		$this->assertFalse($this->e->is_tld_saved('1234'));
+	public function test_is_tld_saved() {
+
+		$this->e->save_tlds( array( 'com' ) );
+		$this->assertTrue( $this->e->is_tld_saved( 'com' ) );
+		$this->assertFalse( $this->e->is_tld_saved( '1234' ) );
 	}
 
 	/**
 	 * @group tlds
 	 */
 	public function test_save_tlds_with_dot() {
-		$this->e->set_addon_setting('saved_tlds', array());
-		$this->e->save_tlds(array('.com', 'net', '.org', '.co.uk', '.co.in.12'));
-		$expect = array ('com', 'net', 'org', 'co.uk', 'co.in.12');
-		$this->assertEquals($expect, $this->e->get_saved_tlds());
+
+		$this->e->set_addon_setting( 'saved_tlds', array() );
+		$this->e->save_tlds( array( '.com', 'net', '.org', '.co.uk', '.co.in.12' ) );
+		$expect = array( 'com', 'net', 'org', 'co.uk', 'co.in.12' );
+		$this->assertEquals( $expect, $this->e->get_saved_tlds() );
 	}
 
 	private function getTestMockPath() {

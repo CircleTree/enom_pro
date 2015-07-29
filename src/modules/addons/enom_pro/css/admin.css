@@ -74,8 +74,12 @@ Licensed from Orion IP Ventures, LLC
   margin-top: 3px;
   margin-bottom: 10px;
 }
+.enom_pro_output #enom_pro_help_page {
+  min-height: 600px;
+}
 .enom_pro_output #homeHelpContent ul {
   padding-left: 0;
+  list-style: none;
 }
 .enom_pro_output #homeHelpContent ul li {
   box-sizing: border-box;
@@ -926,13 +930,25 @@ Top level DOM items
   display: none !important;
 }
 /**
-Dialog */
+Help Dialog */
+#helpDialogContent {
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+}
+#helpDialogContent .content li {
+  font-size: 1.2rem;
+}
 #helpDialogContent .content ol li {
   list-style: decimal;
 }
-#helpDialogContent .content ol li h1,
-#helpDialogContent .content ol li h2,
-#helpDialogContent .content ol li h3,
-#helpDialogContent .content ol li h4 {
+#helpDialogContent h1,
+#helpDialogContent h2,
+#helpDialogContent h3,
+#helpDialogContent h4 {
   height: inherit;
+  line-height: 1.3rem;
+  font-size: 1.3rem;
+  margin: 0 0 .5rem 0;
+  border-bottom: 1px solid #dddddd;
 }

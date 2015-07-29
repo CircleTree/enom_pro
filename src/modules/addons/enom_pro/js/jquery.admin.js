@@ -242,7 +242,7 @@ try {
 					$(v).removeAttr('value').removeAttr('name');
 				}
 			});
-			return false;
+			return true;
 		});
 
 		$(".clear_all").on('click', function () {
@@ -417,7 +417,7 @@ try {
 		}
 		$(".ep_sortable").sortable({
 			placeholder: "sortable-placeholder",
-			update: function (e, ui) {
+			update:      function (e, ui) {
 				var $loader = $(".enom_pro_loader");
 				$loader.removeClass('hidden');
 				var sorted = $(this).sortable('toArray');
@@ -491,7 +491,7 @@ try {
 						inputSet = [];
 				$.each(checks, function (k, v) {
 					var tld     = $(v).prop('name'),
-							filter = $('#overWriteWHMCS').prop('checked') ? '' : ', [data-whmcs]',
+							filter  = $('#overWriteWHMCS').prop('checked') ? '' : ', [data-whmcs]',
 							$inputs = $("[data-tld='" + tld + "']").filter(':not(a, .btn' + filter + ')');
 					inputSet = $.merge(inputSet, $inputs);
 				});
@@ -509,16 +509,16 @@ try {
 			 * @constant int SAVE_INTERVAL_CLICK How long to wait after a click before sending result to server
 			 */
 			SAVE_INTERVAL_CLICK:        750,
-			openBulkPricingEditor: function () {
+			openBulkPricingEditor:      function () {
 				this.showBulkPricingTurboEditor();
 				this.setLocalStorage('openBulkPricingEditor', true);
 			},
-			closeBulkPricingEditor: function () {
+			closeBulkPricingEditor:     function () {
 				this.hideBulkPricingTurboEditor();
 				this.setLocalStorage('openBulkPricingEditor', false);
 			},
 			showBulkPricingTurboEditor: function () {
-				$(window).on('keyup.ep', function(e){
+				$(window).on('keyup.ep', function (e) {
 					if (27 == e.keyCode) {
 						//Press ESC to close the editor
 						enom_pro.closeBulkPricingEditor();
@@ -543,10 +543,10 @@ try {
 			 */
 			initPricingImport:          function () {
 				this.getLocalStorage('openBulkPricingEditor') === 'true' ? this.showBulkPricingTurboEditor() : null;
-				$('.close-bulk-editor').on('click', function() {
+				$('.close-bulk-editor').on('click', function () {
 					enom_pro.closeBulkPricingEditor();
 				});
-				$('.open-bulk-editor').on('click', function() {
+				$('.open-bulk-editor').on('click', function () {
 					enom_pro.openBulkPricingEditor();
 					return false;
 				});
@@ -581,7 +581,7 @@ try {
 				this.ajaxLoadJS('jquery.tableHover.js').done(function () {
 					$("#enom_pro_pricing_table").tableHover({
 						colClass:   "hover",
-						headCols: true,
+						headCols:   true,
 						ignoreCols: [1]
 					});
 				}).fail(function (xhr) {
@@ -960,9 +960,15 @@ try {
 			initHelpDialog:             function () {
 				this.$helpDialog = $(".helpDialog");
 				this.$helpDialog.dialog({
+					buttons:     {
+						'Close': function () {
+							$(this).dialog('close');
+						}
+					},
 					height:      'auto',
 					width:       '760px',
 					dialogClass: 'enom_pro_output',
+					maxHeight:   window.innerHeight,
 					minWidth:    250,
 					maxWidth:    760,
 					autoOpen:    false,
@@ -1049,9 +1055,10 @@ try {
 					$(str).appendTo($homeHelp);
 				} else {
 					$homeHelp.html(enom_pro.loadingString);
-					var feedURL = "http://mycircletree.com/client-area/knowledgebaserss.php?catid=11" +
+					var feedURL = "http://mycircletree.com/client-area/knowledgebaserss.php?catid=11" + (
+									enom_pro.isBeta ?
 							"&rand=" +
-							Math.random(1, 1000);
+							Math.random(1, 1000) : '');
 					if (doingSearch) {
 						feedURL += "&s=" + search;
 					}
@@ -1065,7 +1072,7 @@ try {
 						success:  function (data) {
 							$homeHelp.empty();
 							str = "<ul>";
-							if (data.responseData.feed.entries.length == 0) {
+							if (data.responseData.feed.entries.length === 0) {
 								str += '<li><div class="alert">No Search Results Found. Please try again.</div></li>'
 							} else {
 								$.each(data.responseData.feed.entries, function (k, entry) {
@@ -1086,7 +1093,7 @@ try {
 											'</h4>' +
 
 											'<p class="snippet">' +
-											entry.contentSnippet.replace('...', '') +
+											entry.contentSnippet.split('Â').join('') +
 											'</p>';
 									str += '<a ' +
 											'href="' +
@@ -1097,7 +1104,7 @@ try {
 											help_id +
 											'"' +
 											'>' +
-											'Continue reading: ' +
+											'' +
 											entry.title +
 											'</a></li>';
 								});
