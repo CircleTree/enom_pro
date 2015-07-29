@@ -2,6 +2,32 @@
 eNom PRO for WHMCS by Circle Tree, LLC
 Licensed from Orion IP Ventures, LLC
 */
+.table-scrollable() {
+	display: flex;
+	flex-flow: column;
+
+	thead,
+	tbody tr {
+		display: table;
+		table-layout: fixed;
+	}
+
+	thead {
+		flex: 0 0 auto;
+		width: ~"calc(100% - @{scrollbar-width})";
+	}
+
+	tbody {
+		display: block;
+		flex: 1 1 auto;
+		overflow-y: scroll;
+
+		tr {
+			width: 100%;
+		}
+	}
+}
+
 @colorBackground : #fff;
 .clearfix {
 	&:before,
@@ -323,13 +349,6 @@ Licensed from Orion IP Ventures, LLC
 		padding: 2px;
 		line-height: 1;
 	}
-	#enom_pro_pricing_table .input-group-sm .price {
-		padding: 0;
-	}
-	#enom_pro_pricing_table .myPrice {
-		padding: 2px 2px 2px 3px;
-		font-size: 10px;
-	}
 
 	#enom_pro_pricing_import .datatable TR TD {
 		position: relative;
@@ -345,18 +364,10 @@ Licensed from Orion IP Ventures, LLC
 	#enom_pro_import_page .enom_pro_loader.small {
 		width: inherit;
 	}
-	#enom_pro_pricing_table TD {
-		background-color: transparent;
-	}
-	#enom_pro_pricing_table TD.hover {
-		background-color: #FCF8E3;
-	}
+
 	.enom_pro_output fieldset[name=Ignore] legend {
 		margin: 0;
 		font-size: 12px;
-	}
-	#enom_pro_pricing_table.loading INPUT:disabled {
-		cursor: not-allowed;
 	}
 
 	.loading .body-loader {
@@ -458,10 +469,6 @@ Licensed from Orion IP Ventures, LLC
 		padding: 0;
 	}
 
-	#enom_pro_pricing_table TD {
-		padding: 0;
-	}
-
 	#enom_pro_pricing_import {
 		overflow-x: scroll;
 		overflow-y: hidden;
@@ -541,6 +548,50 @@ Licensed from Orion IP Ventures, LLC
 	.close-bulk-editor {
 		display: none;
 	}
+	#enom_pro_pricing_table {
+		td, th {
+			background-color: transparent;
+			padding: 0;
+		}
+		//TableHover Border - Default state
+		@border-color : #FFFFFF;
+		//TableHover Border - Hover state
+		@border-color-hover : #faa732;
+		th {
+			border-bottom: 3px solid @border-color;
+		}
+		th:first-child {
+			border-bottom-color: transparent;
+		}
+		td:first-child {
+			border-right: 3px solid @border-color;
+		}
+		td.hover:first-child {
+			border-right-color: @border-color-hover;
+		}
+		th.hover {
+			border-bottom-color: @border-color-hover;
+		}
+		td.hover, th.hover {
+			//background-color: #FCF8E3;
+		}
+		.loading INPUT:disabled {
+			cursor: not-allowed;
+		}
+		.input-group-sm .price {
+			padding: 0;
+		}
+		.myPrice {
+			padding: 2px 2px 2px 3px;
+			font-size: 10px;
+		}
+		.tldActionsTD {
+			width: 12%;
+			.tldCheck, .tldActions {
+				display: inline-flex;
+			}
+		}
+	}
 	//Bulk Pricing Turbo Editor
 	.fixedBulk {
 		#bulkRightWrap,
@@ -562,6 +613,7 @@ Licensed from Orion IP Ventures, LLC
 			right: 5px;
 			font-size: 24pt;
 		}
+
 		/* Left hand bulk update */
 		@leftWidth: 25%;
 		@rightWidth: 100% - @leftWidth;
@@ -593,8 +645,13 @@ Licensed from Orion IP Ventures, LLC
 			width: @rightWidth;
 			left: @leftWidth;
 			background-color: @colorBackground;
+			table {
+				.table-scrollable();
+				max-height: 600px;
+			}
 		}
 	}
+	@scrollbar-width: 0.9em;
 	.ep_sortable TR {
 		cursor: ns-resize;
 	}
@@ -993,7 +1050,7 @@ Top level DOM items
 			background-image: none;
 			box-sizing: border-box;
 		}
-		*{
+		* {
 			box-sizing: border-box;
 			width: 100%;
 		}
@@ -1004,6 +1061,7 @@ Top level DOM items
 		display: inline;
 	}
 }
+
 #sidebar .enom_pro_output .upgradeAlertHidden a {
 	box-sizing: border-box;
 }

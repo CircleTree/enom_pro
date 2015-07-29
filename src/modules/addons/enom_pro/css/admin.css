@@ -291,13 +291,6 @@ Licensed from Orion IP Ventures, LLC
   padding: 2px;
   line-height: 1;
 }
-.enom_pro_output #enom_pro_pricing_table .input-group-sm .price {
-  padding: 0;
-}
-.enom_pro_output #enom_pro_pricing_table .myPrice {
-  padding: 2px 2px 2px 3px;
-  font-size: 10px;
-}
 .enom_pro_output #enom_pro_pricing_import .datatable TR TD {
   position: relative;
 }
@@ -310,18 +303,9 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output #enom_pro_import_page .enom_pro_loader.small {
   width: inherit;
 }
-.enom_pro_output #enom_pro_pricing_table TD {
-  background-color: transparent;
-}
-.enom_pro_output #enom_pro_pricing_table TD.hover {
-  background-color: #FCF8E3;
-}
 .enom_pro_output .enom_pro_output fieldset[name=Ignore] legend {
   margin: 0;
   font-size: 12px;
-}
-.enom_pro_output #enom_pro_pricing_table.loading INPUT:disabled {
-  cursor: not-allowed;
 }
 .enom_pro_output .loading .body-loader {
   background: #ffffff url(../images/loading.gif) no-repeat 50% 50%;
@@ -411,9 +395,6 @@ Licensed from Orion IP Ventures, LLC
   border: none;
   padding: 0;
 }
-.enom_pro_output #enom_pro_pricing_table TD {
-  padding: 0;
-}
 .enom_pro_output #enom_pro_pricing_import {
   overflow-x: scroll;
   overflow-y: hidden;
@@ -486,6 +467,43 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output .close-bulk-editor {
   display: none;
 }
+.enom_pro_output #enom_pro_pricing_table td,
+.enom_pro_output #enom_pro_pricing_table th {
+  background-color: transparent;
+  padding: 0;
+}
+.enom_pro_output #enom_pro_pricing_table th {
+  border-bottom: 3px solid #ffffff;
+}
+.enom_pro_output #enom_pro_pricing_table th:first-child {
+  border-bottom-color: transparent;
+}
+.enom_pro_output #enom_pro_pricing_table td:first-child {
+  border-right: 3px solid #ffffff;
+}
+.enom_pro_output #enom_pro_pricing_table td.hover:first-child {
+  border-right-color: #faa732;
+}
+.enom_pro_output #enom_pro_pricing_table th.hover {
+  border-bottom-color: #faa732;
+}
+.enom_pro_output #enom_pro_pricing_table .loading INPUT:disabled {
+  cursor: not-allowed;
+}
+.enom_pro_output #enom_pro_pricing_table .input-group-sm .price {
+  padding: 0;
+}
+.enom_pro_output #enom_pro_pricing_table .myPrice {
+  padding: 2px 2px 2px 3px;
+  font-size: 10px;
+}
+.enom_pro_output #enom_pro_pricing_table .tldActionsTD {
+  width: 12%;
+}
+.enom_pro_output #enom_pro_pricing_table .tldActionsTD .tldCheck,
+.enom_pro_output #enom_pro_pricing_table .tldActionsTD .tldActions {
+  display: inline-flex;
+}
 .enom_pro_output .fixedBulk {
   /* Left hand bulk update */
 }
@@ -533,6 +551,28 @@ Licensed from Orion IP Ventures, LLC
   width: 75%;
   left: 25%;
   background-color: #ffffff;
+}
+.enom_pro_output .fixedBulk #bulkRightWrap table {
+  display: flex;
+  flex-flow: column;
+  max-height: 600px;
+}
+.enom_pro_output .fixedBulk #bulkRightWrap table thead,
+.enom_pro_output .fixedBulk #bulkRightWrap table tbody tr {
+  display: table;
+  table-layout: fixed;
+}
+.enom_pro_output .fixedBulk #bulkRightWrap table thead {
+  flex: 0 0 auto;
+  width: calc(100% - 0.9em);
+}
+.enom_pro_output .fixedBulk #bulkRightWrap table tbody {
+  display: block;
+  flex: 1 1 auto;
+  overflow-y: scroll;
+}
+.enom_pro_output .fixedBulk #bulkRightWrap table tbody tr {
+  width: 100%;
 }
 .enom_pro_output .ep_sortable TR {
   cursor: ns-resize;

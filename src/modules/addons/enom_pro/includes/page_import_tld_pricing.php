@@ -197,10 +197,12 @@ if ( $this->is_pricing_cached() ) : ?>
 				       value="<?php echo isset( $_GET['start'] ) ? (int) $_GET['start'] : '0'; ?>" />
 				<table class="table table-bordered table-responsive"
 				       id="enom_pro_pricing_table">
+					<thead>
 					<tr>
-						<th>
-							<button class="btn btn-default btn-xs ep_tt toggleAllTLDCheckboxes" title="Toggle All"><span class="enom-pro-icon enom-pro-icon-checkmark"></span> </button>
-							 Actions
+						<th class="tldActionsTD">
+							<button class="btn btn-default btn-xs ep_tt toggleAllTLDCheckboxes" title="Toggle All">
+								<span class="enom-pro-icon enom-pro-icon-checkmark"></span></button>
+							Actions
 						</th>
 						<?php foreach ( $pricing_years_array as $key => $year ) : ?>
 							<th colspan="1">
@@ -208,17 +210,21 @@ if ( $this->is_pricing_cached() ) : ?>
 							</th>
 						<?php endforeach; ?>
 					</tr>
-					<?php foreach ( $domains as $tld => $domainPriceData ):
-						$isInWHMCS                   = false; ?>
-						<?php $whmcs_pricing_for_tld = $this->get_whmcs_domain_pricing( $tld ); ?>
-						<?php if ( count( $whmcs_pricing_for_tld ) > 0 ) : ?>
-						<?php $whmcs_id = $whmcs_pricing_for_tld['id']; ?>
-						<?php $isInWHMCS = true; ?>
-					<?php endif; ?>
+					</thead>
+					<tbody>
+					<?php
+					foreach ( $domains as $tld => $domainPriceData ):
+						$isInWHMCS             = false;
+						$whmcs_pricing_for_tld = $this->get_whmcs_domain_pricing( $tld );
+						if ( count( $whmcs_pricing_for_tld ) > 0 ) :
+							$whmcs_id  = $whmcs_pricing_for_tld['id'];
+							$isInWHMCS = true;
+						endif; ?>
 						<tr>
-							<td>
+							<td class="tldActionsTD">
 								<?php
 								$btn_classes      = $action_classes = array();
+								$btn_classes[] = 'btn-xs';
 								$action_classes[] = 'btn-group';
 								$action_classes[] = 'tldActions';
 								$thisTLDError     = false;
@@ -233,7 +239,7 @@ if ( $this->is_pricing_cached() ) : ?>
 
 								}
 								?>
-								<input type="checkbox" class="tldCheck" name="<?php echo $tld ?>"<?php echo $this->is_tld_saved($tld) ? ' checked' : ''; ?> />
+								<input type="checkbox" class="tldCheck" name="<?php echo $tld ?>"<?php echo $this->is_tld_saved( $tld ) ? ' checked' : ''; ?> />
 
 								<div class="<?php echo implode( ' ',
 									$action_classes ); ?>" <?php if ( $thisTLDError ) : ?> title="Error from eNom API" data-content="<?php echo $thisTLDError ?>" <?php endif; ?>>
@@ -241,7 +247,7 @@ if ( $this->is_pricing_cached() ) : ?>
 										$btn_classes ) ?>" data-tld="<?php echo $tld ?>"<?php if ( $isInWHMCS ) : ?> data-whmcs="true"<?php endif; ?> data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										.<?php echo $tld; ?>
 									</div>
-									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<span class="caret"></span>
 										<span class="sr-only">Toggle Dropdown</span>
 									</button>
@@ -306,10 +312,10 @@ if ( $this->is_pricing_cached() ) : ?>
 								?>
 								<td>
 									<div class="input-group input-group-sm <?php echo $class ?>">
-																<span class="price ep_tt input-group-addon input-sm"
-																      title="eNom Price">
-																	<?php echo $this->getDefaultCurrencyPrefix() . $formattedEnomPrice; ?>
-																</span>
+																	<span class="price ep_tt input-group-addon input-sm"
+																	      title="eNom Price">
+																		<?php echo $this->getDefaultCurrencyPrefix() . $formattedEnomPrice; ?>
+																	</span>
 										<input
 											data-tld="<?php echo $tld ?>"
 											data-year="<?php echo $year; ?>"
@@ -329,17 +335,22 @@ if ( $this->is_pricing_cached() ) : ?>
 										<?php if ( $whmcs_price ) : ?>
 											<span class="price ep_tt input-group-addon input-sm"
 											      title="WHMCS Price">
-																		<?php echo $this->getDefaultCurrencyPrefix() . $whmcs_price; ?></span>
+																			<?php echo $this->getDefaultCurrencyPrefix() . $whmcs_price; ?></span>
 										<?php endif; ?>
 									</div>
 								</td>
 							<?php endforeach; ?>
 						</tr>
 					<?php endforeach; ?>
+					</tbody>
 				</table>
 				<input type="submit" value="Save" class="btn btn-block btn-success">
 			</form>
-			<?php pager( count( $allDomainsPricing ), 'pricing_import', true, $per_page, '#enom_pro_pricing_table' ); ?>
+			<?php pager( count( $allDomainsPricing ),
+				'pricing_import',
+				false,
+				$per_page,
+				'#enom_pro_pricing_table' ); ?>
 		</div>
 		<script>
 			jQuery(function ($) {

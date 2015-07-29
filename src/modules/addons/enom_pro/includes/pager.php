@@ -52,7 +52,7 @@ function pager( $count, $view, $large = false, $per_page = 25, $dom_element = fa
 
 	echo '</ul></nav>'; ?>
 
-<div class="text-center">
+<div class="text-center hidden-turbo">
 		<span class="floatleft">
 			Page
 			<span class="badge">
