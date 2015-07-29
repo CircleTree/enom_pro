@@ -416,6 +416,7 @@ try {
 			});
 		}
 		$(".ep_sortable").sortable({
+			placeholder: "sortable-placeholder",
 			update: function (e, ui) {
 				var $loader = $(".enom_pro_loader");
 				$loader.removeClass('hidden');

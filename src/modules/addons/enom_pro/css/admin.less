@@ -2,6 +2,8 @@
 eNom PRO for WHMCS by Circle Tree, LLC
 Licensed from Orion IP Ventures, LLC
 */
+@scrollbar-width: 0.9em;
+
 .table-scrollable() {
 	display: flex;
 	flex-flow: column;
@@ -308,8 +310,8 @@ Licensed from Orion IP Ventures, LLC
 	}
 	a.btn-primary, a.btn-danger, a.btn-info, a.btn-inverse, a.btn-warning {
 		&, &:hover {
-		color: #EEEEEE;
-		text-decoration: none;
+			color: #EEEEEE;
+			text-decoration: none;
 		}
 		&:active {
 			text-shadow: 1px 1px 2px #000;
@@ -657,12 +659,31 @@ Licensed from Orion IP Ventures, LLC
 			}
 		}
 	}
-	@scrollbar-width: 0.9em;
-	.ep_sortable TR {
-		cursor: ns-resize;
-	}
-	.ep_sortable TR TD {
-		padding: 1px 0 1px 5px !important;
+
+	tbody.ep_sortable {
+		tr {
+			cursor: ns-resize;
+			td {
+				padding: 1px 0 1px 5px !important;
+			}
+			&.ui-sortable-helper {
+				td {
+					background-color: #666666;
+					color: #ffffff;
+				}
+			}
+			&.sortable-placeholder:before {
+				width: 0;
+				height: 32px;
+				position: relative;
+				top: 0;
+				left: -16px;
+				z-index: 3;
+				font-family: 'enom-pro', sans-serif;
+				content: "\e603";
+				font-size: 16pt;
+			}
+		}
 	}
 	a.btn {
 		text-decoration: none;
