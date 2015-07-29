@@ -489,7 +489,7 @@ try {
 						inputSet = [];
 				$.each(checks, function (k, v) {
 					var tld     = $(v).prop('name'),
-							filter = $('#overWriteWHMCS').prop('checked') ? '' : ', [data-whmcs]',
+							filter  = $('#overWriteWHMCS').prop('checked') ? ', [data-whmcs]' : '',
 							$inputs = $("[data-tld='" + tld + "']").filter(':not(a, .btn' + filter + ')');
 					inputSet = $.merge(inputSet, $inputs);
 				});
@@ -726,6 +726,7 @@ try {
 
 						$("#local_storage").trigger('refresh');
 						var $alert = $target.closest('.alert');
+						/** @namespace data.email */
 						if (data.email) {
 							$alert.find('.create_order').data('email', data.email);
 						}

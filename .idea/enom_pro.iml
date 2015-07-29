@@ -5,6 +5,8 @@
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests/qunit" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/build" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/whmcs-admin-themes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -24,17 +26,11 @@
     <orderEntry type="module-library">
       <library name="PHARS">
         <CLASSES>
-          <root url="phar://$MODULE_DIR$/vendor/phpdocumentor/phpdocumentor/tests/data/test.phar" />
-          <root url="phar://$MODULE_DIR$/vendor/phpdocumentor/fileset/tests/data/test.phar" />
           <root url="phar://$MODULE_DIR$/phing-latest.phar" />
-          <root url="phar://$MODULE_DIR$/vendor/symfony/dependency-injection/Symfony/Component/DependencyInjection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar" />
           <root url="phar:///Applications/MAMP/Library/bin/phpunit.phar" />
         </CLASSES>
         <SOURCES>
-          <root url="phar://$MODULE_DIR$/vendor/phpdocumentor/phpdocumentor/tests/data/test.phar" />
-          <root url="phar://$MODULE_DIR$/vendor/phpdocumentor/fileset/tests/data/test.phar" />
           <root url="phar://$MODULE_DIR$/phing-latest.phar" />
-          <root url="phar://$MODULE_DIR$/vendor/symfony/dependency-injection/Symfony/Component/DependencyInjection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar" />
           <root url="phar:///Applications/MAMP/Library/bin/phpunit.phar" />
         </SOURCES>
       </library>
