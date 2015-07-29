@@ -200,8 +200,8 @@ if ( $this->is_pricing_cached() ) : ?>
 					<thead>
 					<tr>
 						<th class="tldActionsTD">
-							<button class="btn btn-default btn-xs ep_tt toggleAllTLDCheckboxes" title="Toggle All">
-								<span class="enom-pro-icon enom-pro-icon-checkmark"></span></button>
+							<div class="btn btn-default btn-xs ep_tt toggleAllTLDCheckboxes" title="Toggle All">
+								<span class="enom-pro-icon enom-pro-icon-checkmark"></span></div>
 							Actions
 						</th>
 						<?php foreach ( $pricing_years_array as $key => $year ) : ?>

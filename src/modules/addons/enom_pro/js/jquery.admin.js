@@ -236,12 +236,13 @@ try {
 			return false;
 		});
 		$("#enom_pro_pricing_import").on('submit', function () {
-			$("input", '#enom_pro_pricing_import').each(function (k, v) {
+			$(".myPrice", '#enom_pro_pricing_import').each(function (k, v) {
 				var val = $(v).val();
 				if (val == '0.00' || val == "" || parseInt(val) === 0) {
 					$(v).removeAttr('value').removeAttr('name');
 				}
 			});
+			return false;
 		});
 
 		$(".clear_all").on('click', function () {
@@ -558,6 +559,7 @@ try {
 				this.ajaxLoadJS('jquery.tableHover.js').done(function () {
 					$("#enom_pro_pricing_table").tableHover({
 						colClass:   "hover",
+						headCols: true,
 						ignoreCols: [1]
 					});
 				}).fail(function (xhr) {
