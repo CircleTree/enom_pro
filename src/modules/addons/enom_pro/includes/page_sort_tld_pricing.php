@@ -11,6 +11,19 @@ $result = mysql_query( 'SELECT * FROM `tbldomainpricing` ORDER BY `order` ASC' )
 			New order saved!
 		</div>
 	<?php endif; ?>
+	<?php if ( ! enom_pro_controller::isDismissed( 'pricing-sortable-drag' ) ) : ?>
+		<div class="alert alert-success fade in">
+			<button type="button"
+			        class="close"
+			        data-dismiss="alert"
+			        data-alert="pricing-sortable-drag"
+			        aria-hidden="true">&times;</button>
+			<h3>Drag &amp; drop TLD Sorting</h3>
+
+				<img src="../modules/addons/enom_pro/images/tld-drag-drop-sort.jpg"  class="img-rounded img-responsive" style="max-height: 300px;" />
+
+		</div>
+	<?php endif; ?>
 	<?php if ( ! enom_pro_controller::isDismissed( 'pricing-sortable' ) ) : ?>
 		<div class="alert alert-success fade in">
 			<button type="button"
@@ -18,15 +31,13 @@ $result = mysql_query( 'SELECT * FROM `tbldomainpricing` ORDER BY `order` ASC' )
 			        data-dismiss="alert"
 			        data-alert="pricing-sortable"
 			        aria-hidden="true">&times;</button>
-			<p>
-				<b>Drag &amp; Drop TLD pricing Reordering!</b> <br />
-				Simply drag the TLD's in the order you'd like to use. <br />
-				<b>Bulk TLD Sorting</b> <br />
-				You can <a href="#bulk-sort">bulk sort</a> pricing alphabetically.<br />
-			</p>
+			<h3>Bulk TLD Sorting</h3>
+				<p>
+					You can also <a class="btn btn-xs btn-default" href="#bulk-sort">bulk sort</a> pricing alphabetically.<br />
+				</p>
 
 			<div class="alert alert-warning">
-				Please keep in mind that using the <a href="#bulk-sort">bulk sorter</a>
+				Please keep in mind that using the <a class="btn btn-default btn-xs" href="#bulk-sort">bulk sorter</a>
 				will overwrite any ordering changes made here.
 			</div>
 		</div>
