@@ -95,8 +95,7 @@ if ( $this->is_pricing_cached() ) : ?>
 				        data-dismiss="alert"
 				        data-alert="price_intro"
 				        aria-hidden="true">&times;</button>
-				<p>
-					Import pricing for all 3 domain order types:
+				<p>Import pricing for all 3 domain order types: <br />
 				<ul class="list-inline">
 					<li>
 						<span class="badge">register</span>
@@ -111,8 +110,8 @@ if ( $this->is_pricing_cached() ) : ?>
 				Once they are imported, you can
 				bulk edit all 3 pricing tiers, or you can fine tune pricing in directly in whmcs by
 				clicking the TLD drop-down menu button.
+				<img src="../modules/addons/enom_pro/images/pricing-drop-down-help.jpg" height="209" width="238" alt="Edit pricing in WHMCS directly by clicking on the drop-down for a TLD" />
 				</p>
-				<img src="../modules/addons/enom_pro/images/pricing-drop-down-help.jpg" height="209" width="238" alt="" />
 			</div>
 		<?php endif; ?>
 
@@ -142,7 +141,11 @@ if ( $this->is_pricing_cached() ) : ?>
 
 				<div class="row">
 					<img src="../modules/addons/enom_pro/images/tld-turbo-editor.jpg" title="Click Bulk Import to view the new streamlined pricing importer" class="col-md-6 img-rounded img-responsive" style="max-height: 360px;" />
-					<p class="col-md-6">Try it out yourself, click on the <span class="btn btn-primary btn-xs open-bulk-editor"><span class="enom-pro-icon enom-pro-icon-tag"></span> Bulk Import</span> button down below</p>
+
+					<p class="col-md-6">Try it out yourself, click on the
+						<span class="btn btn-primary btn-xs open-bulk-editor"><span class="enom-pro-icon enom-pro-icon-tag"></span> Bulk Import</span> button down below.<br/>
+						<span class="text-muted">Or, if you like this message (or reminder), you can click the button in the last sentence. Yep. It works too.</span>
+					</p>
 				</div>
 			</div>
 		<?php endif; ?>

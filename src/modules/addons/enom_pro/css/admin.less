@@ -307,8 +307,13 @@ Licensed from Orion IP Ventures, LLC
 		background-color: #ffffff;
 	}
 	a.btn-primary, a.btn-danger, a.btn-info, a.btn-inverse, a.btn-warning {
-		color: #FFFFFF;
+		&, &:hover {
+		color: #EEEEEE;
 		text-decoration: none;
+		}
+		&:active {
+			text-shadow: 1px 1px 2px #000;
+		}
 	}
 	#meta td {
 		vertical-align: top;
