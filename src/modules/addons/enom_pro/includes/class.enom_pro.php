@@ -1841,7 +1841,9 @@ class enom_pro {
 		$return               = array();
 		if ( $show_only_unimported || $show_only_imported ) {
 			//Only cache if used
-			$this->fetchWHMCSDomains( count( $domains ) );
+			// ** AR: replace API calls with single query
+			// $this->fetchWHMCSDomains( count( $domains ) );
+			$this->whmcsGetClientsDomains();
 		}
 		foreach ( $domains as $key => $domain ) {
 			$domain_name     = $domain['sld'] . '.' . $domain['tld'];
@@ -3047,5 +3049,21 @@ class enom_pro {
 			);
 		}
 		$this->whmcsClientDomains = $result;
+	}
+	
+	/**
+	 * 
+	 * replacement for getclientsdomains (see fetchWHMCSDomains method) to run all clients in a single query
+	 * 
+	 */
+	protected function whmcsGetClientsDomains() {
+		$query = "SELECT  `id`, `userid`, `orderid`, `domain`
+		            FROM  `tbldomains`
+		           WHERE  `registrar` = 'enom'";
+		$rs = mysql_query($query);
+		$this->whmcsClientDomains = array();
+		while($row = mysql_fetch_assoc($rs)) {
+			$this->whmcsClientDomains[$row['domain']] = $row;
+		}
 	}
 }
