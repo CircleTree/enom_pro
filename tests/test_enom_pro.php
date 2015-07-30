@@ -310,6 +310,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @group domains
+	 * @group current
 	 */
 	function  test_get_domains_show_all() {
 
@@ -318,6 +319,11 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		//Fetch the filtered client-only list
 		$imported = $this->e->getDomainsWithClients( true, 1, 'imported' );
 		//The full ($all) list does NOT contain the same results as $imported
+		// ** AR: unset extra data for successful subset assertion
+		foreach($imported as $key => $val) {
+			unset($imported[$key]['whmcs_id']);
+			unset($imported[$key]['client']);
+		}
 		$this->assertArraySubset( $imported,
 			$all,
 			false,
