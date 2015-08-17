@@ -100,16 +100,18 @@ $stats = $this->getDomainVerificationStats();
 			$(".ep_tt").tooltip();
 		}
 		var verifyLabel = 'Click to see a full list of domains pending verification';
+		var $verification = $(".verification");
 		if (typeof(jQuery.fn.popover) == 'function') {
 			$(".pop").popover();
 			$(".verification:not('.disabled')").popover({
 				title: 'View All',
 				content: verifyLabel,
 				trigger: 'hover',
+				container: 'body',
 				placement: 'top'
 			});
 		} else {
-			$(".verification").attr('title', verifyLabel);
+			$verification.attr('title', verifyLabel);
 		}
 		$(".resendAuth").on('click', function  (){
 			var $this = $(this),
@@ -129,7 +131,7 @@ $stats = $this->getDomainVerificationStats();
 			});
 			return false;
 		});
-		$(".verification").on('click', function  (){
+		$verification.on('click', function  (){
 			var $verificationDomains = $(".verificationDomains");
 			$verificationDomains.removeClass('hidden');
 			var offset = $verificationDomains.offset().top;

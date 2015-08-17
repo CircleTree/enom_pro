@@ -152,6 +152,7 @@ if ( $doingSearch ):?>
 								   target="_blank"
 								   href="clientsdomains.php?userid=<?php echo $domain['client']['userid']; ?>&domainid=<?php echo $domain['whmcs_id']; ?>">
 									<?php echo $domain['client']['firstname'] . ' ' . $domain['client']['lastname']; ?>
+									<span class="enom-pro-icon-checkmark"></span>
 								</a>
 							</p>
 						</div>
