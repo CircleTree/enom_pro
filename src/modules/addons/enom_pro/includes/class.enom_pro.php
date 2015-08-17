@@ -3037,8 +3037,8 @@ class enom_pro {
 	}
 
 	/**
-	 * replacement for getclientsdomains (@see fetchWHMCSDomains method) to run all clients in a single query
-
+	 * replacement for getclientsdomains to run all clients in a single query
+	 * @see fetchWHMCSDomains method
 	 */
 	private function whmcsGetClientsDomains() {
 
