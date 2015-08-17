@@ -147,7 +147,8 @@ function get_enom_pro_widget_form( $action, $id ) {
 	<form id="<?php echo $id; ?>" class="refreshbutton" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 		<input type="hidden" name="<?php echo $action; ?>" value="1" />
 		<button type="submit" class="btn btn-default btn-xs">
-			Refresh <span class="enom-pro-icon enom-pro-icon-refresh-alt"></span>
+			Refresh
+			<span class="enom-pro-icon enom-pro-icon-refresh-alt"></span>
 		</button>
 	</form>
 	<?php
@@ -166,6 +167,10 @@ function enom_pro_admin_head_output() {
 	//	Only load on applicable pages
 	$pages      = array( 'index.php', 'addonmodules.php', 'configadminroles.php' );
 	$scriptName = basename( $_SERVER['SCRIPT_NAME'] );
+	if ( 'addonmodules.php' == $scriptName && isset( $_GET['module'] ) && 'enom_pro' != $_GET['module'] ) {
+		//Don't load on other addon pages
+		return null;
+	}
 	if ( in_array( $scriptName, $pages ) ) {
 		//Include our class if needed
 		if ( ! class_exists( 'enom_pro' ) ) {
@@ -174,14 +179,15 @@ function enom_pro_admin_head_output() {
 		ob_start(); ?>
 		<script>
 			var enom_pro = {
-				isBeta  : <?php echo enom_pro::isBeta() ? 'true': 'false'; ?>,
-				version : "<?php echo ENOM_PRO_VERSION ?>",
+				isBeta: <?php echo enom_pro::isBeta() ? 'true': 'false'; ?>,
+				version:  "<?php echo ENOM_PRO_VERSION ?>",
 				adminurl: "<?php echo enom_pro::MODULE_LINK ?>"
 			};
 		</script>
 		<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="../modules/addons/enom_pro/css/admin.min.css" />
-		<script src="<?php echo enom_pro::MODULE_LINK ?>&action=getAdminJS&version=<?php echo urlencode( ENOM_PRO_VERSION ) ?>"></script>
+		<script
+			src="<?php echo enom_pro::MODULE_LINK ?>&action=getAdminJS&version=<?php echo urlencode( ENOM_PRO_VERSION ) ?>"></script>
 		<?php if ( isset( $_GET['module'] ) && 'enom_pro' == $_GET['module'] ) : ?>
 			<?php //Don't include these on the admin roles page to prevent unintended conflicts / regressions ?>
 			<?php if ( isset( $_GET['view'] ) && 'domain_import' == $_GET['view'] ) : ?>
@@ -195,8 +201,6 @@ function enom_pro_admin_head_output() {
 		ob_end_clean();
 
 		return $return;
-	} else {
-		return '';
 	}
 }
 
@@ -398,8 +402,8 @@ function enom_pro_cron() {
 
 	$salt = 'lJsif3n1F9GKeSIdM9VAeJrrPC1grpBpSZLtWMb';
 	require_once 'enom_pro.php';
-	$enom = new enom_pro();
-	$lock = $enom->get_addon_setting( 'cron_lock' );
+	$enom     = new enom_pro();
+	$lock     = $enom->get_addon_setting( 'cron_lock' );
 	$new_lock = md5( strrev( $salt ) . date( 'Ymd' ) . $salt );
 	if ( empty( $lock ) || false === $lock || $lock !== $new_lock ) {
 		echo ENOM_PRO . ': Begin CRON' . PHP_EOL;
