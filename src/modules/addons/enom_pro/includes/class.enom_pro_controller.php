@@ -163,7 +163,11 @@ class enom_pro_controller {
 			);
 		} catch ( Exception $e ) {
 			sleep( 2 );//Add a delay to avoid DDOS'ing enom.com
-			$response = array( 'error' => $e->getMessage() );
+			$message  = $e->getMessage();
+			if ("" == trim($message)) {
+				$message = "cURL Error. Please try again later";
+			}
+			$response = array( 'error' => $message );
 		}
 		header( 'Content-Type: application/json' );
 		self::sendGzipped( json_encode( $response ) );
@@ -323,8 +327,7 @@ class enom_pro_controller {
 		if ( $this->is_ajax() ) {
 			$this->send_json( array( 'hidden' ) );
 		} else {
-			if ( isset( $_SERVER['HTTP_REFERER'] ) && strstr( $_SERVER['HTTP_REFERER'],
-					'enom_pro' )
+			if ( isset( $_SERVER['HTTP_REFERER'] ) && strstr( $_SERVER['HTTP_REFERER'], 'enom_pro' )
 			) {
 				$location = 'addonmodules.php?module=enom_pro';
 			} else {

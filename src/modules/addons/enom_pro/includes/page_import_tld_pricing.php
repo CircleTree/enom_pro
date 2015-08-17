@@ -257,7 +257,7 @@ if ( $this->is_pricing_cached() ) : ?>
 
 								}
 								?>
-								<input type="checkbox" class="tldCheck" name="<?php echo $tld ?>"<?php echo $this->is_tld_saved( $tld ) ? ' checked' : ''; ?> />
+								<input type="checkbox" class="tldCheck ep_pop" name="<?php echo $tld ?>"<?php echo $this->is_tld_saved( $tld ) ? ' checked' : ''; ?> title="Toggle Importing this TLD" data-content="Save this TLD to the set to be imported" data-placement="left"/>
 
 								<div class="<?php echo implode( ' ',
 									$action_classes ); ?>" <?php if ( $thisTLDError ) : ?> title="Error from eNom API" data-content="<?php echo $thisTLDError ?>" <?php endif; ?>>

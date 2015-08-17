@@ -47,9 +47,9 @@ class enom_pro {
 	/**
 	 * Relative admin URL to the module addon page
 	 */
-	const MODULE_LINK   = 'addonmodules.php?module=enom_pro';
-	const CHANGELOG_URI = 'http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43';
-	const DOMAIN_CACHE_VERSION = 2;
+	const MODULE_LINK             = 'addonmodules.php?module=enom_pro';
+	const CHANGELOG_URI           = 'http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43';
+	const DOMAIN_CACHE_VERSION    = 2;
 	const CLIENT_LIST_AJAX_LENGTH = 10;
 	/**
 	 * Is the current request executing via PHP CLI?
@@ -1601,10 +1601,8 @@ class enom_pro {
 		$show_only_unimported = $show_only == 'unimported' ? true : false;
 		$show_only_imported   = $show_only == 'imported' ? true : false;
 		$return               = array();
-		if ( $show_only_unimported ) {
+		if ( ! $show_only_unimported ) {
 			//Only cache if used
-			// ** AR: replace API calls with single query
-			// $this->fetchWHMCSDomains( count( $domains ) );
 			$this->whmcsGetClientsDomains();
 		}
 		foreach ( $domains as $key => $domain ) {

@@ -50,7 +50,8 @@ try {
 		});
 		if (typeof(jQuery.fn.popover) == "function") {
 			$(".ep_pop").popover({
-				trigger: 'hover'
+				trigger: 'hover',
+				container: 'body'
 			});
 		}
 		$(".ep_lightbox").on('click', function () {
@@ -619,8 +620,10 @@ try {
 				this.ajaxLoadJS('jquery.ajaxq.js').done(function () {
 
 					var $importTableForm = $("#import_table_form"), whois_cache = Array, localStorage;
-					$importTableForm.on('ajaxComplete', function () {
-						$(".domain_whois").trigger('getwhois');
+					$(document).on('ajaxComplete', function (e, xhr, settings) {
+						if (-1 !== settings.url.indexOf('render_import_table')) {
+							$(".domain_whois").trigger('getwhois');
+						}
 					});
 					if (typeof (window.localStorage) == 'object') {
 						localStorage = window.localStorage;
@@ -712,7 +715,7 @@ try {
 								$loader.addClass('hidden');
 							},
 							error:      function (xhr) {
-								var json = false;
+								var json = 'Error loading WHOIS';
 								try {
 									json = $.parseJSON(xhr.responseText)
 								} catch (err) {
@@ -726,7 +729,8 @@ try {
 					});
 					window.onbeforeunload = function () {
 						if (jQuery.ajaxq.isRunning('whois')) {
-							return 'Fetching WHOIS still in progress\nAbort?';
+							return 'Fetching WHOIS still in progress\n' +
+									'Abort?';
 						}
 						jQuery.ajaxq.abort('whois');
 					};
@@ -755,19 +759,19 @@ try {
 							$alert.find('.create_order').data('email', data.email);
 						}
 						var $response = $target.find('.response');
-						var label = data.error || ('Found: ' + data.email);
+						var label = data.error || ('WHOIS Email: <span class="whois-email">' + data.email + '</span>');
 						$response.html(label);
-						if (!data.error) {
+						if (! data.error) {
 							$alert.removeClass('alert-danger').addClass('alert-warning');
 							$alert.find('.create_order').removeClass('btn-primary').addClass('btn-success');
 						} else {
-							$('<button class="btn btn-danger"><span class="enom-pro-icon enom-pro-icon-warning"></span> Try Again?</button>').on('click',
-																																																																	 function () {
-																																																																		 if (localStorage) {
-																																																																			 localStorage.removeItem($target.data('domain'));
-																																																																		 }
-																																																																		 $(this).addClass('disabled');
-																																																																	 }).appendTo($response);
+							$('<button class="btn btn-danger btn-xs"><span class="enom-pro-icon enom-pro-icon-warning"></span> Try Again?</button>')
+									.on('click', function () {
+												if (localStorage) {
+													localStorage.removeItem($target.data('domain'));
+												}
+												$(this).addClass('disabled');
+											}).appendTo($response);
 						}
 						$target.find('.enom_pro_loader').addClass('hidden');
 					}
@@ -1057,8 +1061,8 @@ try {
 					$homeHelp.html(enom_pro.loadingString);
 					var feedURL = "http://mycircletree.com/client-area/knowledgebaserss.php?catid=11" + (
 									enom_pro.isBeta ?
-							"&rand=" +
-							Math.random(1, 1000) : '');
+									"&rand=" +
+									Math.random(1, 1000) : '');
 					if (doingSearch) {
 						feedURL += "&s=" + search;
 					}

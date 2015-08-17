@@ -20,7 +20,7 @@ Licensed from Orion IP Ventures, LLC
 	*****/
 }
 .enom_pro_output PRE.api_error {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   overflow: scroll;
   height: 200px;
   padding: 10px;
@@ -28,9 +28,9 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output PRE.code {
   margin: 20px;
   padding: 10px;
-  background-color: #EFEFEF;
+  background-color: #efefef;
   font-family: Verdana;
-  border: 1px solid #3A87AD;
+  border: 1px solid #3a87ad;
 }
 .enom_pro_output PRE.code.inline {
   display: inline-block;
@@ -55,13 +55,13 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output #helpWrapper H1 {
   margin-top: 20px;
   margin-bottom: 15px;
-  border-bottom: 1px solid #DDDDDD;
+  border-bottom: 1px solid #dddddd;
   font-size: 16pt;
   font-weight: bold;
 }
 .enom_pro_output #helpWrapper H2 {
   font-size: 15pt;
-  border-bottom: 1px solid #DDDDDD;
+  border-bottom: 1px solid #dddddd;
   margin-bottom: 20px;
   margin-top: 10px;
 }
@@ -70,7 +70,7 @@ Licensed from Orion IP Ventures, LLC
 }
 .enom_pro_output #helpWrapper H4 {
   font-size: 14pt;
-  border-bottom: 1px solid #3A87AD;
+  border-bottom: 1px solid #3a87ad;
   margin-top: 3px;
   margin-bottom: 10px;
 }
@@ -86,9 +86,9 @@ Licensed from Orion IP Ventures, LLC
   width: calc(45%);
   float: left;
   padding: 5px;
-  border-bottom: 1px solid #DDD;
-  border-right: 1px solid #E9E9E9;
-  background-color: #F7FCFE;
+  border-bottom: 1px solid #dddddd;
+  border-right: 1px solid #e9e9e9;
+  background-color: #f7fcfe;
   margin-bottom: 6px;
   margin-right: 5px;
 }
@@ -133,7 +133,7 @@ Licensed from Orion IP Ventures, LLC
   width: 16px;
   height: 16px;
   background-image: url(../images/loading-small.gif);
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   /*+border-radius:8px;*/
   -moz-border-radius: 8px;
   -webkit-border-radius: 8px;
@@ -141,14 +141,25 @@ Licensed from Orion IP Ventures, LLC
   border-radius: 8px;
 }
 .enom_pro_output .enom_pro_loader.small.whois {
-  text-indent: 10px;
+  text-indent: 20px;
   width: 120px;
   background-position: left center;
+  padding-right: 10px;
+}
+.enom_pro_output #enom_pro_import_page #import_table_form {
+  min-height: 400px;
 }
 .enom_pro_output #enom_pro_import_page .enom_pro_loader {
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   float: left;
+}
+.enom_pro_output #enom_pro_import_page #top_loader {
+  position: absolute;
+  margin-top: -10px;
+}
+.enom_pro_output #enom_pro_import_page #loader_bottom {
+  position: relative;
 }
 .enom_pro_output .domain_whois {
   position: relative;
@@ -160,7 +171,7 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output .btn.btn-success:visited,
 .enom_pro_output .btn-primary,
 .enom_pro_output .btn-primary:visited {
-  color: #FFFFFF;
+  color: #ffffff;
   text-decoration: none;
 }
 .enom_pro_output .btn.large {
@@ -172,8 +183,8 @@ Licensed from Orion IP Ventures, LLC
   text-align: center;
 }
 .enom_pro_output #enom_pro_transfers_table TH {
-  background-color: #D9EDF7;
-  border-bottom: 1px solid #3A87AD;
+  background-color: #d9edf7;
+  border-bottom: 1px solid #3a87ad;
 }
 .enom_pro_output #enom_pro_transfers_table .none TH {
   font-weight: normal;
@@ -184,7 +195,7 @@ Licensed from Orion IP Ventures, LLC
   padding-left: 5px;
   padding-right: 5px;
   text-align: center;
-  background-color: #EBEBEB;
+  background-color: #ebebeb;
 }
 .enom_pro_output #enom_pro_transfers_table .domain_name {
   display: inline-block;
@@ -199,7 +210,7 @@ Licensed from Orion IP Ventures, LLC
   text-align: center;
 }
 .enom_pro_output #enombalance .alert-danger {
-  border: 3px outset #B94A48;
+  border: 3px outset #b94a48;
   /*+border-radius:8px;*/
   -moz-border-radius: 8px;
   -webkit-border-radius: 8px;
@@ -208,14 +219,14 @@ Licensed from Orion IP Ventures, LLC
 }
 .enom_pro_output #enombalance .alert-danger.inset {
   border-style: inset;
-  background-color: #EED4D8;
+  background-color: #eed4d8;
 }
 .enom_pro_output #import_table {
   width: 100%;
 }
 .enom_pro_output .table-hover TD {
-  background-color: #F5F5F5;
-  border-bottom: 1px solid #D9EDF7;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #d9edf7;
 }
 .enom_pro_output #import_table TD {
   text-align: right;
@@ -226,7 +237,7 @@ Licensed from Orion IP Ventures, LLC
 }
 .enom_pro_output #import_table TH {
   background-color: #f4f4f4;
-  border-bottom: 1px solid #EBEBEB;
+  border-bottom: 1px solid #ebebeb;
   font-size: 12pt;
   font-weight: normal;
 }
@@ -237,8 +248,8 @@ Licensed from Orion IP Ventures, LLC
   margin-bottom: 0;
 }
 .enom_pro_output .table-hover TR:hover TD {
-  background-color: #FFFFFF;
-  border-bottom: 1px solid #BCE8F1;
+  background-color: #ffffff;
+  border-bottom: 1px solid #bce8f1;
 }
 .enom_pro_output #enom_pro_import_page {
   position: relative;
@@ -248,7 +259,7 @@ Licensed from Orion IP Ventures, LLC
   position: absolute;
   right: 0px;
   top: -50px;
-  border-bottom: 1px solid #BCE8F1;
+  border-bottom: 1px solid #bce8f1;
   background-color: #ffffff;
 }
 .enom_pro_output a.btn-primary,
@@ -261,7 +272,7 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output a.btn-info:hover,
 .enom_pro_output a.btn-inverse:hover,
 .enom_pro_output a.btn-warning:hover {
-  color: #EEEEEE;
+  color: #eeeeee;
   text-decoration: none;
 }
 .enom_pro_output a.btn-primary:active,
@@ -269,7 +280,7 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output a.btn-info:active,
 .enom_pro_output a.btn-inverse:active,
 .enom_pro_output a.btn-warning:active {
-  text-shadow: 1px 1px 2px #000;
+  text-shadow: 1px 1px 2px #000000;
 }
 .enom_pro_output #meta td {
   vertical-align: top;
@@ -283,7 +294,7 @@ Licensed from Orion IP Ventures, LLC
   -webkit-border-radius: 5px;
   -khtml-border-radius: 5px;
   border-radius: 5px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   padding: 10px;
   margin-top: 10px;
 }
@@ -295,7 +306,7 @@ Licensed from Orion IP Ventures, LLC
   color: #000000;
   line-height: 1.5;
   margin: 5px 0 3px;
-  border-bottom: 1px solid #D6E9C6;
+  border-bottom: 1px solid #d6e9c6;
 }
 .enom_pro_output #enom_pro_changelog UL {
   margin: 0 0 3px;
@@ -350,13 +361,6 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output .slideup.fixed .alert P {
   margin: 0;
 }
-.enom_pro_output #enom_pro_import_page #top_loader {
-  position: absolute;
-  margin-top: -10px;
-}
-.enom_pro_output #enom_pro_import_page #loader_bottom {
-  position: relative;
-}
 .enom_pro_output #domain_caches {
   width: 386px;
   vertical-align: top;
@@ -381,7 +385,7 @@ Licensed from Orion IP Ventures, LLC
   margin-bottom: 50px;
 }
 .enom_pro_output #loading_pricing .loadedTLD {
-  background-color: #DDDDDD;
+  background-color: #dddddd;
   margin: 15px auto;
   width: 240px;
 }
@@ -389,14 +393,14 @@ Licensed from Orion IP Ventures, LLC
   margin-bottom: 20px;
 }
 .enom_pro_output #loading_pricing .enom_pro_loader {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   padding: 10px 20px;
   /*+border-radius:10px;*/
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   -khtml-border-radius: 10px;
   border-radius: 10px;
-  border: 1px solid #BCE8F1;
+  border: 1px solid #bce8f1;
 }
 .enom_pro_output a[target='_blank'] {
   cursor: alias;
@@ -425,11 +429,10 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output #create_order_dialog FIELDSET LEGEND {
   font-size: 12pt;
   margin-bottom: 5px;
-  border-bottom: 1px solid #C0D9EF;
+  border-bottom: 1px solid #c0d9ef;
 }
 .enom_pro_output #create_order_dialog #nextduedate,
 .enom_pro_output #create_order_dialog #expiresdate {
-  width: 45%;
   padding: 0;
   text-align: center;
 }
@@ -446,10 +449,17 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output #order_process .row {
   margin: inherit;
 }
+.enom_pro_output #order_process .row fieldset .checkbox {
+  margin: 0;
+}
+.enom_pro_output #order_process .row fieldset .checkbox label {
+  display: block;
+  text-align: left;
+}
 .enom_pro_output #create_order_dialog .help-block {
   text-align: center;
   font-style: italic;
-  color: #8F8F8F;
+  color: #8f8f8f;
 }
 .enom_pro_output #create_order_dialog.ui-dialog-content {
   overflow-y: auto;
@@ -544,7 +554,7 @@ Licensed from Orion IP Ventures, LLC
   font-size: 24pt;
 }
 .enom_pro_output .fixedBulk #bulkLeftWrap {
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
   padding: 3px;
   width: 25%;
   margin: 0;
@@ -678,7 +688,7 @@ Licensed from Orion IP Ventures, LLC
   padding-left: 0;
 }
 .enom_pro_output #enom_pro_beta_changelog .current-version {
-  background-color: #F8AC01;
+  background-color: #f8ac01;
   overflow: visible;
   position: relative;
 }
@@ -687,7 +697,7 @@ Licensed from Orion IP Ventures, LLC
   position: absolute;
   left: -16px;
   overflow: visible;
-  color: #E09A47;
+  color: #e09a47;
 }
 .enom_pro_output #enom_pro_beta_changelog ul li .sha,
 .enom_pro_output #enom_pro_beta_changelog ul li .date {
@@ -703,9 +713,9 @@ Licensed from Orion IP Ventures, LLC
 }
 .enom_pro_output #enom_pro_beta_changelog ul li .betaLogItem {
   display: inline-block;
-  color: #000;
+  color: #000000;
   text-indent: 5px;
-  text-shadow: 0 1px 2px #FFF;
+  text-shadow: 0 1px 2px #ffffff;
   font-style: italic;
 }
 @font-face {
@@ -874,12 +884,12 @@ Top level DOM items
   -khtml-border-radius: 4px;
   border-radius: 4px;
   /*+box-shadow:0px 0px 10px #000;*/
-  -moz-box-shadow: 0px 0px 10px #000;
-  -webkit-box-shadow: 0px 0px 10px #000;
-  -o-box-shadow: 0px 0px 10px #000;
-  box-shadow: 0px 0px 10px #000;
-  border: 1px solid #111;
-  background-color: #EEE;
+  -moz-box-shadow: 0px 0px 10px #000000;
+  -webkit-box-shadow: 0px 0px 10px #000000;
+  -o-box-shadow: 0px 0px 10px #000000;
+  box-shadow: 0px 0px 10px #000000;
+  border: 1px solid #111111;
+  background-color: #eeeeee;
   padding: 5px;
 }
 #tooltip H3,
@@ -899,7 +909,7 @@ Top level DOM items
   overflow: auto;
 }
 .content-container .enom_pro_output table th {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 /**END Swiftmods admin tweaks */
 /** Whmcs V4 Tweaks */
