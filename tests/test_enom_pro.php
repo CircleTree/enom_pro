@@ -315,14 +315,14 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	function  test_get_domains_show_all() {
 
 		//Fetch the full list of domains with clients to compare against
-		$all      = $this->e->getDomainsWithClients( true, 1 );
+		$all = $this->e->getDomainsWithClients( true, 1 );
 		//Fetch the filtered client-only list
 		$imported = $this->e->getDomainsWithClients( true, 1, 'imported' );
 		//The full ($all) list does NOT contain the same results as $imported
 		// ** AR: unset extra data for successful subset assertion
-		foreach($imported as $key => $val) {
-			unset($imported[$key]['whmcs_id']);
-			unset($imported[$key]['client']);
+		foreach ( $imported as $key => $val ) {
+			unset( $imported[ $key ]['whmcs_id'] );
+			unset( $imported[ $key ]['client'] );
 		}
 		$this->assertArraySubset( $imported,
 			$all,
