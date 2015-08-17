@@ -1601,7 +1601,7 @@ class enom_pro {
 		$show_only_unimported = $show_only == 'unimported' ? true : false;
 		$show_only_imported   = $show_only == 'imported' ? true : false;
 		$return               = array();
-		if ( $show_only_unimported || $show_only_imported ) {
+		if ( $show_only_unimported ) {
 			//Only cache if used
 			// ** AR: replace API calls with single query
 			// $this->fetchWHMCSDomains( count( $domains ) );

@@ -86,7 +86,7 @@ if ( $doingSearch ):?>
 									<?php $pretty_date_format = 'Y/m/d'; ?>
 									<?php $whmcs_date_format = 'Ymd'; ?>
 									<?php $expiration = $domain['expiration']; ?>
-									<?php if ( $due_relative == 'Expiration Date' ) : ?>
+									<?php if ( 'Expiration Date' == $due_relative ) : ?>
 										<?php $nextduedate = date( $whmcs_date_format, strtotime( $expiration ) ); ?>
 										<?php $nextduedate_pretty = date( $pretty_date_format,
 											strtotime( $expiration ) ); ?>
