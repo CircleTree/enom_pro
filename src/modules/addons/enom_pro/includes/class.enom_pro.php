@@ -31,22 +31,6 @@ class EnomException extends Exception {
  */
 class enom_pro {
 
-	private $xml;
-	private $response;
-	private $URL;
-	/**
-	 * Settings db cache
-	 * @var array
-	 */
-	private static $settings = array();
-	private static $debug;
-	public $license;
-	private $retry_count = 0;
-	/**
-	 * Is the current request executing via PHP CLI?
-	 * @var bool
-	 */
-	public static $cli = false;
 	const RETRY_LIMIT = 2;
 	/**
 	 * Install service order URL
@@ -65,6 +49,44 @@ class enom_pro {
 	 */
 	const MODULE_LINK   = 'addonmodules.php?module=enom_pro';
 	const CHANGELOG_URI = 'http://mycircletree.com/client-area/knowledgebase.php?action=displayarticle&id=43';
+	const DOMAIN_CACHE_VERSION = 2;
+	const CLIENT_LIST_AJAX_LENGTH = 10;
+	/**
+	 * Is the current request executing via PHP CLI?
+	 * @var bool
+	 */
+	public static $cli = false;
+	/**
+	 * Settings db cache
+	 * @var array
+	 */
+	private static $settings = array();
+	private static $debug;
+	/**
+	 * Is the module running in live or test mode?
+	 * @var bool
+	 */
+	private static $testMode = false;
+	private static $whmcsCurrencyData = false;
+	private static $ssl_email_id = null;
+	private static $widgets = array(
+		'enom_pro_admin_balance',
+		'enom_pro_admin_expiring_domains',
+		'enom_pro_admin_pending_domain_verification',
+		'enom_pro_admin_transfers',
+		'enom_pro_admin_ssl_certs'
+	);
+	public $license;
+	public $ssl_reminder_cert_status_ids = array(
+		0, //CertID not set
+		4, //Certificate Issued
+		//		8, //Refunded - Cert Issued
+		13, //Cert Installed (associate with our hosting)
+	);
+	private $xml;
+	private $response;
+	private $URL;
+	private $retry_count = 0;
 	/**
 	 * implemented API commands
 	 * @var array $commands
@@ -108,7 +130,6 @@ class enom_pro {
 	 * @var string
 	 */
 	private $cache_file_all_tlds;
-
 	/**
 	 * Exchange Rate cache
 	 * @var string
@@ -116,6 +137,58 @@ class enom_pro {
 	private $cache_file_exchange_rate;
 	private $parameters = array();
 	private $cache_file_verification_report;
+	/**
+	 * XML Override check. Used for unit tests.
+	 * @var boolean
+	 */
+	private $xml_override = false;
+	/**
+	 * Request number limit for remote API transactions
+	 * @var int
+	 */
+	private $api_request_limit;
+	/**
+	 * Current remote API transaction number
+	 * @var number $remote_run_number
+	 */
+	private $remote_run_number = 0;
+	/**
+	 * Current remote limit being requested
+	 * @var int $remote_limit
+	 */
+	private $remote_limit = 0;
+	/**
+	 * Remote offset / start
+	 * @var int
+	 */
+	private $remote_start = 0;
+	/**
+	 * Last domains result
+	 * @var array
+	 */
+	private $last_result = null;
+	/**
+	 * Number of results
+	 * @var number
+	 */
+	private $last_result_count = 0;
+	/**
+	 * Number of results
+	 * @var number
+	 */
+	private $limit = true;
+	/**
+	 * Has the remote record limit # been reached
+	 * @var bool
+	 */
+	private $remote_limit_reached = true;
+	/**
+	 * Is the current getDomains request for all domains
+	 * @var bool
+	 */
+	private $is_get_all_domains = false;
+	private $cache_key = '1 Nu`RvWf6hz(JFyqBD!`;TNg}e= b*z&l%[(|5pTL(16uuY-BOQC2Z+SHKu>NvW';
+	private $whmcsClientDomains = array();
 
 	/**
 	 * eNom API Class
@@ -138,7 +211,6 @@ class enom_pro {
 		}
 	}
 
-
 	/**
 	 * Override api limit for specific request types
 	 *
@@ -148,6 +220,7 @@ class enom_pro {
 
 		$this->api_request_limit = $number;
 	}
+	// @codeCoverageIgnoreEnd
 
 	/**
 	 * Gets currently configured remote API request limit
@@ -166,43 +239,6 @@ class enom_pro {
 		$this->runTransaction( "CheckLogin" );
 
 		return true;
-	}
-
-	/**
-	 * Is the module running in live or test mode?
-	 * @var bool
-	 */
-	private static $testMode = false;
-
-	private function get_login_credientials() {
-
-		if ( defined( 'UNIT_TESTS' ) ) {
-			$params = array(
-				'TestMode' => 'on',
-				'Username' => ENOM_USERNAME,
-				'Password' => ENOM_PASSWORD,
-			);
-		} else {
-			//@codeCoverageIgnoreStart
-			//Make sure WHMCS only includes these files if the function we're calling is undefined
-			if ( ! function_exists( 'getRegistrarConfigOptions' ) ) {
-				require_once( ROOTDIR . "/includes/functions.php" );
-				require( ROOTDIR . "/includes/registrarfunctions.php" );
-			}
-			//Get the login info
-			$params = getRegistrarConfigOptions( "enom" );
-			// @codeCoverageIgnoreEnd
-		}
-		//Clean up the testmode to a (bool)
-		$live           = ( $params['TestMode'] == 'on' ) ? false : true;
-		self::$testMode = ! $live;
-		//Set the API url
-		$this->URL = ( $live ? 'http://reseller.enom.com/interface.asp' : 'http://resellertest.enom.com/interface.asp' );
-		//Build the initial connection test
-		$this->setParams( array(
-			'uid' => $params['Username'],
-			'pw'  => $params['Password']
-		) );
 	}
 
 	/**
@@ -361,14 +397,6 @@ class enom_pro {
 		$this->runTransaction( 'TP_ResubmitLocked' );
 	}
 
-	private function get_transfer_order_detail_id( $orderid ) {
-
-		$this->setParams( array( 'TransferOrderID' => $orderid ) );
-		$this->runTransaction( 'TP_GetOrder' );
-
-		return (int) $this->xml->transferorder->transferorderdetail->transferorderdetailid;
-	}
-
 	/**
 	 * Converts all array values to uppercase
 	 *
@@ -384,24 +412,6 @@ class enom_pro {
 		}
 
 		return $return;
-	}
-
-	/**
-	 * @throws EnomException
-	 */
-	private function parse_errors() {
-
-		$errs      = $this->xml->ErrCount;
-		$i         = 1;
-		$exception = new EnomException( (string) $this->xml->responses->response->ResponseString,
-			(int) $this->xml->responses->response->ResponseNumber );
-		while ( $i <= $errs ) {
-			$string = 'Err' . $i;
-			$error  = (string) $this->xml->errors->$string;
-			$exception->set_error( $error );
-			$i ++;
-		}
-		throw $exception;
 	}
 
 	/**
@@ -488,39 +498,6 @@ class enom_pro {
 		}
 		// @codeCoverageIgnoreStart
 	}
-	// @codeCoverageIgnoreEnd
-	/**
-	 * Loads XML
-	 *
-	 * @param string $string well formed XML string
-	 */
-	private function load_xml( $string ) {
-
-		//Increment the remote API counter
-		$this->remote_run_number ++;
-		//Use simpleXML to parse the XML string
-		libxml_use_internal_errors( true );
-		$this->xml = simplexml_load_string( $string,
-			'SimpleXMLElement',
-			LIBXML_NOCDATA );
-	}
-
-	/**
-	 * Parses the domain name using the API into TLD/SLD
-	 *
-	 * @param  string $domainName
-	 *
-	 * @return array('tld'=>'...','sld'=>'...');
-	 */
-	private function parseDomain( $domainName ) {
-
-		$this->setParams( array( 'PassedDomain' => $domainName ) );
-		$this->runTransaction( 'ParseDomain' );
-		$SLD = (string) $this->xml->ParseDomain->SLD;
-		$TLD = (string) $this->xml->ParseDomain->TLD;
-
-		return array( 'TLD' => $TLD, 'SLD' => $SLD );
-	}
 
 	/**
 	 * sets the domain name for the next command
@@ -587,18 +564,6 @@ class enom_pro {
 	}
 
 	/**
-	 * array_map callback for removing the . prefix from tlds
-	 *
-	 * @param $value
-	 *
-	 * @return string
-	 */
-	private static function ltrim_dot( $value ) {
-
-		return ltrim( $value, '.' );
-	}
-
-	/**
 	 * Gets saved TLDS
 	 * @return array
 	 */
@@ -614,6 +579,7 @@ class enom_pro {
 
 	/**
 	 * Deletes saved TLDs
+	 *
 	 * @param array $tlds
 	 */
 	public function delete_saved_tlds( array $tlds = array() ) {
@@ -714,18 +680,6 @@ class enom_pro {
 	}
 
 	/**
-	 * In-Memory cache of WHMCS API response to limit API requests
-	 */
-	private static function getWHMCSCurrencyData() {
-
-		if ( false === self::$whmcsCurrencyData ) {
-			self::$whmcsCurrencyData = self::whmcs_api( 'getcurrencies', array() );
-		}
-	}
-
-	private static $whmcsCurrencyData = false;
-
-	/**
 	 * Is a custom exchange rate set?
 	 * Lazy interface for dealing with WHMCS settings api
 	 * @return bool
@@ -813,8 +767,6 @@ class enom_pro {
 			'total'  => $allTLDsCount
 		);
 	}
-
-	const DOMAIN_CACHE_VERSION = 2;
 
 	/**
 	 * Checks cache file version & data integrity for TLD pricing import page
@@ -925,12 +877,6 @@ class enom_pro {
 	}
 
 	/**
-	 * XML Override check. Used for unit tests.
-	 * @var boolean
-	 */
-	private $xml_override = false;
-
-	/**
 	 * Load XML file for testing
 	 *
 	 * @param string $file path to valid XML file
@@ -1017,16 +963,6 @@ class enom_pro {
 		);
 
 		return $response;
-	}
-
-	private function isValidationCacheStale() {
-
-		return $this->cache_file_is_older_than( $this->cache_file_verification_report, '-5 Minutes' );
-	}
-
-	private function clearDomainVerificationCache() {
-
-		unlink( $this->cache_file_verification_report );
 	}
 
 	/**
@@ -1137,19 +1073,6 @@ class enom_pro {
 		return array_reverse( $response, true );
 	}
 
-	private function parse_xml_to_srv( array $record ) {
-
-		return array(
-			'service'  => $record['HostName'],
-			'protocol' => $record['Protocol'],
-			'priority' => $record['priority'],
-			'weight'   => $record['Weight'],
-			'port'     => $record['Port'],
-			'target'   => $record['Address'],
-			'hostid'   => $record['HostID'],
-		);
-	}
-
 	/**
 	 * @param array $records indexed array of records with form
 	 *     array(
@@ -1168,29 +1091,6 @@ class enom_pro {
 			$srv_index ++;
 		}
 		$this->runTransaction( 'SetDomainSRVHosts' );
-	}
-
-	private function parse_srv_params( $record, $index ) {
-
-		if ( isset( $record['hostid'] ) && trim( $record['hostid'] ) != "" ) {
-			$this->parameters[ 'HostID' . $index ] = $record['hostid'];
-		}
-		$this->parameters[ 'Service' . $index ]  = @ $this->parse_field( $record['service'] );
-		$this->parameters[ 'Protocol' . $index ] = @ $this->parse_field( $record['protocol'] );
-		$this->parameters[ 'Priority' . $index ] = @ $this->parse_field( $record['priority'] );
-		$this->parameters[ 'Weight' . $index ]   = @ $this->parse_field( $record['weight'] );
-		$this->parameters[ 'Port' . $index ]     = @ $this->parse_field( $record['port'] );
-		$this->parameters[ 'Target' . $index ]   = @ $this->parse_field( $record['target'] );
-	}
-
-	/**
-	 * Parses a field and returns an empty string if it's not set
-	 *
-	 * @param string $field
-	 */
-	private function parse_field( $field ) {
-
-		return isset( $field ) ? $field : '';
 	}
 
 	/**
@@ -1398,52 +1298,6 @@ class enom_pro {
 	}
 
 	/**
-	 * Request number limit for remote API transactions
-	 * @var int
-	 */
-	private $api_request_limit;
-	/**
-	 * Current remote API transaction number
-	 * @var number $remote_run_number
-	 */
-	private $remote_run_number = 0;
-	/**
-	 * Current remote limit being requested
-	 * @var int $remote_limit
-	 */
-	private $remote_limit = 0;
-	/**
-	 * Remote offset / start
-	 * @var int
-	 */
-	private $remote_start = 0;
-	/**
-	 * Last domains result
-	 * @var array
-	 */
-	private $last_result = null;
-	/**
-	 * Number of results
-	 * @var number
-	 */
-	private $last_result_count = 0;
-	/**
-	 * Number of results
-	 * @var number
-	 */
-	private $limit = true;
-	/**
-	 * Has the remote record limit # been reached
-	 * @var bool
-	 */
-	private $remote_limit_reached = true;
-	/**
-	 * Is the current getDomains request for all domains
-	 * @var bool
-	 */
-	private $is_get_all_domains = false;
-
-	/**
 	 * Get domains
 	 *
 	 * @param int|true   $limit true get all, otherwise number of records
@@ -1460,7 +1314,7 @@ class enom_pro {
 		}
 		if ( true === $this->limit || $this->limit >= 100 ) {
 			set_time_limit( 0 );
-			//No limit or gte 100 records 
+			//No limit or gte 100 records
 			$this->remote_limit = 100;
 			if ( $this->remote_run_number == 0 ) {
 				$this->remote_start = $start;
@@ -1534,63 +1388,6 @@ class enom_pro {
 		}
 
 		return $this->last_result;
-	}
-
-	private function write_domains_cache( array $domains ) {
-
-		$this->set_cached_data( $this->cache_file_all_domains, $domains );
-	}
-
-	private function get_domains_cache() {
-
-		return $this->get_cache_data( $this->cache_file_all_domains );
-	}
-
-	private $cache_key = '1 Nu`RvWf6hz(JFyqBD!`;TNg}e= b*z&l%[(|5pTL(16uuY-BOQC2Z+SHKu>NvW';
-
-	/**
-	 * @param string $file_path
-	 *
-	 * @return boolean|mixed false on no cache, mixed on success
-	 */
-	private function get_cache_data( $file_path ) {
-
-		if ( ! file_exists( $file_path ) ) {
-			return false;
-		} else {
-			$handle = fopen( $file_path, 'r' );
-			if ( false == filesize( $file_path ) ) {
-				return false;
-			}
-			$data = fread( $handle, filesize( $file_path ) );
-			fclose( $handle );
-			$md5             = substr( $data, 0, 32 );
-			$serialized_data = substr( $data, 32 );
-			if ( $md5 == $this->getSerializedHash( $serialized_data ) ) {
-				return unserialize( $serialized_data );
-			} else {
-				return false;
-			}
-		}
-	}
-
-	private function getSerializedHash( $serialized_data ) {
-
-		return md5( $this->cache_key . $serialized_data . str_rot13( $this->cache_key ) . strrev( $this->cache_key ) );
-	}
-
-	private function set_cached_data( $file_path, array $data ) {
-
-		$handle = fopen( $file_path, 'w' );
-		if ( false === $handle ) {
-			throw new Exception( 'Unable to open ' . dirname( $file_path ) . ' for writing. You will need to CHMOD 777 to continue' );
-		}
-		if ( count( $data ) > 0 ) {
-			$serialized_data = serialize( $data );
-			$md5             = $this->getSerializedHash( $serialized_data );
-			fwrite( $handle, $md5 . $serialized_data );
-		}
-		fclose( $handle );
 	}
 
 	/**
@@ -1699,39 +1496,6 @@ class enom_pro {
 		return $data['rate'];
 	}
 
-	private function get_Exchange_Rate_google( $to ) {
-
-		$to  = urlencode( $to );
-		$get = self::curl_get( "https://www.google.com/finance/converter",
-			array( 'a' => '1.00', 'from' => 'USD', 'to' => $to ) );
-		$get = explode( "<span class=bld>", $get );
-		$get = explode( "</span>", $get[1] );
-		$var = preg_replace( "/[^0-9\.]/", null, $get[0] );
-
-		return round( $var, 4 );
-	}
-
-	private function get_Exchange_rate_currency_API( $to ) {
-
-		$currency_code = urlencode( $to );
-		$api_key       = $this->get_addon_setting( 'exchange-rate-api-key' );
-		if ( $api_key ) {
-			$url       = "http://currency-api.appspot.com/api/USD/$currency_code.json";
-			$rate_resp = enom_pro::curl_get_json( $url,
-				array( 'key' => $api_key ) );
-		} else {
-			$rate_resp = enom_pro::curl_get_json( 'http://rate-exchange.appspot.com/currency',
-				array( 'from' => 'USD', 'to' => $currency_code ) );
-		}
-
-		return $rate_resp['rate'];
-	}
-
-	private function get_cache_file_time( $cache_file, $granularity = 2 ) {
-
-		return $this->time_ago( filemtime( $cache_file ), $granularity );
-	}
-
 	/**
 	 * @param int        $timestamp
 	 * @param int|number $granularity
@@ -1816,8 +1580,6 @@ class enom_pro {
 		return $return;
 	}
 
-	private $whmcsClientDomains = array();
-
 	/**
 	 * Gets domains with associated WHMCS clients
 	 *
@@ -1897,45 +1659,6 @@ class enom_pro {
 		}
 
 		return $response;
-	}
-
-	/**
-	 * Test interface for unit testing in WHMCS
-	 *
-	 * @param string $command
-	 * @param array  $data additional fields to pass to API
-	 *
-	 * @throws RemoteException
-	 * @return mixed
-	 */
-	private static function whmcs_curl( $command, $data ) {
-
-		$postfields                    = array();
-		$postfields["username"]        = WHMCS_API_UN;
-		$postfields["password"]        = md5( WHMCS_API_PW );
-		$postfields["action"]          = $command;
-		$postfields["responsetype"]    = "json";
-		$postfields["whmcsAPISilence"] = true; //We use this to silence the buggy whmcs API for development
-		$postfields                    = array_merge( $postfields, $data );
-
-		$ch = curl_init();
-		curl_setopt( $ch, CURLOPT_URL, WHMCS_API_URL );
-		curl_setopt( $ch, CURLOPT_POST, 1 );
-		curl_setopt( $ch, CURLOPT_TIMEOUT, 30 );
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-		curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $postfields ) );
-		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 0 );
-		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
-		$jsondata = curl_exec( $ch );
-		//@codeCoverageIgnoreStart
-		if ( curl_error( $ch ) ) {
-			throw new RemoteException( "cURL Error: " . curl_errno( $ch ) . ' - ' . curl_error( $ch ),
-				RemoteException::CURL_EXCEPTION );
-		}
-		//@codeCoverageIgnoreEnd
-		curl_close( $ch );
-
-		return json_decode( $jsondata, true );
 	}
 
 	/**
@@ -2025,35 +1748,6 @@ class enom_pro {
 		return $result;
 	}
 
-	private static function do_curl_post( $url, array $params, array $options = array() ) {
-
-		$postData = '';
-		//create name value pairs seperated by &
-		foreach ( $params as $k => $v ) {
-			$postData .= $k . '=' . $v . '&';
-		}
-		rtrim( $postData, '&' );
-
-		$defaults = array(
-			CURLOPT_URL            => $url,
-			CURLOPT_HEADER         => false,
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_TIMEOUT        => 15,
-			CURLOPT_SSL_VERIFYPEER => false,
-			CURLOPT_POST           => count( $params ),
-			CURLOPT_POSTFIELDS     => $postData
-		);
-
-		$ch = curl_init();
-		curl_setopt_array( $ch, ( $options + $defaults ) );
-
-		$output = curl_exec( $ch );
-
-		curl_close( $ch );
-
-		return $output;
-	}
-
 	/**
 	 * cURL get, and decodes JSON response
 	 *
@@ -2130,8 +1824,8 @@ class enom_pro {
 		if ( mysql_num_rows( $result ) == 1 ) {
 			//Update
 			self::query( "UPDATE  `tbladdonmodules` SET  `value` =  '" . $escValue . "'
-                    WHERE  `module` =  'enom_pro' 
-                    AND  `setting` =  '" . self::escape( $key ) . "' 
+                    WHERE  `module` =  'enom_pro'
+                    AND  `setting` =  '" . self::escape( $key ) . "'
                     LIMIT 1 ;" );
 		} else {
 			//Insert
@@ -2159,7 +1853,6 @@ class enom_pro {
 
 		return mysql_real_escape_string( $string );
 	}
-
 
 	/**
 	 * Query wrapper for handling errors
@@ -2201,7 +1894,6 @@ class enom_pro {
 		}
 	}
 
-
 	public function get_upgrade_zip_url() {
 
 		$license = new enom_pro_license();
@@ -2213,22 +1905,6 @@ class enom_pro {
 		}
 
 		return $url;
-	}
-
-
-	/**
-	 * Recursively remove a directory
-	 *
-	 * @param string $path full path of dir to remove
-	 */
-	private function rmdir( $path ) {
-
-		foreach (
-			new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $path, FilesystemIterator::SKIP_DOTS ),
-				RecursiveIteratorIterator::CHILD_FIRST ) as $path
-		) {
-			$path->isFile() ? unlink( $path->getPathname() ) : rmdir( $path->getPathname() );
-		}
 	}
 
 	public function do_upgrade() {
@@ -2376,14 +2052,6 @@ class enom_pro {
 		return $return;
 	}
 
-	private function migrate220() {
-
-		$legacy_version_file = ENOM_PRO_TEMP . 'version';
-		if ( file_exists( $legacy_version_file ) ) {
-			unlink( $legacy_version_file );
-		}
-	}
-
 	/**
 	 * Clears memory cache of data
 	 */
@@ -2504,13 +2172,6 @@ class enom_pro {
 		return $response;
 	}
 
-	public $ssl_reminder_cert_status_ids = array(
-		0, //CertID not set
-		4, //Certificate Issued
-		//		8, //Refunded - Cert Issued
-		13, //Cert Installed (associate with our hosting)
-	);
-
 	public function willCertificateReminderBeSent( array $certificate ) {
 
 		return in_array( $certificate['status_id'], $this->ssl_reminder_cert_status_ids );
@@ -2542,7 +2203,6 @@ class enom_pro {
 
 		return $reminder_count;
 	}
-
 
 	/**
 	 * @param string $domain domain name to search WHMCS for
@@ -2615,18 +2275,6 @@ class enom_pro {
 		}
 	}
 
-	/**
-	 * Format a timestamp into a date. Used for rounding days.
-	 *
-	 * @param int $ts unix timestamp
-	 *
-	 * @return string m-d-Y
-	 */
-	private function format_ts( $ts ) {
-
-		return date( 'm-d-Y', $ts );
-	}
-
 	public static function install_ssl_email() {
 
 		if ( self::is_ssl_email_installed() ) {
@@ -2640,8 +2288,6 @@ class enom_pro {
 
 		return mysql_insert_id();
 	}
-
-	private static $ssl_email_id = null;
 
 	/**
 	 * @return false or int template  id on installed
@@ -2658,14 +2304,6 @@ class enom_pro {
 
 		return self::$ssl_email_id;
 	}
-
-	private static $widgets = array(
-		'enom_pro_admin_balance',
-		'enom_pro_admin_expiring_domains',
-		'enom_pro_admin_pending_domain_verification',
-		'enom_pro_admin_transfers',
-		'enom_pro_admin_ssl_certs'
-	);
 
 	/**
 	 * Check for any enabled widgets for this role
@@ -2705,16 +2343,6 @@ class enom_pro {
 		echo '<script>';
 		echo $result['jquerycode'];
 		echo '</script>';
-	}
-
-	private static function is_widget_enabled_for_this_user( $function ) {
-
-		$whmcs_string  = substr( $function, 7 );
-		$role          = mysql_fetch_assoc( self::query( 'SELECT `roleid` FROM `tbladmins` WHERE `id` = ' . (int) $_SESSION['adminid'] ) );
-		$widgets       = mysql_fetch_assoc( self::query( 'SELECT `widgets` FROM `tbladminroles` WHERE `id` = ' . $role['roleid'] ) );
-		$widgets_array = explode( ',', $widgets['widgets'] );
-
-		return in_array( $whmcs_string, $widgets_array );
 	}
 
 	/**
@@ -2808,7 +2436,6 @@ class enom_pro {
 		return false;
 	}
 
-
 	/**
 	 * Serialize data, if needed.
 	 * @since 2.0.5
@@ -2835,7 +2462,8 @@ class enom_pro {
 		   target="_blank"
 		   href="<?php echo self::TICKET_URL ?>&subject=<?php echo urlencode( ENOM_PRO . ' Bug Report' ) . '&message=' . self::getSupportMessage(); ?>">
 			<span class="enom-pro-icon enom-pro-icon-support"></span>
-			BETA Mode<span class="enom-pro-icon enom-pro-icon-bug"></span>
+			BETA Mode
+			<span class="enom-pro-icon enom-pro-icon-bug"></span>
 		</a>
 		<?php
 	}
@@ -2963,7 +2591,364 @@ class enom_pro {
 		);
 	}
 
-	const CLIENT_LIST_AJAX_LENGTH = 10;
+	private function get_login_credientials() {
+
+		if ( defined( 'UNIT_TESTS' ) ) {
+			$params = array(
+				'TestMode' => 'on',
+				'Username' => ENOM_USERNAME,
+				'Password' => ENOM_PASSWORD,
+			);
+		} else {
+			//@codeCoverageIgnoreStart
+			//Make sure WHMCS only includes these files if the function we're calling is undefined
+			if ( ! function_exists( 'getRegistrarConfigOptions' ) ) {
+				require_once( ROOTDIR . "/includes/functions.php" );
+				require( ROOTDIR . "/includes/registrarfunctions.php" );
+			}
+			//Get the login info
+			$params = getRegistrarConfigOptions( "enom" );
+			// @codeCoverageIgnoreEnd
+		}
+		//Clean up the testmode to a (bool)
+		$live           = ( $params['TestMode'] == 'on' ) ? false : true;
+		self::$testMode = ! $live;
+		//Set the API url
+		$this->URL = ( $live ? 'http://reseller.enom.com/interface.asp' : 'http://resellertest.enom.com/interface.asp' );
+		//Build the initial connection test
+		$this->setParams( array(
+			'uid' => $params['Username'],
+			'pw'  => $params['Password']
+		) );
+	}
+
+	private function get_transfer_order_detail_id( $orderid ) {
+
+		$this->setParams( array( 'TransferOrderID' => $orderid ) );
+		$this->runTransaction( 'TP_GetOrder' );
+
+		return (int) $this->xml->transferorder->transferorderdetail->transferorderdetailid;
+	}
+
+	/**
+	 * @throws EnomException
+	 */
+	private function parse_errors() {
+
+		$errs      = $this->xml->ErrCount;
+		$i         = 1;
+		$exception = new EnomException( (string) $this->xml->responses->response->ResponseString,
+			(int) $this->xml->responses->response->ResponseNumber );
+		while ( $i <= $errs ) {
+			$string = 'Err' . $i;
+			$error  = (string) $this->xml->errors->$string;
+			$exception->set_error( $error );
+			$i ++;
+		}
+		throw $exception;
+	}
+
+	/**
+	 * Loads XML
+	 *
+	 * @param string $string well formed XML string
+	 */
+	private function load_xml( $string ) {
+
+		//Increment the remote API counter
+		$this->remote_run_number ++;
+		//Use simpleXML to parse the XML string
+		libxml_use_internal_errors( true );
+		$this->xml = simplexml_load_string( $string,
+			'SimpleXMLElement',
+			LIBXML_NOCDATA );
+	}
+
+	/**
+	 * Parses the domain name using the API into TLD/SLD
+	 *
+	 * @param  string $domainName
+	 *
+	 * @return array('tld'=>'...','sld'=>'...');
+	 */
+	private function parseDomain( $domainName ) {
+
+		$this->setParams( array( 'PassedDomain' => $domainName ) );
+		$this->runTransaction( 'ParseDomain' );
+		$SLD = (string) $this->xml->ParseDomain->SLD;
+		$TLD = (string) $this->xml->ParseDomain->TLD;
+
+		return array( 'TLD' => $TLD, 'SLD' => $SLD );
+	}
+
+	/**
+	 * array_map callback for removing the . prefix from tlds
+	 *
+	 * @param $value
+	 *
+	 * @return string
+	 */
+	private static function ltrim_dot( $value ) {
+
+		return ltrim( $value, '.' );
+	}
+
+	/**
+	 * In-Memory cache of WHMCS API response to limit API requests
+	 */
+	private static function getWHMCSCurrencyData() {
+
+		if ( false === self::$whmcsCurrencyData ) {
+			self::$whmcsCurrencyData = self::whmcs_api( 'getcurrencies', array() );
+		}
+	}
+
+	private function isValidationCacheStale() {
+
+		return $this->cache_file_is_older_than( $this->cache_file_verification_report, '-5 Minutes' );
+	}
+
+	private function clearDomainVerificationCache() {
+
+		unlink( $this->cache_file_verification_report );
+	}
+
+	private function parse_xml_to_srv( array $record ) {
+
+		return array(
+			'service'  => $record['HostName'],
+			'protocol' => $record['Protocol'],
+			'priority' => $record['priority'],
+			'weight'   => $record['Weight'],
+			'port'     => $record['Port'],
+			'target'   => $record['Address'],
+			'hostid'   => $record['HostID'],
+		);
+	}
+
+	private function parse_srv_params( $record, $index ) {
+
+		if ( isset( $record['hostid'] ) && trim( $record['hostid'] ) != "" ) {
+			$this->parameters[ 'HostID' . $index ] = $record['hostid'];
+		}
+		$this->parameters[ 'Service' . $index ]  = @ $this->parse_field( $record['service'] );
+		$this->parameters[ 'Protocol' . $index ] = @ $this->parse_field( $record['protocol'] );
+		$this->parameters[ 'Priority' . $index ] = @ $this->parse_field( $record['priority'] );
+		$this->parameters[ 'Weight' . $index ]   = @ $this->parse_field( $record['weight'] );
+		$this->parameters[ 'Port' . $index ]     = @ $this->parse_field( $record['port'] );
+		$this->parameters[ 'Target' . $index ]   = @ $this->parse_field( $record['target'] );
+	}
+
+	/**
+	 * Parses a field and returns an empty string if it's not set
+	 *
+	 * @param string $field
+	 */
+	private function parse_field( $field ) {
+
+		return isset( $field ) ? $field : '';
+	}
+
+	private function write_domains_cache( array $domains ) {
+
+		$this->set_cached_data( $this->cache_file_all_domains, $domains );
+	}
+
+	private function get_domains_cache() {
+
+		return $this->get_cache_data( $this->cache_file_all_domains );
+	}
+
+	/**
+	 * @param string $file_path
+	 *
+	 * @return boolean|mixed false on no cache, mixed on success
+	 */
+	private function get_cache_data( $file_path ) {
+
+		if ( ! file_exists( $file_path ) ) {
+			return false;
+		} else {
+			$handle = fopen( $file_path, 'r' );
+			if ( false == filesize( $file_path ) ) {
+				return false;
+			}
+			$data = fread( $handle, filesize( $file_path ) );
+			fclose( $handle );
+			$md5             = substr( $data, 0, 32 );
+			$serialized_data = substr( $data, 32 );
+			if ( $md5 == $this->getSerializedHash( $serialized_data ) ) {
+				return unserialize( $serialized_data );
+			} else {
+				return false;
+			}
+		}
+	}
+
+	private function getSerializedHash( $serialized_data ) {
+
+		return md5( $this->cache_key . $serialized_data . str_rot13( $this->cache_key ) . strrev( $this->cache_key ) );
+	}
+
+	private function set_cached_data( $file_path, array $data ) {
+
+		$handle = fopen( $file_path, 'w' );
+		if ( false === $handle ) {
+			throw new Exception( 'Unable to open ' . dirname( $file_path ) . ' for writing. You will need to CHMOD 777 to continue' );
+		}
+		if ( count( $data ) > 0 ) {
+			$serialized_data = serialize( $data );
+			$md5             = $this->getSerializedHash( $serialized_data );
+			fwrite( $handle, $md5 . $serialized_data );
+		}
+		fclose( $handle );
+	}
+
+	private function get_Exchange_Rate_google( $to ) {
+
+		$to  = urlencode( $to );
+		$get = self::curl_get( "https://www.google.com/finance/converter",
+			array( 'a' => '1.00', 'from' => 'USD', 'to' => $to ) );
+		$get = explode( "<span class=bld>", $get );
+		$get = explode( "</span>", $get[1] );
+		$var = preg_replace( "/[^0-9\.]/", null, $get[0] );
+
+		return round( $var, 4 );
+	}
+
+	private function get_Exchange_rate_currency_API( $to ) {
+
+		$currency_code = urlencode( $to );
+		$api_key       = $this->get_addon_setting( 'exchange-rate-api-key' );
+		if ( $api_key ) {
+			$url       = "http://currency-api.appspot.com/api/USD/$currency_code.json";
+			$rate_resp = enom_pro::curl_get_json( $url,
+				array( 'key' => $api_key ) );
+		} else {
+			$rate_resp = enom_pro::curl_get_json( 'http://rate-exchange.appspot.com/currency',
+				array( 'from' => 'USD', 'to' => $currency_code ) );
+		}
+
+		return $rate_resp['rate'];
+	}
+
+	private function get_cache_file_time( $cache_file, $granularity = 2 ) {
+
+		return $this->time_ago( filemtime( $cache_file ), $granularity );
+	}
+
+	/**
+	 * Test interface for unit testing in WHMCS
+	 *
+	 * @param string $command
+	 * @param array  $data additional fields to pass to API
+	 *
+	 * @throws RemoteException
+	 * @return mixed
+	 */
+	private static function whmcs_curl( $command, $data ) {
+
+		$postfields                    = array();
+		$postfields["username"]        = WHMCS_API_UN;
+		$postfields["password"]        = md5( WHMCS_API_PW );
+		$postfields["action"]          = $command;
+		$postfields["responsetype"]    = "json";
+		$postfields["whmcsAPISilence"] = true; //We use this to silence the buggy whmcs API for development
+		$postfields                    = array_merge( $postfields, $data );
+
+		$ch = curl_init();
+		curl_setopt( $ch, CURLOPT_URL, WHMCS_API_URL );
+		curl_setopt( $ch, CURLOPT_POST, 1 );
+		curl_setopt( $ch, CURLOPT_TIMEOUT, 30 );
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+		curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $postfields ) );
+		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 0 );
+		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
+		$jsondata = curl_exec( $ch );
+		//@codeCoverageIgnoreStart
+		if ( curl_error( $ch ) ) {
+			throw new RemoteException( "cURL Error: " . curl_errno( $ch ) . ' - ' . curl_error( $ch ),
+				RemoteException::CURL_EXCEPTION );
+		}
+		//@codeCoverageIgnoreEnd
+		curl_close( $ch );
+
+		return json_decode( $jsondata, true );
+	}
+
+	private static function do_curl_post( $url, array $params, array $options = array() ) {
+
+		$postData = '';
+		//create name value pairs seperated by &
+		foreach ( $params as $k => $v ) {
+			$postData .= $k . '=' . $v . '&';
+		}
+		rtrim( $postData, '&' );
+
+		$defaults = array(
+			CURLOPT_URL            => $url,
+			CURLOPT_HEADER         => false,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_TIMEOUT        => 15,
+			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_POST           => count( $params ),
+			CURLOPT_POSTFIELDS     => $postData
+		);
+
+		$ch = curl_init();
+		curl_setopt_array( $ch, ( $options + $defaults ) );
+
+		$output = curl_exec( $ch );
+
+		curl_close( $ch );
+
+		return $output;
+	}
+
+	/**
+	 * Recursively remove a directory
+	 *
+	 * @param string $path full path of dir to remove
+	 */
+	private function rmdir( $path ) {
+
+		foreach (
+			new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $path, FilesystemIterator::SKIP_DOTS ),
+				RecursiveIteratorIterator::CHILD_FIRST ) as $path
+		) {
+			$path->isFile() ? unlink( $path->getPathname() ) : rmdir( $path->getPathname() );
+		}
+	}
+
+	private function migrate220() {
+
+		$legacy_version_file = ENOM_PRO_TEMP . 'version';
+		if ( file_exists( $legacy_version_file ) ) {
+			unlink( $legacy_version_file );
+		}
+	}
+
+	/**
+	 * Format a timestamp into a date. Used for rounding days.
+	 *
+	 * @param int $ts unix timestamp
+	 *
+	 * @return string m-d-Y
+	 */
+	private function format_ts( $ts ) {
+
+		return date( 'm-d-Y', $ts );
+	}
+
+	private static function is_widget_enabled_for_this_user( $function ) {
+
+		$whmcs_string  = substr( $function, 7 );
+		$role          = mysql_fetch_assoc( self::query( 'SELECT `roleid` FROM `tbladmins` WHERE `id` = ' . (int) $_SESSION['adminid'] ) );
+		$widgets       = mysql_fetch_assoc( self::query( 'SELECT `widgets` FROM `tbladminroles` WHERE `id` = ' . $role['roleid'] ) );
+		$widgets_array = explode( ',', $widgets['widgets'] );
+
+		return in_array( $whmcs_string, $widgets_array );
+	}
 
 	/**
 	 * @param       $url
@@ -3050,20 +3035,20 @@ class enom_pro {
 		}
 		$this->whmcsClientDomains = $result;
 	}
-	
+
 	/**
-	 * 
 	 * replacement for getclientsdomains (see fetchWHMCSDomains method) to run all clients in a single query
-	 * 
+
 	 */
-	protected function whmcsGetClientsDomains() {
-		$query = "SELECT  `id`, `userid`, `orderid`, `domain`
+	private function whmcsGetClientsDomains() {
+
+		$query                    = "SELECT  `id`, `userid`, `orderid`, `domain`
 		            FROM  `tbldomains`
 		           WHERE  `registrar` = 'enom'";
-		$rs = mysql_query($query);
+		$rs                       = mysql_query( $query );
 		$this->whmcsClientDomains = array();
-		while($row = mysql_fetch_assoc($rs)) {
-			$this->whmcsClientDomains[$row['domain']] = $row;
+		while ( $row = mysql_fetch_assoc( $rs ) ) {
+			$this->whmcsClientDomains[ $row['domain'] ] = $row;
 		}
 	}
 }
