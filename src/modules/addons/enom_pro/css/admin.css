@@ -530,6 +530,9 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_output #enom_pro_pricing_table .tldActionsTD .tldActions {
   display: inline-flex;
 }
+.enom_pro_output #enom_pro_pricing_table .tldActionsTD .tldCheck {
+  cursor: pointer;
+}
 .enom_pro_output .fixedBulk {
   /* Left hand bulk update */
 }
@@ -552,6 +555,7 @@ Licensed from Orion IP Ventures, LLC
   top: 2.5px;
   right: 5px;
   font-size: 24pt;
+  cursor: pointer;
 }
 .enom_pro_output .fixedBulk #bulkLeftWrap {
   background-color: #eeeeee;

@@ -2,7 +2,7 @@
 	<div class="well">
 		<div class="row">
 			<div class="col-lg-6" id="bulkPricingImportWrap">
-				<div class="enom-pro-icon enom-pro-icon-cancel-circle close-bulk-editor" title="Close Bulk Pricing editor"></div>
+				<div class="enom-pro-icon enom-pro-icon-cancel-circle close-bulk-editor ep_tt" title="Close Bulk Pricing editor" data-placement="bottom"></div>
 
 				<h3 class="hidden-turbo">
 			<span class="btn btn-primary btn-lg open-bulk-editor ep_pop" title="Turbo TLD Importer" data-content="Get rid of all of the distractions, and focus on selling an ever-growing list of the new TLDs.">
