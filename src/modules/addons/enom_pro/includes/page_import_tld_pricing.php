@@ -329,9 +329,9 @@ if ( $this->is_pricing_cached() ) : ?>
 								}
 								?>
 								<td>
-									<div class="input-group input-group-sm <?php echo $class ?>">
+									<div class="input-group tldPriceGroup input-group-sm <?php echo $class ?>">
 																	<span class="price ep_tt input-group-addon input-sm"
-																	      title="eNom Price">
+																	      title="eNom <?php echo enom_pro::is_retail_pricing() ? 'Retail' : 'Wholesale'; ?> Price">
 																		<?php echo $this->getDefaultCurrencyPrefix() . $formattedEnomPrice; ?>
 																	</span>
 										<input
