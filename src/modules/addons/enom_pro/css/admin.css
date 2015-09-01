@@ -481,6 +481,9 @@ Licensed from Orion IP Ventures, LLC
   box-sizing: border-box;
   text-decoration: none !important;
 }
+.enom_pro_output #enom_pro_pricing_import_page {
+  margin-bottom: 20px;
+}
 .enom_pro_output #enom_pro_pricing_import_page ul.dropdown-menu.clearDropdown {
   left: -90px;
 }
@@ -907,6 +910,12 @@ Top level DOM items
   width: 100%;
   height: 100%;
   border: none;
+}
+.contentarea .enom_pro_output {
+  min-height: 600px;
+}
+.contentarea .widget-content .enom_pro_output {
+  min-height: inherit;
 }
 /**Swiftmods admin tweaks */
 .content-container {

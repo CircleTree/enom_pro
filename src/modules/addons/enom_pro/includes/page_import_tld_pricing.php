@@ -251,16 +251,19 @@ if ( $this->is_pricing_cached() ) : ?>
 									$btn_classes[]    = 'btn-warning';
 									$btn_classes[]    = 'disabled';
 									$action_classes[] = 'ep_pop';
-
 								} else {
 									$btn_classes[] = $isInWHMCS ? 'btn-success' : 'btn-default';
 
 								}
 								?>
-								<input type="checkbox" class="tldCheck ep_pop" name="<?php echo $tld ?>"<?php echo $this->is_tld_saved( $tld ) ? ' checked' : ''; ?> title="Toggle Importing this TLD" data-content="Save this TLD to the set to be imported" data-placement="left"/>
+								<input type="checkbox" class="tldCheck ep_pop" name="<?php echo $tld ?>"<?php echo $this->is_tld_saved( $tld ) ? ' checked' : ''; ?> title="Toggle Importing this TLD" data-content="Save this TLD to the set to be imported" data-placement="right"/>
 
-								<div class="<?php echo implode( ' ',
-									$action_classes ); ?>" <?php if ( $thisTLDError ) : ?> title="Error from eNom API" data-content="<?php echo $thisTLDError ?>" <?php endif; ?>>
+								<div class="<?php echo implode( ' ', $action_classes ); ?>"
+									<?php if ( $thisTLDError ) : ?>
+										title="Error from eNom API"
+										data-content="<?php echo $thisTLDError ?>"
+									<?php endif; ?>
+								>
 									<div class="btn tldAction <?php echo implode( " ",
 										$btn_classes ) ?>" data-tld="<?php echo $tld ?>"<?php if ( $isInWHMCS ) : ?> data-whmcs="true"<?php endif; ?> data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										.<?php echo $tld; ?>
