@@ -554,6 +554,7 @@ Licensed from Orion IP Ventures, LLC
 	}
 	//TLD Price import page
 	#enom_pro_pricing_import_page {
+		margin-bottom: 20px;
 		ul.dropdown-menu.clearDropdown {
 			left: -90px;
 		}
@@ -1047,7 +1048,18 @@ Top level DOM items
 	height: 100%;
 	border: none;
 }
+//WHMCS V6 Tweaks
 
+.contentarea {
+	.enom_pro_output {
+		min-height: 600px;
+	}
+	.widget-content {
+		.enom_pro_output {
+			min-height: inherit;
+		}
+	}
+}
 /**Swiftmods admin tweaks */
 .content-container {
 	overflow: auto;
