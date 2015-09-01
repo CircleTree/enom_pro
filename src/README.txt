@@ -19,8 +19,8 @@
 /**
 * REQUIREMENTS
 **/
-    WHMCS 5.3.x+
-    IonCube Loaders 4.4+ (Latest 4.7.x recommended)
+    WHMCS 6+
+    IonCube Loaders 4.6+ (Latest 4.8.x+ recommended)
     PHP 5.3.x+ (PHP 5.4 Recommended)
     MySQL 5.1.x+
 
