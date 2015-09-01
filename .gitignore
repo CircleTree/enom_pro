@@ -12,3 +12,5 @@
 
 /vendor/
 /node_modules/
+
+/phing-latest.phar
