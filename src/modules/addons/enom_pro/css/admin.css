@@ -83,7 +83,7 @@ Licensed from Orion IP Ventures, LLC
 }
 .enom_pro_output #homeHelpContent ul li {
   box-sizing: border-box;
-  width: calc(45%);
+  width: calc(50% - 5px);
   float: left;
   padding: 5px;
   border-bottom: 1px solid #dddddd;
@@ -582,7 +582,7 @@ Licensed from Orion IP Ventures, LLC
   margin-top: 5px;
 }
 .enom_pro_output .fixedBulk #bulkRightWrap {
-  width: 75%;
+  width: 100% - 25%;
   left: 25%;
   background-color: #ffffff;
 }
@@ -651,7 +651,7 @@ Licensed from Orion IP Ventures, LLC
 }
 .enom_pro_output .enom_pro_widget_title {
   position: relative;
-  width: 100%;
+  width: calc(100% - 20px);
   display: block;
 }
 .enom_pro_output .enom_pro_widget_title .refreshbutton {
