@@ -278,6 +278,12 @@
 		<copy file="${bs-dir}js/bootstrap.min.js"
 					tofile="${bs-copy-dir}js/bootstrap.min.js"
 					overwrite="true"/>
+		<copy file="${bs-dir}css/bootstrap.min.css.map"
+					tofile="${bs-copy-dir}css/bootstrap.min.css.map"
+					overwrite="true"/>
+		<copy file="${bs-dir}css/bootstrap-theme.min.css.map"
+					tofile="${bs-copy-dir}css/bootstrap-theme.min.css.map"
+					overwrite="true"/>
 	</target>
 	<!-- Replaces version.xml -->
 	<target name="replace-version">
