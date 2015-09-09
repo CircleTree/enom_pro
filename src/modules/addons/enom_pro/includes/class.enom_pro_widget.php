@@ -124,7 +124,7 @@ class enom_pro_widget {
 		$baseID = $this->base_id;
 		$contentID = $this->content_id;
 		$jQuery = $this->jQuery;
-$jSCode = <<<JS
+		$jSCode = <<<JS
 jQuery(function($) {
 	var refreshForm = jQuery("#{$baseID}"),
 			refreshButton = refreshForm.find('.enom-pro-icon-refresh-alt');
