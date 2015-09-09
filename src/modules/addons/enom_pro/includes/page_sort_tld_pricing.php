@@ -63,7 +63,8 @@ $result = mysql_query( 'SELECT * FROM `tbldomainpricing` ORDER BY `order` ASC' )
 		<?php endwhile; ?>
 		</tbody>
 	</table>
-	<h3 id="bulk-sort">Bulk Re-Sort Pricing</h3>
+	<div class="btn btn-success btn-block">Save Order</div>
+	<h4 id="bulk-sort">Bulk Re-Sort Pricing</h4>
 	<div class="well">
 		<form method="get" action="<?php echo enom_pro::MODULE_LINK ?>" class="form-inline row">
 			<input type="hidden" name="action" value="sort_domains" />
