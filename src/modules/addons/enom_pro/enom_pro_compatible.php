@@ -610,14 +610,18 @@ function enom_pro_output( $vars ) {
 			</div>
 		</div>
 	<?php } catch ( EnomException $e ) { ?>
-		<div class="alert alert-danger">
-			<h2>eNom API Error:</h2>
-			<?php echo enom_pro::render_admin_errors( $e->get_errors() ); ?>
+		<div class="enom_pro_output">
+			<div class="alert alert-warning">
+				<h2>eNom API Error:</h2>
+				<?php echo enom_pro::render_admin_errors( $e->get_errors() ); ?>
+			</div>
 		</div>
 	<?php } catch ( Exception $e ) { ?>
-		<div class="alert alert-danger">
-			<h2>Error</h2>
-			<?php echo $e->getMessage(); ?>
+		<div class="enom_pro_output">
+			<div class="alert alert-danger">
+				<h2>Error</h2>
+				<?php echo $e->getMessage(); ?>
+			</div>
 		</div>
 		<?php
 	} //End Final Exception Catch
