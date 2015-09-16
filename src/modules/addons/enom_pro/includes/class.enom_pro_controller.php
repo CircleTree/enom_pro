@@ -8,8 +8,10 @@ class enom_pro_controller {
 	 */
 	protected $enom;
 
-	public function __construct() {
-	}
+	/**
+	 * @see enom_pro_controller::route()
+	 */
+	public function __construct() {}
 
 	public function route() {
 
