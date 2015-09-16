@@ -591,7 +591,7 @@ function enom_pro_output( $vars ) {
 				   href="<?php echo enom_pro::MODULE_LINK . '&view=pricing_import' ?>">Import TLD Pricing
 					<span class="enom-pro-icon enom-pro-icon-tag"></span>
 				</a>
-				<a class="btn btn-danger large"
+				<a class="btn btn-primary large"
 				   href="<?php echo enom_pro::MODULE_LINK . '&view=help' ?>">View Help
 					<span class="enom-pro-icon enom-pro-icon-question"></span>
 				</a>
