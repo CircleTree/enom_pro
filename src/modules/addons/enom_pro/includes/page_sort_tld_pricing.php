@@ -106,6 +106,7 @@ $result = mysql_query( 'SELECT * FROM `tbldomainpricing` ORDER BY `order` ASC' )
 	</div>
 <?php else: ?>
 	<div class="alert alert-warning">
-		<h1>No pricing data found in WHMCS</h1>
+		<h1>No TLD pricing found in WHMCS</h1>
+		<p>Please <a class="btn btn-default btn-xs" href="addonmodules.php?module=enom_pro&view=pricing_import">import TLD pricing</a>, and then come back to sort.</p>
 	</div>
 <?php endif; ?>
