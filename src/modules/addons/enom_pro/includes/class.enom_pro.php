@@ -1425,7 +1425,6 @@ class enom_pro {
 	}
 
 	public function clear_exchange_rate_cache() {
-
 		$this->set_cached_data( $this->cache_file_exchange_rate, array() );
 	}
 
