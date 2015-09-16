@@ -432,7 +432,6 @@ class enom_pro {
 			return true;
 		}
 		//Set the command
-		// if (! in_array( strtoupper( trim( $command ) ), self::array_to_upper( $this->implemented_commands ) ) && ! defined( 'UNIT_TESTS' )) {
 		if ( ! in_array( strtoupper( trim( $command ) ), self::array_to_upper( $this->implemented_commands ) ) ) {
 			throw new InvalidArgumentException( 'API Method ' . $command . ' not implemented', 400 );
 		}
@@ -1436,7 +1435,7 @@ class enom_pro {
 	 */
 	public function get_domain_cache_date() {
 
-		if ( $this->is_domain_cached() ) {
+		if ( ! $this->is_domain_cached() ) {
 			return '';
 		}
 
