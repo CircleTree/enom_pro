@@ -555,8 +555,10 @@ function enom_pro_output( $vars ) {
 		<script>
 			if ( window.jQuery &&
 				 1 === parseInt(jQuery.fn.jquery) ) {
-				var str = JQuery.fn.jquery, vArray = str.split('.');
+				var str = jQuery.fn.jquery, vArray = str.split('.');
+				console.log(vArray);
 				if (vArray[1] < 9 && vArray[2] < 1) {
+					console.warn('Loading Google CDN version of jQuery. Please upgrade your WHMCS theme to a newer version of jQuery (v 1.9.1+) ');
 					document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"><\/script>');
 				}
 			}
