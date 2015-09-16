@@ -42,7 +42,7 @@ $expiring_certs       = $this->getExpiringCerts(); ?>
 									<br />
 								<?php endif; ?>
 							</p>
-						<?php else: ?>
+						<?php else : ?>
 							<p>
 							<span class="label label-success">
 								<?php echo $domainString; ?>
@@ -62,7 +62,7 @@ $expiring_certs       = $this->getExpiringCerts(); ?>
 							</a>
 						<?php endif; ?>
 
-					<?php else: ?>
+					<?php else : ?>
 						Not Issued
 					<?php endif; ?>
 				</td>
