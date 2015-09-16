@@ -101,7 +101,9 @@ endif; ?>
 	<thead>
 	<tr>
 		<th>
-			<a href="addonmodules.php?module=enom_pro&view=whois_checker&show=<?php echo enom_pro_whois_show_only(); ?>&sort=<?php echo isset( $_GET['sort'] ) && 'desc' == $_GET['sort'] ? 'asc' : 'desc' ?>">TLD</a>
+			<a href="addonmodules.php?module=enom_pro&view=whois_checker&show=<?php echo enom_pro_whois_show_only(); ?>&sort=<?php echo isset( $_GET['sort'] ) && 'desc' == $_GET['sort'] ? 'asc' : 'desc' ?>">TLD
+				<span class="<?php echo isset( $_GET['sort'] ) && 'desc' == $_GET['sort'] ? 'enom-pro-icon-sort-by-alpha-alt' : 'enom-pro-icon-sort-by-alpha' ?>"></span>
+			</a>
 		</th>
 		<th>WHOIS Server</th>
 	</tr>
