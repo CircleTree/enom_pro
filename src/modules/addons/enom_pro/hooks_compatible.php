@@ -205,8 +205,8 @@ function enom_pro_admin_head_output() {
 
 				return 0;
 			}
-			if ( window.jQuery && -1 === version_compare(window.jQuery.fn.jquery, '1.12.1') ) {
-					jQuery.error('Loading Google CDN version of jQuery. Please upgrade your WHMCS theme to a newer version of jQuery (v 1.9.1+) ');
+			if ( window.jQuery && -1 === version_compare(window.jQuery.fn.jquery, '1.9.1') ) {
+					console.warn('Please upgrade your WHMCS theme to a newer version of jQuery (v 1.9.1+). Using Google CDN for an up-to-date version of jQuery. ');
 					document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"><\/script>');
 					document.write('<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"><\/script>');
 
