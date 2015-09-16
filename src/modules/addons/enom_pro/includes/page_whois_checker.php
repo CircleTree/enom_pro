@@ -108,7 +108,7 @@ function enom_pro_whois_show_only() {
 	return; //Bail early for no servers
 endif; ?>
 <?php if ( ! empty( $missing ) ) : ?>
-	<div class="alert alert-warning fade in">
+	<div class="alert alert-danger">
 		<button type="button"
 		        class="close"
 		        data-dismiss="alert"
@@ -118,16 +118,18 @@ endif; ?>
 		<p>WHMCS needs to have a valid WHOIS server to query for each TLD.</p>
 		<ol>
 			<li>
+				Read
 				<a href="http://docs.whmcs.com/Domains_Configuration#Adding_Additional_WHOIS_Services" target="_blank"
-				   class="btn btn-default">Read WHMCS Docs on Adding additional WHOIS Servers.
+				   class="btn btn-default">WHMCS Docs on WHOIS Servers.
 				</a>
 			</li>
 			<li>
+				Reference this
 				<a href="https://github.com/hjr265/node-whois/blob/master/servers.json" target="_blank"
-				   class="btn btn-default">Helpful list of public WHOIS Servers
+				   class="btn btn-default">helpful list of public WHOIS Servers
 				</a>
 			</li>
-			<li>Reload this page after editing <code><?php echo $whois_server_filepath; ?></code></li>
+			<li><a class="btn btn-default" href="addonmodules.php?module=enom_pro&view=whois_checker"><span class="enom-pro-icon-refresh"></span>  Reload</a> this page after editing <code><?php echo $whois_server_filepath; ?></code></li>
 		</ol>
 	</div>
 <?php endif; ?>

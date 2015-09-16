@@ -67,11 +67,18 @@ $result = mysql_query( 'SELECT * FROM `tbldomainpricing` ORDER BY `order` ASC' )
 			</tr>
 		<?php endwhile; ?>
 		</tbody>
+		<tfoot>
+		<tr>
+			<td>
+				<span class="enom_pro_loader hidden"></span>
+			</td>
+		</tr>
+		</tfoot>
 	</table>
 
 	<div class="btn btn-success btn-block">Save Order</div>
 
-	<h4 id="bulk-sort">Bulk Re-Sort Pricing</h4>
+	<h4 id="bulk-sort">Bulk Sort Pricing</h4>
 	<div class="well">
 		<form method="get" action="<?php echo enom_pro::MODULE_LINK ?>" class="form-inline row">
 			<input type="hidden" name="action" value="sort_domains" />
@@ -96,17 +103,30 @@ $result = mysql_query( 'SELECT * FROM `tbldomainpricing` ORDER BY `order` ASC' )
 				<label for="ignoreNET">.net</label>
 			</fieldset>
 			<div class="col-xs-12">
-				<input type="submit" class="btn btn-danger col-xs-3" value="Re-Sort All TLDs" />
-				<span class="clearfix"></span>
 				<span
-					class="col-xs-3 text-center text-danger">This will re-sort ALL tlds. The drag &amp; drop interface saves automatically after each sort.</span>
+					class="col-xs-3 text-center text-danger">
+					<span class="enom-pro-icon-warning"></span>
+					This will bulk sort ALL tlds.</span>
+				<span class="clearfix"></span>
+				<input type="submit" class="btn btn-danger col-xs-3" value="Re-Sort All TLDs" />
 			</div>
 		</form>
 
 	</div>
+	<script>
+		jQuery(function ($) {
+			enom_pro.initTLDSortPage();
+		});
+	</script>
 <?php else: ?>
 	<div class="alert alert-warning">
 		<h1>No TLD pricing found in WHMCS</h1>
-		<p>Please <a class="btn btn-default btn-xs" href="addonmodules.php?module=enom_pro&view=pricing_import">import TLD pricing</a>, and then come back to sort.</p>
+
+		<p>Please
+			<a class="btn btn-default btn-xs"
+			   href="addonmodules.php?module=enom_pro&view=pricing_import">import TLD pricing
+			</a>
+		   , and then come back to sort.
+		</p>
 	</div>
 <?php endif; ?>

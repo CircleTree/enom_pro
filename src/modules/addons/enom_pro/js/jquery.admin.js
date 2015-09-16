@@ -50,7 +50,7 @@ try {
 		});
 		if (typeof(jQuery.fn.popover) == "function") {
 			$(".ep_pop").popover({
-				trigger: 'hover',
+				trigger:   'hover',
 				container: 'body'
 			});
 		}
@@ -416,28 +416,6 @@ try {
 														 '" onclick="this.select();"/>').removeClass('enom_pro_loader');
 			});
 		}
-		$(".ep_sortable").sortable({
-			placeholder: "sortable-placeholder",
-			update:      function (e, ui) {
-				var $loader = $(".enom_pro_loader");
-				$loader.removeClass('hidden');
-				var sorted = $(this).sortable('toArray');
-				if (sortTldXHR) {
-					sortTldXHR.abort();
-				}
-				sortTldXHR = $.ajax({
-					url:     'addonmodules.php?module=enom_pro',
-					data:    {
-						'action': 'sort_domains',
-						'order':  sorted
-					},
-					success: function () {
-						$loader.addClass('hidden');
-						sortTldXHR = null;
-					}
-				});
-			}
-		});
 		$(".filePathToggle").on('click', function () {
 			var $this = $(this), filepath = $this.data('path'), size = filepath.length + 7;
 			$this.hide();
@@ -466,6 +444,35 @@ try {
 					e.preventDefault();
 					enom_pro.hideUpgradeAlert();
 				});
+			},
+			initTLDSortPage:            function () {
+				var $loader = $(".enom_pro_loader");
+				$loader.removeClass('hidden');
+				this.ajaxLoadJS('jquery.ajaxq.js').done(function () {
+					$loader.addClass('hidden');
+					$(".ep_sortable").sortable({
+						placeholder: "sortable-placeholder",
+						update:      function (e, ui) {
+							$loader.removeClass('hidden');
+							var sorted = $(this).sortable('toArray');
+							$.ajaxq.abort('sort_tlds');
+							$.ajaxq('sort_tlds', {
+								url:     'addonmodules.php?module=enom_pro',
+								data:    {
+									'action': 'sort_domains',
+									'order':  sorted
+								},
+								success: function () {
+									$loader.addClass('hidden');
+								},
+								error:   function (xhr) {
+									alert('Server error saving order: ' + xhr.responseText);
+								}
+							});
+						}
+					});
+				});
+
 			},
 			initAjaxHandler:            function () {
 				$(".ep_ajax").on('click', function () {
@@ -552,8 +559,6 @@ try {
 					return false;
 				});
 				$('.dropdown-toggle').dropdown();
-				//TODO restore / hide based on localStorage
-
 				$('.tldAction').on('click', function () {
 					var $check = $(this).closest('td').find('input');
 					if ($check.prop('checked')) {
@@ -761,7 +766,7 @@ try {
 						var $response = $target.find('.response');
 						var label = data.error || ('WHOIS Email: <span class="whois-email">' + data.email + '</span>');
 						$response.html(label);
-						if (! data.error) {
+						if (!data.error) {
 							$alert.removeClass('alert-danger').addClass('alert-warning');
 							$alert.find('.create_order').removeClass('btn-primary').addClass('btn-success');
 						} else {
