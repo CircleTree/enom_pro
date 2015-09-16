@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Project: enom_pro
  * Build: @BUILD_DATE@
  * Version: @VERSION@
  */
-
 class enom_pro_widget {
+
 	private $base_id;
 	private $callback;
 	private $title;
@@ -13,31 +14,33 @@ class enom_pro_widget {
 	private $action = '';
 	private $content_id = '';
 	private $icon = '';
-	function __construct($title, $base_id, $callback) {
-		if (!class_exists('enom_pro')) {
+
+	function __construct( $title, $base_id, $callback ) {
+
+		if ( ! class_exists( 'enom_pro' ) ) {
 			require_once 'enom_pro.php';
 		}
-		$this->title = $title;
-		$this->base_id = 'enom_pro_' . $base_id;
-		$this->action = 'refresh_' . $this->base_id;
-		$this->content_id = 'content_'. $this->base_id;
-		$this->callback = $callback;
-		if (isset($_REQUEST[$this->action])) {
-			if (! method_exists($this->callback[0], $this->callback[1])) {
-				die('Unknown callback: ' . get_class($this->callback[0]) . '::' . $this->callback[1]);
+		$this->title      = $title;
+		$this->base_id    = 'enom_pro_' . $base_id;
+		$this->action     = 'refresh_' . $this->base_id;
+		$this->content_id = 'content_' . $this->base_id;
+		$this->callback   = $callback;
+		if ( isset( $_REQUEST[ $this->action ] ) ) {
+			if ( ! method_exists( $this->callback[0], $this->callback[1] ) ) {
+				die( 'Unknown callback: ' . get_class( $this->callback[0] ) . '::' . $this->callback[1] );
 			} else {
-					try {
-						ob_start();
-						new enom_pro_license();
-						call_user_func($this->callback);
-						$data = ob_get_contents();
-						ob_end_clean();
-						enom_pro_controller::sendGzipped($data);
-					} catch (Exception $e) {
-						echo '<div class="alert alert-warning">';
-						echo    $e->getMessage();
-						echo '</div>';
-					}
+				try {
+					ob_start();
+					new enom_pro_license();
+					call_user_func( $this->callback );
+					$data = ob_get_contents();
+					ob_end_clean();
+					enom_pro_controller::sendGzipped( $data );
+				} catch ( Exception $e ) {
+					echo '<div class="alert alert-warning">';
+					echo $e->getMessage();
+					echo '</div>';
+				}
 				die;
 			}
 		}
@@ -46,8 +49,8 @@ class enom_pro_widget {
 	/**
 	 * Icomoon full class name only
 	 */
-	public function setIcon ($class)
-	{
+	public function setIcon( $class ) {
+
 		$this->icon = $class;
 	}
 
@@ -55,62 +58,65 @@ class enom_pro_widget {
 	 * Gets true base ID of widget
 	 * @return string $base_id
 	 */
-	public function getBaseID ()
-	{
+	public function getBaseID() {
+
 		return $this->base_id;
 	}
-	public function getContentID ()
-	{
+
+	public function getContentID() {
+
 		return $this->content_id;
 	}
+
 	/**
 	 * @param string $script
 	 */
-	public function addjQuery ($script)
-	{
+	public function addjQuery( $script ) {
+
 		$this->jQuery = $script;
 	}
-	public function getContent ()
-	{
-		return '<div class="enom_pro_output">' .
-		            '<div id="'. $this->content_id . '">' .
-		                '<span class="enom_pro_loader"></span>' .
-		            '</div>' .
-		       '</div>';
+
+	public function getContent() {
+
+		return '<div class="enom_pro_output">' . '<div id="' . $this->content_id . '">' . '<span class="enom_pro_loader"></span>' . '</div>' . '</div>';
 	}
 
 	/**
 	 * Gets WHMCS formatted array
 	 * @return array
 	 */
-	public function toArray ()
-	{
-		$return = array();
+	public function toArray() {
+
+		$return   = array();
 		$iconSpan = '';
 		if ( $this->icon ) {
-			$iconSpan = '<span class="enom-pro-icon enom-pro-widget-icon '.$this->icon.'"></span>';
+			$iconSpan = '<span class="enom-pro-icon enom-pro-widget-icon ' . $this->icon . '"></span>';
 		}
-		$return['title'] = '
+		$return['title']      = '
 <span class="enom_pro_output">
-<span class="enom_pro_widget_title">'.$iconSpan.'<a href="'.enom_pro::MODULE_LINK.'">'.ENOM_PRO.'</a> &dash; ' . $this->title . $this->getWidgetForm() .  '</span></span>';
-		$return['content'] = $this->getContent();
+<span class="enom_pro_widget_title">' . $iconSpan . '<a href="' . enom_pro::MODULE_LINK . '">' . ENOM_PRO . '</a> &dash; ' . $this->title . $this->getWidgetForm() . '</span></span>';
+		$return['content']    = $this->getContent();
 		$return['jquerycode'] = $this->get_jQuery();
+
 		return $return;
 	}
-	public function getFormID ()
-	{
+
+	public function getFormID() {
+
 		return $this->base_id;
 	}
-	private function getWidgetForm ()
-	{
-		if ('configadminroles.php' == basename($_SERVER['PHP_SELF'])) {
+
+	private function getWidgetForm() {
+
+		if ( 'configadminroles.php' == basename( $_SERVER['PHP_SELF'] ) ) {
 			return '';
 		}
-		ob_start();?>
-		<form id="<?php echo $this->base_id; ?>" class="refreshbutton" action="<?php echo $_SERVER['PHP_SELF'];?>">
+		ob_start(); ?>
+		<form id="<?php echo $this->base_id; ?>" class="refreshbutton" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 			<input type="hidden" name="<?php echo $this->action; ?>" value="1" />
 			<button type="submit" class="btn btn-default btn-xs">
-				Refresh <span class="enom-pro-icon enom-pro-icon-refresh-alt fa-spin"></span>
+				Refresh
+				<span class="enom-pro-icon enom-pro-icon-refresh-alt fa-spin"></span>
 			</button>
 		</form>
 		<?php
@@ -119,12 +125,13 @@ class enom_pro_widget {
 
 		return $return;
 	}
-	private function get_jQuery ()
-	{
-		$baseID = $this->base_id;
+
+	private function get_jQuery() {
+
+		$baseID    = $this->base_id;
 		$contentID = $this->content_id;
-		$jQuery = $this->jQuery;
-		$jSCode = <<<JS
+		$jQuery    = $this->jQuery;
+		$jSCode    = <<<JS
 jQuery(function($) {
 	var refreshForm = jQuery("#{$baseID}"),
 			refreshButton = refreshForm.find('.enom-pro-icon-refresh-alt');
@@ -144,7 +151,8 @@ jQuery(function($) {
 	{$jQuery}
 });
 JS;
-		return enom_pro::minify($jSCode);
+
+		return enom_pro::minify( $jSCode );
 	}
 
 }

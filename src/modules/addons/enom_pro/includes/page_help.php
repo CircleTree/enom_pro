@@ -6,7 +6,8 @@
 <div id="enom_pro_help_page">
 	<div id="helpWrapper">
 					<span class="searchWrap">
-						<input type="text" id="helpSearch" name="s" size="10" autocomplete="false" spellcheck="true" placeholder="Search Help" />
+						<input type="text" id="helpSearch" name="s" size="10" autocomplete="false" spellcheck="true"
+						       placeholder="Search Help" />
 						<span class="enom-pro-icon-cancel-circle hidden ep_tt" title="Clear Search"></span>
 					</span>
 

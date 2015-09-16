@@ -545,13 +545,16 @@ function enom_pro_sidebar( $vars ) {
 				<a class="btn btn-block btn-default"
 				   href="<?php echo enom_pro::MODULE_LINK; ?>&view=domain_import">
 					<span class="enom-pro-icon enom-pro-icon-domains"></span>
-					Import Domains</a>
+					Import Domains
+				</a>
 			</li>
 			<li>
 				<a class="btn btn-block btn-default"
 				   href="<?php echo enom_pro::MODULE_LINK; ?>&view=pricing_import">
 					<span class="enom-pro-icon enom-pro-icon-tag"></span>
-					Import TLD Pricing <span class="label label-info">3.0</span></a>
+					Import TLD Pricing
+					<span class="label label-info">3.0</span>
+				</a>
 			</li>
 			<li>
 				<a class="btn btn-block btn-default"
@@ -579,7 +582,8 @@ function enom_pro_sidebar( $vars ) {
 					   data-no-refresh="true"
 					   href="configemailtemplates.php?action=edit&id=<?php echo $id ?>">
 						<span class="enom-pro-icon enom-pro-icon-mail-send"></span>
-						Edit SSL Email</a>
+						Edit SSL Email
+					</a>
 				</li>
 				<li>
 					<a class="btn btn-default btn-block" href="<?php echo enom_pro::MODULE_LINK ?>&view=send_ssl_test">
@@ -590,7 +594,8 @@ function enom_pro_sidebar( $vars ) {
 			<?php else: ?>
 				<li>
 					<a class="btn btn-block btn-default"
-					   href="<?php echo enom_pro::MODULE_LINK ?>&action=install_ssl_template">Install SSL Email</a>
+					   href="<?php echo enom_pro::MODULE_LINK ?>&action=install_ssl_template">Install SSL Email
+					</a>
 				</li>
 			<?php endif; ?>
 			<li>
@@ -598,7 +603,8 @@ function enom_pro_sidebar( $vars ) {
 				   title="<?php echo ENOM_PRO; ?> Help - Directly in your WHMCS"
 				   href="<?php echo enom_pro::MODULE_LINK ?>&view=help">
 					<span class="enom-pro-icon enom-pro-icon-question"></span>
-					Help <span class="label label-primary">NEW!</span>
+					Help
+					<span class="label label-primary">NEW!</span>
 				</a>
 			</li>
 			<li>
@@ -693,7 +699,8 @@ function enom_pro_sidebar( $vars ) {
 			</tr>
 		</table>
 		<div class="upgradeAlertHidden">
-			<a href="<?php echo enom_pro::MODULE_LINK; ?>&action=do_upgrade" class="btn btn-block btn-success">Upgrade Now
+			<a href="<?php echo enom_pro::MODULE_LINK; ?>&action=do_upgrade"
+			   class="btn btn-block btn-success">Upgrade Now
 				<span class="enom-pro-icon enom-pro-icon-update"></span>
 			</a>
 		</div>
@@ -785,13 +792,17 @@ function enom_pro_output( $vars ) {
 				<h3>Welcome to eNom PRO!</h3>
 				<a class="btn btn-success large"
 				   href="<?php echo enom_pro::MODULE_LINK . '&view=domain_import' ?>">Import
-					Domains <span class="enom-pro-icon enom-pro-icon-domains"></span></a>
+				                                                                      Domains
+					<span class="enom-pro-icon enom-pro-icon-domains"></span>
+				</a>
 				<a class="btn btn-success large"
 				   href="<?php echo enom_pro::MODULE_LINK . '&view=pricing_import' ?>">Import TLD Pricing
-					<span class="enom-pro-icon enom-pro-icon-tag"></span></a>
+					<span class="enom-pro-icon enom-pro-icon-tag"></span>
+				</a>
 				<a class="btn btn-danger large"
 				   href="<?php echo enom_pro::MODULE_LINK . '&view=help' ?>">View Help
-					<span class="enom-pro-icon enom-pro-icon-question"></span></a>
+					<span class="enom-pro-icon enom-pro-icon-question"></span>
+				</a>
 
 			</div>
 			<div id="enom_pro_admin_widgets" class="row">

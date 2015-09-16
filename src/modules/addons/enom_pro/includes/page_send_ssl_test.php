@@ -6,7 +6,7 @@
  */
 /** @var $this enom_pro */
 $_REQUEST['show_all'] = true;
-$expiring_certs = $this->getExpiringCerts(); ?>
+$expiring_certs       = $this->getExpiringCerts(); ?>
 <?php if ( count( $expiring_certs ) > 0 ) : ?>
 	<table class="table table-condensed table-hover">
 		<tr>
@@ -21,24 +21,26 @@ $expiring_certs = $this->getExpiringCerts(); ?>
 					<?php if ( count( $cert['domain'] ) > 0 && ! empty( $cert['domain'][0] ) ): ?>
 						<?php $clientIdByDomain = $this->getClientIdByDomain( reset( $cert['domain'] ) ); ?>
 						<?php $domainString = rtrim( implode( ', ', array_values( $cert['domain'] ) ), ', ' ); ?>
-						<?php if ( false === $clientIdByDomain || false == $this->willCertificateReminderBeSent($cert)) : ?>
+						<?php if ( false === $clientIdByDomain || false == $this->willCertificateReminderBeSent( $cert ) ) : ?>
 							<p>
 								<span class="label label-danger">
 									<?php echo $domainString; ?>
 									<span class="enom-pro-icon enom-pro-icon-verify-alt"></span>
 								</span>
 								SSL Reminder will NOT be sent.
-								<?php if (false === $clientIdByDomain): ?>
-									No matching product or domain found in WHMCS. <br/>
+								<?php if ( false === $clientIdByDomain ): ?>
+									No matching product or domain found in WHMCS. <br />
 								<?php else: ?>
-									<a class="btn btn-success btn-sm" target="_blank" href="clientssummary.php?userid=<?php echo (int) $clientIdByDomain ?>">
+									<a class="btn btn-success btn-sm" target="_blank"
+									   href="clientssummary.php?userid=<?php echo (int) $clientIdByDomain ?>">
 										View Client
-									</a><br/>
+									</a><br />
 								<?php endif; ?>
-								
-								<?php if (false ===  $this->willCertificateReminderBeSent($cert)): ?>
-									Invalid Certificate Status to send reminder (<?php echo $cert['status']; ?>. ID-<?php echo $cert['status_id'] ?>). <br/>
-								<?php endif;?>
+
+								<?php if ( false === $this->willCertificateReminderBeSent( $cert ) ): ?>
+									Invalid Certificate Status to send reminder (<?php echo $cert['status']; ?>. ID-<?php echo $cert['status_id'] ?>).
+									<br />
+								<?php endif; ?>
 							</p>
 						<?php else: ?>
 							<p>
@@ -47,16 +49,17 @@ $expiring_certs = $this->getExpiringCerts(); ?>
 								<span class="enom-pro-icon enom-pro-icon-checkmark"></span>
 							</span>
 								SSL Reminder email will be sent to
-								<?php $clientDetails = enom_pro::whmcs_api(
-									'getclientsdetails',
-									array( 'clientid' => $clientIdByDomain )
-								);
-								echo $clientDetails['firstname'] . " " . $clientDetails['lastname'];?>
+								<?php $clientDetails = enom_pro::whmcs_api( 'getclientsdetails',
+									array( 'clientid' => $clientIdByDomain ) );
+								echo $clientDetails['firstname'] . " " . $clientDetails['lastname']; ?>
 								on <span class="label label-default">
-									<?php echo date('m-d-Y', strtotime($cert['expiration_date']) - (enom_pro::get_addon_setting('ssl_email_days') * 86400)) ?>
+									<?php echo date( 'm-d-Y',
+										strtotime( $cert['expiration_date'] ) - ( enom_pro::get_addon_setting( 'ssl_email_days' ) * 86400 ) ) ?>
 								</span>
 							</p>
-							<a href="<?php echo enom_pro::MODULE_LINK ?>&action=preview_ssl_email&index=<?php echo $index ?>" class="btn btn-primary ep_lightbox">Preview SSL Email</a>
+							<a href="<?php echo enom_pro::MODULE_LINK ?>&action=preview_ssl_email&index=<?php echo $index ?>"
+							   class="btn btn-primary ep_lightbox">Preview SSL Email
+							</a>
 						<?php endif; ?>
 
 					<?php else: ?>

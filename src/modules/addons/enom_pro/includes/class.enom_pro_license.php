@@ -1,26 +1,28 @@
 <?php
 
 /**
- *
  * @author robertgregor
  * @codeCoverageIgnore
  */
 class enom_pro_license {
+
+	const DO_UPGRADE_URL = 'addonmodules.php?module=enom_pro&action=do_upgrade';
+	private static $latest_version = false;
 	/**
 	 * @var
 	 */
 	private $license;
-	private static $latest_version = false;
 	private $key;
 	private $updates_addon_name = "Support & Updates - eNom PRO";
-	const DO_UPGRADE_URL = 'addonmodules.php?module=enom_pro&action=do_upgrade';
+	private $company;
+	private $name;
 
 	/**
 	 * Checks remote license
-	 *
 	 * @throws LicenseException
 	 */
 	public function  __construct() {
+
 		$this->key = $license = enom_pro::get_addon_setting( 'license' );
 		//Prep return string
 		$return = "";
@@ -59,82 +61,68 @@ class enom_pro_license {
 	}
 
 	public function  get_id() {
+
 		return $this->license['serviceid'];
 	}
 
 	/**
-	 *
 	 * @return array 'status', duedate
 	 */
 	public function get_supportandUpdates() {
+
 		$return = array();
-		if ( !isset( $this->license['addons'] ) && strstr($this->key, 'dev')) {
+		if ( ! isset( $this->license['addons'] ) && strstr( $this->key, 'dev' ) ) {
 			$return['status'] = 'beta';
 		}
-		$addons = $this->license['addons'];
-		$addons = str_ireplace( '&amp;', '&', $addons );
-		$addons_array = explode( '|', $addons );
+		$addons         = $this->license['addons'];
+		$addons         = str_ireplace( '&amp;', '&', $addons );
+		$addons_array   = explode( '|', $addons );
 		$expired_addons = $active_addons = array();
 		foreach ( $addons_array as $addon_string ) {
 			$addon_array = explode( ';', $addon_string );
-			$statusText = strtolower( substr( $addon_array[2], 7 ) );
-			if ( "name={$this->updates_addon_name}" == $addon_array[0]) {
-				$dueDate = substr( $addon_array[1], 12);
-				if ($statusText == 'active') {
+			$statusText  = strtolower( substr( $addon_array[2], 7 ) );
+			if ( "name={$this->updates_addon_name}" == $addon_array[0] ) {
+				$dueDate = substr( $addon_array[1], 12 );
+				if ( $statusText == 'active' ) {
 					$active_addons[] = $dueDate;
 				} else {
 					$expired_addons[] = array(
 						'duedate' => $dueDate,
-						'status' => $statusText,
+						'status'  => $statusText,
 					);
 				}
 			}
 		}
-		if (count($active_addons) >= 1) {
+		if ( count( $active_addons ) >= 1 ) {
 			$return['status'] = 'active';
-			sort($active_addons);
-			$return['duedate'] = end($active_addons);
-		} elseif (count($expired_addons) >= 1) {
+			sort( $active_addons );
+			$return['duedate'] = end( $active_addons );
+		} elseif ( count( $expired_addons ) >= 1 ) {
 			//Sort by most recent expiry
-			array_multisort($expired_addons);
-			$most_recent = end($expired_addons);
-			$return['status'] = $most_recent['status'];
+			array_multisort( $expired_addons );
+			$most_recent       = end( $expired_addons );
+			$return['status']  = $most_recent['status'];
 			$return['duedate'] = $most_recent['duedate'];
 		}
+
 		return $return;
 	}
 
 	/**
-	 *
 	 * Checks to see if we're running in beta mode
-	 *
 	 * @return bool
 	 */
-	public static function isBetaOptedIn ()
-	{
-		return enom_pro::get_addon_setting('beta') == 'on' ? true : false;
-	}
+	public static function isBetaOptedIn() {
 
-	/**
-	 * @return string
-	 */
-	private static function getVersionCacheFile() {
-		if (self::isBetaOptedIn()) {
-			$filename = 'beta_version';
-		} else {
-			$filename = 'version';
-		}
-		return ENOM_PRO_TEMP . $filename . '.cache';
+		return enom_pro::get_addon_setting( 'beta' ) == 'on' ? true : false;
 	}
-
-	private $company;
-	private $name;
 
 	/**
 	 * Gets customer name
 	 * @return string|false
 	 */
 	public function getCustomerName() {
+
 		return $this->name;
 	}
 
@@ -143,16 +131,17 @@ class enom_pro_license {
 	 * @return boolean true for license OK
 	 */
 	public function checkLicense() {
-		$query = "SELECT `local` FROM `mod_enom_pro` WHERE `id`=0";
-		$local = mysql_fetch_assoc( mysql_query( $query ) );
-		$localKey = $local['local'];
-		$results = $this->get_remote_license( enom_pro::get_addon_setting( 'license' ),
+
+		$query                = "SELECT `local` FROM `mod_enom_pro` WHERE `id`=0";
+		$local                = mysql_fetch_assoc( mysql_query( $query ) );
+		$localKey             = $local['local'];
+		$results              = $this->get_remote_license( enom_pro::get_addon_setting( 'license' ),
 			$localKey );
-		$this->license = $results;
+		$this->license        = $results;
 		self::$latest_version = @$results['latestversion'];
-		$this->company = @$results['companyname'];
-		$this->name = isset( $results['registeredname'] ) ? $results['registeredname'] : false;
-		$this->productname = @$results['productname'];
+		$this->company        = @$results['companyname'];
+		$this->name           = isset( $results['registeredname'] ) ? $results['registeredname'] : false;
+		$this->productname    = @$results['productname'];
 		if ( $results["status"] == "Active" ) {
 			$this->status = "Active";
 			# Allow Script to Run
@@ -162,9 +151,10 @@ class enom_pro_license {
 				$query = "UPDATE `mod_enom_pro` SET `local`='" . $localkeydata . "' WHERE `id`=0";
 				mysql_query( $query );
 			}
+
 			return true;
 		} elseif ( $results["status"] == "Invalid" ) {
-			$this->status = "Invalid";
+			$this->status  = "Invalid";
 			$this->message = @$results['description'];
 
 			return false;
@@ -180,6 +170,7 @@ class enom_pro_license {
 	}
 
 	public static function  clearLicense() {
+
 		$query = 'UPDATE  `mod_enom_pro` SET  `local` =  \' \' WHERE  `id` =0;';
 		enom_pro::query( $query );
 	}
@@ -189,9 +180,10 @@ class enom_pro_license {
 	 * @return bool
 	 */
 	public static function is_update_available() {
-		if (self::isBetaOptedIn()) {
+
+		if ( self::isBetaOptedIn() ) {
 			//Compare hashes
-			if (ENOM_PRO_VERSION == self::get_latest_version()) {
+			if ( ENOM_PRO_VERSION == self::get_latest_version() ) {
 				return false;
 			} else {
 				return true;
@@ -200,8 +192,7 @@ class enom_pro_license {
 			//Compare the response from the server to the locally defined version
 			if ( version_compare( self::get_latest_version(),
 				ENOM_PRO_VERSION,
-				'gt' )
-			) {
+				'gt' ) ) {
 				//The remote is newer than local, return the string upgrade notice
 				return true;
 			} else {
@@ -210,9 +201,9 @@ class enom_pro_license {
 		}
 	}
 
-	public static function  is_downgrade_available()
-	{
-		if (! self::isBetaOptedIn() && strlen(ENOM_PRO_VERSION) >= 10 && ! strstr(ENOM_PRO_VERSION, '.')) {
+	public static function  is_downgrade_available() {
+
+		if ( ! self::isBetaOptedIn() && strlen( ENOM_PRO_VERSION ) >= 10 && ! strstr( ENOM_PRO_VERSION, '.' ) ) {
 			//Check for SHA1 hash (gte 10 length, and no periods)
 			return true;
 		} else {
@@ -220,19 +211,80 @@ class enom_pro_license {
 		}
 	}
 
+	/**
+	 * Gets latest available release version number
+	 * @return string latest version number
+	 */
+	public static function get_latest_version() {
+
+		return self::_get_latest_version();
+	}
+
+	/**
+	 * Last checked for updates
+	 * @return string Time ago
+	 */
+	public static function get_last_checked_time_ago() {
+
+		$version_timeout = self::isBetaOptedIn() ? '-1 Week' : '-1 Month';
+		if ( enom_pro::cache_file_is_older_than( self::getVersionCacheFile(), $version_timeout ) ) {
+			self::delete_latest_version();
+		}
+		$version_file = self::getVersionCacheFile();
+		if ( ! file_exists( $version_file ) ) {
+			self::get_latest_version();
+		}
+
+		return enom_pro::time_ago( filemtime( $version_file ), 1 );
+	}
+
+	/**
+	 * Deletes cached version data;
+	 */
+	public static function delete_latest_version() {
+
+		self::$latest_version = false;
+		unlink( self::getVersionCacheFile() );
+	}
+
+	/**
+	 * @deprecated 2.1
+	 */
+	public function updateAvailable() {
+
+		enom_pro::deprecated( 'updateAvailable',
+			'2.1',
+			'enom_pro_license::is_update_available()' );
+	}
+
+	/**
+	 * @return string
+	 */
+	private static function getVersionCacheFile() {
+
+		if ( self::isBetaOptedIn() ) {
+			$filename = 'beta_version';
+		} else {
+			$filename = 'version';
+		}
+
+		return ENOM_PRO_TEMP . $filename . '.cache';
+	}
 
 	private static function _get_latest_version() {
+
 		$version_file = self::getVersionCacheFile();
 		if ( file_exists( $version_file ) ) {
 			self::$latest_version = file_get_contents( $version_file );
+
 			return self::$latest_version;
 		}
-		$xml_filename = self::isBetaOptedIn() ? 'enom_pro_version_beta.xml' : 'enom_pro_version.xml';
+		$xml_filename       = self::isBetaOptedIn() ? 'enom_pro_version_beta.xml' : 'enom_pro_version.xml';
 		$latest_version_xml = enom_pro::curl_get( "http://mycircletree.com/versions/{$xml_filename}" );
-		$latest_version = @simplexml_load_string( $latest_version_xml );
+		$latest_version     = @simplexml_load_string( $latest_version_xml );
 		if ( is_object( $latest_version ) ) {
 			$latest_version_string = (string) $latest_version->version;
-			$handle = fopen( $version_file, 'w' );
+			$handle                = fopen( $version_file, 'w' );
 			fwrite( $handle, $latest_version_string );
 			fclose( $handle );
 		} else {
@@ -243,70 +295,38 @@ class enom_pro_license {
 		return self::$latest_version;
 	}
 
-	/**
-	 * Gets latest available release version number
-	 * @return string latest version number
-	 */
-	public static function get_latest_version() {
-		return self::_get_latest_version();
-	}
-
-	/**
-	 * Last checked for updates
-	 * @return string Time ago
-	 */
-	public static function get_last_checked_time_ago() {
-		$version_timeout = self::isBetaOptedIn() ? '-1 Week' : '-1 Month';
-		if (enom_pro::cache_file_is_older_than(self::getVersionCacheFile(), $version_timeout)) {
-			self::delete_latest_version();
-		}
-		$version_file = self::getVersionCacheFile();
-		if ( !file_exists( $version_file ) ) {
-			self::get_latest_version();
-		}
-
-		return enom_pro::time_ago( filemtime( $version_file ), 1);
-	}
-
-	/**
-	 * Deletes cached version data;
-	 */
-	public static function delete_latest_version() {
-		self::$latest_version = false;
-		unlink( self::getVersionCacheFile() );
-	}
-
 	private function get_remote_license( $licensekey, $localkey = "" ) {
-		$whmcsurl = "http://mycircletree.com/client-area/";
+
+		$whmcsurl             = "http://mycircletree.com/client-area/";
 		$licensing_secret_key = "***REMOVED***";
-		$check_token = time() . md5( mt_rand( 1000000000,
+		$check_token          = time() . md5( mt_rand( 1000000000,
 					9999999999 ) . $licensekey );
-		$checkdate = date( "Ymd" ); # Current date
-		$usersip = isset( $_SERVER['SERVER_ADDR'] ) ? $_SERVER['SERVER_ADDR'] : false;
-		$server_name = isset( $_SERVER['SERVER_NAME'] ) ? $_SERVER['SERVER_NAME'] : false;
+		$checkdate            = date( "Ymd" ); # Current date
+		$usersip              = isset( $_SERVER['SERVER_ADDR'] ) ? $_SERVER['SERVER_ADDR'] : false;
+		$server_name          = isset( $_SERVER['SERVER_NAME'] ) ? $_SERVER['SERVER_NAME'] : false;
 		//Dev Fallbacks
-		if ( !$usersip ) {
+		if ( ! $usersip ) {
 			$usersip = '127.0.0.1';
 		}
-		if ( !$server_name ) {
+		if ( ! $server_name ) {
 			$server_name = 'localhost';
 		}
-		$localkeydays = 28; # How long the local key is valid for in between remote checks
+		$localkeydays       = 28; # How long the local key is valid for in between remote checks
 		$allowcheckfaildays = 7;
-		$localkeyvalid = false;
+		$localkeyvalid      = false;
 		if ( $localkey ) {
-			$localkey = str_replace( "\n", '', $localkey ); # Remove the line breaks
+			$localkey  = str_replace( "\n", '', $localkey ); # Remove the line breaks
 			$localdata = substr( $localkey,
 				0,
 				strlen( $localkey ) - 32 ); # Extract License Data
-			$md5hash = substr( $localkey,
+			$md5hash   = substr( $localkey,
 				strlen( $localkey ) - 32 ); # Extract MD5 Hash
 			if ( $md5hash == md5( $localdata . $licensing_secret_key ) ) {
-				$localdata = strrev( $localdata ); # Reverse the string
-				$md5hash = substr( $localdata, 0, 32 ); # Extract MD5 Hash
-				$localdata = substr( $localdata, 32 ); # Extract License Data
-				$localdata = base64_decode( $localdata );
-				$localkeyresults = unserialize( $localdata );
+				$localdata         = strrev( $localdata ); # Reverse the string
+				$md5hash           = substr( $localdata, 0, 32 ); # Extract MD5 Hash
+				$localdata         = substr( $localdata, 32 ); # Extract License Data
+				$localdata         = base64_decode( $localdata );
+				$localkeyresults   = unserialize( $localdata );
 				$originalcheckdate = $localkeyresults["checkdate"];
 				if ( $md5hash == md5( $originalcheckdate . $licensing_secret_key ) ) {
 					$localexpiry = date( "Ymd",
@@ -318,34 +338,34 @@ class enom_pro_license {
 							date( "Y" ) ) );
 					if ( $originalcheckdate > $localexpiry ) {
 						$localkeyvalid = true;
-						$results = $localkeyresults;
-						$validdomains = explode( ",", $results["validdomain"] );
+						$results       = $localkeyresults;
+						$validdomains  = explode( ",", $results["validdomain"] );
 
-						if ( !in_array( $server_name, $validdomains ) ) {
-							$localkeyvalid = false;
+						if ( ! in_array( $server_name, $validdomains ) ) {
+							$localkeyvalid             = false;
 							$localkeyresults["status"] = "Invalid";
-							$results = array();
+							$results                   = array();
 						}
 						$validips = explode( ",", $results["validip"] );
-						if ( !in_array( $usersip, $validips ) ) {
-							$localkeyvalid = false;
+						if ( ! in_array( $usersip, $validips ) ) {
+							$localkeyvalid             = false;
 							$localkeyresults["status"] = "Invalid";
-							$results = array();
+							$results                   = array();
 						}
 						if ( $results["validdirectory"] != dirname( dirname( __FILE__ ) ) ) {
-							$localkeyvalid = false;
+							$localkeyvalid             = false;
 							$localkeyresults["status"] = "Invalid";
-							$results = array();
+							$results                   = array();
 						}
 					}
 				}
 			}
 		}
-		if ( !$localkeyvalid ) {
+		if ( ! $localkeyvalid ) {
 			$postfields["licensekey"] = $licensekey;
-			$postfields["domain"] = $server_name;
-			$postfields["ip"] = $usersip;
-			$postfields["dir"] = dirname( dirname( __FILE__ ) );
+			$postfields["domain"]     = $server_name;
+			$postfields["ip"]         = $usersip;
+			$postfields["dir"]        = dirname( dirname( __FILE__ ) );
 			if ( $check_token ) {
 				$postfields["check_token"] = $check_token;
 			}
@@ -362,7 +382,7 @@ class enom_pro_license {
 				$data = curl_exec( $ch );
 				curl_close( $ch );
 			}
-			if ( !$data ) {
+			if ( ! $data ) {
 				$localexpiry = date( "Ymd",
 					mktime( 0,
 						0,
@@ -373,7 +393,7 @@ class enom_pro_license {
 				if ( $originalcheckdate > $localexpiry ) {
 					$results = $localkeyresults;
 				} else {
-					$results["status"] = "Invalid";
+					$results["status"]      = "Invalid";
 					$results["description"] = "Remote Check Failed";
 
 					return $results;
@@ -382,40 +402,31 @@ class enom_pro_license {
 				preg_match_all( '/<(.*?)>([^<]+)<\/\\1>/i', $data, $matches );
 				$results = array();
 				foreach ( $matches[1] AS $k => $v ) {
-					$results[$v] = $matches[2][$k];
+					$results[ $v ] = $matches[2][ $k ];
 				}
 			}
 			if ( isset( $results["md5hash"] ) ) {
 				if ( $results["md5hash"] != md5( $licensing_secret_key . $check_token ) ) {
-					$results["status"] = "Invalid";
+					$results["status"]      = "Invalid";
 					$results["description"] = "MD5 Checksum Verification Failed";
 
 					return $results;
 				}
 			}
 			if ( $results["status"] == "Active" ) {
-				$results["checkdate"] = $checkdate;
+				$results["checkdate"]     = $checkdate;
 				$results["latestversion"] = $this->get_latest_version();
-				$data_encoded = serialize( $results );
-				$data_encoded = base64_encode( $data_encoded );
-				$data_encoded = md5( $checkdate . $licensing_secret_key ) . $data_encoded;
-				$data_encoded = strrev( $data_encoded );
-				$data_encoded = $data_encoded . md5( $data_encoded . $licensing_secret_key );
-				$data_encoded = wordwrap( $data_encoded, 80, "\n", true );
-				$results["localkey"] = $data_encoded;
+				$data_encoded             = serialize( $results );
+				$data_encoded             = base64_encode( $data_encoded );
+				$data_encoded             = md5( $checkdate . $licensing_secret_key ) . $data_encoded;
+				$data_encoded             = strrev( $data_encoded );
+				$data_encoded             = $data_encoded . md5( $data_encoded . $licensing_secret_key );
+				$data_encoded             = wordwrap( $data_encoded, 80, "\n", true );
+				$results["localkey"]      = $data_encoded;
 			}
 			$results["remotecheck"] = true;
 		}
 
 		return $results;
-	}
-
-	/**
-	 * @deprecated 2.1
-	 */
-	public function updateAvailable() {
-		enom_pro::deprecated( 'updateAvailable',
-			'2.1',
-			'enom_pro_license::is_update_available()' );
 	}
 }

@@ -20,7 +20,8 @@ $result = mysql_query( 'SELECT * FROM `tbldomainpricing` ORDER BY `order` ASC' )
 			        aria-hidden="true">&times;</button>
 			<h3>Drag &amp; drop TLD Sorting</h3>
 
-				<img src="../modules/addons/enom_pro/images/tld-drag-drop-sort.jpg"  class="img-rounded img-responsive" style="max-height: 300px;" />
+			<img src="../modules/addons/enom_pro/images/tld-drag-drop-sort.jpg" class="img-rounded img-responsive"
+			     style="max-height: 300px;" />
 
 		</div>
 	<?php endif; ?>
@@ -32,12 +33,16 @@ $result = mysql_query( 'SELECT * FROM `tbldomainpricing` ORDER BY `order` ASC' )
 			        data-alert="pricing-sortable"
 			        aria-hidden="true">&times;</button>
 			<h3>Bulk TLD Sorting</h3>
-				<p>
-					You can also <a class="btn btn-xs btn-default" href="#bulk-sort">bulk sort</a> pricing alphabetically.<br />
-				</p>
+
+			<p>
+				You can also
+				<a class="btn btn-xs btn-default" href="#bulk-sort">bulk sort</a>
+				pricing alphabetically.<br />
+			</p>
 
 			<div class="alert alert-warning">
-				Please keep in mind that using the <a class="btn btn-default btn-xs" href="#bulk-sort">bulk sorter</a>
+				Please keep in mind that using the
+				<a class="btn btn-default btn-xs" href="#bulk-sort">bulk sorter</a>
 				will overwrite any ordering changes made here.
 			</div>
 		</div>
@@ -91,7 +96,8 @@ $result = mysql_query( 'SELECT * FROM `tbldomainpricing` ORDER BY `order` ASC' )
 			<div class="col-xs-12">
 				<input type="submit" class="btn btn-danger col-xs-3" value="Re-Sort All TLDs" />
 				<span class="clearfix"></span>
-				<span class="col-xs-3 text-center text-danger">This will re-sort ALL tlds. The drag &amp; drop interface saves automatically after each sort.</span>
+				<span
+					class="col-xs-3 text-center text-danger">This will re-sort ALL tlds. The drag &amp; drop interface saves automatically after each sort.</span>
 			</div>
 		</form>
 

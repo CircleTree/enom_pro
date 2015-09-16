@@ -15,7 +15,7 @@
  *
  * @uses $_GET['start'] 0 index start of result set
  */
-function pager( $count, $view, $large = false, $per_page = 25, $dom_element = false) {
+function pager( $count, $view, $large = false, $per_page = 25, $dom_element = false ) {
 
 	$total       = $count;
 	$pages       = ceil( ( $total / $per_page ) );
@@ -31,7 +31,7 @@ function pager( $count, $view, $large = false, $per_page = 25, $dom_element = fa
 	if ( $prevStart < 0 ) {
 		$prevStart = 0;
 	}
-	echo '><a data-start="' . $prevStart . '" href="' . $_SERVER['PHP_SELF'] . '?module=enom_pro&view=' . $view . '&start=' . $prevStart . ($dom_element ? $dom_element : '').'" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+	echo '><a data-start="' . $prevStart . '" href="' . $_SERVER['PHP_SELF'] . '?module=enom_pro&view=' . $view . '&start=' . $prevStart . ( $dom_element ? $dom_element : '' ) . '" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
 
 	foreach ( $pages_array as $page ) {
 		echo '<li';
@@ -52,21 +52,21 @@ function pager( $count, $view, $large = false, $per_page = 25, $dom_element = fa
 
 	echo '</ul></nav>'; ?>
 
-<div class="text-center hidden-turbo">
+	<div class="text-center hidden-turbo">
 		<span class="floatleft">
 			Page
 			<span class="badge">
-				<?php echo (ceil( $_GET['start'] / $per_page ) + 1);?>
+				<?php echo( ceil( $_GET['start'] / $per_page ) + 1 ); ?>
 			</span>
 			of
 			<span class="badge">
-				<?php echo ceil( $count / $per_page); ?>
+				<?php echo ceil( $count / $per_page ); ?>
 			</span>
 	    </span>
 			<span class="text-right">
-				<span class="badge"><?php echo $count;?></span>
+				<span class="badge"><?php echo $count; ?></span>
 				Total
 	    </span>
-</div>
+	</div>
 	<?php
 }

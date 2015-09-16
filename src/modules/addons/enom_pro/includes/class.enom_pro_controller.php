@@ -2,6 +2,7 @@
 
 class enom_pro_controller {
 
+	const DISMISSED_ALERTS = 'dismissed_alerts';
 	/**
 	 * @var enom_pro
 	 */
@@ -48,6 +49,235 @@ class enom_pro_controller {
 		return $relid;
 	}
 
+	public static function is_ajax() {
+
+		return isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
+	}
+
+	/**
+	 * Is this alert dismissed
+	 *
+	 * @param $alert
+	 *
+	 * @return bool
+	 */
+	public static function isDismissed( $alert ) {
+
+		return ! self::dismissAlert( $alert, false );
+	}
+
+	public static function reset_alerts() {
+
+		enom_pro::set_addon_setting( self::DISMISSED_ALERTS, array() );
+		echo 'Reset';
+	}
+
+	public static function dismiss_alert() {
+
+		echo self::dismissAlert( trim( $_REQUEST['alert'] ) );
+	}
+
+	public static function getAdminJS() {
+
+		$filePath = ENOM_PRO_ROOT . 'js/jquery.admin.' . ( ! enom_pro::isBeta() ? 'min.' : 'min.' ) . 'js';
+		$result   = file_get_contents( $filePath );
+		if ( is_int( $result ) ) {
+			if ( 3 == $result ) {
+				throw new Exception( 'An updated Ioncube Loader should be installed to read the file. ', 3 );
+			} else {
+				throw new Exception( "Ioncube Loader Error #" . $result, $result );
+			}
+		}
+		header( 'Content-Type: application/javascript' );
+		$expire = 'Expires: ' . gmdate( 'D, d M Y H:i:s',
+				strtotime( '+30 days' ) ) . ' GMT';
+		header( $expire, true );
+		self::caching_headers( $filePath );
+		self::sendGzipped( $result );
+	}
+
+	public function save_tld_markup() {
+
+		enom_pro::set_addon_setting( 'min_markup_percent', (double) $_GET['min_markup_percent'] );
+		enom_pro::set_addon_setting( 'min_markup_whole', (double) $_GET['min_markup_whole'] );
+		enom_pro::set_addon_setting( 'preferred_markup_percent', (double) $_GET['preferred_markup_percent'] );
+		enom_pro::set_addon_setting( 'preferred_markup_whole', (double) $_GET['preferred_markup_whole'] );
+		enom_pro::set_addon_setting( 'round_to', (int) $_GET['round_to'] );
+		enom_pro::set_addon_setting( 'overwrite_whmcs', ( 'true' == $_GET['overwrite_whmcs'] ? true : false ) );
+		echo 'saved';
+	}
+
+	public function save_import_tlds() {
+
+		$tlds = array();
+		if ( isset( $_GET['tlds'] ) && substr_count( $_GET['tlds'], ',' ) >= 1 ) {
+			//Make sure there is at least 1 comma: com,
+			//  com,net,
+			$tlds_array = explode( ',', trim( $_GET['tlds'], ',' ) );
+			$save       = array();
+			$deleted    = array();
+			foreach ( $tlds_array as $tld_string ) {
+				/** @var string $tld_string com=0
+				 * where before the = is the TLD, and after is add = 1, or delete = 0
+				 */
+				$tld_array = explode( ';', $tld_string );
+				if ( 1 == $tld_array[1] ) {
+					$save[] = $tld_array[0];
+				} elseif ( 0 == $tld_array[1] ) {
+					$deleted[] = $tld_array[0];
+				}
+			}
+			if ( count( $save ) > 0 ) {
+				$this->enom->save_tlds( $save );
+			}
+			if ( count( $deleted ) > 0 ) {
+				//save must be called first, otherwise we may not remove proper tlds
+				$this->enom->delete_saved_tlds( $deleted );
+			}
+		}
+		print_r( $this->enom->get_saved_tlds() );
+	}
+
+	public function preview_ssl_email() {
+
+		$expiring_certs = $this->enom->getExpiringCerts();
+		if ( ! isset( $expiring_certs[ $_REQUEST['index'] ] ) ) {
+			throw new Exception( 'Certificate not found.' );
+		}
+		$cert     = $expiring_certs[ $_REQUEST['index'] ];
+		$merge    = $this->enom->parse_SSL_Cert_meta_array_to_Smarty( $cert );
+		$email_id = $this->enom->is_ssl_email_installed();
+		if ( is_int( $email_id ) ) {
+			$email_message = mysql_fetch_assoc( mysql_query( 'SELECT `message`, `subject` FROM `tblemailtemplates` WHERE id=' . $email_id ) );
+			$merged        = str_replace( array( '{$expiry_date}', '{$domain_name}', '{$product}' ),
+				$merge,
+				$email_message['message'] );
+		} else {
+			throw new Exception( 'SSL Reminder Template Not found. Please install from eNom PRO home first' );
+		}
+		$subject = $email_message['subject'];
+		require_once ENOM_PRO_INCLUDES . 'fragment_ssl_email_preview.php';
+	}
+
+	/**
+	 * @param string $file absolute path of file to create e-tag and get modified
+	 */
+	public static function caching_headers( $file ) {
+
+		$timestamp = filemtime( $file );
+		$gmt_mtime = gmdate( 'r', $timestamp );
+		header( 'ETag: "' . md5( $timestamp . $file ) . '"' );
+		header( 'Last-Modified: ' . $gmt_mtime );
+		header( 'Cache-Control: public' );
+		if ( function_exists( 'header_remove' ) ) { //TODO remove with php 5.3+
+			header_remove( 'Pragma' );
+		}
+		if ( isset( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) || isset( $_SERVER['HTTP_IF_NONE_MATCH'] ) ) {
+			if ( $_SERVER['HTTP_IF_MODIFIED_SINCE'] == $gmt_mtime || str_replace( '"',
+					'',
+					stripslashes( $_SERVER['HTTP_IF_NONE_MATCH'] ) ) == md5( $timestamp . $file )
+			) {
+				header( 'HTTP/1.1 304 Not Modified' );
+				exit();
+			}
+		}
+	}
+
+	/**
+	 * Echo GZipped data
+	 *
+	 * @param $data
+	 */
+	public static function sendGzipped( $data ) {
+
+		if ( isset( $_SERVER['HTTP_ACCEPT_ENCODING'] ) && strstr( $_SERVER['HTTP_ACCEPT_ENCODING'],
+				'gzip' ) && 'on' != strtolower( enom_pro::get_addon_setting( 'disable_gzip' ) )
+		) {
+			header( 'Content-Encoding: gzip' );
+			$before_gzip      = microtime( true );
+			$compressed       = gzencode( $data, 7 );
+			$after_gzip       = microtime( true );
+			$orignalLength    = strlen( $data );
+			$compressedLength = strlen( $compressed );
+			$gzip_time        = round( ( $after_gzip - $before_gzip ) * 1000, 2 );
+			header( "X-Gzip-Time: {$gzip_time}ms" );
+			if ( $orignalLength ) {
+				header( "X-Compression-Info: original $orignalLength bytes, gzipped $compressedLength bytes " . '(Saved ' . ( 100 - round( 100 / $orignalLength * $compressedLength ) ) . '%)' );
+			}
+			echo $compressed;
+		} else {
+			echo $data;
+		}
+	}
+
+	/**
+	 * @param int $statusCode HTTP status code to send
+	 */
+	public static function status_header( $statusCode ) {
+
+		static $status_codes = null;
+
+		if ( $status_codes === null ) {
+			$status_codes = array(
+				100 => 'Continue',
+				101 => 'Switching Protocols',
+				102 => 'Processing',
+				200 => 'OK',
+				201 => 'Created',
+				202 => 'Accepted',
+				203 => 'Non-Authoritative Information',
+				204 => 'No Content',
+				205 => 'Reset Content',
+				206 => 'Partial Content',
+				207 => 'Multi-Status',
+				300 => 'Multiple Choices',
+				301 => 'Moved Permanently',
+				302 => 'Found',
+				303 => 'See Other',
+				304 => 'Not Modified',
+				305 => 'Use Proxy',
+				307 => 'Temporary Redirect',
+				400 => 'Bad Request',
+				401 => 'Unauthorized',
+				402 => 'Payment Required',
+				403 => 'Forbidden',
+				404 => 'Not Found',
+				405 => 'Method Not Allowed',
+				406 => 'Not Acceptable',
+				407 => 'Proxy Authentication Required',
+				408 => 'Request Timeout',
+				409 => 'Conflict',
+				410 => 'Gone',
+				411 => 'Length Required',
+				412 => 'Precondition Failed',
+				413 => 'Request Entity Too Large',
+				414 => 'Request-URI Too Long',
+				415 => 'Unsupported Media Type',
+				416 => 'Requested Range Not Satisfiable',
+				417 => 'Expectation Failed',
+				422 => 'Unprocessable Entity',
+				423 => 'Locked',
+				424 => 'Failed Dependency',
+				426 => 'Upgrade Required',
+				500 => 'Internal Server Error',
+				501 => 'Not Implemented',
+				502 => 'Bad Gateway',
+				503 => 'Service Unavailable',
+				504 => 'Gateway Timeout',
+				505 => 'HTTP Version Not Supported',
+				506 => 'Variant Also Negotiates',
+				507 => 'Insufficient Storage',
+				509 => 'Bandwidth Limit Exceeded',
+				510 => 'Not Extended'
+			);
+		}
+
+		if ( isset( $status_codes[ $statusCode ] ) && ! headers_sent() ) {
+			$status_string = $statusCode . ' ' . $status_codes[ $statusCode ];
+			header( $_SERVER['SERVER_PROTOCOL'] . ' ' . $status_string, true, $statusCode );
+		}
+	}
+
 	protected function resend_enom_transfer_email() {
 
 		$response = $this->enom->resendActivation( (string) $_REQUEST['domain'] );
@@ -81,11 +311,6 @@ class enom_pro_controller {
 		enom_pro_license::clearLicense();
 		enom_pro_license::delete_latest_version();
 		header( 'Location: ' . enom_pro::MODULE_LINK . '&checked' );
-	}
-
-	public static function is_ajax() {
-
-		return isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
 	}
 
 	protected function resubmit_enom_transfer_order() {
@@ -163,8 +388,8 @@ class enom_pro_controller {
 			);
 		} catch ( Exception $e ) {
 			sleep( 2 );//Add a delay to avoid DDOS'ing enom.com
-			$message  = $e->getMessage();
-			if ("" == trim($message)) {
+			$message = $e->getMessage();
+			if ( "" == trim( $message ) ) {
 				$message = "cURL Error. Please try again later";
 			}
 			$response = array( 'error' => $message );
@@ -327,8 +552,7 @@ class enom_pro_controller {
 		if ( $this->is_ajax() ) {
 			$this->send_json( array( 'hidden' ) );
 		} else {
-			if ( isset( $_SERVER['HTTP_REFERER'] ) && strstr( $_SERVER['HTTP_REFERER'], 'enom_pro' )
-			) {
+			if ( isset( $_SERVER['HTTP_REFERER'] ) && strstr( $_SERVER['HTTP_REFERER'], 'enom_pro' ) ) {
 				$location = 'addonmodules.php?module=enom_pro';
 			} else {
 				$location = 'index.php';
@@ -452,20 +676,6 @@ class enom_pro_controller {
 		header( 'Location: ' . $url );
 	}
 
-	/**
-	 * Send GZIP'd json if browser supports it
-	 *
-	 * @param array $data
-	 */
-	private function send_json( $data ) {
-
-		header( "Cache-Control: no-cache, must-revalidate" ); // HTTP/1.1
-		header( "Expires: Sat, 26 Jul 1997 05:00:00 GMT" ); // Date in the past
-		header( 'Content-Type: application/json', true );
-		$json_data = json_encode( $data );
-		self::sendGzipped( $json_data );
-	}
-
 	protected function sort_domains() {
 
 		$query  = 'SELECT `id`, `extension` FROM `tbldomainpricing`';
@@ -480,19 +690,66 @@ class enom_pro_controller {
 		}
 	}
 
-	/**
-	 * Is this alert dismissed
-	 *
-	 * @param $alert
-	 *
-	 * @return bool
-	 */
-	public static function isDismissed( $alert ) {
+	protected function resend_raa_email() {
 
-		return ! self::dismissAlert( $alert, false );
+		echo $this->enom->resendRAAEmail( $_REQUEST['domain'] );
 	}
 
-	const DISMISSED_ALERTS = 'dismissed_alerts';
+	protected function save_custom_exchange_rate() {
+
+		if ( - 1 == $_REQUEST['custom-exchange-rate'] ) {
+			$this->enom->set_addon_setting( 'custom-exchange-rate', null );
+		} else {
+			$this->enom->set_addon_setting( 'custom-exchange-rate', $_REQUEST['custom-exchange-rate'] );
+		}
+		$this->redirect( 'pricing_import', 'saved-exchange' );
+	}
+
+	protected function get_beta_log() {
+
+		$beta_log_array = enom_pro::curl_get_json( 'https://mycircletree.com/versions/enom_pro_beta_log.json' );
+		$formatted      = array();
+		foreach ( $beta_log_array as $key => $log_item ) {
+			$formatted[ $key ]                  = $log_item;
+			$formatted[ $key ]['relative_date'] = enom_pro::time_ago( $formatted[ $key ]['date'] );
+		}
+		echo json_encode( $formatted );
+	}
+
+	protected function get_javascript() {
+
+		header( 'Content-Type: application/json' );
+
+		$fileName   = filter_var( $_GET['script'],
+			FILTER_SANITIZE_STRING,
+			FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH );
+		$jsFilePath = ENOM_PRO_ROOT . 'js/' . $fileName;
+		if ( ! file_exists( $jsFilePath ) ) {
+			throw new Exception( 'Error loading JS File: ' . $fileName );
+		}
+		self::caching_headers( $jsFilePath );
+		self::sendGzipped( file_get_contents( $jsFilePath ) );
+	}
+
+	protected function get_client_list() {
+
+		$this->send_json( enom_pro::get_clients() );
+
+	}
+
+	/**
+	 * Send GZIP'd json if browser supports it
+	 *
+	 * @param array $data
+	 */
+	private function send_json( $data ) {
+
+		header( "Cache-Control: no-cache, must-revalidate" ); // HTTP/1.1
+		header( "Expires: Sat, 26 Jul 1997 05:00:00 GMT" ); // Date in the past
+		header( 'Content-Type: application/json', true );
+		$json_data = json_encode( $data );
+		self::sendGzipped( $json_data );
+	}
 
 	/**
 	 * Dismiss the alert
@@ -517,155 +774,6 @@ class enom_pro_controller {
 			return true;
 		} else {
 			return false;
-		}
-	}
-
-	public static function reset_alerts() {
-
-		enom_pro::set_addon_setting( self::DISMISSED_ALERTS, array() );
-		echo 'Reset';
-	}
-
-	public static function dismiss_alert() {
-
-		echo self::dismissAlert( trim( $_REQUEST['alert'] ) );
-	}
-
-	public static function getAdminJS() {
-
-		$filePath = ENOM_PRO_ROOT . 'js/jquery.admin.' . ( ! enom_pro::isBeta() ? 'min.' : 'min.' ) . 'js';
-		$result   = file_get_contents( $filePath );
-		if ( is_int( $result ) ) {
-			if ( 3 == $result ) {
-				throw new Exception( 'An updated Ioncube Loader should be installed to read the file. ', 3 );
-			} else {
-				throw new Exception( "Ioncube Loader Error #" . $result, $result );
-			}
-		}
-		header( 'Content-Type: application/javascript' );
-		$expire = 'Expires: ' . gmdate( 'D, d M Y H:i:s',
-				strtotime( '+30 days' ) ) . ' GMT';
-		header( $expire, true );
-		self::caching_headers( $filePath );
-		self::sendGzipped( $result );
-	}
-
-	public function save_tld_markup() {
-
-		enom_pro::set_addon_setting( 'min_markup_percent', (double) $_GET['min_markup_percent'] );
-		enom_pro::set_addon_setting( 'min_markup_whole', (double) $_GET['min_markup_whole'] );
-		enom_pro::set_addon_setting( 'preferred_markup_percent', (double) $_GET['preferred_markup_percent'] );
-		enom_pro::set_addon_setting( 'preferred_markup_whole', (double) $_GET['preferred_markup_whole'] );
-		enom_pro::set_addon_setting( 'round_to', (int) $_GET['round_to'] );
-		enom_pro::set_addon_setting( 'overwrite_whmcs', ( 'true' == $_GET['overwrite_whmcs'] ? true : false ) );
-		echo 'saved';
-	}
-
-	public function save_import_tlds() {
-
-		$tlds = array();
-		if ( isset( $_GET['tlds'] ) && substr_count( $_GET['tlds'], ',' ) >= 1 ) {
-			//Make sure there is at least 1 comma: com,
-			//  com,net,
-			$tlds_array = explode( ',', trim( $_GET['tlds'], ',' ) );
-			$save       = array();
-			$deleted    = array();
-			foreach ( $tlds_array as $tld_string ) {
-				/** @var string $tld_string com=0
-				 * where before the = is the TLD, and after is add = 1, or delete = 0
-				 */
-				$tld_array = explode( ';', $tld_string );
-				if ( 1 == $tld_array[1] ) {
-					$save[] = $tld_array[0];
-				} elseif ( 0 == $tld_array[1] ) {
-					$deleted[] = $tld_array[0];
-				}
-			}
-			if ( count( $save ) > 0 ) {
-				$this->enom->save_tlds( $save );
-			}
-			if ( count( $deleted ) > 0 ) {
-				//save must be called first, otherwise we may not remove proper tlds
-				$this->enom->delete_saved_tlds( $deleted );
-			}
-		}
-		print_r( $this->enom->get_saved_tlds() );
-	}
-
-	public function preview_ssl_email() {
-
-		$expiring_certs = $this->enom->getExpiringCerts();
-		if ( ! isset( $expiring_certs[ $_REQUEST['index'] ] ) ) {
-			throw new Exception( 'Certificate not found.' );
-		}
-		$cert     = $expiring_certs[ $_REQUEST['index'] ];
-		$merge    = $this->enom->parse_SSL_Cert_meta_array_to_Smarty( $cert );
-		$email_id = $this->enom->is_ssl_email_installed();
-		if ( is_int( $email_id ) ) {
-			$email_message = mysql_fetch_assoc( mysql_query( 'SELECT `message`, `subject` FROM `tblemailtemplates` WHERE id=' . $email_id ) );
-			$merged        = str_replace( array( '{$expiry_date}', '{$domain_name}', '{$product}' ),
-				$merge,
-				$email_message['message'] );
-		} else {
-			throw new Exception( 'SSL Reminder Template Not found. Please install from eNom PRO home first' );
-		}
-		$subject = $email_message['subject'];
-		require_once ENOM_PRO_INCLUDES . 'fragment_ssl_email_preview.php';
-	}
-
-	protected function resend_raa_email() {
-
-		echo $this->enom->resendRAAEmail( $_REQUEST['domain'] );
-	}
-
-	/**
-	 * @param string $file absolute path of file to create e-tag and get modified
-	 */
-	public static function caching_headers( $file ) {
-
-		$timestamp = filemtime( $file );
-		$gmt_mtime = gmdate( 'r', $timestamp );
-		header( 'ETag: "' . md5( $timestamp . $file ) . '"' );
-		header( 'Last-Modified: ' . $gmt_mtime );
-		header( 'Cache-Control: public' );
-		if ( function_exists( 'header_remove' ) ) { //TODO remove with php 5.3+
-			header_remove( 'Pragma' );
-		}
-		if ( isset( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) || isset( $_SERVER['HTTP_IF_NONE_MATCH'] ) ) {
-			if ( $_SERVER['HTTP_IF_MODIFIED_SINCE'] == $gmt_mtime || str_replace( '"',
-					'',
-					stripslashes( $_SERVER['HTTP_IF_NONE_MATCH'] ) ) == md5( $timestamp . $file )
-			) {
-				header( 'HTTP/1.1 304 Not Modified' );
-				exit();
-			}
-		}
-	}
-
-	/**
-	 * Echo GZipped data
-	 *
-	 * @param $data
-	 */
-	public static function sendGzipped( $data ) {
-
-		if ( isset( $_SERVER['HTTP_ACCEPT_ENCODING'] ) && strstr( $_SERVER['HTTP_ACCEPT_ENCODING'],
-				'gzip' ) && 'on' != strtolower( enom_pro::get_addon_setting( 'disable_gzip' ) )
-		) {
-			header( 'Content-Encoding: gzip' );
-			$before_gzip      = microtime( true );
-			$compressed       = gzencode( $data, 7 );
-			$after_gzip       = microtime( true );
-			$orignalLength    = strlen( $data );
-			$compressedLength = strlen( $compressed );
-			$gzip_time        = round( ( $after_gzip - $before_gzip ) * 1000, 2 );
-			header( "X-Gzip-Time: {$gzip_time}ms" );
-			if ( $orignalLength ) {
-				header( "X-Compression-Info: original $orignalLength bytes, gzipped $compressedLength bytes " . '(Saved ' . ( 100 - round( 100 / $orignalLength * $compressedLength ) ) . '%)' );
-			}
-			echo $compressed;
-		} else {
-			echo $data;
 		}
 	}
 
@@ -743,115 +851,5 @@ class enom_pro_controller {
 			$location .= "&$message";
 		}
 		header( $location );
-	}
-
-	protected function save_custom_exchange_rate() {
-
-		if ( - 1 == $_REQUEST['custom-exchange-rate'] ) {
-			$this->enom->set_addon_setting( 'custom-exchange-rate', null );
-		} else {
-			$this->enom->set_addon_setting( 'custom-exchange-rate', $_REQUEST['custom-exchange-rate'] );
-		}
-		$this->redirect( 'pricing_import', 'saved-exchange' );
-	}
-
-	protected function get_beta_log() {
-
-		$beta_log_array = enom_pro::curl_get_json( 'https://mycircletree.com/versions/enom_pro_beta_log.json' );
-		$formatted      = array();
-		foreach ( $beta_log_array as $key => $log_item ) {
-			$formatted[ $key ]                  = $log_item;
-			$formatted[ $key ]['relative_date'] = enom_pro::time_ago( $formatted[ $key ]['date'] );
-		}
-		echo json_encode( $formatted );
-	}
-
-	protected function get_javascript() {
-
-		header( 'Content-Type: application/json' );
-
-		$fileName   = filter_var( $_GET['script'],
-			FILTER_SANITIZE_STRING,
-			FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH );
-		$jsFilePath = ENOM_PRO_ROOT . 'js/' . $fileName;
-		if ( ! file_exists( $jsFilePath ) ) {
-			throw new Exception( 'Error loading JS File: ' . $fileName );
-		}
-		self::caching_headers( $jsFilePath );
-		self::sendGzipped( file_get_contents( $jsFilePath ) );
-	}
-
-	protected function get_client_list() {
-
-		$this->send_json( enom_pro::get_clients() );
-
-	}
-
-	/**
-	 * @param int $statusCode HTTP status code to send
-	 */
-	public static function status_header( $statusCode ) {
-
-		static $status_codes = null;
-
-		if ( $status_codes === null ) {
-			$status_codes = array(
-				100 => 'Continue',
-				101 => 'Switching Protocols',
-				102 => 'Processing',
-				200 => 'OK',
-				201 => 'Created',
-				202 => 'Accepted',
-				203 => 'Non-Authoritative Information',
-				204 => 'No Content',
-				205 => 'Reset Content',
-				206 => 'Partial Content',
-				207 => 'Multi-Status',
-				300 => 'Multiple Choices',
-				301 => 'Moved Permanently',
-				302 => 'Found',
-				303 => 'See Other',
-				304 => 'Not Modified',
-				305 => 'Use Proxy',
-				307 => 'Temporary Redirect',
-				400 => 'Bad Request',
-				401 => 'Unauthorized',
-				402 => 'Payment Required',
-				403 => 'Forbidden',
-				404 => 'Not Found',
-				405 => 'Method Not Allowed',
-				406 => 'Not Acceptable',
-				407 => 'Proxy Authentication Required',
-				408 => 'Request Timeout',
-				409 => 'Conflict',
-				410 => 'Gone',
-				411 => 'Length Required',
-				412 => 'Precondition Failed',
-				413 => 'Request Entity Too Large',
-				414 => 'Request-URI Too Long',
-				415 => 'Unsupported Media Type',
-				416 => 'Requested Range Not Satisfiable',
-				417 => 'Expectation Failed',
-				422 => 'Unprocessable Entity',
-				423 => 'Locked',
-				424 => 'Failed Dependency',
-				426 => 'Upgrade Required',
-				500 => 'Internal Server Error',
-				501 => 'Not Implemented',
-				502 => 'Bad Gateway',
-				503 => 'Service Unavailable',
-				504 => 'Gateway Timeout',
-				505 => 'HTTP Version Not Supported',
-				506 => 'Variant Also Negotiates',
-				507 => 'Insufficient Storage',
-				509 => 'Bandwidth Limit Exceeded',
-				510 => 'Not Extended'
-			);
-		}
-
-		if ( isset( $status_codes[ $statusCode ] ) && ! headers_sent() ) {
-			$status_string = $statusCode . ' ' . $status_codes[ $statusCode ];
-			header( $_SERVER['SERVER_PROTOCOL'] . ' ' . $status_string, true, $statusCode );
-		}
 	}
 }

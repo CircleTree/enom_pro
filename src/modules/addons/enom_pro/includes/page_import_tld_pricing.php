@@ -77,14 +77,21 @@ if ( $this->is_pricing_cached() ) : ?>
 		if ( $max_input >= $input_limit ) : ?>
 			<div class="alert alert-danger">
 				<h3>
-					<span class="enom-pro-icon enom-pro-icon-error"></span> Error: Too many fields on this page. Please change the number per page, or modify your php.ini setting for
-					<a href="http://php.net/manual/en/info.configuration.php#ini.max-input-vars" target="_blank">max_input_vars</a> to be greater than:
-					<span class="badge"><?php echo number_format( $max_input ) ?></span></h3>
+					<span class="enom-pro-icon enom-pro-icon-error"></span>
+					Error: Too many fields on this page. Please change the number per page, or modify your php.ini setting for
+					<a href="http://php.net/manual/en/info.configuration.php#ini.max-input-vars"
+					   target="_blank">max_input_vars
+					</a>
+					to be greater than:
+					<span class="badge"><?php echo number_format( $max_input ) ?></span>
+				</h3>
 
 				<p>Currently, saving all of the fields on this page would result in
-					<span class="label label-danger"><?php echo number_format( $max_input ) ?></span> variables, which is
-					greater than PHP's maximum of
-					<span class="label label-success"><?php echo number_format( $input_limit ) ?></span>.
+					<span class="label label-danger"><?php echo number_format( $max_input ) ?></span>
+				   variables, which is
+				   greater than PHP's maximum of
+					<span class="label label-success"><?php echo number_format( $input_limit ) ?></span>
+				   .
 				</p>
 			</div>
 		<?php endif; ?>
@@ -110,7 +117,8 @@ if ( $this->is_pricing_cached() ) : ?>
 				Once they are imported, you can
 				bulk edit all 3 pricing tiers, or you can fine tune pricing in directly in whmcs by
 				clicking the TLD drop-down menu button.
-				<img src="../modules/addons/enom_pro/images/pricing-drop-down-help.jpg" height="209" width="238" alt="Edit pricing in WHMCS directly by clicking on the drop-down for a TLD" />
+				<img src="../modules/addons/enom_pro/images/pricing-drop-down-help.jpg" height="209" width="238"
+				     alt="Edit pricing in WHMCS directly by clicking on the drop-down for a TLD" />
 				</p>
 			</div>
 		<?php endif; ?>
@@ -124,8 +132,11 @@ if ( $this->is_pricing_cached() ) : ?>
 				        aria-hidden="true">&times;</button>
 					<span><b>IMPORTANT:</b> Clicking Save will overwrite any specific order type pricing that have been customized
 									(IE: Different prices for register vs. transfer).<br />
-									<em>If in doubt, please <a href="#"
-									                           class="clear_all btn  btn-default btn-xs">Clear All Pricing</a> before saving.</em>
+									<em>If in doubt, please
+										<a href="#"
+										   class="clear_all btn  btn-default btn-xs">Clear All Pricing
+										</a>
+									    before saving.</em>
 							</span>
 			</div>
 		<?php endif; ?>
@@ -137,14 +148,21 @@ if ( $this->is_pricing_cached() ) : ?>
 				        data-dismiss="alert"
 				        data-alert="tld-turbo-editor"
 				        aria-hidden="true">&times;</button>
-				<h3><span class="label label-success">NEW!</span> &mdash; Streamlined TLD Pricing Import</h3>
+				<h3>
+					<span class="label label-success">NEW!</span> &mdash; Streamlined TLD Pricing Import
+				</h3>
 
 				<div class="row">
-					<img src="../modules/addons/enom_pro/images/tld-turbo-editor.jpg" title="Click Bulk Import to view the new streamlined pricing importer" class="col-md-6 img-rounded img-responsive" style="max-height: 360px;" />
+					<img src="../modules/addons/enom_pro/images/tld-turbo-editor.jpg"
+					     title="Click Bulk Import to view the new streamlined pricing importer"
+					     class="col-md-6 img-rounded img-responsive" style="max-height: 360px;" />
 
 					<p class="col-md-6">Try it out yourself, click on the
-						<span class="btn btn-primary btn-xs open-bulk-editor"><span class="enom-pro-icon enom-pro-icon-tag"></span> Bulk Import</span> button down below.<br/>
-						<span class="text-muted">Or, if you like this message (or reminder), you can click the button in the last sentence. Yep. It works too.</span>
+						<span class="btn btn-primary btn-xs open-bulk-editor"><span
+								class="enom-pro-icon enom-pro-icon-tag"></span> Bulk Import</span>
+					                    button down below.<br />
+						<span
+							class="text-muted">Or, if you like this message (or reminder), you can click the button in the last sentence. Yep. It works too.</span>
 					</p>
 				</div>
 			</div>
@@ -184,9 +202,13 @@ if ( $this->is_pricing_cached() ) : ?>
 
 				<div class="input-group <?php echo isset( $_GET['s'] ) ? ' has-success' : ''; ?>">
 					<p class="input-group-addon">.</p>
-					<input type="search" name="s" value="<?php echo isset( $_GET['s'] ) ? htmlentities( strip_tags( $_GET['s'] ) ) : ''; ?>" class="form-control" placeholder="tld" />
+					<input type="search" name="s"
+					       value="<?php echo isset( $_GET['s'] ) ? htmlentities( strip_tags( $_GET['s'] ) ) : ''; ?>"
+					       class="form-control" placeholder="tld" />
 			<span class="input-group-btn">
-				<button type="submit" class="btn btn-default"><span class="enom-pro-icon enom-pro-icon-search"></button>
+				<button type="submit" class="btn btn-default">
+					<span class="enom-pro-icon enom-pro-icon-search">
+				</button>
 				<?php if ( isset( $_GET['s'] ) ) : ?>
 					<button type="button" class="btn btn-danger clearTLDSearch">Clear</button>
 				<?php endif; ?>
@@ -196,7 +218,8 @@ if ( $this->is_pricing_cached() ) : ?>
 					<?php if ( empty( $allDomainsSearched ) ): ?>
 					<div class="alert alert-warning"><h4>No search results. Displaying all TLDs.</h4></div>
 				<?php else : ?>
-					<div class="alert alert-success">Found <?php echo count( $allDomainsSearched ) ?> search results</div>
+					<div class="alert alert-success">Found <?php echo count( $allDomainsSearched ) ?> search results
+					</div>
 				<?php endif; ?>
 					<script>
 						jQuery(function ($) {
@@ -219,7 +242,8 @@ if ( $this->is_pricing_cached() ) : ?>
 					<tr>
 						<th class="tldActionsTD">
 							<div class="btn btn-default btn-xs ep_tt toggleAllTLDCheckboxes" title="Toggle All">
-								<span class="enom-pro-icon enom-pro-icon-checkmark"></span></div>
+								<span class="enom-pro-icon enom-pro-icon-checkmark"></span>
+							</div>
 							Actions
 						</th>
 						<?php foreach ( $pricing_years_array as $key => $year ) : ?>
@@ -256,19 +280,25 @@ if ( $this->is_pricing_cached() ) : ?>
 
 								}
 								?>
-								<input type="checkbox" class="tldCheck ep_pop" name="<?php echo $tld ?>"<?php echo $this->is_tld_saved( $tld ) ? ' checked' : ''; ?> title="Toggle Importing this TLD" data-content="Save this TLD to the set to be imported" data-placement="right"/>
+								<input type="checkbox" class="tldCheck ep_pop"
+								       name="<?php echo $tld ?>"<?php echo $this->is_tld_saved( $tld ) ? ' checked' : ''; ?>
+								       title="Toggle Importing this TLD"
+								       data-content="Save this TLD to the set to be imported" data-placement="right" />
 
 								<div class="<?php echo implode( ' ', $action_classes ); ?>"
 									<?php if ( $thisTLDError ) : ?>
 										title="Error from eNom API"
 										data-content="<?php echo $thisTLDError ?>"
 									<?php endif; ?>
-								>
+									>
 									<div class="btn tldAction <?php echo implode( " ",
-										$btn_classes ) ?>" data-tld="<?php echo $tld ?>"<?php if ( $isInWHMCS ) : ?> data-whmcs="true"<?php endif; ?> data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										$btn_classes ) ?>"
+									     data-tld="<?php echo $tld ?>"<?php if ( $isInWHMCS ) : ?> data-whmcs="true"<?php endif; ?>
+									     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										.<?php echo $tld; ?>
 									</div>
-									<button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<button type="button" class="btn btn-xs btn-default dropdown-toggle"
+									        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<span class="caret"></span>
 										<span class="sr-only">Toggle Dropdown</span>
 									</button>
@@ -279,7 +309,8 @@ if ( $this->is_pricing_cached() ) : ?>
 												   data-pricing="true"
 												   data-target="configdomains.php?action=editpricing&id=<?php echo $whmcs_id; ?>"
 												   data-title="Pricing for .<?php echo $tld; ?>"
-												   href="configdomains.php?action=editpricing&id=<?php echo $whmcs_id; ?>">Edit WHMCS Pricing</a>
+												   href="configdomains.php?action=editpricing&id=<?php echo $whmcs_id; ?>">Edit WHMCS Pricing
+												</a>
 											</li>
 											<li>
 												<a href="#"
@@ -417,13 +448,16 @@ if ( $this->is_pricing_cached() ) : ?>
 <?php else: ?>
 	<div class="alert alert-warning" id="loading_pricing">
 		<h3 class="loadingPricingTitle">Loading <?php echo enom_pro::is_retail_pricing() ? 'retail' : 'wholesale'; ?> pricing for <?php echo count( $this->getTLDs() ) ?> top level domains.
-			<br /><span class="enom-pro-icon enom-pro-icon-spinner fa-spin"></span></h3>
+			<br />
+			<span class="enom-pro-icon enom-pro-icon-spinner fa-spin"></span>
+		</h3>
 
 		<p class="text-center loadedTLD"></p>
 
 		<div class="enom_pro_loader"></div>
 		<div class="progress">
-			<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+			<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
+			     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
 			</div>
 		</div>
 		<?php if ( $this->isModuleDebugEnabled() ) : ?>
@@ -431,7 +465,9 @@ if ( $this->is_pricing_cached() ) : ?>
 				<h4>Module Logging is Enabled.</h4>
 
 				<p class="text-center">For best performance, please only enable module logging when instructed to by support.
-					<a href="systemmodulelog.php" class="btn btn-default" target="_blank">Visit this page to disable logging</a>
+					<a href="systemmodulelog.php" class="btn btn-default"
+					   target="_blank">Visit this page to disable logging
+					</a>
 				</p>
 			</div>
 		<?php endif; ?>

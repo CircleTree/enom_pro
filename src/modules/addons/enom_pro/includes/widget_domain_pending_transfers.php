@@ -23,7 +23,8 @@ function enom_pro_render_transfer_status_form( $domain, $status ) { ?>
 			<form method="GET" class="resend_enom_activation ajax_submit" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 				<input type="hidden" name="action" value="resend_enom_transfer_email" />
 				<input type="hidden" name="domain" value="<?php echo $domain['domain']; ?>" />
-				<input type="image" src="images/icons/resendemail.png " class="button" title="Re-Send Transfer Authorization E-Mail" />
+				<input type="image" src="images/icons/resendemail.png " class="button"
+				       title="Re-Send Transfer Authorization E-Mail" />
 			</form>
 			<?php break;
 		default: ?>
