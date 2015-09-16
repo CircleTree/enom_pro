@@ -552,7 +552,15 @@ function enom_pro_output( $vars ) {
 		new enom_pro_license();
 		$enom = new enom_pro();
 		?>
-
+		<script>
+			if ( window.jQuery &&
+				 1 === parseInt(jQuery.fn.jquery) ) {
+				var str = JQuery.fn.jquery, vArray = str.split('.');
+				if (vArray[1] < 9 && vArray[2] < 1) {
+					document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"><\/script>');
+				}
+			}
+		</script>
 		<script src="../modules/addons/enom_pro/js/bootstrap.min.js"></script>
 		<div id="enom_pro_dialog" title="Loading..." style="display:none;">
 			<iframe src="about:blank" id="enom_pro_dialog_iframe"></iframe>
