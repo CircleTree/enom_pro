@@ -5,11 +5,11 @@
  * Version: @VERSION@
  */
 
-$filepath = ROOTDIR . '/includes/whoisservers.php';
-if ( ! file_exists( $filepath ) ) {
-	throw new Exception( 'WHOIS Checker - Unable to load: ' . $filepath );
+$whois_server_filepath = ROOTDIR . '/includes/whoisservers.php';
+if ( ! file_exists( $whois_server_filepath ) ) {
+	throw new Exception( 'WHOIS Checker - Unable to load: ' . $whois_server_filepath );
 }
-$file_contents = file_get_contents( $filepath );
+$file_contents = file_get_contents( $whois_server_filepath );
 $file_array    = explode( PHP_EOL, $file_contents );
 /**
  * @var array tld => server address
@@ -68,18 +68,27 @@ function enom_pro_whois_show_only() {
 
 <div class="row">
 	<div class="col-xs-4">
-		<a href="<?php echo enom_pro::MODULE_LINK ?>&view=whois_checker&show=ok" class="btn btn-success btn-lg btn-block ep_tt <?php echo 'ok' == enom_pro_whois_show_only() ? 'disabled' : '' ?>" title="Show TLDs with a WHOIS server">
+		<a href="<?php echo enom_pro::MODULE_LINK ?>&view=whois_checker&show=ok"
+		   class="btn btn-success btn-lg btn-block ep_tt <?php echo 'ok' == enom_pro_whois_show_only() ? 'disabled' : '' ?>"
+		   title="Show TLDs with a WHOIS server">
 			<?php echo count( $ok ); ?> TLDs with WHOIS
 		</a>
 	</div>
 	<div class="col-xs-4">
-		<a href="<?php echo enom_pro::MODULE_LINK ?>&view=whois_checker&show=missing" class="btn btn-danger btn-lg btn-block ep_tt <?php echo 'missing' == enom_pro_whois_show_only() ? 'disabled' : '' ?>" title="Show TLDs without WHOIS">
+		<a href="<?php echo enom_pro::MODULE_LINK ?>&view=whois_checker&show=missing"
+		   class="btn btn-danger btn-lg btn-block ep_tt <?php echo 'missing' == enom_pro_whois_show_only() ? 'disabled' : '' ?>"
+		   title="Show TLDs without WHOIS">
 			<?php echo count( $missing ); ?> TLDs missing a WHOIS server
 		</a>
-		<a href="#" class="deleteAll btn btn-inverse hidden">Delete All Missing WHOIS Servers from WHMCS</a>
+		<a href="#" class="deleteAll btn btn-warning btn-block hidden">
+			<span class="enom-pro-icon-error"></span>
+			Delete All Missing WHOIS Servers from WHMCS
+		</a>
 	</div>
 	<div class="col-xs-4">
-		<a href="<?php echo enom_pro::MODULE_LINK ?>&view=whois_checker" class="btn btn-inverse btn-lg btn-block ep_tt <?php echo 'all' == enom_pro_whois_show_only() ? 'disabled' : '' ?>" title="View all TLDs">
+		<a href="<?php echo enom_pro::MODULE_LINK ?>&view=whois_checker"
+		   class="btn btn-inverse btn-lg btn-block ep_tt <?php echo 'all' == enom_pro_whois_show_only() ? 'disabled' : '' ?>"
+		   title="View all TLDs">
 			<?php echo count( $list ); ?> Total
 		</a>
 	</div>
@@ -91,18 +100,44 @@ function enom_pro_whois_show_only() {
 
 <?php if ( empty ( $list ) ) : ?>
 	<div class="col-xs-6 col-xs-push-3 alert alert-danger text-center">
-		<h3><span class="enom-pro-icon-error enom-pro-icon"> No WHOIS servers found for this view.</h3>
+		<h3>
+			<span class="enom-pro-icon-error enom-pro-icon"> No WHOIS servers found for this view.
+		</h3>
 	</div>
 	<?php
 	return; //Bail early for no servers
 endif; ?>
+<?php if ( ! empty( $missing ) ) : ?>
+	<div class="alert alert-warning fade in">
+		<button type="button"
+		        class="close"
+		        data-dismiss="alert"
+		        aria-hidden="true">&uarr;</button>
+		<h1>Missing WHOIS Servers?</h1>
 
+		<p>WHMCS needs to have a valid WHOIS server to query for each TLD.</p>
+		<ol>
+			<li>
+				<a href="http://docs.whmcs.com/Domains_Configuration#Adding_Additional_WHOIS_Services" target="_blank"
+				   class="btn btn-default">Read WHMCS Docs on Adding additional WHOIS Servers.
+				</a>
+			</li>
+			<li>
+				<a href="https://github.com/hjr265/node-whois/blob/master/servers.json" target="_blank"
+				   class="btn btn-default">Helpful list of public WHOIS Servers
+				</a>
+			</li>
+			<li>Reload this page after editing <code><?php echo $whois_server_filepath; ?></code></li>
+		</ol>
+	</div>
+<?php endif; ?>
 <table class="table table-responsive">
 	<thead>
 	<tr>
 		<th>
 			<a href="addonmodules.php?module=enom_pro&view=whois_checker&show=<?php echo enom_pro_whois_show_only(); ?>&sort=<?php echo isset( $_GET['sort'] ) && 'desc' == $_GET['sort'] ? 'asc' : 'desc' ?>">TLD
-				<span class="<?php echo isset( $_GET['sort'] ) && 'desc' == $_GET['sort'] ? 'enom-pro-icon-sort-by-alpha-alt' : 'enom-pro-icon-sort-by-alpha' ?>"></span>
+				<span
+					class="<?php echo isset( $_GET['sort'] ) && 'desc' == $_GET['sort'] ? 'enom-pro-icon-sort-by-alpha-alt' : 'enom-pro-icon-sort-by-alpha' ?>"></span>
 			</a>
 		</th>
 		<th>WHOIS Server</th>
@@ -136,7 +171,7 @@ endif; ?>
 		var $missingTLDs = $("[data-tld]"),
 		    $deleteAll   = $(".deleteAll");
 		$deleteAll.on('click', function () {
-			var confirmed = confirm('This will PERMANENTLY delete ALL TLD\'s from WHMCS.\n\nAre you sure?');
+			var confirmed = confirm('This will PERMANENTLY delete ALL TLD\'s missing a WHOIS server from WHMCS.\n\nAre you sure?');
 			if (confirmed) {
 				$missingTLDs.trigger('delete');
 				$(this).hide();
