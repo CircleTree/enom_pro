@@ -1,7 +1,7 @@
 <?php /** @var $this enom_pro */ ?>
 <?php $defaultCurrencyPrefix = $this->getDefaultCurrencyPrefix(); ?>
 <?php if ( $this->isNonUSDinWHMCS() ) : ?>
-	<div class="well">
+	<div class="well alert">
 		<button type="button"
 		        class="close"
 		        data-dismiss="alert"
