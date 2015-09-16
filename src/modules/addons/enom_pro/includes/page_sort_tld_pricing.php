@@ -5,7 +5,7 @@
  * Version: @VERSION@
  */
 $result = mysql_query( 'SELECT * FROM `tbldomainpricing` ORDER BY `order` ASC' ); ?>
-<?php if ( $result ) : ?>
+<?php if ( mysql_num_rows( $result ) > 0 ) : ?>
 	<?php if ( isset( $_GET['sorted'] ) ) : ?>
 		<div class="alert alert-success">
 			New order saved!
@@ -68,7 +68,9 @@ $result = mysql_query( 'SELECT * FROM `tbldomainpricing` ORDER BY `order` ASC' )
 		<?php endwhile; ?>
 		</tbody>
 	</table>
+
 	<div class="btn btn-success btn-block">Save Order</div>
+
 	<h4 id="bulk-sort">Bulk Re-Sort Pricing</h4>
 	<div class="well">
 		<form method="get" action="<?php echo enom_pro::MODULE_LINK ?>" class="form-inline row">
