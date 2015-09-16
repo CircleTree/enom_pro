@@ -35,24 +35,29 @@ class enom_pro_license {
 			throw new LicenseException( $return );
 
 		} elseif ( ! $this->checkLicense() ) {
-			$return .= '<h1>There seems to be a problem with your license</h1>';
-			$reissue_href = 'https://mycircletree.com/client-area/clientarea.php?action=products';
-			$reissue_link = '<a href="' . $reissue_href . '" class="btn btn-primary btn-lg" target="_blank">Reissue directly from the Client Area</a>';
-			$return .= '<h2>You may:' . $reissue_link . '</h2><pre>' . $license . '</pre>';
-			$support_link = "
-                https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7&
-            subject=Product%20Support%20for:'.$this->productname.'.%20License:%20'.$license.'";
-			$return .= '<h2>or, please <a class="btn btn-default" href="' . $support_link . '">
-                    open a support ticket</a></h2>';
-			$return .= '<h3>Enter a new License from the <a href="configaddonmods.php#enom_pro">addon settings page</a></h3>';
-			$return .= '<div class="errorbox"><b>Support Information</b><br/>';
-			$return .= 'License Number: ' . $license . '<br/>';
-			if ( isset( $this->message ) ) {
-				$return .= 'License Error: ' . $this->message . '<br/>';
-			}
-			$return .= 'License Status: ' . $this->status . '<br/>';
-			$return .= '</div>';
+			ob_start(); ?>
+			<h2>There seems to be a problem with your license</h2>
+			<div class="errorbox">
+				<b>Support Information</b><br />
+				<?php echo isset( $this->message ) ? 'License Error: <span class="label label-danger">' . $this->message . '</span><br/>' : ''; ?>
+				License Status: <span class="badge"><?php echo $this->status; ?></span> <br />
+				License Number: <code><?php echo $license; ?></code><br />
+			</div>
+			<h2>You may
+				 <a href="https://mycircletree.com/client-area/clientarea.php?action=products"
+				   class="btn btn-primary" target="_blank">Reissue directly from the Client Area
+				</a>
+			<?php $support_link = "https://mycircletree.com/client-area/submitticket.php?step=2&deptid=7&subject=License%20Support%20for:%20".$license; ?>
+			 or, please <a class="btn btn-default" href="<?php echo $support_link ?>" target="_blank" >
+					open a support ticket
+				</a> for support.
+			</h2>
+			<p>Once your license has been updated, simply <a href="addonmodules.php?module=enom_pro" class="btn btn-success btn-xs"><span class="enom-pro-icon-refresh"></span> reload</a> this page.</p>
+
+			<?php
 			$this->error = true;
+			$return      = ob_get_contents();
+			ob_end_clean();
 			throw new LicenseException( enom_pro::minify( $return ) );
 		} else {
 			//No license err
@@ -155,7 +160,7 @@ class enom_pro_license {
 			return true;
 		} elseif ( $results["status"] == "Invalid" ) {
 			$this->status  = "Invalid";
-			$this->message = @$results['description'];
+			$this->message = $results['description'];
 
 			return false;
 		} elseif ( $results["status"] == "Expired" ) {
@@ -167,6 +172,7 @@ class enom_pro_license {
 
 			return false;
 		}
+
 	}
 
 	public static function  clearLicense() {
@@ -369,19 +375,17 @@ class enom_pro_license {
 			if ( $check_token ) {
 				$postfields["check_token"] = $check_token;
 			}
-			if ( function_exists( "curl_exec" ) ) {
-				$ch = curl_init();
-				curl_setopt( $ch,
-					CURLOPT_URL,
-					$whmcsurl . "modules/servers/licensing/verify.php" );
-				curl_setopt( $ch, CURLOPT_POST, 1 );
-				curl_setopt( $ch, CURLOPT_POSTFIELDS, $postfields );
-				curl_setopt( $ch, CURLOPT_TIMEOUT, 30 );
-				curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-				curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
-				$data = curl_exec( $ch );
-				curl_close( $ch );
-			}
+			$ch = curl_init();
+			curl_setopt( $ch,
+				CURLOPT_URL,
+				$whmcsurl . "modules/servers/licensing/verify.php" );
+			curl_setopt( $ch, CURLOPT_POST, 1 );
+			curl_setopt( $ch, CURLOPT_POSTFIELDS, $postfields );
+			curl_setopt( $ch, CURLOPT_TIMEOUT, 30 );
+			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
+			$data = curl_exec( $ch );
+			curl_close( $ch );
 			if ( ! $data ) {
 				$localexpiry = date( "Ymd",
 					mktime( 0,
@@ -426,7 +430,7 @@ class enom_pro_license {
 			}
 			$results["remotecheck"] = true;
 		}
-
+		$results["description"] = $results['message'];
 		return $results;
 	}
 }
