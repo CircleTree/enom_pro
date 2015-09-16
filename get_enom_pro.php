@@ -1,12 +1,10 @@
 <?php
 define( "WHMCS", true );
 require( "init.php" );
-//require( "includes/functions.php" );
-//require( "includes/clientareafunctions.php" );
-if ( !isset( $_REQUEST['key'] ) ) {
+if ( ! isset( $_REQUEST['key'] ) ) {
 	die( 'No Key' );
 }
-if ( !isset( $_REQUEST['id'] ) ) {
+if ( ! isset( $_REQUEST['id'] ) ) {
 	die( 'Missing Product ID' );
 }
 /*
@@ -15,29 +13,32 @@ if ( !isset( $_REQUEST['id'] ) ) {
 $result = select_query( 'mod_licensing',
 	'licensekey,status,validip,serviceid',
 	array( 'licensekey' => $_REQUEST['key'] ) );
-$data = mysql_fetch_assoc( $result );
+$data   = mysql_fetch_assoc( $result );
 if ( $data ) {
 	//Check parent account for at least one active addon
-	$tblHosting = mysql_fetch_assoc(select_query('tblhosting', 'userid', array('id' => $data['serviceid'])));
-	$userID = $tblHosting['userid'];
-	$result1 = select_query( 'tblhosting', 'id', array( 'packageid' => 31, 'userid' => (int) $userID ) );
+	$tblHosting = mysql_fetch_assoc( select_query( 'tblhosting', 'userid', array( 'id' => $data['serviceid'] ) ) );
+	$userID     = $tblHosting['userid'];
+	$result1    = select_query( 'tblhosting', 'id', array( 'packageid' => 31, 'userid' => (int) $userID ) );
 	$hostingIDs = array();
-	while ($activeProducts = mysql_fetch_row( $result1 )) {
-		$hostingIDs[] = reset($activeProducts);
+	while ( $activeProducts = mysql_fetch_row( $result1 ) ) {
+		$hostingIDs[] = reset( $activeProducts );
 	}
 	$foundActiveUpdates = false;
-	foreach ($hostingIDs as $thisHostingID) {
-		$tblAddons = mysql_fetch_assoc(select_query('tblhostingaddons', 'status', array(
-			'addonid' => 7,
-			'status' => "Active", //Only get active status, in case there are > 1 addon (one expired, one paid today, for example)
-			'hostingid' => $thisHostingID
-		)));
-		if ($tblAddons && $tblAddons['status'] == "Active") {
+	foreach ( $hostingIDs as $thisHostingID ) {
+		$tblAddons = mysql_fetch_assoc( select_query( 'tblhostingaddons',
+			'status',
+			array(
+				'addonid'   => 7,
+				'status'    => "Active",
+				//Only get active status, in case there are > 1 addon (one expired, one paid today, for example)
+				'hostingid' => $thisHostingID
+			) ) );
+		if ( $tblAddons && $tblAddons['status'] == "Active" ) {
 			$foundActiveUpdates = true;
 			break;
 		}
 	}
-	if (! $foundActiveUpdates ) {
+	if ( ! $foundActiveUpdates ) {
 		header( 'Location: https://mycircletree.com/client-area/cart.php?gid=addons' );
 		die( 'Support & Updates Expired' );
 	}
@@ -47,7 +48,7 @@ if ( $data ) {
 		} else {
 			$ctwpf_zip = '/home/mycircle/downloads/enom_pro.zip';
 		}
-		if ( !file_exists( $ctwpf_zip ) ) {
+		if ( ! file_exists( $ctwpf_zip ) ) {
 			die( 'Error reading release: ' . basename( $ctwpf_zip ) );
 		}
 		header( 'HTTP/1.1 200 OK' );

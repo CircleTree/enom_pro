@@ -1,7 +1,6 @@
 <?php
-define( "CLIENTAREA", true );
+define( 'CLIENTAREA', true );
 require 'init.php';
-//require_once ROOTDIR . '/modules/addons/enom_pro/enom_pro.php';
 global $_LANG;
 if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'spinner' ) {
 	try {

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<ruleset name="eNom PRO">
+	<description>A custom set of rules to check enom pro</description>
+
+	<exclude-pattern>/build/*</exclude-pattern>
+
+	<rule ref="Squiz.PHP.CommentedOutCode"/>
+	<rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
+	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
+	<rule ref="Generic.Commenting.Todo"/>
+	<rule ref="Generic.ControlStructures.InlineControlStructure"/>
+
+	<!--
+	We may also want to to include all the rules in a standard
+	-->
+	<rule ref="WordPress-Core">
+		<!--
+		We may want a middle ground though. The best way to do this is add the
+		entire ruleset, then rule by rule, remove ones that don't suit a project. We
+		can do this by running `phpcs` with the '-s' flag, to see the names of the
+		different Sniffs, as their rules are broken. From here, we can opt to
+		exclude problematic sniffs like so.
+
+		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing" />
+		<exclude name="WordPress.Functions.FunctionCallSignature" />
+		-->
+		<exclude name="WordPress.Files.FileName" />
+		<exclude name="WordPress.Classes.ValidClassName" />
+	</rule>
+</ruleset>
