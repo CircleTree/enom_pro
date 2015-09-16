@@ -4,7 +4,7 @@
  * Build: @BUILD_DATE@
  * Version: @VERSION@
  */
-defined('WHMCS') or die('RESTRICTED ACCESS');
+defined( 'WHMCS' ) or die( 'RESTRICTED ACCESS' );
 
 $message = <<<EOL
 eNom PRO Version: %VERSION%

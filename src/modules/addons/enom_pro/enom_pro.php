@@ -13,7 +13,7 @@ defined( 'ENOM_PRO_INCLUDES' ) or define( 'ENOM_PRO_INCLUDES', ENOM_PRO_ROOT . '
 
 try {
 	require_once ENOM_PRO_ROOT . 'enom_pro_compat_checker.php';
-} catch (Exception $e) {
+} catch ( Exception $e ) {
 	echo $e->getMessage();
 	die;
 }
