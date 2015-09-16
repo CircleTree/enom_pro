@@ -218,7 +218,9 @@
 				   href="addonmodules.php?module=enom_pro&action=clear_cache">Clear Cache
 				</a>
 				<br />
-				Domains Cached from
+				<?php if ( $this->is_domain_cached() ) : ?>
+					Domains Cached from
+				<?php endif; ?>
 				<span class="domains_cache_time"><?php echo $this->get_domain_cache_date(); ?></span>
 			</td>
 			<td id="local_storage">

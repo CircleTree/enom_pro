@@ -85,7 +85,7 @@
 			</a>
 		</li>
 		<li>
-			<a class="btn btn-block btn-default ep_lightbox"
+			<a class="btn btn-block btn-default ep_lightbox settingsButton"
 			   data-width="90%"
 			   title="<?php echo ENOM_PRO; ?> Settings"
 			   href="configaddonmods.php#enom_pro">

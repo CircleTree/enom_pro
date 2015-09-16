@@ -437,7 +437,12 @@ class enom_pro {
 			throw new InvalidArgumentException( 'API Method ' . $command . ' not implemented', 400 );
 		}
 		if ( $this->remote_run_number >= $this->api_request_limit ) {
-			throw new EnomException( 'Too many remote API requests. Limit: ' . $this->api_request_limit );
+			$img     = '<img src="../modules/addons/enom_pro/images/api-limit-help.jpg" height="" width="" style="max-width:490px;" alt="API Limit Setting, visible in addon settings for ' . ENOM_PRO . '" class="img-responsive"/>';
+			$onclick = "jQuery('.settingsButton').trigger('click');return false;";
+			$btn     = '<span class="btn btn-default" onclick="' . $onclick . '">Edit Settings</span>';
+			throw new EnomException( sprintf( 'API Limit (%d requests) exceeded. %s',
+				$this->api_request_limit,
+				$img . $btn ) );
 		}
 		$this->setParams( array( 'command' => $command ) );
 
@@ -1431,7 +1436,26 @@ class enom_pro {
 	 */
 	public function get_domain_cache_date() {
 
+		if ( $this->is_domain_cached() ) {
+			return '';
+		}
+
 		return $this->get_cache_file_time( $this->cache_file_all_domains );
+	}
+
+	/**
+	 * Is the domain import data cached?
+	 * @return bool
+	 */
+	public function  is_domain_cached() {
+
+		$cache_data = $this->get_cache_data( $this->cache_file_all_prices );
+		if ( $cache_data === false ) {
+			//Nothing Cached
+			return false;
+		}
+
+		return true;
 	}
 
 	public function  get_validation_cache_date() {
