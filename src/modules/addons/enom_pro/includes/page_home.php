@@ -7,7 +7,7 @@
  */
 ?>
 <div class="well well-sm">
-	<h3>Welcome to eNom PRO!</h3>
+	<h2>Welcome to eNom PRO!</h2>
 	<a class="btn btn-success large"
 	   href="<?php echo enom_pro::MODULE_LINK . '&view=domain_import' ?>">Import
 	                                                                      Domains

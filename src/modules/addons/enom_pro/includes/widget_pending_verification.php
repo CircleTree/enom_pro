@@ -40,7 +40,7 @@ $stats = $this->getDomainVerificationStats();
 			<div class="well well-sm">
 				<p class="text-muted">Report Data From <?php echo $this->get_validation_cache_date(); ?>
 					<?php if ( $this->isValidationCacheStale() ) : ?>
-					<a href="#" class="btn btn-xs btn-info flushValidateCache">Flush Cache</a>
+					<a href="#" class="btn btn-xs btn-inverse flushValidateCache">Flush Cache <span class="enom-pro-icon-trash"></span> </a>
 				</p>
 				<?php endif; ?>
 			</div>

@@ -44,26 +44,7 @@ Licensed from Orion IP Ventures, LLC
 
 .enom_pro_output {
 	box-sizing: border-box;
-	PRE.api_error {
-		background-color: #ffffff;
-		overflow: scroll;
-		height: 200px;
-		padding: 10px;
-	}
 
-	PRE.code {
-		margin: 20px;
-		padding: 10px;
-		background-color: #efefef;
-		font-family: Verdana;
-		border: 1px solid #3a87ad;
-	}
-
-	PRE.code.inline {
-		display: inline-block;
-		margin: 0;
-		padding: 5px;
-	}
 	#client_select {
 		width: 100%;
 	}
@@ -252,8 +233,13 @@ Licensed from Orion IP Ventures, LLC
 	&.sidebar table {
 		width: 100%;
 	}
-	&.sidebar table .text-right {
-		text-align: right;
+	&.sidebar {
+		table .text-right {
+			text-align: right;
+		}
+		.label {
+			text-shadow: 0 0 1px #000;
+		}
 	}
 	.enom_pro_widget.alert {
 		text-align: center;
@@ -726,7 +712,7 @@ Licensed from Orion IP Ventures, LLC
 	}
 	.enom_pro_widget_title {
 		position: relative;
-		width: calc( 100% - 20px);
+		width: calc(100% - 20px);
 		display: block;
 		.refreshbutton {
 			vertical-align: bottom;
@@ -1036,7 +1022,6 @@ Top level DOM items
 	background-color: #eeeeee;
 	padding: 5px;
 }
-
 
 #tooltip H3, #tooltip DIV {
 	margin: 0;
