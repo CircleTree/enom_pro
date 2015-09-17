@@ -153,23 +153,24 @@
 		<?php //Support & updates expired ?>
 		<div class="alert alert-danger">
 			<div class="text-right">
-				<a class="btn btn-warning btn-lg" href="<?php echo enom_pro::MODULE_LINK ?>&action=do_upgrade_check">
-					Already renewed? Click here to refresh.
+				<a class="btn btn-warning" href="<?php echo enom_pro::MODULE_LINK ?>&action=do_upgrade_check">
+					Already renewed? Click here to refresh. <span class="enom-pro-icon-refresh-alt"></span>
 				</a>
 			</div>
-			<p>Update Subscription Expired.
+			<h2>
 				<?php if ( isset( $status['duedate'] ) ) : ?>
-			   Expired on <?php echo $status['duedate']; ?></p>
+					Update Subscription Expired on <?php echo $status['duedate']; ?>
 			<?php else: ?>
-				No support &amp; updates addon found
-
+					No support &amp; updates addon found
 			<?php endif; ?>
-			<h1>
+				<br/>
 				<a target="_blank" href="https://mycircletree.com/client-area/cart.php?gid=addons"
-				   class="btn btn-inverse">Renew Now
+				   class="btn btn-success btn-lg">
+					<span class="enom-pro-icon-cart-plus"></span>
+					 Renew Now
 				</a>
 				to enjoy these great new features:
-			</h1>
+			</h2>
 			<?php enom_pro_changelog_dom(); ?>
 
 		</div>

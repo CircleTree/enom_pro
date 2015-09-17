@@ -8,7 +8,7 @@
 ?>
 <div class="enom_pro_output sidebar">
 <span class="header">
-    <span class="enom-pro-icon enom-pro-icon-globe"></span> <?php echo ENOM_PRO ?>
+    <span class="enom-pro-icon enom-pro-icon-globe"></span> <?php echo ENOM_PRO ?> <?php if (! enom_pro::isBetaBuild()) : ?> <?php echo ENOM_PRO_VERSION; ?> <?php endif;  ?>
 </span>
 	<ul class="menu">
 		<li>

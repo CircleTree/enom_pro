@@ -88,7 +88,7 @@ class enom_pro_license {
 			$statusText  = strtolower( substr( $addon_array[2], 7 ) );
 			if ( "name={$this->updates_addon_name}" == $addon_array[0] ) {
 				$dueDate = substr( $addon_array[1], 12 );
-				if ( $statusText == 'active' ) {
+				if ( 'active' == $statusText ) {
 					$active_addons[] = $dueDate;
 				} else {
 					$expired_addons[] = array(
