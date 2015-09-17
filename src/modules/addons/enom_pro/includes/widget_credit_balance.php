@@ -13,8 +13,7 @@ if ( 'off' == strtolower( $warning_level ) ) {
 }
 $class = $warning ? 'alert-danger' : 'alert-success'; ?>
 	<div id="enom_balance_message" class="alert enom_pro_widget <?php echo $class ?>">
-		Enom Credit Balance: $<?php echo $this->getBalance(); ?> Available: <b
-			style="color: #000000;">$<?php echo $this->getAvailableBalance() ?></b>
+		Enom Credit Balance: $<?php echo $this->getBalance(); ?> Available: <b>$<?php echo $this->getAvailableBalance() ?></b>
 		<a class="btn btn-default btn-xs" href="https://www.enom.com/myaccount/RefillAccount.asp"
 		   target="_blank">Refill Account
 			<span class="enom-pro-icon enom-pro-icon-refill-account"></span>

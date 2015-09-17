@@ -2376,7 +2376,7 @@ class enom_pro {
 	 *
 	 * @param string $original Maybe unserialized original, if is needed.
 	 *
-	 * @return mixed Unserialized data can be any type.
+	 * @return mixed unserialized data can be any type.
 	 */
 	static function maybe_unserialize( $original ) {
 

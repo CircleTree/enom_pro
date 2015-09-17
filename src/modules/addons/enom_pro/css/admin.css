@@ -19,24 +19,6 @@ Licensed from Orion IP Ventures, LLC
 	* END Icons
 	*****/
 }
-.enom_pro_output PRE.api_error {
-  background-color: #ffffff;
-  overflow: scroll;
-  height: 200px;
-  padding: 10px;
-}
-.enom_pro_output PRE.code {
-  margin: 20px;
-  padding: 10px;
-  background-color: #efefef;
-  font-family: Verdana;
-  border: 1px solid #3a87ad;
-}
-.enom_pro_output PRE.code.inline {
-  display: inline-block;
-  margin: 0;
-  padding: 5px;
-}
 .enom_pro_output #client_select {
   width: 100%;
 }
@@ -209,6 +191,9 @@ Licensed from Orion IP Ventures, LLC
 }
 .enom_pro_output.sidebar table .text-right {
   text-align: right;
+}
+.enom_pro_output.sidebar .label {
+  text-shadow: 0 0 1px #000;
 }
 .enom_pro_output .enom_pro_widget.alert {
   text-align: center;
