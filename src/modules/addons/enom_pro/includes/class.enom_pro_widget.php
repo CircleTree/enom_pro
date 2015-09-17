@@ -134,13 +134,16 @@ class enom_pro_widget {
 		$jSCode    = <<<JS
 jQuery(function($) {
 	var refreshForm = jQuery("#{$baseID}"),
-			refreshButton = refreshForm.find('.enom-pro-icon-refresh-alt');
+			refreshIcon = refreshForm.find('.enom-pro-icon-refresh-alt'),
+			refreshBtn = refreshForm.find('.btn-xs');
 	refreshForm.on("submit", function() {
 			var content = jQuery("#{$contentID}");
 			content.html('<span class="enom_pro_output"><span class="enom_pro_loader"></span></span>');
-			refreshButton.addClass('fa-spin');
+			refreshIcon.addClass('fa-spin');
+			refreshBtn.addClass('disabled').prop('disabled', true);
 			jQuery.post("index.php", $(this).serialize(), function(data) {
-					refreshButton.removeClass('fa-spin');
+					refreshIcon.removeClass('fa-spin');
+					refreshBtn.removeClass('disabled').prop('disabled', false);
 					content.html(data);
 			});
 			return false;

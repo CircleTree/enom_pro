@@ -803,6 +803,10 @@ class enom_pro {
 
 		require_once ENOM_PRO_INCLUDES . 'page_help.php';
 	}
+	public function render_home() {
+
+		require_once ENOM_PRO_INCLUDES . 'page_home.php';
+	}
 
 	public function render_pricing_import() {
 
@@ -2354,7 +2358,7 @@ class enom_pro {
 			return;
 		}
 		echo '<div class="homewidget">';
-		echo '<div class="widget-header">';
+		echo '<div class="widget-header"><a href="index.php"><span class="ui-icon ui-icon-cancel ep_pop" title="Widget Preview" data-placement="auto" data-content="Widgets are interactive on the WHMCS admin homepage. (Click here to view admin homepage)"></span></a>';
 		echo $result['title'];
 		echo '</div>';
 		echo '<div class="widget-content">';
