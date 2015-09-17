@@ -1425,6 +1425,7 @@ class enom_pro {
 	}
 
 	public function clear_exchange_rate_cache() {
+
 		$this->set_cached_data( $this->cache_file_exchange_rate, array() );
 	}
 
@@ -2519,8 +2520,11 @@ class enom_pro {
 
 	public static function isBetaBuild() {
 
-		//TODO implement strstr search for . (releases have dots, SHA hashes never have dots)
-		return false;
+		if ( strstr( ENOM_PRO_VERSION, '.' ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

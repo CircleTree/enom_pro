@@ -69,7 +69,7 @@ function enom_pro_config() {
 				break;
 		}
 	}
-	$save_button_desc = '<input type="submit" name="msave_enom_pro" value="Save Changes" class="btn primary btn-success btn-sm">';
+	$save_button_desc = '<input type="submit" name="save_enom_pro" value="Save Changes" class="btn primary btn-success btn-sm">';
 	$button           = '<span class="enom_pro_output"><a class="btn btn-info btn-sm" href="' . enom_pro::MODULE_LINK . '" target="_top">Go to @NAME@ &rarr;</a>';
 	$button .= $save_button_desc . '</span>';
 	$save_button_row      = array(
