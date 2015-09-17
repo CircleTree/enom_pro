@@ -449,10 +449,9 @@ if ( $this->is_pricing_cached() ) : ?>
 	<div class="alert alert-warning" id="loading_pricing">
 		<h3 class="loadingPricingTitle">Loading <?php echo enom_pro::is_retail_pricing() ? 'retail' : 'wholesale'; ?> pricing for <?php echo count( $this->getTLDs() ) ?> top level domains.
 			<br />
-			<span class="enom-pro-icon enom-pro-icon-spinner fa-spin"></span>
 		</h3>
 
-		<p class="text-center loadedTLD"></p>
+		<p class="text-center loadedTLD well well-sm"></p>
 
 		<div class="enom_pro_loader"></div>
 		<div class="progress">
