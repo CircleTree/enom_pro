@@ -546,85 +546,56 @@ function enom_pro_output( $vars ) {
 	//No need to output anything on the admin actions
 	if ( isset( $_REQUEST['action'] ) ) {
 		return;
-	}
-	try {
+	} ?>
+	<div class="enom_pro_output">
+		<?php
+		try {
 
-		new enom_pro_license();
-		$enom = new enom_pro();
-		?>
-		<script src="../modules/addons/enom_pro/js/bootstrap.min.js"></script>
-		<div id="enom_pro_dialog" title="Loading..." style="display:none;">
-			<iframe src="about:blank" id="enom_pro_dialog_iframe"></iframe>
-		</div>
-		<div class="enom_pro_output">
-			<?php require_once ENOM_PRO_INCLUDES . 'admin_messages.php'; ?>
-			<?php
-			if ( isset( $_GET['view'] ) && method_exists( $enom,
-					'render_' . $_GET['view'] )
-			) {
-
-				//Run this test to throw an exception sooner
-				//  (before rendering page content)
-				if ( ( isset( $_GET ) && isset( $_GET['view'] ) ) && 'help' !== $_GET['view'] ) {
-					//Don't run API check on the help page.
-					$enom->check_login();
-				}
-
-				$view   = (string) $_GET['view'];
-				$method = "render_$view";
-				$enom->$method();
-
-				return;
-			} else {
-				//Run this to check login credentials and IP restrictions
-				$enom->getAvailableBalance();
-			}
+			new enom_pro_license();
+			$enom = new enom_pro();
 			?>
-			<div class="well well-sm">
-				<h3>Welcome to eNom PRO!</h3>
-				<a class="btn btn-success large"
-				   href="<?php echo enom_pro::MODULE_LINK . '&view=domain_import' ?>">Import
-				                                                                      Domains
-					<span class="enom-pro-icon enom-pro-icon-domains"></span>
-				</a>
-				<a class="btn btn-success large"
-				   href="<?php echo enom_pro::MODULE_LINK . '&view=pricing_import' ?>">Import TLD Pricing
-					<span class="enom-pro-icon enom-pro-icon-tag"></span>
-				</a>
-				<a class="btn btn-primary large"
-				   href="<?php echo enom_pro::MODULE_LINK . '&view=help' ?>">View Help
-					<span class="enom-pro-icon enom-pro-icon-question"></span>
-				</a>
+			<script src="../modules/addons/enom_pro/js/bootstrap.min.js"></script>
+			<div id="enom_pro_dialog" title="Loading..." style="display:none;">
+				<iframe src="about:blank" id="enom_pro_dialog_iframe"></iframe>
+			</div>
 
-			</div>
-			<div id="enom_pro_admin_widgets" class="row">
-				<div class="col-xs-6">
-					<?php enom_pro::render_admin_widget( 'enom_pro_admin_balance' ); ?>
-					<?php enom_pro::render_admin_widget( 'enom_pro_admin_expiring_domains' ); ?>
-					<?php enom_pro::render_admin_widget( 'enom_pro_admin_pending_domain_verification' ); ?>
-				</div>
-				<div class="col-xs-6">
-					<?php enom_pro::render_admin_widget( 'enom_pro_admin_transfers' ); ?>
-					<?php enom_pro::render_admin_widget( 'enom_pro_admin_ssl_certs' ); ?>
-				</div>
-			</div>
-		</div>
-	<?php } catch ( EnomException $e ) { ?>
-		<div class="enom_pro_output">
+		<?php require_once ENOM_PRO_INCLUDES . 'admin_messages.php'; ?>
+		<?php
+		if ( isset( $_GET['view'] ) && method_exists( $enom,
+				'render_' . $_GET['view'] )
+		) {
+
+			//Run this test to throw an exception sooner
+			//  (before rendering page content)
+			if ( ( isset( $_GET ) && isset( $_GET['view'] ) ) && 'help' !== $_GET['view'] ) {
+				//Don't run API check on the help page.
+				$enom->check_login();
+			}
+
+			$view   = (string) $_GET['view'];
+			$method = "render_$view";
+			$enom->$method();
+
+			return;
+		} else {
+			//Run this to check login credentials and IP restrictions
+			$enom->getAvailableBalance();
+			$enom->render_home();
+		}
+		?>
+		<?php } catch ( EnomException $e ) { ?>
 			<div class="alert alert-warning">
 				<h2>eNom API Error:</h2>
 				<?php echo enom_pro::render_admin_errors( $e->get_errors() ); ?>
 			</div>
-		</div>
-	<?php } catch ( Exception $e ) { ?>
-		<div class="enom_pro_output">
+		<?php } catch ( Exception $e ) { ?>
 			<div class="alert alert-danger">
 				<h2>Error</h2>
 				<?php echo $e->getMessage(); ?>
 			</div>
-		</div>
-		<?php
-	} //End Final Exception Catch
-	?>
+			<?php
+		} //End Final Exception Catch
+		?>
+	</div>
 	<?php
 }
