@@ -116,7 +116,7 @@ if ( $this->is_pricing_cached() ) : ?>
 				</ul>
 				Once they are imported, you can
 				bulk edit all 3 pricing tiers, or you can fine tune pricing in directly in whmcs by
-				clicking the TLD drop-down menu button.
+				clicking the TLD drop-down menu button. <br/>
 				<img src="../modules/addons/enom_pro/images/pricing-drop-down-help.jpg" height="209" width="238"
 				     alt="Edit pricing in WHMCS directly by clicking on the drop-down for a TLD" />
 				</p>
@@ -126,7 +126,7 @@ if ( $this->is_pricing_cached() ) : ?>
 		<?php if ( ! enom_pro_controller::isDismissed( 'order-types' ) ) : ?>
 			<div class="alert alert-warning fade in">
 				<button type="button"
-				        class="close"
+				        class="closie"
 				        data-dismiss="alert"
 				        data-alert="order-types"
 				        aria-hidden="true">&times;</button>

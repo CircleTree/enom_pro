@@ -187,7 +187,7 @@ class enom_pro_license {
 	 */
 	public static function is_update_available() {
 
-		if ( self::isBetaOptedIn() ) {
+		if ( enom_pro::isBetaBuild() ) {
 			//Compare hashes
 			if ( ENOM_PRO_VERSION == self::get_latest_version() ) {
 				return false;
