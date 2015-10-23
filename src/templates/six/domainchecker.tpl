@@ -38,9 +38,11 @@
 <div class="domain-step-options{if !$performingLookup} hidden{/if}" id="stepResults">
 	{include file="$template/domainchecker-results.tpl"}
 </div>
-<div class="domain-name-spinner">
+{* eNom PRO — Begin Namespinner *}
+<div style="margin-top: -100px; margin-bottom: 30px">
 	{$namespinner}
 </div>
+{* // eNom PRO — End Namespinner *}
 
 {if !$loggedin && $currencies && !$performingLookup}
 	<div class="currencychooser pull-right clearfix margin-bottom">
