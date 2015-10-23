@@ -90,6 +90,7 @@
                         </a>
                     </li>
                 {/if}
+							{* eNom PRO - SRV Record editor Link *}
                 {if $enom_srv}
                     <li>
                         <a href="enom_srv.php?id={$domainid}" id="enom_srv">
@@ -97,6 +98,7 @@
                         </a>
                     </li>
                 {/if}
+							{* //End eNom PRO - SRV Record editor Link *}
                 <li>
                     <a href="cart.php?gid=renewals">
                         {$LANG.renewYourDomain}
