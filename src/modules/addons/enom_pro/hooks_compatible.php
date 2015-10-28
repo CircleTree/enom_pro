@@ -391,8 +391,8 @@ function enom_pro_clientarea_transfers( $vars ) {
 		try {
 			$transfers = $enom->getTransfers( $uid );
 			echo json_encode( $transfers );
-		} catch ( Exception $e ) {
-			//Fail silently - enom API didn't return any transfer orders
+		} catch ( EnomException $e ) {
+			echo implode(" ", $e->get_errors());
 		}
 		//Exit, we don't need to send WHMCS ;-)
 		die();
