@@ -2524,7 +2524,7 @@ class enom_pro {
 
 	public static function isBetaBuild() {
 
-		if ( strstr( ENOM_PRO_VERSION, '.' ) ) {
+		if ( strlen( ENOM_PRO_VERSION ) < 10 && strstr( ENOM_PRO_VERSION, '.' ) ) {
 			return false;
 		}
 
