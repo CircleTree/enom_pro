@@ -187,7 +187,7 @@ class enom_pro_license {
 	 */
 	public static function is_update_available() {
 
-		if ( enom_pro::isBetaBuild() ) {
+		if ( enom_pro::isBetaBuild() || self::isBetaOptedIn() ) {
 			//Compare hashes
 			if ( ENOM_PRO_VERSION == self::get_latest_version() ) {
 				return false;
@@ -207,10 +207,14 @@ class enom_pro_license {
 		}
 	}
 
+	/**
+	 * Is this a beta build that can be downgraded to a public release?
+	 * @return bool
+	 */
 	public static function  is_downgrade_available() {
 
-		if ( ! self::isBetaOptedIn() && strlen( ENOM_PRO_VERSION ) >= 10 && ! strstr( ENOM_PRO_VERSION, '.' ) ) {
-			//Check for SHA1 hash (gte 10 length, and no periods)
+		if ( ! self::isBetaOptedIn() && enom_pro::isBetaBuild() ) {
+			//Current build is BETA, and opted in
 			return true;
 		} else {
 			return false;
