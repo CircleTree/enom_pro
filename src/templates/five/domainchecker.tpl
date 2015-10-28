@@ -88,7 +88,10 @@
 </table>
 
 <p align="center"><input type="submit" value="{$LANG.ordernowbutton} &raquo;" class="btn btn-danger" /></p>
-{$namespinner}
+
+{* eNom PRO — Begin Namespinner *}
+	{$namespinner}
+{* //eNom PRO — End Namespinner *}
 
 </form>
 

@@ -61,6 +61,27 @@
 		<mkdir dir="${build_temp_dir}/logs"/>
 		<mkdir dir="${build_temp_dir}/pdepend"/>
 	</target>
+	<target name="templates.five">
+		<phingcall target="templates.symlink">
+			<property name="template_dir" value="five"/>
+		</phingcall>
+	</target>
+	<target name="templates.six">
+		<phingcall target="templates.symlink">
+			<property name="template_dir" value="six"/>
+		</phingcall>
+	</target>
+	<target name="templates.symlink" description="Deletes deployment required templates, and symlinks them to dev">
+		<property name="target" value="${deploy}/templates/${template_dir}/"/>
+		<delete file="${target}clientareadomaindetails.tpl" failonerror="false"/>
+		<delete file="${target}clientareadomains.tpl" failonerror="false"/>
+		<delete file="${target}domainchecker.tpl" failonerror="false"/>
+		<delete file="${target}enom_srv.tpl" failonerror="false"/>
+		<symlink target="${project.basedir}/src/templates/${template_dir}/clientareadomaindetails.tpl" link="${target}clientareadomaindetails.tpl" overwrite="true"/>
+		<symlink target="${project.basedir}/src/templates/${template_dir}/clientareadomains.tpl" link="${target}clientareadomains.tpl" overwrite="true"/>
+		<symlink target="${project.basedir}/src/templates/${template_dir}/domainchecker.tpl" link="${target}domainchecker.tpl" overwrite="true"/>
+		<symlink target="${project.basedir}/src/templates/${template_dir}/enom_srv.tpl" link="${target}enom_srv.tpl" overwrite="true"/>
+	</target>
 	<target name="run_parallel_tasks">
 		<parallel threadCount="${threads}">
 			<phingcall target="tasks_to_try"/>
@@ -159,7 +180,8 @@
 		<exec
 				command="java -jar ${yui.jarfile} -v -o ${encoded_prep}/modules/addons/enom_pro/css/admin.min.css ${src_dir}modules/addons/enom_pro/css/admin.css"
 				checkreturn="true" passthru="true"/>
-		<property name="jquery.minify.cmd" value="java -jar ${yui.jarfile} -v -o ${encoded_prep}/modules/addons/enom_pro/js/jquery.admin.min.js ${src_dir}modules/addons/enom_pro/js/jquery.admin.js" />
+		<property name="jquery.minify.cmd"
+							value="java -jar ${yui.jarfile} -v -o ${encoded_prep}/modules/addons/enom_pro/js/jquery.admin.min.js ${src_dir}modules/addons/enom_pro/js/jquery.admin.js"/>
 		<echo>minify jquery.admin.js
 			cmd$: ${jquery.minify.cmd}
 		</echo>
