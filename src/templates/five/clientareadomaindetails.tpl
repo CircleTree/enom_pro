@@ -29,7 +29,11 @@
         {if $rawstatus == "active" && $managens}<li id="tab3nav"><a href="#tab3">{$LANG.domainnameservers}</a></li>{/if}
         {if $lockstatus}{if $tld neq "co.uk" && $tld neq "org.uk" && $tld neq "ltd.uk" && $tld neq "plc.uk" && $tld neq "me.uk"}<li id="tab4nav"><a href="#tab4">{$LANG.domainregistrarlock}</a></li>{/if}{/if}
         {if $releasedomain}<li id="tab5nav"><a href="#tab5">{$LANG.domainrelease}</a></li>{/if}
-        {if $enom_srv }<li><a href="enom_srv.php?id={$domainid}" id="enom_srv">SRV Records</a></li>{/if}
+			{* eNom PRO - SRV Record editor Link *}
+        {if $enom_srv }
+					<li><a href="enom_srv.php?id={$domainid}" id="enom_srv">SRV Records</a></li>
+				{/if}
+			{* //End eNom PRO - SRV Record editor Link *}
         {if $addonscount}<li id="tab6nav"><a href="#tab6">{$LANG.clientareahostingaddons}</a></li>{/if}
         {if $managecontacts || $registerns || $dnsmanagement || $emailforwarding || $getepp}<li class="dropdown"><a data-toggle="dropdown" href="#" class="dropdown-toggle">{$LANG.domainmanagementtools}&nbsp;<b class="caret"></b></a>
             <ul class="dropdown-menu">

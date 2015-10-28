@@ -7,6 +7,7 @@
         </div>
     </form>
 </div>
+{* Begin eNom PRO Pending Transfers *}
 
 {if $enom_transfers}
     <h3>Pending Domain Transfers</h3>
@@ -69,6 +70,7 @@
         {/literal}
         </script>
 {/if}
+{* //End eNom PRO Pending Transfers *}
 
 <div class="resultsbox">
 <p>{$numitems} {$LANG.recordsfound}, {$LANG.page} {$pagenumber} {$LANG.pageof} {$totalpages}</p>
