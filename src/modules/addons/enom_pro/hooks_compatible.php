@@ -187,13 +187,14 @@ function enom_pro_admin_head_output() {
 		<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="../modules/addons/enom_pro/css/admin.min.css" />
 		<script>
-			function version_compare (left, right) {
-				if (typeof left + typeof right != 'stringstring')
+			function version_compare(left, right) {
+				if (typeof left + typeof right != 'stringstring') {
 					return false;
+				}
 
-				var a = left.split('.')
-					,   b = right.split('.')
-					,   i = 0, len = Math.max(a.length, b.length);
+				var a   = left.split('.')
+					, b = right.split('.')
+					, i = 0, len = Math.max(a.length, b.length);
 
 				for (; i < len; i++) {
 					if ((a[i] && !b[i] && parseInt(a[i]) > 0) || (parseInt(a[i]) > parseInt(b[i]))) {
@@ -205,10 +206,10 @@ function enom_pro_admin_head_output() {
 
 				return 0;
 			}
-			if ( window.jQuery && -1 === version_compare(window.jQuery.fn.jquery, '1.9.1') ) {
-					console.warn('Please upgrade your WHMCS theme to a newer version of jQuery (v 1.9.1+). Using Google CDN for an up-to-date version of jQuery. ');
-					document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"><\/script>');
-					document.write('<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"><\/script>');
+			if (window.jQuery && -1 === version_compare(window.jQuery.fn.jquery, '1.9.1')) {
+				console.warn('Please upgrade your WHMCS theme to a newer version of jQuery (v 1.9.1+). Using Google CDN for an up-to-date version of jQuery. ');
+				document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"><\/script>');
+				document.write('<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"><\/script>');
 
 			}
 		</script>
@@ -387,7 +388,12 @@ function enom_pro_clientarea_transfers( $vars ) {
 		//Set the headers so jQuery parses the response as well formed JSON
 		header( "Content-type: application/json" );
 		//send a JSON response to the client
-		echo json_encode( $enom->getTransfers( $uid ) );
+		try {
+			$transfers = $enom->getTransfers( $uid );
+			echo json_encode( $transfers );
+		} catch ( Exception $e ) {
+			//Fail silently - enom API didn't return any transfer orders
+		}
 		//Exit, we don't need to send WHMCS ;-)
 		die();
 	} else {
