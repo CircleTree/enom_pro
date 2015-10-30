@@ -458,6 +458,7 @@ try {
 							$.ajaxq.abort('sort_tlds');
 							$.ajaxq('sort_tlds', {
 								url:     'addonmodules.php?module=enom_pro',
+								method: 'POST',
 								data:    {
 									'action': 'sort_domains',
 									'order':  sorted
