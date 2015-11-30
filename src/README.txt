@@ -1,6 +1,6 @@
 **********************************************************
 *  eNom PRO WHMCS Addon Module                           *
-*  Compatible with WHMCS 5.3+                            *
+*  Compatible with WHMCS 6.1+                            *
 *                                                        *
 *  README                                                *
 *  (c)@YEAR@ Orion IP Ventures, LLC - ALL RIGHTS RESERVED  *

@@ -352,6 +352,7 @@
 		</ftpdeploy>
 
 		<phingcall target="git-push"/>
+		<phingcall target="beta"/>
 
 	</target>
 	<target name="zip" depends="encode" description="Zip new Release">
@@ -376,7 +377,7 @@
 			<property name="version" value="${git_version}"/>
 		</phingcall>
 		<echo msg="Creating Zip files from encoded &amp; encoded_prep"/>
-		<delete file="enom_pro_BETA.zip"/>
+		<delete file="enom_pro_BETA.zipread"/>
 		<zip destfile="enom_pro_BETA.zip" basedir="${encoded}"/>
 		<phingcall target="replace-version">
 			<property name="version" value="${git_version}"/>
