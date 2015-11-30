@@ -14,7 +14,6 @@
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="passParentEnvs" value="true" />
       <option name="program" value="/usr/bin/php" />
       <option name="scopeName" value="src without built files" />
       <option name="trackOnlyRoot" value="false" />
@@ -34,7 +33,6 @@
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="passParentEnvs" value="true" />
       <option name="program" value="/Applications/MAMP/bin/php/php5.4.26/bin/phing" />
       <option name="scopeName" value="build" />
       <option name="trackOnlyRoot" value="false" />
@@ -54,7 +52,6 @@
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="passParentEnvs" value="true" />
       <option name="program" value="/Applications/MAMP/bin/php/php5.4.26/bin/phing" />
       <option name="scopeName" value="src without built files" />
       <option name="trackOnlyRoot" value="false" />
@@ -80,7 +77,6 @@
         </array>
       </option>
       <option name="outputFromStdout" value="true" />
-      <option name="passParentEnvs" value="true" />
       <option name="program" value="$PROJECT_DIR$/node_modules/less/bin/lessc" />
       <option name="scopeName" value="Project Files" />
       <option name="trackOnlyRoot" value="false" />
