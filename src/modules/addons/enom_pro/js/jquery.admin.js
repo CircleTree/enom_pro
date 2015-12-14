@@ -237,6 +237,18 @@ try {
 			return false;
 		});
 		$("#enom_pro_pricing_import").on('submit', function () {
+			var isCheckCnt = 0;
+			$(".tldCheck").each(function() {
+				// alert($(this).attr('name'));
+				var isChecked = $(this).is(':checked');
+				if(isChecked) {
+					isCheckCnt++;
+				}
+			});
+			if(!isCheckCnt) {
+				alert('Please use the checkboxes to select the TLDs you\'d like to import');
+				return false;
+			}
 			$(".myPrice", '#enom_pro_pricing_import').each(function (k, v) {
 				var val = $(v).val();
 				if (val == '0.00' || val == "" || parseInt(val) === 0) {
