@@ -607,16 +607,16 @@ class enom_pro_controller {
 		$updated = $new = $deleted = 0;
 		foreach ( $validated_data as $tld => $pricing ) {
 			$pricing_data       = array(
-				'msetupfee'    => $pricing[1],
-				'qsetupfee'    => $pricing[2],
-				'ssetupfee'    => $pricing[3],
-				'asetupfee'    => $pricing[4],
-				'bsetupfee'    => $pricing[5],
-				'monthly'      => $pricing[6],
-				'quarterly'    => $pricing[7],
-				'semiannually' => $pricing[8],
-				'annually'     => $pricing[9],
-				'biennially'   => $pricing[10],
+				'msetupfee'    => ($pricing[1] !== null ? $pricing[1] : '-1.00'),
+				'qsetupfee'    => ($pricing[2] !== null ? $pricing[2] : '-1.00'),
+				'ssetupfee'    => ($pricing[3] !== null ? $pricing[3] : '-1.00'),
+				'asetupfee'    => ($pricing[4] !== null ? $pricing[4] : '-1.00'),
+				'bsetupfee'    => ($pricing[5] !== null ? $pricing[5] : '-1.00'),
+				'monthly'      => ($pricing[6] !== null ? $pricing[6] : '-1.00'),
+				'quarterly'    => ($pricing[7] !== null ? $pricing[7] : '-1.00'),
+				'semiannually' => ($pricing[8] !== null ? $pricing[8] : '-1.00'),
+				'annually'     => ($pricing[9] !== null ? $pricing[9] : '-1.00'),
+				'biennially'   => ($pricing[10] !== null ? $pricing[10] : '-1.00'),
 				'currency'     => 1,
 			);
 			$registration_types = array(
