@@ -556,7 +556,7 @@ function enom_pro_output( $vars ) {
 			?>
 			<script src="../modules/addons/enom_pro/js/bootstrap.min.js"></script>
 			<div id="enom_pro_dialog" title="Loading..." style="display:none;">
-				<iframe src="about:blank" id="enom_pro_dialog_iframe"></iframe>
+				<iframe src="about:blank" id="enom_pro_dialog_iframe" sandbox="allow-same-origin"></iframe>
 			</div>
 
 		<?php require_once ENOM_PRO_INCLUDES . 'admin_messages.php'; ?>
