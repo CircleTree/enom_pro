@@ -38,11 +38,14 @@
 <div class="domain-step-options{if !$performingLookup} hidden{/if}" id="stepResults">
 	{include file="$template/domainchecker-results.tpl"}
 </div>
-{* eNom PRO — Begin Namespinner *}
-<div style="margin-top: -100px; margin-bottom: 30px">
-	{$namespinner}
-</div>
-{* // eNom PRO — End Namespinner *}
+{*eNom PRO Namespinner code*}
+<link rel="stylesheet" href="modules/addons/enom_pro/spinner_style.css">
+    <form method="post" action="cart.php?a=add&domain=register">
+
+      <div id="spinner_ajax_results" style="display:none"></div>
+    </form>
+{*eNom PRO End*}
+
 
 {if !$loggedin && $currencies && !$performingLookup}
 	<div class="currencychooser pull-right clearfix margin-bottom">
