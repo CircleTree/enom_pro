@@ -14,28 +14,26 @@
       <library name="PHP">
         <CLASSES>
           <root url="file://$MODULE_DIR$/../whmcs_hook_mocks" />
-          <root url="file:///Applications/MAMP/Library/bin" />
         </CLASSES>
         <SOURCES>
           <root url="file://$MODULE_DIR$/../whmcs_hook_mocks" />
-          <root url="file:///Applications/MAMP/Library/bin" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="library" name="jQuery 1.11.0" level="application" />
+    <orderEntry type="library" name="select2-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="JsTestDriver Assertion Framework" level="application" />
     <orderEntry type="module-library">
       <library name="PHARS">
         <CLASSES>
-          <root url="phar://$MODULE_DIR$/phing-latest.phar" />
-          <root url="phar:///Applications/MAMP/Library/bin/phpunit.phar" />
+          <root url="phar://$MODULE_DIR$/composer.phar/" />
+          <root url="phar://$MODULE_DIR$/phing-latest.phar/" />
         </CLASSES>
         <SOURCES>
-          <root url="phar://$MODULE_DIR$/phing-latest.phar" />
-          <root url="phar:///Applications/MAMP/Library/bin/phpunit.phar" />
+          <root url="phar://$MODULE_DIR$/composer.phar/" />
+          <root url="phar://$MODULE_DIR$/phing-latest.phar/" />
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="select2-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="JsTestDriver Assertion Framework" level="application" />
   </component>
 </module>

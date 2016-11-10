@@ -189,11 +189,11 @@
 				command="${jquery.minify.cmd}"
 				checkreturn="true" passthru="true"/>
 		<echo>delete old minify files</echo>
-		<delete
-				file="${encoded_prep}/modules/addons/enom_pro/includes/class.enom_pro_license.php"/>
-		<delete
-				file="${encoded_prep}/modules/addons/enom_pro/enom_pro_compatible.php"/>
-		<delete file="${encoded_prep}/modules/addons/enom_pro/hooks.php"/>
+		<!--<delete-->
+				<!--file="${encoded_prep}/modules/addons/enom_pro/includes/class.enom_pro_license.php"/>-->
+		<!--<delete-->
+				<!--file="${encoded_prep}/modules/addons/enom_pro/enom_pro_compatible.php"/>-->
+		<!--<delete file="${encoded_prep}/modules/addons/enom_pro/hooks.php"/>-->
 		<tstamp>
 			<format property="YEAR" pattern="%Y"/>
 		</tstamp>
@@ -212,9 +212,8 @@
 
 	<target name="encode" hidden="true" depends="replace">
 		<ioncubeencoder
-				phpversion="53"
 				optimize="max"
-				ioncubepath="/Users/robertgregor/ioncube/8"
+				ioncubepath="/Users/robertgregor/ioncube/"
 				nodoccomments="true"
 				targetoption="replace"
 				showcommandline="false"
