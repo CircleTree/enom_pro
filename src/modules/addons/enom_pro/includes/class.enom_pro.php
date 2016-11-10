@@ -2638,6 +2638,7 @@ class enom_pro {
 			$params = getRegistrarConfigOptions( "enom" );
 			// @codeCoverageIgnoreEnd
 		}
+
 		//Clean up the testmode to a (bool)
 		$live           = ( $params['TestMode'] == 'on' ) ? false : true;
 		self::$testMode = ! $live;
