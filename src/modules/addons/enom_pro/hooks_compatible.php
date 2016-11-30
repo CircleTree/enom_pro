@@ -375,7 +375,6 @@ function enom_pro_namespinner( $vars ) {
 
 
 function enom_pro_clientarea_transfers( $vars ) {
-
 	//Prep the userid of currently logged in account
 	$uid = isset( $_SESSION['uid'] ) ? (int) $_SESSION['uid'] : 0; //Set this to 0 for security to return no results if the WHMCS uid is not set in the session
 	//This is where the magic happens
