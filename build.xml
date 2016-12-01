@@ -77,10 +77,14 @@
 		<delete file="${target}clientareadomains.tpl" failonerror="false"/>
 		<delete file="${target}domainchecker.tpl" failonerror="false"/>
 		<delete file="${target}enom_srv.tpl" failonerror="false"/>
-		<symlink target="${project.basedir}/src/templates/${template_dir}/clientareadomaindetails.tpl" link="${target}clientareadomaindetails.tpl" overwrite="true"/>
-		<symlink target="${project.basedir}/src/templates/${template_dir}/clientareadomains.tpl" link="${target}clientareadomains.tpl" overwrite="true"/>
-		<symlink target="${project.basedir}/src/templates/${template_dir}/domainchecker.tpl" link="${target}domainchecker.tpl" overwrite="true"/>
-		<symlink target="${project.basedir}/src/templates/${template_dir}/enom_srv.tpl" link="${target}enom_srv.tpl" overwrite="true"/>
+		<symlink target="${project.basedir}/src/templates/${template_dir}/clientareadomaindetails.tpl"
+						 link="${target}clientareadomaindetails.tpl" overwrite="true"/>
+		<symlink target="${project.basedir}/src/templates/${template_dir}/clientareadomains.tpl"
+						 link="${target}clientareadomains.tpl" overwrite="true"/>
+		<symlink target="${project.basedir}/src/templates/${template_dir}/domainchecker.tpl"
+						 link="${target}domainchecker.tpl" overwrite="true"/>
+		<symlink target="${project.basedir}/src/templates/${template_dir}/enom_srv.tpl" link="${target}enom_srv.tpl"
+						 overwrite="true"/>
 	</target>
 	<target name="run_parallel_tasks">
 		<parallel threadCount="${threads}">
@@ -190,9 +194,9 @@
 				checkreturn="true" passthru="true"/>
 		<echo>delete old minify files</echo>
 		<!--<delete-->
-				<!--file="${encoded_prep}/modules/addons/enom_pro/includes/class.enom_pro_license.php"/>-->
+		<!--file="${encoded_prep}/modules/addons/enom_pro/includes/class.enom_pro_license.php"/>-->
 		<!--<delete-->
-				<!--file="${encoded_prep}/modules/addons/enom_pro/enom_pro_compatible.php"/>-->
+		<!--file="${encoded_prep}/modules/addons/enom_pro/enom_pro_compatible.php"/>-->
 		<!--<delete file="${encoded_prep}/modules/addons/enom_pro/hooks.php"/>-->
 		<tstamp>
 			<format property="YEAR" pattern="%Y"/>
@@ -220,15 +224,11 @@
 				todir="${encoded}"
 				copy="index.php enom_pro.php hooks.php"
 				ignore="*.DS_Store *.cache enom_pro_version*.xml"
-				>
+		>
 			<comment>*************************************************************************</comment>
 			<comment>* enom PRO Addon for WHMCS *</comment>
 			<comment>* Version ${version}</comment>
-			<comment>* Copyright (c) 2001-${YEAR} Orion IP Ventures, LLC. All Rights Reserved *</comment>
-			<comment>*************************************************************************</comment>
-			<comment>* Licenses Resold and Supported by Circle Tree, LLC *</comment>
-			<comment>* For More Information on Becoming an Orion IP Authorized Reseller *</comment>
-			<comment>* Visit Our Website: http://www.OrionIPVentures.com/ *</comment>
+			<comment>* Copyright (c) 2001-${YEAR} Circle Tree, LLC. All Rights Reserved *</comment>
 			<comment>*************************************************************************</comment>
 			<comment>* The use of this software means that you accept the terms and *</comment>
 			<comment>* conditions of the license, and agree to be bound by the terms set *</comment>
@@ -368,6 +368,11 @@
 	<!-- BETA Release Prepares ZIP File-->
 
 
+	<property name="ssh.key" value="/home/vagrant/.ssh/mycircle"/>
+	<property name="ssh.pubkey" value="/home/vagrant/.ssh/mycircle.pub"/>
+	<property name="ssh.port" value="1157"/>
+	<property name="ssh.user" value="mycircle"/>
+
 	<target name="zip-beta" description="Zip new Beta Release">
 		<exec command="git rev-parse --short=12 HEAD" outputProperty="git_version"/>
 		<echo>Parsed Git Hash: ${git_version}</echo>
@@ -375,45 +380,31 @@
 			<property name="version" value="${git_version}"/>
 		</phingcall>
 		<echo msg="Creating Zip files from encoded &amp; encoded_prep"/>
-		<delete file="enom_pro_BETA.zipread"/>
+		<delete file="enom_pro_BETA.zip"/>
 		<zip destfile="enom_pro_BETA.zip" basedir="${encoded}"/>
 		<phingcall target="replace-version">
 			<property name="version" value="${git_version}"/>
 		</phingcall>
 		<move file="${encoded_prep}/${version_xml}" tofile="${encoded_prep}/${beta_version_xml}" haltonerror="true"/>
 	</target>
-
 	<target name="beta-version">
-		<ftpdeploy
-				host="mycircletree.com"
-				port="21"
-				username="${ftp.username.versions}"
-				password="${ftp.password.versions}"
-				passive="false"
-				mode="ascii">
+		<scp host="mycircletree.com" username="${ssh.user}" port="${ssh.port}" todir="/home/mycircle/public_html/versions"
+				 privkeyfile="${ssh.key}" pubkeyfile="${ssh.pubkey}" level="debug">
 			<fileset dir="${encoded_prep}">
 				<include name="${beta_version_xml}"/>
 			</fileset>
-		</ftpdeploy>
-
+		</scp>
 	</target>
 	<!-- BETA Release - Public Target -->
 	<target name="beta" depends="zip-beta" description="Builds &amp; Deploys HEAD revision to beta testers">
 		<phingcall target="beta-version"/>
 		<echo msg="Deploying BETA to myCircleTree.com"/>
-		<ftpdeploy
-				host="mycircletree.com"
-				port="21"
-				username="${ftp.username}"
-				password="${ftp.password}"
-				passive="false"
-				level="debug"
-				mode="binary">
+		<scp host="mycircletree.com" username="${ssh.user}" port="${ssh.port}" todir="/home/mycircle/downloads"
+				 privkeyfile="${ssh.key}" pubkeyfile="${ssh.pubkey}" level="debug">
 			<fileset dir=".">
 				<include name="enom_pro_BETA.zip"/>
 			</fileset>
-		</ftpdeploy>
-		<phingcall target="git-push"/>
+		</scp>
 		<phingcall target="beta-log"/>
 	</target>
 
@@ -426,24 +417,18 @@
 		<echo>${md5_open}</echo>
 	</target>
 
-	<target name="beta-log" description="Writes beta log json &amp; deploys to remote">
+	<target name="beta-log" description="Writes beta log json &amp; deploys to remote" depends="zip-beta">
 		<property name="beta_log_filename" value="enom_pro_beta_log.json"/>
 		<delete file="${build_dir}/${beta_log_filename}" quiet="true"/>
 		<echo>Writing updated beta log</echo>
 		<exec command="./gitjson log -n 15 --json=hds" output="${build_dir}/${beta_log_filename}"/>
 		<echo>Deploying to remote...</echo>
-		<ftpdeploy
-				host="mycircletree.com"
-				port="21"
-				username="${ftp.username.versions}"
-				password="${ftp.password.versions}"
-				passive="false"
-				level="debug"
-				mode="ascii">
+		<scp host="mycircletree.com" username="${ssh.user}" port="${ssh.port}" todir="/home/mycircle/versions"
+				 privkeyfile="${ssh.key}" pubkeyfile="${ssh.pubkey}" level="debug">
 			<fileset dir="${build_dir}">
 				<include name="${beta_log_filename}"/>
 			</fileset>
-		</ftpdeploy>
+		</scp>
 		<echo>Done. Pushed hash: ${git_version}</echo>
 	</target>
 	<target name="install" description="Installs to real test dev environment" depends="zip">
