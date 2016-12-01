@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ProjectTasksOptions">
-    <TaskOptions isEnabled="true">
+    <TaskOptions isEnabled="false">
       <option name="arguments" value="$PROJECT_DIR$/phing-latest.phar zip" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" value="" />
@@ -58,7 +58,7 @@
       <option name="workingDir" value="$ProjectFileDir$" />
       <envs />
     </TaskOptions>
-    <TaskOptions isEnabled="true">
+    <TaskOptions isEnabled="false">
       <option name="arguments" value="--strict-math=on --no-color $FileName$" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" value="Compiles .less files into .css files" />
