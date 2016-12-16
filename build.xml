@@ -101,7 +101,7 @@
 		<tstamp>
 			<format property="YEAR" pattern="%Y"/>
 		</tstamp>
-		<copy todir="${encoded_prep}/modules/addons/enom_pro/" overwrite="true" verbose="true" mode="force">
+		<copy todir="${encoded_prep}/modules/addons/enom_pro/" overwrite="true" verbose="true">
 			<filterchain>
 				<replacetokens begintoken="@" endtoken="@">
 					<token key="VERSION" value="${version}"/>
@@ -110,9 +110,10 @@
 				</replacetokens>
 			</filterchain>
 			<fileset dir="${src_dir}/modules/addons/enom_pro/" >
-				<filename name="enom_pro_compatible.php"/>
+				<filename name="enom_pro.php"/>
 			</fileset>
 		</copy>
+		<phingcall target="minify"/>
 	</target>
 	<target name="minify">
 		<echo>Minifying admin.css</echo>
@@ -120,7 +121,7 @@
 				command="java -jar ${yui.jarfile} -v -o ${encoded_prep}/modules/addons/enom_pro/css/admin.min.css ${src_dir}modules/addons/enom_pro/css/admin.css"
 				checkreturn="true" passthru="true"/>
 		<property name="jquery.minify.cmd"
-							value="java -jar ${yui.jarfile} -v -o ${encoded_prep}/modules/addons/enom_pro/js/jquery.admin.min.js ${src_dir}modules/addons/enom_pro/js/jquery.admin.js"/>
+							value="java -jar ${yui.jarfile} -o ${encoded_prep}/modules/addons/enom_pro/js/jquery.admin.min.js ${src_dir}modules/addons/enom_pro/js/jquery.admin.js"/>
 		<echo>minify jquery.admin.js
 			cmd$: ${jquery.minify.cmd}
 		</echo>

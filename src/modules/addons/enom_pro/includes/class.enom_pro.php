@@ -803,6 +803,7 @@ class enom_pro {
 
 		require_once ENOM_PRO_INCLUDES . 'page_help.php';
 	}
+
 	public function render_home() {
 
 		require_once ENOM_PRO_INCLUDES . 'page_home.php';
@@ -824,7 +825,7 @@ class enom_pro {
 
 	}
 
-	public function  render_pricing_sort() {
+	public function render_pricing_sort() {
 
 		require_once ENOM_PRO_INCLUDES . 'page_sort_tld_pricing.php';
 
@@ -1450,7 +1451,7 @@ class enom_pro {
 	 * Is the domain import data cached?
 	 * @return bool
 	 */
-	public function  is_domain_cached() {
+	public function is_domain_cached() {
 
 		$cache_data = $this->get_cache_data( $this->cache_file_all_prices );
 		if ( $cache_data === false ) {
@@ -1461,7 +1462,7 @@ class enom_pro {
 		return true;
 	}
 
-	public function  get_validation_cache_date() {
+	public function get_validation_cache_date() {
 
 		return $this->get_cache_file_time( $this->cache_file_verification_report );
 	}
@@ -2011,7 +2012,13 @@ class enom_pro {
 				copy( $file->getPathname(), $frontend_dest );
 			}
 		}
-		$template_files        = $upgrade_dir . 'templates/default/';
+		$template_files = $upgrade_dir . 'templates/default/';
+		if ( ! is_writable( $template_files ) ) {
+			$temp_dir_created = mkdir( $template_files );
+			if ( false === $temp_dir_created ) {
+				throw new Exception( $template_files . ' is un-writeable. Please CHMOD 777, and try again.' );
+			}
+		}
 		$tpl_files             = new DirectoryIterator( $template_files );
 		$manual_template_files = array();
 		foreach ( $tpl_files as $file ) {
@@ -2481,15 +2488,15 @@ class enom_pro {
 	public static function getBetaReportLink() {
 
 		?>
-		<a class="btn btn-block btn-warning ep_tt"
-		   title="Running in Beta mode - Please report bugs"
-		   data-placement="right"
-		   target="_blank"
-		   href="<?php echo self::TICKET_URL ?>&subject=<?php echo urlencode( ENOM_PRO . ' Bug Report' ) . '&message=' . self::getSupportMessage(); ?>">
-			<span class="enom-pro-icon enom-pro-icon-support"></span>
-			BETA Mode
-			<span class="enom-pro-icon enom-pro-icon-bug"></span>
-		</a>
+			<a class="btn btn-block btn-warning ep_tt"
+				 title="Running in Beta mode - Please report bugs"
+				 data-placement="right"
+				 target="_blank"
+				 href="<?php echo self::TICKET_URL ?>&subject=<?php echo urlencode( ENOM_PRO . ' Bug Report' ) . '&message=' . self::getSupportMessage(); ?>">
+				<span class="enom-pro-icon enom-pro-icon-support"></span>
+				BETA Mode
+				<span class="enom-pro-icon enom-pro-icon-bug"></span>
+			</a>
 		<?php
 	}
 

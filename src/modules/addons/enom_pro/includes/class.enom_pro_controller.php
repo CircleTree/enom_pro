@@ -83,13 +83,6 @@ class enom_pro_controller {
 
 		$filePath = ENOM_PRO_ROOT . 'js/jquery.admin.' . ( ! enom_pro::isBeta() ? 'min.' : 'min.' ) . 'js';
 		$result   = file_get_contents( $filePath );
-		if ( is_int( $result ) ) {
-			if ( 3 == $result ) {
-				throw new Exception( 'An updated Ioncube Loader should be installed to read the file. ', 3 );
-			} else {
-				throw new Exception( "Ioncube Loader Error #" . $result, $result );
-			}
-		}
 		header( 'Content-Type: application/javascript' );
 		$expire = 'Expires: ' . gmdate( 'D, d M Y H:i:s',
 				strtotime( '+30 days' ) ) . ' GMT';
