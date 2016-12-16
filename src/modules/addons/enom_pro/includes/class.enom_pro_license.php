@@ -138,7 +138,8 @@ class enom_pro_license {
 	public function checkLicense() {
 
 		$query                = "SELECT `local` FROM `mod_enom_pro` WHERE `id`=0";
-		$local                = mysql_fetch_assoc( mysql_query( $query ) );
+
+		$local                = @mysql_fetch_assoc( mysql_query( $query ) );
 		$localKey             = $local['local'];
 		$results              = $this->get_remote_license( enom_pro::get_addon_setting( 'license' ),
 			$localKey );

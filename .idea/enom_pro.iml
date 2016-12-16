@@ -13,9 +13,11 @@
     <orderEntry type="module-library">
       <library name="PHP">
         <CLASSES>
+          <root url="file://$MODULE_DIR$/../ct2016/public_html/client-area/vendor" />
           <root url="file://$MODULE_DIR$/../whmcs_hook_mocks" />
         </CLASSES>
         <SOURCES>
+          <root url="file://$MODULE_DIR$/../ct2016/public_html/client-area/vendor" />
           <root url="file://$MODULE_DIR$/../whmcs_hook_mocks" />
         </SOURCES>
       </library>
