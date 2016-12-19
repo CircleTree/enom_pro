@@ -18,7 +18,7 @@ var src = './src';
  * executes phing local target build inside of enom_pro directory.
  * Pipes results through livereload to refresh page.
  */
-gulp.task('run-phing', function () {
+gulp.task('run-phing', function() {
 	run("ssh vagrant@127.0.0.1 -p 2222 'cd enom_pro; vendor/bin/phing;'").exec()
 		.on('error', onError)
 		.pipe(livereload());
@@ -28,9 +28,9 @@ gulp.task('run-phing', function () {
  * Task to watch src directory for any changes refreshing page with livereload.
  * If changes are detected, executes 'run-phing' task to rebuild project.
  */
-gulp.task('watch', function () {
+gulp.task('watch', function() {
 	livereload.listen();
-	gulp.watch(src + '/**/*', ['run-phing']);
+	gulp.watch( src + '/**/*', ['run-phing'] );
 });
 
 /**
