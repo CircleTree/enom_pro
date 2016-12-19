@@ -16,7 +16,6 @@ defined( 'ENOM_PRO_INCLUDES' ) or define( 'ENOM_PRO_INCLUDES', ENOM_PRO_ROOT . '
 define( "ENOM_PRO_VERSION", '@VERSION@' );
 define( 'ENOM_PRO', '@NAME@' );
 
-
 /**
  * @var string full path to temp dir, with trailing /
  * Override here to change the temp file location
