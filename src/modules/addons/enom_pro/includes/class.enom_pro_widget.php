@@ -3,159 +3,156 @@
 /**
  * Project: enom_pro
  * Build: @BUILD_DATE@
- * Version: @VERSION@
+ * Version: @VERSION@.
  */
-class enom_pro_widget {
-
-	private $base_id;
-	private $callback;
-	private $title;
-	private $jQuery = '';
-	private $action = '';
-	private $content_id = '';
-	private $icon = '';
-
-	function __construct( $title, $base_id, $callback ) {
-
-		if ( ! class_exists( 'enom_pro' ) ) {
-			require_once 'enom_pro.php';
-		}
-		$this->title      = $title;
-		$this->base_id    = 'enom_pro_' . $base_id;
-		$this->action     = 'refresh_' . $this->base_id;
-		$this->content_id = 'content_' . $this->base_id;
-		$this->callback   = $callback;
-		if ( isset( $_REQUEST[ $this->action ] ) ) {
-			if ( ! method_exists( $this->callback[0], $this->callback[1] ) ) {
-				die( 'Unknown callback: ' . get_class( $this->callback[0] ) . '::' . $this->callback[1] );
-			} else {
-				try {
-					ob_start();
-					new enom_pro_license();
-					call_user_func( $this->callback );
-					$data = ob_get_contents();
-					ob_end_clean();
-					enom_pro_controller::sendGzipped( $data );
-				} catch ( Exception $e ) {
-					echo '<div class="alert alert-warning">';
-					echo $e->getMessage();
-					echo '</div>';
-				}
-				die;
-			}
-		}
-	}
-
+class enom_pro_widget
+{
+    private $base_id;
+    private $callback;
 	/**
-	 * Icomoon full class name only
+	 * name of the widget as filtered/used by WHMCS 7.1
+	 * @var string
 	 */
-	public function setIcon( $class ) {
-
-		$this->icon = $class;
-	}
-
+	private $whmcsWidgetName;
 	/**
-	 * Gets true base ID of widget
-	 * @return string $base_id
+	 * ID of DOM element inside of WHMCS admin homepage
+	 * @var string
 	 */
-	public function getBaseID() {
+	private $whmcsPanelName;
 
-		return $this->base_id;
-	}
+    private $title;
+    private $jQuery = '';
+    private $action = '';
+    private $content_id = '';
+    private $icon = '';
 
-	public function getContentID() {
+    public function __construct($title, $base_id, $callback)
+    {
+        if (!class_exists('enom_pro')) {
+            require_once 'enom_pro.php';
+        }
+		$this->whmcsWidgetName = preg_replace('/[^\da-z]/i', '', strtolower($title));
+		$this->whmcsPanelName = 'panel' . $this->whmcsWidgetName;
+        $this->title = $title;
+		$this->callback = $callback;
 
-		return $this->content_id;
-	}
 
-	/**
-	 * @param string $script
-	 */
-	public function addjQuery( $script ) {
+		//TODO remove these legacy strings
+        $this->base_id = 'enom_pro_'.$base_id;
+        $this->action = 'refresh_'.$this->base_id;
+        $this->content_id = 'content_'.$this->base_id;
 
-		$this->jQuery = $script;
-	}
+    }
 
-	public function getContent() {
+    /**
+     * Icomoon full class name only.
+     */
+    public function setIcon($class)
+    {
+        $this->icon = $class;
+    }
 
-		return '<div class="enom_pro_output">' . '<div id="' . $this->content_id . '">' . '<span class="enom_pro_loader"></span>' . '</div>' . '</div>';
-	}
+    /**
+     * Gets true base ID of widget.
+     *
+     * @return string $base_id
+     */
+    public function getBaseID()
+    {
+        return $this->base_id;
+    }
 
-	/**
-	 * Gets WHMCS formatted array
-	 * @return array
-	 */
-	public function toArray() {
+    public function getContentID()
+    {
+        return $this->content_id;
+    }
 
-		$return   = array();
-		$iconSpan = '';
-		if ( $this->icon ) {
-			$iconSpan = '<span class="enom-pro-icon enom-pro-widget-icon ' . $this->icon . '"></span>';
-		}
-		$return['title']      = '
-<span class="enom_pro_output">
-<span class="enom_pro_widget_title">' . $iconSpan . '<a href="' . enom_pro::MODULE_LINK . '">' . ENOM_PRO . '</a> &dash; ' . $this->title . $this->getWidgetForm() . '</span></span>';
-		$return['content']    = $this->getContent();
-		$return['jquerycode'] = $this->get_jQuery();
+    /**
+     * @param string $script
+     */
+    public function addjQuery($script)
+    {
+        $this->jQuery = $script;
+    }
 
-		return $return;
-	}
+    public function getContent()
+    {
+        if (
+			isset($_POST['action']) &&
+			isset($_POST['widget']) &&
+			'refreshwidget' == $_POST['action'] &&
+			$this->whmcsWidgetName == $_POST['widget']
+		) {
+			if (!method_exists($this->callback[0], $this->callback[1])) {
+                return ('Unknown callback: '.get_class($this->callback[0]).'::'.$this->callback[1]);
+            } else {
+                try {
+                    ob_start();
 
-	public function getFormID() {
+                    new enom_pro_license();
+                    call_user_func($this->callback);
 
-		return $this->base_id;
-	}
+                    $data = ob_get_contents();
+                    ob_end_clean();
 
-	private function getWidgetForm() {
+                    return $data;
+                } catch (Exception $e) {
+                    return $e->getMessage();
+                }
+            }
+        } else {
+            return '<div id="'.$this->content_id.'" class="enom_pro_output">'.'<span class="enom_pro_loader"></span>'.'</div>';
+        }
+    }
 
-		if ( 'configadminroles.php' == basename( $_SERVER['PHP_SELF'] ) ) {
-			return '';
-		}
-		ob_start(); ?>
-		<form id="<?php echo $this->base_id; ?>" class="refreshbutton" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-			<input type="hidden" name="<?php echo $this->action; ?>" value="1" />
-			<button type="submit" class="btn btn-default btn-xs">
-				Refresh
-				<span class="enom-pro-icon enom-pro-icon-refresh-alt fa-spin"></span>
-			</button>
-		</form>
-		<?php
-		$return = ob_get_contents();
-		ob_end_clean();
+    /**
+     * Gets WHMCS formatted array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $return = array();
+        $iconSpan = '';
+        if ($this->icon) {
+            $iconSpan = '<span class="enom-pro-icon enom-pro-widget-icon '.$this->icon.'"></span>';
+        }
+        $return['title'] = $this->title;
+        $return['content'] = $this->getContent();
+        $return['jquerycode'] = $this->get_jQuery();
 
-		return $return;
-	}
+        return $return;
+    }
 
-	private function get_jQuery() {
+    public function getFormID()
+    {
+        return $this->base_id;
+    }
 
-		$baseID    = $this->base_id;
-		$contentID = $this->content_id;
-		$jQuery    = $this->jQuery;
-		$jSCode    = <<<JS
+    private function get_jQuery()
+    {
+        $jQuery = $this->jQuery;
+		$id = $this->whmcsPanelName;
+        $jSCode = <<<JS
 jQuery(function($) {
-	var refreshForm = jQuery("#{$baseID}"),
-			refreshIcon = refreshForm.find('.enom-pro-icon-refresh-alt'),
-			refreshBtn = refreshForm.find('.btn-xs');
-	refreshForm.on("submit", function() {
-			var content = jQuery("#{$contentID}");
-			content.html('<span class="enom_pro_output"><span class="enom_pro_loader"></span></span>');
-			refreshIcon.addClass('fa-spin');
-			refreshBtn.addClass('disabled').prop('disabled', true);
-			jQuery.post("index.php", $(this).serialize(), function(data) {
-					refreshIcon.removeClass('fa-spin');
-					refreshBtn.removeClass('disabled').prop('disabled', false);
-					content.html(data);
-			});
-			return false;
-	});
-	if (refreshForm.is(":visible")) {
-			refreshForm.trigger("submit");
-	}
+		var panel = $("#{$id}"), body = panel.find('.panel-body'), refresh = panel.find('.widget-refresh'), toggle = panel.find('.widget-minimise');
+		toggle.on('click', function() {
+			setTimeout(function(){
+				panel.trigger('refresh');
+			},200)
+
+		});
+		panel.on('refresh', function() {
+			if (toggle.find('i').hasClass('fa-chevron-up') ) {
+					refresh.trigger("click");
+			}
+		}).trigger('refresh');
+
 	{$jQuery}
 });
 JS;
-
-		return enom_pro::minify( $jSCode );
-	}
-
+		if (! isset($_POST['refresh'])) {
+        	return enom_pro::minify($jSCode);
+		}
+    }
 }

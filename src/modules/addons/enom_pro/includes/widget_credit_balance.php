@@ -5,6 +5,7 @@
  * Version: @VERSION@
  */
 /** @var enom_pro $this */
+
 $warning_level = $this->get_addon_setting( 'balance_warning' );
 $available     = (float) preg_replace( "/([^0-9.])/i", "", $this->getAvailableBalance() );
 $warning       = $available <= $warning_level ? true : false;
@@ -43,4 +44,4 @@ $class = $warning ? 'alert-danger' : 'alert-success'; ?>
 			<span class="enom-pro-icon enom-pro-icon-update"></span>
 		</a>
 	</div>
-<?php endif; ?>
+<?php endif;
