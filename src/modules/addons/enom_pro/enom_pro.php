@@ -423,7 +423,7 @@ function enom_pro_config() {
 				"Default"      => "Medium",
 				"Description"  => "Higher values return suggestions that are similar to the customer's input,
                             but not necessarily in meaning.<br/>
-                            <b>Similar=High will generate more creative terms, with a slightly looser 
+                            <b>Similar=High will generate more creative terms, with a slightly looser
                             relationship to your input, than Related=High.</b>",
 				"Options"      => "Off,Low,Medium,High"
 			),
@@ -453,6 +453,10 @@ if (! function_exists( 'enom_pro_activate')) :
 function enom_pro_activate() {
 
 
+	if ( ! version_compare(substr($GLOBALS['CONFIG']['Version'],0, 3), '7.1', 'ge')) {
+		//We introduced a breaking change for 3.x due to WHMCS 7.1's new widget API
+		return array('status' => 'error', 'description' => 'WHMCS 7.1 is required for @NAME@ version 4.0 and above');
+	}
 	if ( ! class_exists( 'ZipArchive' ) ) {
 		return array(
 			'status'      => 'error',

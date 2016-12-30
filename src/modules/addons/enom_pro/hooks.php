@@ -20,6 +20,7 @@ add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_ssl_certs" );
 add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_expiring_domains" );
 add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_pending_domain_verification" );
 add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_transfers" );
+// add_hook("AdminHomeWidgets", 1, array("fuck_hook"));
 add_hook( "AdminAreaHeadOutput", - 89512, "enom_pro_admin_head_output" );
 add_hook( "AdminAreaPage", - 284917, "enom_pro_admin_actions" );
 add_hook( "ClientAreaPage", - 30101, "enom_pro_srv_page" );
@@ -172,6 +173,7 @@ function get_enom_pro_widget_form( $action, $id ) {
 
 function enom_pro_admin_head_output() {
 
+
 	//	Only load on applicable pages
 	$pages      = array( 'index.php', 'addonmodules.php', 'configadminroles.php' );
 	$scriptName = basename( $_SERVER['SCRIPT_NAME'] );
@@ -192,7 +194,7 @@ function enom_pro_admin_head_output() {
 					adminurl: "<?php echo enom_pro::MODULE_LINK ?>"
 				};
 			</script>
-			<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap.min.css" />
+			<!-- <link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap.min.css" /> -->
 			<link rel="stylesheet" href="../modules/addons/enom_pro/css/admin.min.css" />
 			<script>
 				function version_compare(left, right) {
