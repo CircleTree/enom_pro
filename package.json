@@ -1,24 +1,26 @@
 {
-	"name": "enom_pro",
-	"version": "0.0.1",
-	"description": "Gulp workflow setup for rapid Enom Pro module development.",
-	"author": "CircleTree",
-	"main": "gulpfile.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/CircleTree/enom_pro.git"
-	},
-	"bugs": {
-		"url": "https://github.com/CircleTree/enom_pro/issues"
-	},
-	"dependencies": {
-		"gulp": "3.9.1",
-		"gulp-livereload": "3.8.1",
-		"gulp-run": "1.7.1"
-	},
-	"license": "UNLICENSED",
-	"private": true
+    "name": "enom_pro",
+    "version": "0.0.1",
+    "description": "Gulp workflow setup for rapid Enom Pro module development.",
+    "author": "CircleTree",
+    "main": "gulpfile.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/CircleTree/enom_pro.git"
+    },
+    "bugs": {
+        "url": "https://github.com/CircleTree/enom_pro/issues"
+    },
+    "devDependencies": {
+        "gulp": "3.9.1",
+        "gulp-less": "^3.3.0",
+        "gulp-livereload": "3.8.1",
+        "gulp-run": "1.7.1",
+        "gulp-wait": "0.0.2"
+    },
+    "license": "UNLICENSED",
+    "private": true
 }
