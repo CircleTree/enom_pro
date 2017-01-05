@@ -23,6 +23,10 @@
 	<property name="ftp.username.versions" value="versions@mycircletree.com"/>
 	<property name="yui.jarfile" value="vendor/nervo/yuicompressor/yuicompressor.jar"/>
 	<property name="threads" value="4"/>
+    <property name="slack_development_channel"
+              value="https://hooks.slack.com/services/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" />
+    <property name="new_beta_release_message"
+              value="New beta release has been published.\nFor more information, check out the Beta Download Quick Links page." />
 	<!--suppress PhingDomInspection -->
 	<!--<taskdef name="sync" classname="phing.tasks.ext.FileSyncTask"/>-->
 	<!-- FILESETS -->
@@ -84,7 +88,6 @@
 		<symlink target="${project.basedir}/src/templates/${template_dir}/enom_srv.tpl" link="${target}enom_srv.tpl"
 						 overwrite="true"/>
 	</target>
-
 	<target name="replace">
 		<!--<delete dir="${build_temp_dir}"/>-->
 		<!--<mkdir dir="build/encoded_prep/"/>-->
@@ -347,6 +350,16 @@
 		</scp>
 		<echo>Done. Pushed hash: ${git_version}</echo>
 	</target>
+
+    <target name="beta-release-slack" description="Sends webhook to our Slack #development channel." depends="zip-beta">
+        <http-request
+                url="${slack_development_channel}"
+                verbose="true"
+                method="POST">
+            <postparameter name="payload"
+                           value="{'text':'${new_beta_release_message}'}" />
+        </http-request>
+    </target>
 
 	<target name="run_parallel_tasks">
 		<parallel threadCount="${threads}">
