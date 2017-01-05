@@ -26,6 +26,13 @@ class enom_pro_widget
     private $content_id = '';
     private $icon = '';
 
+    /**
+     * enom_pro_widget constructor.
+     *
+     * @param $title
+     * @param $base_id
+     * @param $callback
+     */
     public function __construct($title, $base_id, $callback)
     {
         if (!class_exists('enom_pro')) {
@@ -135,13 +142,17 @@ class enom_pro_widget
 		$id = $this->whmcsPanelName;
         $jSCode = <<<JS
 jQuery(function($) {
-		var panel = $("#{$id}"), body = panel.find('.panel-body'), refresh = panel.find('.widget-refresh'), toggle = panel.find('.widget-minimise');
+		var panel = $("#{$id}"),
+		    body = panel.find('.panel-body'),
+		    refresh = panel.find('.widget-refresh'),
+		    toggle = panel.find('.widget-minimise');
+		
 		toggle.on('click', function() {
 			setTimeout(function(){
 				panel.trigger('refresh');
 			},200)
-
 		});
+		
 		panel.on('refresh', function() {
 			if (toggle.find('i').hasClass('fa-chevron-up') ) {
 					refresh.trigger("click");
