@@ -145,5 +145,8 @@ $stats = $this->getDomainVerificationStats();
 				return false;
 			});
 		});
+
+    $('.home-widgets-container').masonry();
+    
 	</script>
 </div>
