@@ -118,3 +118,5 @@ function enom_pro_render_transfer_status_form( $domain, $status ) { ?>
 		</table>
 	</div>
 </div>
+
+<script> $('.home-widgets-container').masonry(); </script>

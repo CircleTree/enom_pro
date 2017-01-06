@@ -85,3 +85,5 @@ if ( $first_page ):
 	</table>
 <?php endif; ?>
 </div>
+
+<script> $('.home-widgets-container').masonry(); </script>

@@ -147,17 +147,16 @@ jQuery(function($) {
 		    refresh = panel.find('.widget-refresh'),
 		    toggle = panel.find('.widget-minimise');
 		
-		toggle.on('click', function() {
-			setTimeout(function(){
-				panel.trigger('refresh');
-			},200)
-		});
+		refresh.trigger('click');
 		
-		panel.on('refresh', function() {
-			if (toggle.find('i').hasClass('fa-chevron-up') ) {
-					refresh.trigger("click");
-			}
-		}).trigger('refresh');
+		toggle.on('click', function() {
+		    if (!toggle.find('i').hasClass('fa-chevron-up')) {
+		        setTimeout(function() {
+		            console.log('refreshing', panel.attr('id'));
+		            refresh.trigger('click');
+		        }, 200);
+		    }
+		});
 
 	{$jQuery}
 });

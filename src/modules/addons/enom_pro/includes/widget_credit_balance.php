@@ -49,3 +49,5 @@ if ( 'off' == strtolower( $warning_level ) ) {
 		</div>
 	<?php endif; ?>
 </div>
+
+<script> $('.home-widgets-container').masonry(); </script>

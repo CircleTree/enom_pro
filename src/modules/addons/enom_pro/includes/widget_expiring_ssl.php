@@ -60,3 +60,5 @@ $expiring_certs = $this->getExpiringCerts(); ?>
 				endif; ?>
 	</div>
 </div>
+
+<script> $('.home-widgets-container').masonry(); </script>
