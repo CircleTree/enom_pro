@@ -348,10 +348,12 @@
 				<include name="${beta_log_filename}"/>
 			</fileset>
 		</scp>
+        <echo>Sending notification to #development channel...</echo>
+        <phingcall target="beta-release-slack"/>
 		<echo>Done. Pushed hash: ${git_version}</echo>
 	</target>
 
-    <target name="beta-release-slack" description="Sends webhook to our Slack #development channel." depends="zip-beta">
+    <target name="beta-release-slack" description="Sends webhook to our Slack #development channel.">
         <http-request
                 url="${slack_development_channel}"
                 verbose="true"
