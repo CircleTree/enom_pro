@@ -13,6 +13,9 @@ Licensed from Orion IP Ventures, LLC
 .enom_pro_widget {
   padding: 20px;
 }
+.enom_pro_widget .ssl_widget {
+  overflow-x: scroll;
+}
 .enom_pro_output {
   box-sizing: border-box;
   /**
