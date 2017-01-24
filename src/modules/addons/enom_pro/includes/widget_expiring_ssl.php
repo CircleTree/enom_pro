@@ -8,7 +8,7 @@
 
 $expiring_certs = $this->getExpiringCerts(); ?>
 <div class="enom_pro_widget">
-	<div class="alert <?php echo( count( $expiring_certs ) > 0 ? 'alert-danger' : 'alert-success' ) ?>">
+	<div class="ssl_widget alert <?php echo( count( $expiring_certs ) > 0 ? 'alert-danger' : 'alert-success' ) ?>">
 		<?php if ( count( $expiring_certs ) > 0 ) : ?>
 		<table class="table table-condensed table-hover">
 			<tr>
