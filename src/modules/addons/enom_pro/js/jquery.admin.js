@@ -373,7 +373,8 @@ try {
 			});
 		}
 
-		$(".enom_pro_output").on("click", ".enom_stat_button .btn", function () {
+		$("#paneldomainstats").on("click", ".enom_stat_button .btn", function () {
+			
 			if ($(this).hasClass("disabled")) {
 				return false;
 			}
@@ -423,9 +424,7 @@ try {
 		if ($(".doIPFetch").length > 0) {
 			$.getJSON("http://www.telize.com/jsonip?callback=?", function (json) {
 				/** @namespace json.ip */
-				$(".doIPFetch").html('<input value="' +
-														 json.ip +
-														 '" onclick="this.select();"/>').removeClass('enom_pro_loader');
+				$(".doIPFetch").html('<input value="' +json.ip +'" onclick="this.select();"/>').removeClass('enom_pro_loader');
 			});
 		}
 		$(".filePathToggle").on('click', function () {

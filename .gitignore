@@ -9,6 +9,7 @@
 
 /.idea/dataSources.local.xml
 /.idea/workspace.xml
+.idea/enom_pro.iml
 
 /vendor/
 /node_modules/

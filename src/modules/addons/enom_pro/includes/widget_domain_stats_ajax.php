@@ -10,6 +10,7 @@ $meta = $this->enom->getListMeta();
 $first_page = ! isset( $_GET['start'] ) ? true : false;
 if ( $first_page ):
 	?>
+<div class="enom_pro_widget">
 	<table class="table-hover domain-widget-response">
 	<thead>
 	<tr>
@@ -83,3 +84,6 @@ if ( $first_page ):
 	</tbody>
 	</table>
 <?php endif; ?>
+</div>
+
+<script> $('.home-widgets-container').masonry(); </script>
