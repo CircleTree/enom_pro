@@ -14,18 +14,27 @@ defined( 'BOOTSTRAP' ) or define( 'BOOTSTRAP', false );
 require_once ENOM_PRO_ROOT . 'enom_pro.php';
 require_once ENOM_PRO_ROOT . 'hooks_compatible.php';
 
-
 add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_balance" );
 add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_ssl_certs" );
 add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_expiring_domains" );
 add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_pending_domain_verification" );
 add_hook( "AdminHomeWidgets", 1, "enom_pro_admin_transfers" );
+
 add_hook( "AdminAreaHeadOutput", - 89512, "enom_pro_admin_head_output" );
 add_hook( "AdminAreaPage", - 284917, "enom_pro_admin_actions" );
+
 add_hook( "ClientAreaPage", - 30101, "enom_pro_srv_page" );
 add_hook( "ClientAreaPage", - 10101, "enom_pro_namespinner" );
 add_hook( "ClientAreaPage", - 20291, "enom_pro_clientarea_transfers" );
+
 add_hook( "DailyCronJob", 10101, "enom_pro_cron" );
+
+/**
+ * [enom_pro_admin_balance description]
+ * @method enom_pro_admin_balance
+ * @param  [type]     $vars    [description]
+ * @return [array]    $widget  [description]
+ */
 function enom_pro_admin_balance( $vars ) {
 
 	unset( $vars );
@@ -37,9 +46,10 @@ function enom_pro_admin_balance( $vars ) {
 }
 
 /**
- * @param $vars
- *
- * @return array
+ * [enom_pro_admin_ssl_certs description]
+ * @method enom_pro_admin_ssl_certs
+ * @param  [type]    $vars    [description]
+ * @return [array]   $widget  [description]
  */
 function enom_pro_admin_ssl_certs( $vars ) {
 
@@ -62,7 +72,12 @@ EOL;
 	return $widget->toArray();
 }
 
-
+/**
+ * [enom_pro_admin_expiring_domains description]
+ * @method enom_pro_admin_expiring_domains
+ * @param  [type]    $vars    [description]
+ * @return [array]   $widget  [description]
+ */
 function enom_pro_admin_expiring_domains( $vars ) {
 
 	unset( $vars );
@@ -78,7 +93,12 @@ function enom_pro_admin_expiring_domains( $vars ) {
 	return $widget->toArray();
 }
 
-
+/**
+ * [enom_pro_admin_pending_domain_verification description]
+ * @method enom_pro_admin_pending_domain_verification
+ * @param  [type]    $vars    [description]
+ * @return [array]   $widget  [description]
+ */
 function enom_pro_admin_pending_domain_verification( $vars ) {
 
 	unset( $vars );
@@ -103,7 +123,12 @@ EOL;
 	return $widget->toArray();
 }
 
-
+/**
+ * [enom_pro_admin_transfers description]
+ * @method enom_pro_admin_transfers
+ * @param  [type]    $vars    [description]
+ * @return [array]   $widget  [description]
+ */
 function enom_pro_admin_transfers( $vars ) {
 
 	if ( ! class_exists( 'enom_pro' ) ) {
@@ -145,7 +170,13 @@ JS;
 	return $widget->toArray();
 }
 
-
+/**
+ * [get_enom_pro_widget_form description]
+ * @method get_enom_pro_widget_form
+ * @param  [type]    $action [description]
+ * @param  [type]    $id     [description]
+ * @return [type]            [description]
+ */
 function get_enom_pro_widget_form( $action, $id ) {
 
 	if ( 'configadminroles.php' == basename( $_SERVER['PHP_SELF'] ) ) {
@@ -167,9 +198,10 @@ function get_enom_pro_widget_form( $action, $id ) {
 }
 
 /**
- * Admin Page CSS
+ * Admin page css
+ * @method enom_pro_admin_head_output
+ * @return [type]        [description]
  */
-
 function enom_pro_admin_head_output() {
 
 	//	Only load on applicable pages
@@ -192,7 +224,7 @@ function enom_pro_admin_head_output() {
 					adminurl: "<?php echo enom_pro::MODULE_LINK ?>"
 				};
 			</script>
-			<link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap.min.css" />
+			<!-- <link rel="stylesheet" href="../modules/addons/enom_pro/css/bootstrap.min.css" /> -->
 			<link rel="stylesheet" href="../modules/addons/enom_pro/css/admin.min.css" />
 			<script>
 				function version_compare(left, right) {
@@ -218,11 +250,10 @@ function enom_pro_admin_head_output() {
 					console.warn('Please upgrade your WHMCS theme to a newer version of jQuery (v 1.9.1+). Using Google CDN for an up-to-date version of jQuery. ');
 					document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"><\/script>');
 					document.write('<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"><\/script>');
-
 				}
 			</script>
-			<script
-					src="<?php echo enom_pro::MODULE_LINK ?>&action=getAdminJS&version=<?php echo urlencode( ENOM_PRO_VERSION ) ?>"></script>
+			<script src="<?php echo enom_pro::MODULE_LINK ?>&action=getAdminJS&version=<?php echo urlencode( ENOM_PRO_VERSION ) ?>">
+			</script>
 		<?php if ( isset( $_GET['module'] ) && 'enom_pro' == $_GET['module'] ) : ?>
 			<?php //Don't include these on the admin roles page to prevent unintended conflicts / regressions ?>
 			<?php if ( isset( $_GET['view'] ) && 'domain_import' == $_GET['view'] ) : ?>

@@ -98,3 +98,5 @@ $stats = $this->getAccountStats();
 		</tbody>
 	</table>
 </div>
+
+<script> $('.home-widgets-container').masonry(); </script>
