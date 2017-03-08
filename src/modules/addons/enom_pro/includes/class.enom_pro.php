@@ -2127,7 +2127,7 @@ class enom_pro {
 				$data = array(
 					'id'          => $client_id,
 					'messagename' => 'SSL Expiring Soon',
-					'customvars'  => base64_encode( serialize( $cert_meta_array ) ),
+					'customvars'  => $cert_meta_array
 				);
 				self::whmcs_api( 'sendemail', $data );
 				$return = true;

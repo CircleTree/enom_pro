@@ -20,15 +20,15 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	public static function setUpBeforeClass() {
 
 		//Clean up mail catcher
-		$mail = new \Alex\MailCatcher\Client();
-		$mail->purge();
+		$mail = new RCH\MailHog\Client( 'pv.io');
+		$mail->deleteAll();
 		unset( $mail );
 
 		parent::setUpBeforeClass();
 	}
 
 
-	function  setUp() {
+	function setUp() {
 
 		$this->e = new enom_pro();
 
@@ -165,7 +165,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group domains
 	 * @group slow
 	 */
-	function  test_get_all_domains_flush_cache() {
+	function test_get_all_domains_flush_cache() {
 
 		$this->e->clear_domains_cache();
 		$this->runGetAllDomains();
@@ -174,7 +174,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group domains
 	 */
-	function  test_meta_equals_domains_list() {
+	function test_meta_equals_domains_list() {
 
 		// ** AR: same issue as for test_getAllDomains()
 		$this->e->override_request_limit( 30 );
@@ -222,7 +222,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group tlds
 	 */
-	function  test_get_tlds() {
+	function test_get_tlds() {
 
 		$tlds = $this->e->getTLDs();
 		$this->assertTrue( is_array( $tlds ) );
@@ -233,7 +233,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group pricing
 	 */
-	function  test_get_domain_wholesale_pricing() {
+	function test_get_domain_wholesale_pricing() {
 
 		$com = $this->e->getDomainPricing( $tld = 'com' );
 		$this->assertTrue( is_array( $com ) );
@@ -246,7 +246,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group pricing
 	 */
-	function  test_get_domain_retail_pricing() {
+	function test_get_domain_retail_pricing() {
 
 		$retail = $this->e->getDomainPricing( 'com', true );
 		$this->assertTrue( is_array( $retail ) );
@@ -269,7 +269,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 *
 	 * @param bool $xml_filename
 	 */
-	function  test_load_ssl_mock( $xml_filename = false ) {
+	function test_load_ssl_mock( $xml_filename = false ) {
 
 		$this->load_test_mock_XML( $xml_filename );
 		$resp = $this->e->getExpiringCerts();
@@ -281,7 +281,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group domains
 	 * @group slow
 	 */
-	function  test_get_imported_domains() {
+	function test_get_imported_domains() {
 
 		$domains = enom_pro::whmcs_api( 'getclientsdomains', array() );
 		if ( 0 == $domains['totalresults'] ) {
@@ -300,7 +300,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group domains
 	 */
-	function  test_get_domains_show_imported() {
+	function test_get_domains_show_imported() {
 
 		//Test that a longer list returns the correct limit
 		$imported = $this->e->getDomainsWithClients( 1, 1, 'imported' );
@@ -312,7 +312,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group domains
 	 * @group current
 	 */
-	function  test_get_domains_show_all() {
+	function test_get_domains_show_all() {
 
 		//Fetch the full list of domains with clients to compare against
 		$all = $this->e->getDomainsWithClients( true, 1 );
@@ -320,19 +320,19 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$imported = $this->e->getDomainsWithClients( true, 1, 'imported' );
 		//The full ($all) list does NOT contain the same results as $imported
 		$imported_count = 0;
-		foreach ($all as $all_domain) {
-			if (isset($all_domain['whmcs_id'])) {
-				$imported_count++;
-				$this->assertArrayHasKey('client', $all_domain);
+		foreach ( $all as $all_domain ) {
+			if ( isset( $all_domain['whmcs_id'] ) ) {
+				$imported_count ++;
+				$this->assertArrayHasKey( 'client', $all_domain );
 			}
 		}
-		$this->assertEquals($imported_count, count($imported));
+		$this->assertEquals( $imported_count, count( $imported ) );
 	}
 
 	/**
 	 * @group domains
 	 */
-	function  test_get_domains_show_un_imported() {
+	function test_get_domains_show_un_imported() {
 
 		$hidden = $this->e->getDomainsWithClients( 10, 1, $show_only = 'unimported' );
 		$this->e->getDomainsWithClients( 3, 1, true );
@@ -342,7 +342,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group domains
 	 */
-	function  test_get_10_domains_5per_page() {
+	function test_get_10_domains_5per_page() {
 
 		$page_1 = $this->e->getDomains( 5 );
 		$page_2 = $this->e->getDomains( 5, 6 );
@@ -352,7 +352,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group domains
 	 */
-	function  test_get_10_domains() {
+	function test_get_10_domains() {
 
 		$domains = $this->e->getDomains( 10 );
 		$this->assertCount( 10, $domains );
@@ -362,7 +362,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group domains
 	 * @group slow
 	 */
-	function  test_get_imported_pagination() {
+	function test_get_imported_pagination() {
 
 		$count = $this->e->getDomainsWithClients( 5, 1, 'imported' );
 		if ( count( $count ) < 2 ) {
@@ -377,7 +377,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group whois
 	 * @group domains
 	 */
-	function  test_get_WHOIS() {
+	function test_get_WHOIS() {
 
 		$name   = 'aol.com';
 		$return = $this->e->getWHOIS( $name );
@@ -390,7 +390,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$this->assertArrayHasKey( 'emailaddress', $return['technical'] );
 	}
 
-	function  test_get_BETA_log_JSON() {
+	function test_get_BETA_log_JSON() {
 
 		$c = new ReflectionMethod( 'enom_pro_controller', 'get_beta_log' );
 		$c->setAccessible( true );
@@ -408,7 +408,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group whmcs
 	 * @expectedException EnomException
 	 */
-	function  test_resend_activation() {
+	function test_resend_activation() {
 
 		$domains      = $this->e->getTransfers();
 		$first_result = reset( $domains );
@@ -425,7 +425,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group transfers
 	 * @expectedException EnomException
 	 */
-	function  test_resubmit_locked_throws_enom_exception() {
+	function test_resubmit_locked_throws_enom_exception() {
 
 		$this->e->resubmit_locked( '123' );
 	}
@@ -433,7 +433,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group settings
 	 */
-	function  test_setting_settter() {
+	function test_setting_settter() {
 
 		$val = 1234;
 		enom_pro::set_addon_setting( 'test1', $val );
@@ -445,7 +445,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @expectedException WHMCSException
 	 * @group whmcs
 	 */
-	function  test_whmcs_api_exception() {
+	function test_whmcs_api_exception() {
 
 		enom_pro::whmcs_api( 'foobar', array() );
 	}
@@ -454,7 +454,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group domains
 	 * @group slow
 	 */
-	function  test_get_3_Domains_with_Clients() {
+	function test_get_3_Domains_with_Clients() {
 
 		$limit = 3;
 		$total = $this->e->getDomainsWithClients( $limit, 1 );
@@ -464,7 +464,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group domains
 	 */
-	function  test_get_domain_tab() {
+	function test_get_domain_tab() {
 
 		$response = $this->e->getDomainsTab( 'expiring' );
 		$this->assertTrue( is_array( $response ) );
@@ -473,7 +473,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group domains
 	 */
-	function  test_get_domains() {
+	function test_get_domains() {
 
 		$domains = $this->e->getDomains( 1 );
 		$this->assertTrue( is_array( $domains ) );
@@ -492,7 +492,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group srv
 	 */
-	function  test_set_SRV() {
+	function test_set_SRV() {
 
 		$records   = array();
 		$records[] = array(
@@ -515,7 +515,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @depends test_set_SRV
 	 * @group srv
 	 */
-	function  test_get_SRV() {
+	function test_get_SRV() {
 
 		$domains = $this->e->getDomains( 1 );
 		$domain  = $domains[0];
@@ -526,7 +526,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group srv
 	 */
-	function  test_get_multiple_SRV() {
+	function test_get_multiple_SRV() {
 
 		$records   = array();
 		$records[] = array(
@@ -559,7 +559,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group srv
 	 */
-	function  test_get_empty_srv() {
+	function test_get_empty_srv() {
 
 		$domains = $this->e->getDomains( 1 );
 		$this->assertNotEmpty( $domains, 'no enom domains found in WHMCS' );
@@ -580,7 +580,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group domains
 	 * @group transfers
 	 */
-	function  test_get_transfers() {
+	function test_get_transfers() {
 
 		$t = $this->e->getTransfers();
 		$this->assertTrue( is_array( $t ) );
@@ -604,7 +604,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group namespinner
 	 */
-	function  test_spinner() {
+	function test_spinner() {
 
 		try {
 			$spinner_array = $this->e->getSpinner( 'google.com' );
@@ -623,7 +623,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group domains
 	 */
-	function  test_parse_domain() {
+	function test_parse_domain() {
 
 		$parts = $this->e->getDomainParts( 'google.com' );
 		$this->assertArrayHasKey( 'SLD', $parts );
@@ -636,7 +636,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group views
 	 */
-	function  test_admin_error_renderer() {
+	function test_admin_error_renderer() {
 
 		$string = enom_pro::render_admin_errors( array( new Exception( 'API IP ERROR' ) ) );
 		$this->assertContains( 'API IP ERROR', $string );
@@ -649,7 +649,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group views
 	 */
-	function  test_rendered_from_exception() {
+	function test_rendered_from_exception() {
 
 		try {
 			$this->e->resubmit_locked( '1234' );
@@ -665,7 +665,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @expectedException RemoteException
 	 * @group tests
 	 */
-	function  test_partial_xml() {
+	function test_partial_xml() {
 
 		$this->e->set_url( 'http://enom.test/tests/files/partial.xml' );
 		$this->e->getBalance();
@@ -675,7 +675,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @expectedException RemoteException
 	 * @group tests
 	 */
-	function  test_invalid_xml() {
+	function test_invalid_xml() {
 
 		$this->e->set_url( 'http://enom.test/tests/files/invalid.xml' );
 		$this->e->getBalance();
@@ -684,7 +684,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group tests
 	 */
-	function  test_debug_mode() {
+	function test_debug_mode() {
 
 		$this->assertEquals( ( 'on' == enom_pro::get_addon_setting( 'debug' ) ), $this->e->debug() );
 	}
@@ -704,19 +704,19 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @expectedException InvalidArgumentException
 	 * @group views
 	 */
-	function  test_admin_invalid_renderer() {
+	function test_admin_invalid_renderer() {
 
 		enom_pro::render_admin_errors( array( 123, null ) );
 	}
 
-	function  test_1darray_to_upper() {
+	function test_1darray_to_upper() {
 
 		$oneDlower = array( 'foo', 'bar' );
 		$vals      = enom_pro::array_to_upper( $oneDlower );
 		$this->assertEquals( strtoupper( $oneDlower[0] ), $vals[0] );
 	}
 
-	function  test_2darray_to_upper() {
+	function test_2darray_to_upper() {
 
 		$TwoDlower = array( 'foo' => 'baz', 'bar' => 'blarf' );
 		$vals      = enom_pro::array_to_upper( $TwoDlower );
@@ -728,7 +728,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group remote
 	 */
-	function  test_connect() {
+	function test_connect() {
 
 		$this->assertTrue( $this->e->check_login() );
 	}
@@ -736,7 +736,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group remote
 	 */
-	function  test_get_balance() {
+	function test_get_balance() {
 
 		$this->assertTrue( strlen( $this->e->getAvailableBalance() ) > 2 );
 		$this->assertTrue( strlen( $this->e->getBalance() ) > 2 );
@@ -746,7 +746,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group remote
 	 * @group stats
 	 */
-	function  test_get_acct_stats() {
+	function test_get_acct_stats() {
 
 		try {
 			$s = $this->e->getAccountStats();
@@ -765,7 +765,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @group remote
 	 * @group ssl
 	 */
-	function  test_get_expiring_certs() {
+	function test_get_expiring_certs() {
 
 		$certs = $this->e->getExpiringCerts();
 		$this->assertTrue( is_array( $certs ) );
@@ -792,18 +792,18 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 
 		list( $ssl_expiry_date_formatted, $fileNameTmp ) = $this->set_up_SSL();
 
-		$mail = new \Alex\MailCatcher\Client();
+		$mail = new RCH\MailHog\Client( 'localhost' );
 
 		//Run test
 		$num_sent = $this->e->send_all_ssl_reminder_emails();
 		$this->assertEquals( 3, $num_sent );
 		if ( self::$testData['realSMTP'] ) {
 
-			$messages = $mail->search( array( 'subject' => 'SSL Expiring Soon' ) );
+			$messages = $mail->findBy( 'containing', 'SSL Expiring Soon' );
 			$this->assertCount( 3, $messages );
 			$message = $messages[0];
-			/** @var $message Alex\MailCatcher\Message */
-			$this->assertContains( $ssl_expiry_date_formatted, $message->getContent() );
+			/** @var $message RCH\MailHog\Message */
+			$this->assertContains( $ssl_expiry_date_formatted, $message->getBody() );
 		}
 		//Cleanup
 		unlink( $fileNameTmp );
@@ -905,7 +905,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$this->assertGreaterThanOrEqual( 1, $tickets['totalresults'] );
 	}
 
-	function  test_admin_with_no_Widgets_enabled() {
+	function test_admin_with_no_Widgets_enabled() {
 
 		//Use the no-widgets admin with role of support operator
 		$_SESSION['adminid'] = 3;
@@ -913,7 +913,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 		$this->assertFalse( $this->e->areAnyWidgetsEnabled() );
 	}
 
-	function  test_admin_with_Widgets_enabled() {
+	function test_admin_with_Widgets_enabled() {
 
 		//Use the admin with widgets enabled
 		$_SESSION['adminid'] = 1;
@@ -925,7 +925,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @expectedException InvalidArgumentException
 	 * @group remote
 	 */
-	function  test_invalid_api_command() {
+	function test_invalid_api_command() {
 
 		$this->e->runTransaction( 'blarf' );
 	}
@@ -935,7 +935,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	 * @expectedExceptionCode RemoteException::CURL_EXCEPTION
 	 * @group remote
 	 */
-	function  test_remote_curl_fail() {
+	function test_remote_curl_fail() {
 
 		$this->e->curl_get( '', array() );
 	}
@@ -943,7 +943,7 @@ class test_enom_pro extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group settings
 	 */
-	function  test_setting_cache() {
+	function test_setting_cache() {
 
 		$this->e->get_addon_setting( 'ssl_days' );
 		//We can see in code coverage if the cache is used, vs another db lookup
