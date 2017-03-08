@@ -20,7 +20,7 @@
 	<div class="alert alert-success">
 		<p>Installed.
 			<a class="btn btn-default"
-			   onclick="javascript:$('#edit_ssl_sidebar').trigger('click');return false;"
+			   onclick="$('#edit_ssl_sidebar').trigger('click');return false;"
 			   href="configemailtemplates.php?action=edit&id=<?php echo (int) $_GET['ssl_email'] ?>">
 				Edit Now
 			</a>
