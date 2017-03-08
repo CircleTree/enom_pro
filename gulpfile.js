@@ -21,7 +21,7 @@ var src = './src',
  * executes phing local target build inside of enom_pro directory.
  */
 gulp.task('run-phing', function () {
-	return run("ssh vagrant@127.0.0.1 -p 2222 'cd enom_pro; vendor/bin/phing;'")
+	return run("ssh vagrant@127.0.0.1 -p2222 'cd enom_pro; vendor/bin/phing;'")
 		.exec()
 		.on('error', onError)
 		.pipe(wait(4000))
