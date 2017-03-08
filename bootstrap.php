@@ -23,10 +23,9 @@ $cwd = dirname( __FILE__ );
 passthru( 'mysql --user=' . MYSQL_USER . ' --password=' . MYSQL_PASS . ' ' . MYSQL_DB . ' < ' . $cwd . '/tests/files/whmcs_v6.sql' );
 echo 'Done. Database reset to known state' . PHP_EOL;
 
-$resp = mysql_connect( MYSQL_HOST, MYSQL_USER, MYSQL_PASS );
-mysql_select_db( MYSQL_DB );
-if ( mysql_error( $resp ) ) {
-	die( mysql_error( $resp ) );
+$resp = mysqli_connect( MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB );
+if ( mysqli_error( $resp ) ) {
+	die( mysqli_error( $resp ) );
 }
 define( 'BOOTSTRAP', true );
 define( 'ROOTDIR', realpath( __DIR__ ) . '/src' );

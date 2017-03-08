@@ -96,7 +96,7 @@ class enom_pro_widget {
 <span class="enom_pro_output">
 <span class="enom_pro_widget_title">' . $iconSpan . '<a href="' . enom_pro::MODULE_LINK . '">' . ENOM_PRO . '</a> &dash; ' . $this->title . $this->getWidgetForm() . '</span></span>';
 		$return['content']    = $this->getContent();
-		$return['jquerycode'] = $this->get_jQuery();
+		$return['jquerycode'] = $this->get_jQuery(); //TODO does WHMCS 7 even recognize this anymore?
 
 		return $return;
 	}
