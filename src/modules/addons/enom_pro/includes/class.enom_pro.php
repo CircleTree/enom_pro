@@ -2015,7 +2015,7 @@ class enom_pro {
 		$template_files = $upgrade_dir . 'templates/default/';
 		if ( ! is_writable( $template_files ) ) {
 			$temp_dir_created = mkdir( $template_files );
-			if ( false 	 === $temp_dir_created ) {
+			if ( false === $temp_dir_created ) {
 				throw new Exception( $template_files . ' is un-writeable. Please CHMOD 777, and try again.' );
 			}
 		}
@@ -2127,7 +2127,7 @@ class enom_pro {
 				$data = array(
 					'id'          => $client_id,
 					'messagename' => 'SSL Expiring Soon',
-					'customvars'  => $cert_meta_array
+					'customvars'  => $cert_meta_array,
 				);
 				self::whmcs_api( 'sendemail', $data );
 				$return = true;
