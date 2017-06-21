@@ -13,7 +13,6 @@
     <orderEntry type="module-library">
       <library name="PHP">
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../ct2016/public_html/client-area/vendor" />
           <root url="file://$MODULE_DIR$/vendor/cilex/cilex" />
           <root url="file://$MODULE_DIR$/vendor/cilex/console-service-provider" />
           <root url="file://$MODULE_DIR$/vendor/composer" />
@@ -102,10 +101,8 @@
           <root url="file://$MODULE_DIR$/vendor/zerkalica/phpcs" />
           <root url="file://$MODULE_DIR$/vendor/zetacomponents/base" />
           <root url="file://$MODULE_DIR$/vendor/zetacomponents/document" />
-          <root url="file://$MODULE_DIR$/../whmcs_hook_mocks" />
         </CLASSES>
         <SOURCES>
-          <root url="file://$MODULE_DIR$/../ct2016/public_html/client-area/vendor" />
           <root url="file://$MODULE_DIR$/vendor/cilex/cilex" />
           <root url="file://$MODULE_DIR$/vendor/cilex/console-service-provider" />
           <root url="file://$MODULE_DIR$/vendor/composer" />
@@ -194,7 +191,6 @@
           <root url="file://$MODULE_DIR$/vendor/zerkalica/phpcs" />
           <root url="file://$MODULE_DIR$/vendor/zetacomponents/base" />
           <root url="file://$MODULE_DIR$/vendor/zetacomponents/document" />
-          <root url="file://$MODULE_DIR$/../whmcs_hook_mocks" />
         </SOURCES>
       </library>
     </orderEntry>
@@ -204,30 +200,14 @@
     <orderEntry type="module-library">
       <library name="PHARS">
         <CLASSES>
-          <root url="phar://$MODULE_DIR$/composer_2.phar/" />
-          <root url="phar://$MODULE_DIR$/vendor/phpdocumentor/fileset/tests/data/test.phar/" />
           <root url="phar://$MODULE_DIR$/vendor/twig/twig/test/Twig/Tests/Loader/Fixtures/phar/phar-sample.phar/" />
+          <root url="phar://$MODULE_DIR$/vendor/phpdocumentor/fileset/tests/data/test.phar/" />
           <root url="phar://$MODULE_DIR$/vendor/symfony/dependency-injection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar/" />
-          <root url="phar://$MODULE_DIR$/phing-latest.phar/" />
-          <root url="phar://$MODULE_DIR$/pyrus.phar/" />
         </CLASSES>
         <SOURCES>
-          <root url="phar://$MODULE_DIR$/composer_2.phar/" />
-          <root url="phar://$MODULE_DIR$/vendor/phpdocumentor/fileset/tests/data/test.phar/" />
           <root url="phar://$MODULE_DIR$/vendor/twig/twig/test/Twig/Tests/Loader/Fixtures/phar/phar-sample.phar/" />
+          <root url="phar://$MODULE_DIR$/vendor/phpdocumentor/fileset/tests/data/test.phar/" />
           <root url="phar://$MODULE_DIR$/vendor/symfony/dependency-injection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar/" />
-          <root url="phar://$MODULE_DIR$/phing-latest.phar/" />
-          <root url="phar://$MODULE_DIR$/pyrus.phar/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="PHP Runtime" type="php">
-        <CLASSES>
-          <root url="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/standard" />
-        </CLASSES>
-        <SOURCES>
-          <root url="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/standard" />
         </SOURCES>
       </library>
     </orderEntry>
