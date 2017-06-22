@@ -3,7 +3,7 @@
 ## Dev Setup
 
 1. [Install WHMCS](http://docs.whmcs.com/Installing_WHMCS) 
-	* Make sure to note the MySQL credentials for configuring PHPUnit.xml below
+	* Make sure  to note the MySQL credentials for configuring PHPUnit.xml below
 1. Install Composer Globally
 
   `curl -sS https://getcomposer.org/installer | php`
@@ -57,4 +57,12 @@
      - whmcs
      - whois
 
-
+TODO: Need to fix required dependencies below: 
+sudo apt-get update
+sudo apt-get install gcc make autoconf libc-dev pkg-config
+sudo apt-get install libssh2-1-dev
+sudo pecl channel-update pecl.php.net
+sudo pecl install ssh2-alpha
+sudo apt-get install libssh2-php
+sudo apt-get install php-ssh2
+sudo pear install HTTP_Request2
