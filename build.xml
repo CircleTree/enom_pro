@@ -7,9 +7,11 @@
     <property name="version" value="3.0.05"/>
     <property name="build_temp_dir" value="${project.basedir}/build"/>
     <property name="build_dir" value="${build_temp_dir}"/>
+
     <target name="debug">
         <echo>${build_dir}</echo>
     </target>
+
     <property name="src_dir" value="src/"/>
     <property name="version_xml" value="enom_pro_version.xml"/>
     <property name="beta_version_xml" value="enom_pro_version_beta.xml"/>
@@ -68,11 +70,13 @@
             <property name="template_dir" value="five"/>
         </phingcall>
     </target>
+
     <target name="templates.six">
         <phingcall target="templates.symlink">
             <property name="template_dir" value="six"/>
         </phingcall>
     </target>
+
     <target name="templates.symlink" description="Deletes deployment required templates, and symlinks them to dev">
         <property name="target" value="${deploy}/templates/${template_dir}/"/>
         <delete file="${target}clientareadomaindetails.tpl" failonerror="false"/>
@@ -88,6 +92,7 @@
         <symlink target="${project.basedir}/src/templates/${template_dir}/enom_srv.tpl" link="${target}enom_srv.tpl"
                  overwrite="true"/>
     </target>
+
     <target name="replace">
         <!--<delete dir="${build_temp_dir}"/>-->
         <!--<mkdir dir="build/encoded_prep/"/>-->
@@ -118,6 +123,7 @@
         </copy>
         <phingcall target="minify"/>
     </target>
+
     <target name="minify">
         <echo>Minifying admin.css</echo>
         <exec
@@ -132,6 +138,7 @@
                 command="${jquery.minify.cmd}"
                 checkreturn="true" passthru="true"/>
     </target>
+
     <target name="encode" hidden="true" depends="replace">
         <ioncubeencoder
                 optimize="max"
@@ -253,7 +260,7 @@
         </scp>
         <echo msg="Deploying zipfiles to myCircleTree.com"/>
         <scp host="mycircletree.com" username="${ssh.user}" port="${ssh.port}"
-             todir="/home/mycircle/public_html/versions"
+             todir="/home/mycircle/downloads"
              privkeyfile="${ssh.key}" pubkeyfile="${ssh.pubkey}" level="debug">
             <fileset dir=".">
                 <include name="enom_pro.zip"/>
@@ -297,6 +304,7 @@
         </phingcall>
         <move file="${encoded_prep}/${version_xml}" tofile="${encoded_prep}/${beta_version_xml}" haltonerror="true"/>
     </target>
+
     <target name="beta-version">
         <scp host="mycircletree.com" username="${ssh.user}" port="${ssh.port}"
              todir="/home/mycircle/public_html/versions"
