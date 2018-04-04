@@ -1,4 +1,7 @@
-# eNom PRO for WHMCS <a target='_blank' href='http://ci.mycircletree.com/job/enom_PRO'><img src='http://ci.mycircletree.com/buildStatus/icon?job=enom_PRO' title='Build Status'></a>
+
+# eNom PRO for WHMCS
+
+Open source for the community - looking for project maintainers. Please contact @bobbravo2. 
 
 ## Dev Setup
 
