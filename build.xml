@@ -17,14 +17,14 @@
 	<!-- Location to save the encoded version -->
 	<property name="encoded" value="${build_dir}/encoded"/>
 	<property name="encoded_prep" value="${build_dir}/encoded_prep"/>
-	<property name="ftp.password" value="***REMOVED***"/>
-	<property name="ftp.username" value="***REMOVED***"/>
-	<property name="ftp.password.versions" value="***REMOVED***"/>
-	<property name="ftp.username.versions" value="***REMOVED***"/>
+	<property name="ftp.password" value="x"/>
+	<property name="ftp.username" value="x"/>
+	<property name="ftp.password.versions" value="x"/>
+	<property name="ftp.username.versions" value="x"/>
 	<property name="yui.jarfile" value="vendor/nervo/yuicompressor/yuicompressor.jar"/>
 	<property name="threads" value="4"/>
     <property name="slack_development_channel"
-              value="https://hooks.slack.com/services/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" />
+              value="x" />
     <property name="new_beta_release_message"
               value="New beta release has been published.\nFor more information, check out the Beta Download Quick Links page." />
 	<!--suppress PhingDomInspection -->
