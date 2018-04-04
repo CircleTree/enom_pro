@@ -3,6 +3,8 @@
 
 Open source for the community - looking for project maintainers. Please contact @bobbravo2. 
 
+eNom PRO was a lot of work over many years - if you find it valuable, please open a PR to fix issues, or consider donating: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9HP39YZD9ZMSU" target="_blank"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Donate to help keep eNom PRO development going" /></a>
+
 ## Dev Setup
 
 1. [Install WHMCS](http://docs.whmcs.com/Installing_WHMCS) 
